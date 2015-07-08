@@ -16,5 +16,10 @@ public class SampleController {
     public String Get() {
         return "Hello World!";
     }
-
+    @RequestMapping("/")
+    @ResponseBody
+    public String index() {
+        return "Proudly handcrafted by " +
+                "<a href='http://netgloo.com/en'>netgloo</a> :)";
+    }
 }
