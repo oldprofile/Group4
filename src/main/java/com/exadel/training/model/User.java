@@ -16,11 +16,15 @@ public class User {
     @NotNull
     private String email;
 
+    private long role;
+
     @NotNull
     private String name;
 
-    @NotNull
-    private String password;
+    private String login;
+
+    private long password;
+
     public User() {
     }
 
@@ -44,6 +48,4 @@ public class User {
     public long getId() {
         return id;
     }
-
-    public String getPassword() { return password; }
 }
