@@ -16,7 +16,10 @@ public class User {
     @NotNull
     private String email;
 
-    private long role;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name="users_id"))
+    private Role role;
 
     @NotNull
     private String name;

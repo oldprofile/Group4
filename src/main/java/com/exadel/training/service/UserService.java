@@ -1,4 +1,4 @@
-package com.exadel.training.service.impl;
+package com.exadel.training.service;
 
 import com.exadel.training.model.User;
 

@@ -1,8 +1,8 @@
-package com.exadel.training.service;
+package com.exadel.training.service.impl;
 
 import com.exadel.training.model.User;
 import com.exadel.training.repository.impl.UserRepository;
-import com.exadel.training.service.impl.UserService;
+import com.exadel.training.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
