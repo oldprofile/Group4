@@ -2,6 +2,7 @@ package com.exadel.training.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * Created by HP on 08.07.2015.
@@ -16,10 +17,8 @@ public class User {
     @NotNull
     private String email;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinTable(name = "users_roles",
-            joinColumns = @JoinColumn(name="users_id"))
-    private Role role;
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Role> roles;
 
     @NotNull
     private String name;
