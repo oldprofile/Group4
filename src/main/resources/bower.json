@@ -12,6 +12,7 @@
     "angular-mocks": "~1.4.0",
     "html5-boilerplate": "~5.2.0",
     "angular-bootstrap": "~0.13.0",
-    "bootstrap": "~3.3.5"
+    "bootstrap": "~3.3.5",
+    "angular-http-auth": "~1.2.2"
   }
 }
