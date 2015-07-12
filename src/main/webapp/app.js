@@ -4,6 +4,7 @@
 var app = angular.module('myApp', [
     'ngRoute',
     'http-auth-interceptor',
+    'ui.bootstrap',
     'myApp.view1',
     'myApp.view2',
     'myApp.mycourses',
@@ -11,10 +12,10 @@ var app = angular.module('myApp', [
     'myApp.profile',
     'myApp.admin',
     'myApp.version',
-    'myApp.login'
+    'myApp.login',
+    'myApp.menuApp'
     
-]).
-config(['$routeProvider', function($routeProvider) {
+]).config(['$routeProvider', function($routeProvider) {
   $routeProvider.otherwise({redirectTo: '/mycourses'});
 }]);
 
@@ -29,6 +30,9 @@ app.directive('authClass', function() {
     return {
       restrict: 'C',
       link: function(scope, elem, attrs) {
+          //hide content before auth
+          elem.find('#content-outer').hide();
+          
           
 //        //once Angular is started, remove class:
 //        elem.removeClass('waiting-for-angular');
@@ -48,14 +52,10 @@ app.directive('authClass', function() {
 //          login.slideUp();
 //        });
           
-          
+          elem.removeClass('waiting-for-angular');
           scope.$on('hideLoginEvent',function(event, data){
-            
-            var loginCard = $.find("#login-card");
-              alert(loginCard);
-              $('#login-card').hide();
-              loginCard.hide();
-              
+            elem.find('#login-card').hide();
+            elem.find('#content-outer').show();
           });
           
       }

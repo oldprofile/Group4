@@ -16,19 +16,25 @@
   <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
     
 </head>
-<body  ng-app="myApp" ng-controller="MainController" class="auth-class">
-  <ul class="menu">
-    <li><a href="#/mycourses">My Courses</a></li>
-    <li><a href="#/browse">Browse</a></li>
-    <li><a href="#/profile">Profile</a></li>
-    <li><a href="#/admin">Admin</a></li>  
-  </ul>
-
+<body ng-app="myApp" ng-controller="MainController" class="auth-class waiting-for-angular">
+    <div id="initializing-panel"></div>
+    <div id="content-outer">
+        
+      <header-menu></header-menu>
+    
+    
+    
   <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
   <![endif]-->
 
-    <div ng-view></div>
+        <div ng-view></div>
+    
+    
+    
+
+    <div>Angular seed app: v<span app-version></span></div>
+    </div>
     
     <div class="login-card" id="login-card" ng-controller="LoginController">
         <h1><img src="images/ex.jpg" alt="Exadel" style="width:274px;" /></h1>
@@ -38,10 +44,6 @@
             <input type="submit" class="login login-submit" value="Log in" >
         </form>
     </div>
-    
-
-  <div>Angular seed app: v<span app-version></span></div>
-
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
   -->
@@ -49,6 +51,7 @@
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
     <script src="bower_components/angular-http-auth/src/http-auth-interceptor.js"></script>
     
     
@@ -63,6 +66,8 @@
     <script src="page_profile/profile.js"></script>
     <script src="page_admin/admin.js"></script>
     <script src="page_common/Login.js"></script>
+    
+    <script src="page_common/header-menu.js"></script>
     
     <script src="components/version/version.js"></script>
     <script src="components/version/version-directive.js"></script>
