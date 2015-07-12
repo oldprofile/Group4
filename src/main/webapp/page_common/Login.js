@@ -11,5 +11,11 @@
         $scope.$emit('hideLoginEvent','hi');
         
     };
-  });
-})();
+  })
+      .directive('loginCard',function(){
+            return {
+                restrict: "E",
+                templateUrl: "page_common/login.html"
+            };
+        });
+    })();

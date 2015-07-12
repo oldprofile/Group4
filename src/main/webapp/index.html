@@ -9,6 +9,8 @@
   <title>My AngularJS App</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
   <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
   <link rel="stylesheet" href="app.css">
@@ -35,20 +37,15 @@
 
     <div>Angular seed app: v<span app-version></span></div>
     </div>
-    
-    <div class="login-card" id="login-card" ng-controller="LoginController">
-        <h1><img src="images/ex.jpg" alt="Exadel" style="width:274px;" /></h1>
-        <form ng-submit="submit()">
-            <input type="text"  placeholder="Username" ng-model="username">
-            <input type="password" placeholder="Password"  ng-model="password">
-            <input type="submit" class="login login-submit" value="Log in" >
-        </form>
-    </div>
+     
+    <login-card></login-card>
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
   -->
     <!-- ###BOWER### --> 
+    
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>

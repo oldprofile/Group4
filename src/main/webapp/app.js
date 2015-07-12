@@ -54,7 +54,7 @@ app.directive('authClass', function() {
           
           elem.removeClass('waiting-for-angular');
           scope.$on('hideLoginEvent',function(event, data){
-            elem.find('#login-card').hide();
+            elem.find('login-card').hide();
             elem.find('#content-outer').show();
           });
           
