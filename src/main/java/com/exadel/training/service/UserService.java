@@ -7,4 +7,6 @@ import com.exadel.training.model.User;
  */
 public interface UserService {
    User getUserByID(long id);
+   User findUserByLogin(String name);
+   void saveUser(User user);
 }
