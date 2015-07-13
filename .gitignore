@@ -108,4 +108,4 @@ pom.xml.next
 release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
-application.properties
+src/main/resources/application.properties

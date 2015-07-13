@@ -2,8 +2,8 @@ package com.exadel.training.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.sql.Date;
 import java.sql.Time;
-import java.util.Date;
 import java.util.List;
 /**
  * Created by Клим on 10.07.2015.
@@ -16,6 +16,7 @@ public class Training {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @Column(unique = true)
     @NotNull
     private String name;
 
@@ -45,8 +46,7 @@ public class Training {
     @ManyToOne(cascade = CascadeType.ALL)
     private State state;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Training parent;
+    private long parent;
 
     public Training() {
     }
@@ -159,11 +159,55 @@ public class Training {
         this.state = state;
     }
 
-    public Training getParent() {
+    public long getParent() {
         return parent;
     }
 
-    public void setParent(Training parent) {
+    public void setParent(long parent) {
         this.parent = parent;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Training training = (Training) o;
+
+        if (id != training.id) return false;
+        if (amount != training.amount) return false;
+        if (isInternal != training.isInternal) return false;
+        if (parent != training.parent) return false;
+        if (name != null ? !name.equals(training.name) : training.name != null) return false;
+        if (time != null ? !time.equals(training.time) : training.time != null) return false;
+        if (date != null ? !date.equals(training.date) : training.date != null) return false;
+        if (description != null ? !description.equals(training.description) : training.description != null)
+            return false;
+        if (place != null ? !place.equals(training.place) : training.place != null) return false;
+        if (language != null ? !language.equals(training.language) : training.language != null) return false;
+        if (coach != null ? !coach.equals(training.coach) : training.coach != null) return false;
+        if (users != null ? !users.equals(training.users) : training.users != null) return false;
+        if (category != null ? !category.equals(training.category) : training.category != null) return false;
+        return !(state != null ? !state.equals(training.state) : training.state != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (time != null ? time.hashCode() : 0);
+        result = 31 * result + (date != null ? date.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (place != null ? place.hashCode() : 0);
+        result = 31 * result + amount;
+        result = 31 * result + (language != null ? language.hashCode() : 0);
+        result = 31 * result + (isInternal ? 1 : 0);
+        result = 31 * result + (coach != null ? coach.hashCode() : 0);
+        result = 31 * result + (users != null ? users.hashCode() : 0);
+        result = 31 * result + (category != null ? category.hashCode() : 0);
+        result = 31 * result + (state != null ? state.hashCode() : 0);
+        result = 31 * result + (int) (parent ^ (parent >>> 32));
+        return result;
     }
 }
