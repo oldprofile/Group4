@@ -22,7 +22,9 @@ public class AuthenticationController {
 
     @RequestMapping(value = "/log_password", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody User save(@RequestBody Authentication project)  {
-        User user = userService.findUserByLogin(project.getLogin());
+        User user = userService.findUserByLoginAndPassword(project.getLogin(),1L);
+       // Role role = roleService.getRoleByID(1);
         return user;
     }
+   
 }

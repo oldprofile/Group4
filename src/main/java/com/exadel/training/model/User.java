@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -32,6 +33,9 @@ public class User {
     private String login;
 
     private long password;
+
+    @OneToMany(mappedBy = "user")
+    private List<UserFeedback> userFeedbacks;
 
     public User() {
     }
