@@ -14,6 +14,6 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User,Long>{
   //  @Query("select u from User u where u.login = ?1 AND u.password = ?2")
     User findUserByLoginAndPassword(String login,long password);
-    @Query("select u from User u where ?1 in (u.roles)")
+    @Query("select u from User as u inner join  as.roles as r where r.id in ?1‏")
     List<User> findUsersByRole(long type);
 }

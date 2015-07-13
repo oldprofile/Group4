@@ -1,5 +1,6 @@
 package com.exadel.training.service.impl;
 
+import com.exadel.training.common.RoleType;
 import com.exadel.training.model.User;
 import com.exadel.training.repository.impl.UserRepository;
 import com.exadel.training.service.UserService;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 /**
  * Created by HP on 08.07.2015.
@@ -26,6 +28,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUserByLoginAndPassword(String login,long password) {
         return userRepository.findUserByLoginAndPassword(login,password);
+    }
+
+    @Override
+    public List<User> findUserByLogin(RoleType type) {
+        return null;
     }
 
     @Override
