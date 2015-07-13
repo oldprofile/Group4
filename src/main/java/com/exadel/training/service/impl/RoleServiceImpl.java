@@ -1,6 +1,7 @@
 package com.exadel.training.service.impl;
 
 import com.exadel.training.model.Role;
+import com.exadel.training.model.User;
 import com.exadel.training.repository.impl.RoleRepository;
 import com.exadel.training.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role getRoleByID(long id) {
-        Role role = roleRepository.getOne(id);
+        Role role = roleRepository.findOne(id);
         return role;
     }
 }
