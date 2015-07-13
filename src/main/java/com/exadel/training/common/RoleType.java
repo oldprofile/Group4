@@ -9,7 +9,7 @@ public enum RoleType {
     ExCoache,
     ExEmployee;
 
-    public RoleType parseIntToRoleType(int type) throws NoSuchFieldException {
+    public static RoleType parseIntToRoleType(int type) throws NoSuchFieldException {
         switch (type) {
             case 1: {
                 return RoleType.Admin;
@@ -28,19 +28,19 @@ public enum RoleType {
             }
         }
     }
-    public int parseRoleTypeToInt(RoleType type) throws NoSuchFieldException    {
+    public static long parseRoleTypeToInt(RoleType type) throws NoSuchFieldException    {
         switch (type) {
                 case Admin: {
-                    return 1;
+                    return 1l;
                 }
                 case Employee: {
-                    return 2;
+                    return 2l;
                 }
                 case ExCoache: {
-                    return 3;
+                    return 3l;
                 }
                 case ExEmployee: {
-                    return 4;
+                    return 4l;
                 }
                 default: {
                     throw new NoSuchFieldException("don't find such type.");
