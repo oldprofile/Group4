@@ -9,10 +9,14 @@ import javax.persistence.*;
 @Table(name= "omissions")
 public class Omission {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
     @ManyToOne(cascade = CascadeType.ALL)
     private Training training;
 
-    @OneToOne(mappedBy = "omissions")
+    @ManyToOne(cascade = CascadeType.ALL)
     private User user;
 
     private boolean isOmission;
