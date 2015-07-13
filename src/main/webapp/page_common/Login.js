@@ -4,9 +4,12 @@
   
   .controller('LoginController', function ($scope, $http, authService)      {
     $scope.submit = function() {
+        
 //      $http.post('auth/login').success(function() {
 //        authService.loginConfirmed();
 //      });
+        
+        //Test Submit
         alert("login: " + $scope.username + " password: " + $scope.password);
         $scope.$emit('hideLoginEvent','hi');
         
