@@ -2,8 +2,7 @@ package com.exadel.training.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.sql.Date;
-import java.sql.Time;
+import java.util.Date;
 import java.util.List;
 /**
  * Created by Клим on 10.07.2015.
@@ -20,8 +19,6 @@ public class Training {
     @NotNull
     private String name;
 
-    private Time time;
-
     private Date date;
 
     private String description;
@@ -37,7 +34,7 @@ public class Training {
     @ManyToOne(cascade = CascadeType.ALL)
     private User coach;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "trainings")
     private List<User> users;
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -45,6 +42,12 @@ public class Training {
 
     @ManyToOne(cascade = CascadeType.ALL)
     private State state;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<User> spareUsers;
+
+    @OneToMany(mappedBy = "training")
+    private List<Omission> omissions;
 
     private long parent;
 
@@ -69,14 +72,6 @@ public class Training {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Time getTime() {
-        return time;
-    }
-
-    public void setTime(Time time) {
-        this.time = time;
     }
 
     public Date getDate() {
@@ -179,7 +174,6 @@ public class Training {
         if (isInternal != training.isInternal) return false;
         if (parent != training.parent) return false;
         if (name != null ? !name.equals(training.name) : training.name != null) return false;
-        if (time != null ? !time.equals(training.time) : training.time != null) return false;
         if (date != null ? !date.equals(training.date) : training.date != null) return false;
         if (description != null ? !description.equals(training.description) : training.description != null)
             return false;
@@ -196,7 +190,6 @@ public class Training {
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (time != null ? time.hashCode() : 0);
         result = 31 * result + (date != null ? date.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (place != null ? place.hashCode() : 0);
