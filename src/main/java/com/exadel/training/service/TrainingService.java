@@ -1,7 +1,6 @@
 package com.exadel.training.service;
 
 
-import com.exadel.training.model.Category;
 import com.exadel.training.model.Training;
 
 import java.util.List;
