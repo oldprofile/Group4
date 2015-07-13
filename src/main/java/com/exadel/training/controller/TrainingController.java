@@ -50,10 +50,10 @@ public class TrainingController {
         return trs;
     }
 
-    @RequestMapping(value = "/validTrainings", method = RequestMethod.POST, consumes = "application/json")
-    public @ResponseBody
-    List<Training> sendTrainings(@RequestBody Authentication project) {
-        List<Training> trs =  trainingService.getValidTrainingsForUser("1");
+    @RequestMapping(value = "/validTrainings", method = RequestMethod.GET)
+    @ResponseBody
+    List<Training> findValid() {
+        List<Training> trs =  trainingService.getValidTrainings();
         return trs;
     }
 }

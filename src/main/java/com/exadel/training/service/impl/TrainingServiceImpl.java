@@ -49,8 +49,8 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
-    public List<Training> getValidTrainingsForUser(String userName) {
-        return trainingRepository.findValidTrainingsForUser(userName);
+    public List<Training> getValidTrainings() {
+        return trainingRepository.findValidTrainings();
     }
 
 
