@@ -37,6 +37,26 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<UserFeedback> userFeedbacks;
 
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    public List<Training> getTrainings() {
+        return trainings;
+    }
+
+    public void setTrainings(List<Training> trainings) {
+        this.trainings = trainings;
+    }
+
+    public List<UserFeedback> getUserFeedbacks() {
+        return userFeedbacks;
+    }
+
+    public void setUserFeedbacks(List<UserFeedback> userFeedbacks) {
+        this.userFeedbacks = userFeedbacks;
+    }
+
+    @ManyToMany(mappedBy =  "users")
+    private List<Training> trainings;
+
     public User() {
     }
 
