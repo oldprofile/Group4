@@ -6,24 +6,25 @@ import java.io.Serializable;
  * Created by HP on 10.07.2015.
  */
 public class Authentication implements Serializable {
-    private String user;
-    private String parole;
+    private String login;
+    private String password;
 
     public Authentication() {
     }
-    public String getUser() {
-        return user;
+
+    public String getLogin() {
+        return login;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
-    public String getParole() {
-        return parole;
+    public String getPassword() {
+        return password;
     }
 
-    public void setParole(String parole) {
-        this.parole = parole;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
