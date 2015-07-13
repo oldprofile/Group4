@@ -2,7 +2,8 @@ package com.exadel.training.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.sql.Date;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by asd on 09.07.2015.
@@ -10,7 +11,7 @@ import java.sql.Date;
 
 @Entity
 @Table(name = "tfeedbacks")
-public class TrainingFeedback {
+public class TrainingFeedback{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -22,8 +23,6 @@ public class TrainingFeedback {
     private String newMaterial;
 
     private int effective;
-
-    private String trainer;
 
     private String recommendation;
 
@@ -38,6 +37,28 @@ public class TrainingFeedback {
     @NotNull
     private Date date;
 
+    @NotNull
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinTable(name = "tfeedbacks_training",
+               joinColumns = @JoinColumn(name = "training_id"))
+    private Training training;
+
+    public TrainingFeedback() {
+        this.date = new Date();
+    }
+
+    public TrainingFeedback(String clear, String interesting, String newMaterial, int effective, String recommendation,
+                            String other, User feedbacker, Training training) {
+        this.clear = clear;
+        this.interesting = interesting;
+        this.newMaterial = newMaterial;
+        this.effective = effective;
+        this.recommendation = recommendation;
+        this.other = other;
+        this.feedbacker = feedbacker;
+        this.training = training;
+        this.date = new Date();
+    }
 
     public long getId() {
         return id;
@@ -75,14 +96,6 @@ public class TrainingFeedback {
         this.effective = effective;
     }
 
-    public String getTrainer() {
-        return trainer;
-    }
-
-    public void setTrainer(String trainer) {
-        this.trainer = trainer;
-    }
-
     public String getRecommendation() {
         return recommendation;
     }
@@ -115,4 +128,11 @@ public class TrainingFeedback {
         this.date = date;
     }
 
+    public Training getTraining() {
+        return training;
+    }
+
+    public void setTraining(Training training) {
+        this.training = training;
+    }
 }

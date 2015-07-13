@@ -2,7 +2,8 @@ package com.exadel.training.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.sql.Date;
+import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "ufeedbacks")
-public class UserFeedback {
+public class UserFeedback{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -29,7 +30,6 @@ public class UserFeedback {
 
     private String other;
 
-    @NotNull
     private Date date;
 
     @NotNull
@@ -47,6 +47,21 @@ public class UserFeedback {
     //private assessment;
     //private level;
 
+
+    public UserFeedback() {}
+
+    public UserFeedback(String attendance, String attitude, String commSkills, String questions, String motivation, String focusOnResult, String other, User feedbacker, User user) {
+        this.attendance = attendance;
+        this.attitude = attitude;
+        this.commSkills = commSkills;
+        this.questions = questions;
+        this.motivation = motivation;
+        this.focusOnResult = focusOnResult;
+        this.other = other;
+        this.date = new Date();
+        this.feedbacker = feedbacker;
+        this.user = user;
+    }
 
     public long getId() {
         return id;
