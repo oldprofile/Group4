@@ -37,25 +37,9 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<UserFeedback> userFeedbacks;
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    public List<Training> getTrainings() {
-        return trainings;
-    }
-
-    public void setTrainings(List<Training> trainings) {
-        this.trainings = trainings;
-    }
-
-    public List<UserFeedback> getUserFeedbacks() {
-        return userFeedbacks;
-    }
-
-    public void setUserFeedbacks(List<UserFeedback> userFeedbacks) {
-        this.userFeedbacks = userFeedbacks;
-    }
-
-    @ManyToMany(mappedBy =  "users")
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Training> trainings;
+
 
     public User() {
     }
@@ -119,6 +103,22 @@ public class User {
 
     public void addRole(Role role) {
         this.roles.add(role);
+    }
+
+    public List<Training> getTrainings() {
+        return trainings;
+    }
+
+    public void setTrainings(List<Training> trainings) {
+        this.trainings = trainings;
+    }
+
+    public List<UserFeedback> getUserFeedbacks() {
+        return userFeedbacks;
+    }
+
+    public void setUserFeedbacks(List<UserFeedback> userFeedbacks) {
+        this.userFeedbacks = userFeedbacks;
     }
 
     @Override
