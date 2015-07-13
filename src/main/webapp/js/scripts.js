@@ -1,7 +1,7 @@
-var messageAccount = function (name, password){
+var messageAccount = function (login, password){
 	return{
-		user : name,
-		parole : password
+		login : login,
+		password : password
 	};
 };
 
