@@ -31,8 +31,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findUserByLogin(RoleType type) {
-        return null;
+    public List<User> findUserByRole(RoleType type) throws NoSuchFieldException {
+       return userRepository.findUsersByRole(RoleType.parseRoleTypeToInt(type));
     }
 
     @Override

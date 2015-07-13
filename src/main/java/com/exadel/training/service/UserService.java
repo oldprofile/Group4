@@ -11,7 +11,7 @@ import java.util.List;
 public interface UserService {
    User getUserByID(long id);
    User findUserByLoginAndPassword(String name, long password);
-   List<User> findUserByLogin(RoleType type);
+   List<User> findUserByRole(RoleType type) throws NoSuchFieldException;
 
    void saveUser(User user);
 }
