@@ -1,6 +1,6 @@
 package com.exadel.training.controller;
 
-import com.exadel.training.common.Authentication;
+import com.exadel.training.controller.model.Authentication;
 import com.exadel.training.model.User;
 import com.exadel.training.service.RoleService;
 import com.exadel.training.service.UserService;
