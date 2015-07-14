@@ -15,5 +15,6 @@ public interface UserService {
    List<User> findUserByRole(RoleType type) throws NoSuchFieldException;
    List<Training> selectAllTraining(String login);
 
+   void LeaveTraining(String login);
    void saveUser(User user);
 }

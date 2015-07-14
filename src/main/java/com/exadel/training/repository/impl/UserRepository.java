@@ -22,4 +22,6 @@ public interface UserRepository extends JpaRepository<User,Long>{
    @Query("select u.trainings from User u where  u.login = ?1")
    List<Training> selectAllTraining(String login);
 
+    @Query("select u from User as u  inner join u.trainings as t where  u.login = ?1 and t.name = ?2")
+    void LeaveTraining(String trainingName, String login);
 }
