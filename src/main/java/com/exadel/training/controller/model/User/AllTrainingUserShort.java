@@ -60,7 +60,7 @@ public class AllTrainingUserShort {
 
     public static AllTrainingUserShort parseAllTrainingUserShort(Training training) {
         AllTrainingUserShort trainingUserShort = new AllTrainingUserShort();
-        trainingUserShort.setDataTraining(training.getDate());
+        trainingUserShort.setDataTraining(training.getDateTime());
         trainingUserShort.setTrainningCoach(training.getCoach().getName());
         trainingUserShort.setTrainingImage(training.getPictureLink());
         trainingUserShort.setTrainingPlace(training.getPlace());
