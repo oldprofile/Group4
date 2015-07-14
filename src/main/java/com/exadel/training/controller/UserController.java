@@ -24,7 +24,7 @@ public class UserController {
 
     @RequestMapping(value = "/find_by_role", method = RequestMethod.GET)
     public @ResponseBody List<User> get() throws NoSuchFieldException {
-        return userService.findUserByRole(RoleType.Employee);
+        return userService.findUserByRole(RoleType.Admin);
     }
 
     @RequestMapping(value = "/all_trainings", method = RequestMethod.GET)

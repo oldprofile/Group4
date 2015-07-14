@@ -1,6 +1,6 @@
 package com.exadel.training.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -22,7 +22,6 @@ public class User {
     private String email;
 
     @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-    @JsonManagedReference
     private Set<Role> roles;
 
     @NotNull
@@ -35,14 +34,17 @@ public class User {
     private long password;
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private List<UserFeedback> userFeedbacks;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JsonManagedReference
     private List<Training> trainings;
 
     @OneToMany(mappedBy = "user")
     private  List<Omission> omissions;
+
+    @OneToMany(mappedBy = "coach")
+    private  List<Training> ownTrainings;
 
     public User() {
     }
@@ -123,6 +125,23 @@ public class User {
     public void setUserFeedbacks(List<UserFeedback> userFeedbacks) {
         this.userFeedbacks = userFeedbacks;
     }
+
+    public List<Omission> getOmissions() {
+        return omissions;
+    }
+
+    public void setOmissions(List<Omission> omissions) {
+        this.omissions = omissions;
+    }
+
+    public List<Training> getOwnTrainings() {
+        return ownTrainings;
+    }
+
+    public void setOwnTrainings(List<Training> ownTrainings) {
+        this.ownTrainings = ownTrainings;
+    }
+
 
     @Override
     public boolean equals(Object o) {
