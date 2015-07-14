@@ -108,9 +108,13 @@ pom.xml.next
 release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
+<<<<<<< HEAD
+src/main/resources/application.properties
+=======
 
 ### FRONTEND ###
 node_modules/
 bower_components/
 tmp
 .DS_Store
+>>>>>>> 844490a4fceaccb4538d1293665444de29aeea47

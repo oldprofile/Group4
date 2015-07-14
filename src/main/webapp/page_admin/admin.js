@@ -9,6 +9,3 @@ angular.module('myApp.admin', ['ngRoute'])
   });
 }])
 
-.controller('AdminController', [function() {
-
-}]);
