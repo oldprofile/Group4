@@ -5,9 +5,15 @@
   .controller('LoginController', function ($scope, $http, authService)      {
     $scope.submit = function() {
         
-//      $http.post('auth/login').success(function() {
-//        authService.loginConfirmed();
-//      });
+        
+        var loginData = {
+            login: $scope.username,
+            password: $scope.password,
+        }
+        
+        $http.post('/authentication/log_password',loginData).success(function(data, status) {
+            authService.loginConfirmed(data);
+        });
         
         //Test Submit
         alert("login: " + $scope.username + " password: " + $scope.password);

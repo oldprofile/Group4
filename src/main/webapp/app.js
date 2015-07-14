@@ -32,8 +32,8 @@ app.directive('authClass', function() {
       restrict: 'C',
       link: function(scope, elem, attrs) {
           //hide content before auth
-          
-        elem.find('#content-outer').hide();
+        scope.isLogged = false;  
+        scope.isAngularLoaded = true;
         elem.removeClass('waiting-for-angular');
 //        var login = elem.find('#login-holder');
 //        var main = elem.find('#content');
@@ -43,17 +43,23 @@ app.directive('authClass', function() {
           
           
         scope.$on('event:auth-loginRequired', function() {
-            showLoginForm(elem);
+            //deny from server
+            //showLoginForm(elem);
+            scope.isLogged = false;
         });
           
           
-        scope.$on('event:auth-loginConfirmed', function() {
-          hideLoginForm(elem);
+        scope.$on('event:auth-loginConfirmed', function(event,data) {
+          //confirm form server    
+          alert(JSON.stringify(data)); 
+            scope.isLogged = true;
+          //hideLoginForm(elem);
         });
           
           
         scope.$on('hideLoginEvent',function(event, data){
-            hideLoginForm(elem);
+            //hideLoginForm(elem);
+            scope.isLogged = true;
         });
           
       }
@@ -65,23 +71,23 @@ app.directive('authClass', function() {
 // ###### shared functions
 
     function showLoginForm(elem){
-        if (elem == null){
-            $('login-card').show();
-            $('#content-outer').hide();
-        } else {
-            elem.find('login-card').show();
-            elem.find('#content-outer').hide();
-        }
+//        if (elem == null){
+//            $('login-card').show();
+//            $('#content-outer').hide();
+//        } else {
+//            elem.find('login-card').show();
+//            elem.find('#content-outer').hide();
+//        }
     }
 
     function hideLoginForm(elem){
-        if (elem == null){
-            $('login-card').hide();
-            $('#content-outer').show();
-        } else {
-            elem.find('login-card').hide();
-            elem.find('#content-outer').show();
-        }
+//        if (elem == null){
+//            $('login-card').hide();
+//            $('#content-outer').show();
+//        } else {
+//            elem.find('login-card').hide();
+//            elem.find('#content-outer').show();
+//        }
     }
 
 
