@@ -1,7 +1,7 @@
 package com.exadel.training.controller;
 
 import com.exadel.training.controller.model.Authentication;
-import com.exadel.training.model.Category;
+import com.exadel.training.controller.model.Training.CategoryShort;
 import com.exadel.training.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,14 +23,14 @@ public class CategoryController {
 
     @RequestMapping(value = "/allCategories", method = RequestMethod.GET)
     @ResponseBody
-    List<Category> findByCategoryName() {
-        List<Category> cts = categoryService.getAllCategories();
-        return cts;
+    List<CategoryShort> findByCategory() {
+        List<CategoryShort> categories = CategoryShort.parseListCategoryShort(categoryService.getAllCategories());
+        return categories;
     }
 
     @RequestMapping(value = "/log_password", method = RequestMethod.POST, consumes = "application/json")
-    public @ResponseBody List<Category> postCategories(@RequestBody Authentication project)  {
-        List<Category> categories = categoryService.getAllCategories();
+    public @ResponseBody List<CategoryShort> postCategories(@RequestBody Authentication project)  {
+        List<CategoryShort> categories = CategoryShort.parseListCategoryShort(categoryService.getAllCategories());
         // Role role = roleService.getRoleByID(1);
         return categories;
     }

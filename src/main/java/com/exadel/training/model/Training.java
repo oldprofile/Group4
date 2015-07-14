@@ -18,11 +18,10 @@ public class Training {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(unique = true)
     @NotNull
     private String name;
 
-    private Date date;
+    private Date dateTime;
 
     private String pictureLink;
 
@@ -36,6 +35,8 @@ public class Training {
 
     private boolean isInternal;
 
+    private long parent;
+
     @ManyToOne(cascade = CascadeType.ALL)
     private User coach;
 
@@ -45,16 +46,14 @@ public class Training {
     @ManyToOne(cascade = CascadeType.ALL)
     private Category category;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    private State state;
+    //@ManyToOne(cascade = CascadeType.ALL)
+    private int state;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<User> spareUsers;
 
     @OneToMany(mappedBy = "training")
     private List<Omission> omissions;
-
-    private long parent;
 
     public Training() {
     }
@@ -79,12 +78,12 @@ public class Training {
         this.name = name;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getDateTime() {
+        return dateTime;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setDateTime(Date dateTime) {
+        this.dateTime = dateTime;
     }
 
     public String getDescription() {
@@ -151,11 +150,11 @@ public class Training {
         this.category = category;
     }
 
-    public State getState() {
+    public int getState() {
         return state;
     }
 
-    public void setState(State state) {
+    public void setState(int state) {
         this.state = state;
     }
 
@@ -202,8 +201,9 @@ public class Training {
         if (amount != training.amount) return false;
         if (isInternal != training.isInternal) return false;
         if (parent != training.parent) return false;
+        if (state != training.state) return false;
         if (name != null ? !name.equals(training.name) : training.name != null) return false;
-        if (date != null ? !date.equals(training.date) : training.date != null) return false;
+        if (dateTime != null ? !dateTime.equals(training.dateTime) : training.dateTime != null) return false;
         if (pictureLink != null ? !pictureLink.equals(training.pictureLink) : training.pictureLink != null)
             return false;
         if (description != null ? !description.equals(training.description) : training.description != null)
@@ -213,7 +213,6 @@ public class Training {
         if (coach != null ? !coach.equals(training.coach) : training.coach != null) return false;
         if (listeners != null ? !listeners.equals(training.listeners) : training.listeners != null) return false;
         if (category != null ? !category.equals(training.category) : training.category != null) return false;
-        if (state != null ? !state.equals(training.state) : training.state != null) return false;
         if (spareUsers != null ? !spareUsers.equals(training.spareUsers) : training.spareUsers != null) return false;
         return !(omissions != null ? !omissions.equals(training.omissions) : training.omissions != null);
 
@@ -223,20 +222,20 @@ public class Training {
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (date != null ? date.hashCode() : 0);
+        result = 31 * result + (dateTime != null ? dateTime.hashCode() : 0);
         result = 31 * result + (pictureLink != null ? pictureLink.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (place != null ? place.hashCode() : 0);
         result = 31 * result + amount;
         result = 31 * result + (language != null ? language.hashCode() : 0);
         result = 31 * result + (isInternal ? 1 : 0);
+        result = 31 * result + (int) (parent ^ (parent >>> 32));
         result = 31 * result + (coach != null ? coach.hashCode() : 0);
         result = 31 * result + (listeners != null ? listeners.hashCode() : 0);
         result = 31 * result + (category != null ? category.hashCode() : 0);
-        result = 31 * result + (state != null ? state.hashCode() : 0);
+        result = 31 * result + state;
         result = 31 * result + (spareUsers != null ? spareUsers.hashCode() : 0);
         result = 31 * result + (omissions != null ? omissions.hashCode() : 0);
-        result = 31 * result + (int) (parent ^ (parent >>> 32));
         return result;
     }
 }

@@ -14,7 +14,6 @@ public interface TrainingService {
     Training getTrainingByName(String name);
     List<Training> getAllTrainings();
     List<Training> getTrainingsByCategoryName(String name);
-    List<Training> getTrainingsByStateName(String name);
     List<Training> getValidTrainings();
     Training editTraining(Training training);
 

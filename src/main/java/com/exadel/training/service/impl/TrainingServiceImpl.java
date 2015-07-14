@@ -44,11 +44,6 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
-    public List<Training> getTrainingsByStateName(String name) {
-        return trainingRepository.findByStateName(name);
-    }
-
-    @Override
     public List<Training> getValidTrainings() {
         return trainingRepository.findValidTrainings();
     }
