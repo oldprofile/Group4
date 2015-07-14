@@ -1,0 +1,46 @@
+[
+  {
+    "courseName": "Learn Angular in 6 weeks",
+    "courseImage": "https://angularjs.org/img/AngularJS-large.png",
+    "courseRepeat": false,
+    "courseLesson": 1,
+    "courseCoach": "Anton Dosov",
+    "courseIsCoach": false,
+    "courseDatetime": "DateTime",		
+    "coursePlace": "unit273"
+  },
+]
+
+   {
+    "courseName": "Learn Java in 6 weeks",
+    "courseImage": "https://angularjs.org/img/AngularJS-large.png",
+    "courseRepeat": false,
+    "courseLesson": 1,
+    "courseCoach": "Anton Dosov",
+    "courseIsCoach": false,
+    "courseDatetime": "DateTime",		
+    "coursePlace": "unit273"
+  },
+
+  {
+    "courseName": "Learn Angular in 6 weeks 1",
+    "courseImage": "https://angularjs.org/img/AngularJS-large.png",
+    "courseRepeat": false,
+    "courseLesson": 1,
+    "courseCoach": "Anton Dosov",
+    "courseIsCoach": false,
+    "courseDatetime": "DateTime",		
+    "coursePlace": "unit273"
+  },
+
+  {
+    "courseName": "Learn Angular in 6 weeks 1",
+    "courseImage": "https://angularjs.org/img/AngularJS-large.png",
+    "courseRepeat": false,
+    "courseLesson": 1,
+    "courseCoach": "Anton Dosov",
+    "courseIsCoach": false,
+    "courseDatetime": "DateTime",		
+    "coursePlace": "unit273"
+  }
+]
