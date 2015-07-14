@@ -1,6 +1,7 @@
 package com.exadel.training.controller;
 
-import com.exadel.training.controller.model.UserFeedbackModel;
+import com.exadel.training.controller.model.Feedback.TrainingFeedbackModel;
+import com.exadel.training.controller.model.Feedback.UserFeedbackModel;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.TrainingFeedback;
 import com.exadel.training.model.User;
@@ -42,18 +43,21 @@ public class FeedbackController {
         List<UserFeedbackModel> userFeedbackModels = new ArrayList<UserFeedbackModel>();
         for(UserFeedback u : userFeedbackList)
         {
-            UserFeedbackModel userFeedbackModel = new UserFeedbackModel(u.getAttendance(), u.getAttitude(), u.getCommSkills(), u.getQuestions(),
-            u.getMotivation(), u.getFocusOnResult(), u.getOther(), u.getDate(), u.getFeedbacker().getName(), u.getUser().getName());
-            userFeedbackModels.add(userFeedbackModel);
+            userFeedbackModels.add(UserFeedbackModel.parseUserFeedback(u));
         }
         return userFeedbackModels;
     }
 
     @RequestMapping(value = "/training_feedback", method = RequestMethod.GET)
     public @ResponseBody
-    List<TrainingFeedback> getTrainingFeedbacks()  {
+    List<TrainingFeedbackModel> getTrainingFeedbacks()  {
         Training training = new Training();
-        List<TrainingFeedback> trainingFeedbackList = trainingFeedbackService.getTrainingFeedbacks(training);
-        return trainingFeedbackList;
+        List<TrainingFeedback> trainingFeedbacks = trainingFeedbackService.getTrainingFeedbacks(training);
+        List<TrainingFeedbackModel> trainingFeedbackModels = new ArrayList<TrainingFeedbackModel>();
+        for(TrainingFeedback t : trainingFeedbacks)
+        {
+            trainingFeedbackModels.add(TrainingFeedbackModel.parseTrainingFeedback(t));
+        }
+        return trainingFeedbackModels;
     }
 }

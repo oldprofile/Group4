@@ -1,4 +1,6 @@
-package com.exadel.training.controller.model;
+package com.exadel.training.controller.model.Feedback;
+
+import com.exadel.training.model.TrainingFeedback;
 
 import java.util.Date;
 
@@ -124,5 +126,11 @@ public class TrainingFeedbackModel {
                 ", date=" + date +
                 ", trainingName='" + trainingName + '\'' +
                 '}';
+    }
+
+    public static TrainingFeedbackModel parseTrainingFeedback(TrainingFeedback trainingFeedback) {
+        TrainingFeedbackModel trainingFeedbackModel = new TrainingFeedbackModel(trainingFeedback.getClear(), trainingFeedback.getInteresting(), trainingFeedback.getNewMaterial(), trainingFeedback.getEffective(),
+                trainingFeedback.getRecommendation(), trainingFeedback.getOther(), trainingFeedback.getFeedbacker().getName(), trainingFeedback.getDate(), trainingFeedback.getTraining().getName());
+        return trainingFeedbackModel;
     }
 }
