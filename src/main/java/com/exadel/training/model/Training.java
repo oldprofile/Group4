@@ -37,7 +37,7 @@ public class Training {
     private boolean isInternal;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonBackReference
     private User coach;
 
     @ManyToMany(mappedBy = "trainings")
