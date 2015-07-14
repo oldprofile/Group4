@@ -9,6 +9,3 @@ angular.module('myApp.browse', ['ngRoute'])
   });
 }])
 
-.controller('BrowseController', [function() {
-
-}]);

@@ -7,8 +7,5 @@ angular.module('myApp.mycourses', ['ngRoute'])
     templateUrl: 'page_mycourses/mycourses.html',
     controller: 'MyCoursesController'
   });
-}])
-
-.controller('MyCoursesController', [function() {
-
 }]);
+

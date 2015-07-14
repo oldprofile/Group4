@@ -9,6 +9,3 @@ angular.module('myApp.profile', ['ngRoute'])
   });
 }])
 
-.controller('ProfileController', [function() {
-
-}]);
