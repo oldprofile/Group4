@@ -1,5 +1,7 @@
 package com.exadel.training.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 
 /**
@@ -14,9 +16,11 @@ public class Omission {
     private long id;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Training training;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JsonManagedReference
     private User user;
 
     private boolean isOmission;

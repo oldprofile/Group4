@@ -45,9 +45,11 @@ public class Training {
     private List<User> users;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Category category;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JsonManagedReference
     private State state;
 
     @OneToMany(cascade = CascadeType.ALL)
