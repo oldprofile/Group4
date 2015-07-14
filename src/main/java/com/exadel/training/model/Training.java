@@ -37,26 +37,21 @@ public class Training {
     private boolean isInternal;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JsonBackReference
     private User coach;
 
     @ManyToMany(mappedBy = "trainings")
-    @JsonBackReference
-    private List<User> users;
+    private List<User> listeners;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JsonManagedReference
     private Category category;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JsonManagedReference
     private State state;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<User> spareUsers;
 
     @OneToMany(mappedBy = "training")
-    @JsonBackReference
     private List<Omission> omissions;
 
     private long parent;
@@ -140,12 +135,12 @@ public class Training {
         this.coach = coach;
     }
 
-    public List<User> getUsers() {
-        return users;
+    public List<User> getListeners() {
+        return listeners;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void setListeners(List<User> listeners) {
+        this.listeners = listeners;
     }
 
     public Category getCategory() {
@@ -216,7 +211,7 @@ public class Training {
         if (place != null ? !place.equals(training.place) : training.place != null) return false;
         if (language != null ? !language.equals(training.language) : training.language != null) return false;
         if (coach != null ? !coach.equals(training.coach) : training.coach != null) return false;
-        if (users != null ? !users.equals(training.users) : training.users != null) return false;
+        if (listeners != null ? !listeners.equals(training.listeners) : training.listeners != null) return false;
         if (category != null ? !category.equals(training.category) : training.category != null) return false;
         if (state != null ? !state.equals(training.state) : training.state != null) return false;
         if (spareUsers != null ? !spareUsers.equals(training.spareUsers) : training.spareUsers != null) return false;
@@ -236,7 +231,7 @@ public class Training {
         result = 31 * result + (language != null ? language.hashCode() : 0);
         result = 31 * result + (isInternal ? 1 : 0);
         result = 31 * result + (coach != null ? coach.hashCode() : 0);
-        result = 31 * result + (users != null ? users.hashCode() : 0);
+        result = 31 * result + (listeners != null ? listeners.hashCode() : 0);
         result = 31 * result + (category != null ? category.hashCode() : 0);
         result = 31 * result + (state != null ? state.hashCode() : 0);
         result = 31 * result + (spareUsers != null ? spareUsers.hashCode() : 0);
