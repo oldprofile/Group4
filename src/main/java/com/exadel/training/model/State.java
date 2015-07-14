@@ -18,7 +18,6 @@ public class State {
     private String name;
 
     @OneToMany(mappedBy = "state")
-    @JsonBackReference
     private List<Training> trainings;
 
     public State() {
