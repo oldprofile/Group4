@@ -21,15 +21,14 @@ public class AuthenticationController {
     private RoleService roleService;
 
     @RequestMapping(value = "/log_password", method = RequestMethod.POST, consumes = "application/json")
-    public @ResponseBody User save(@RequestBody Authentication project)  {
-        User user = userService.findUserByLoginAndPassword(project.getLogin(), Long.parseLong(project.getPassword()));
-       // Role role = roleService.getRoleByID(1);
-        return user;
+    public @ResponseBody Authentication save(@RequestBody Authentication project)  {
+        User user = userService.findUserByLoginAndPassword(project.getLogin(), project.getPassword());
+        return Authentication.parseAuthentication(user);
     }
     @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public @ResponseBody User get() {
-        User user = userService.findUserByLoginAndPassword("1",1L);
+    public @ResponseBody Authentication get() {
         // Role role = roleService.getRoleByID(1);
-        return user;
+        User user = userService.findUserByLoginAndPassword("1", 1l);
+        return Authentication.parseAuthentication(user);
     }
 }

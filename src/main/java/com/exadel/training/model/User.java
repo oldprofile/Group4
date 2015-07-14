@@ -46,6 +46,9 @@ public class User {
     @OneToMany(mappedBy = "coach")
     private  List<Training> ownTrainings;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private UserFeedback userFeedback;
+
     public User() {
     }
 
@@ -142,6 +145,13 @@ public class User {
         this.ownTrainings = ownTrainings;
     }
 
+    public UserFeedback getUserFeedback() {
+        return userFeedback;
+    }
+
+    public void setUserFeedback(UserFeedback userFeedback) {
+        this.userFeedback = userFeedback;
+    }
 
     @Override
     public boolean equals(Object o) {

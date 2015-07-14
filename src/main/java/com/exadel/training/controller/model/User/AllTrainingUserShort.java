@@ -1,5 +1,7 @@
 package com.exadel.training.controller.model.User;
 
+import com.exadel.training.model.Training;
+
 import java.util.Date;
 
 /**
@@ -10,9 +12,7 @@ public class AllTrainingUserShort {
     private String trainingName;
     private String trainningCoach;
     private String trainingImage;
-    private boolean isTrainingCoach;
     private Date dataTraining;
-    private boolean trainingIsTake;
     private String trainingPlace;
 
     public AllTrainingUserShort() {
@@ -42,14 +42,6 @@ public class AllTrainingUserShort {
         this.trainningCoach = trainningCoach;
     }
 
-    public boolean isTrainingCoach() {
-        return isTrainingCoach;
-    }
-
-    public void setTrainingCoach(boolean isTrainingCoach) {
-        this.isTrainingCoach = isTrainingCoach;
-    }
-
     public Date getDataTraining() {
         return dataTraining;
     }
@@ -58,19 +50,22 @@ public class AllTrainingUserShort {
         this.dataTraining = dataTraining;
     }
 
-    public boolean isTrainingIsTake() {
-        return trainingIsTake;
-    }
-
-    public void setTrainingIsTake(boolean trainingIsTake) {
-        this.trainingIsTake = trainingIsTake;
-    }
-
     public String getTrainingPlace() {
         return trainingPlace;
     }
 
     public void setTrainingPlace(String trainingPlace) {
         this.trainingPlace = trainingPlace;
+    }
+
+    public static AllTrainingUserShort parseAllTrainingUserShort(Training training) {
+        AllTrainingUserShort trainingUserShort = new AllTrainingUserShort();
+        trainingUserShort.setDataTraining(training.getDate());
+        trainingUserShort.setTrainningCoach(training.getCoach().getName());
+        trainingUserShort.setTrainingImage(training.getPictureLink());
+        trainingUserShort.setTrainingPlace(training.getPlace());
+        trainingUserShort.setTrainingName(training.getName());
+
+        return trainingUserShort;
     }
 }
