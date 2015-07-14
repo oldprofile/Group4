@@ -58,12 +58,4 @@ public class TrainingController {
         List<Training> trs =  trainingService.getValidTrainings();
         return trs;
     }
-
-    @Autowired
-    UserService userService;
-
-    /*@RequestMapping(value = "/role", method = RequestMethod.GET)
-    public @ResponseBody List<User> get() throws NoSuchFieldException {
-        return userService.findUserByRole(RoleType.Admin);
-    }*/
 }
