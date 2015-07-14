@@ -9,6 +9,7 @@ var app = angular.module('myApp', [
     'myApp.view2',
     'myApp.mycourses',
     'myApp.browse',
+    'myApp.createcourse',
     'myApp.profile',
     'myApp.admin',
     'myApp.version',
@@ -89,7 +90,3 @@ app.directive('authClass', function() {
 //            elem.find('#content-outer').show();
 //        }
     }
-
-
-
-
