@@ -1,5 +1,7 @@
 package com.exadel.training.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -16,6 +18,7 @@ public class State {
     private String name;
 
     @OneToMany(mappedBy = "state")
+    @JsonBackReference
     private List<Training> trainings;
 
     public State() {
