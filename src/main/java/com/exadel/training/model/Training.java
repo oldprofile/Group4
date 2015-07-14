@@ -1,5 +1,7 @@
 package com.exadel.training.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -37,6 +39,7 @@ public class Training {
     private User coach;
 
     @ManyToMany(mappedBy = "trainings")
+    @JsonBackReference
     private List<User> users;
 
     @ManyToOne(cascade = CascadeType.ALL)
