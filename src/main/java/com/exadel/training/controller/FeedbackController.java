@@ -7,6 +7,7 @@ import com.exadel.training.model.TrainingFeedback;
 import com.exadel.training.model.User;
 import com.exadel.training.model.UserFeedback;
 import com.exadel.training.service.TrainingFeedbackService;
+import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserFeedbackService;
 import com.exadel.training.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ public class FeedbackController {
     UserFeedbackService userFeedbackService;
 
     @Autowired
+    TrainingService trainingService;
+
+    @Autowired
     TrainingFeedbackService trainingFeedbackService;
 
     @Autowired
@@ -51,8 +55,7 @@ public class FeedbackController {
     @RequestMapping(value = "/training_feedback", method = RequestMethod.GET)
     public @ResponseBody
     List<TrainingFeedbackModel> getTrainingFeedbacks()  {
-        Training training = new Training();
-        List<TrainingFeedback> trainingFeedbacks = trainingFeedbackService.getTrainingFeedbacks(training);
+        List<TrainingFeedback> trainingFeedbacks = trainingFeedbackService.getTrainingFeedbacks(trainingService.getTrainingByID(1));
         List<TrainingFeedbackModel> trainingFeedbackModels = new ArrayList<TrainingFeedbackModel>();
         for(TrainingFeedback t : trainingFeedbacks)
         {

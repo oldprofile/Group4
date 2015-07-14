@@ -28,18 +28,13 @@ public class TrainingFeedback{
 
     private String other;
 
-    @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinTable(name = "tfeedbacks_users")
+    @ManyToOne(cascade = CascadeType.ALL)
     private User feedbacker;
 
     @NotNull
     private Date date;
 
-    @NotNull
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinTable(name = "tfeedbacks_training",
-            joinColumns = @JoinColumn(name = "training_id"))
     private Training training;
 
     public TrainingFeedback() {
