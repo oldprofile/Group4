@@ -1,6 +1,7 @@
 package com.exadel.training.service.impl;
 
 import com.exadel.training.common.RoleType;
+import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
 import com.exadel.training.repository.impl.UserRepository;
 import com.exadel.training.service.UserService;
@@ -33,6 +34,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findUserByRole(RoleType type) throws NoSuchFieldException {
        return userRepository.findUsersByRole(RoleType.parseRoleTypeToInt(type));
+    }
+
+    @Override
+    public List<Training> selectAllTraining(String login) {
+        return userRepository.selectAllTraining(login);
     }
 
     @Override

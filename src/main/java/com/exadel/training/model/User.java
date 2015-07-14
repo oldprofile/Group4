@@ -38,8 +38,11 @@ public class User {
     private List<UserFeedback> userFeedbacks;
 
     @ManyToMany(cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Training> trainings;
 
+    @OneToMany(mappedBy = "user")
+    private  List<Omission> omissions;
 
     public User() {
     }
