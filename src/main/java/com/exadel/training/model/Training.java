@@ -21,6 +21,8 @@ public class Training {
 
     private Date date;
 
+    private String pictureLink;
+
     private String description;
 
     private String place;
@@ -162,6 +164,30 @@ public class Training {
         this.parent = parent;
     }
 
+    public String getPictureLink() {
+        return pictureLink;
+    }
+
+    public void setPictureLink(String pictureLink) {
+        this.pictureLink = pictureLink;
+    }
+
+    public List<User> getSpareUsers() {
+        return spareUsers;
+    }
+
+    public void setSpareUsers(List<User> spareUsers) {
+        this.spareUsers = spareUsers;
+    }
+
+    public List<Omission> getOmissions() {
+        return omissions;
+    }
+
+    public void setOmissions(List<Omission> omissions) {
+        this.omissions = omissions;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -175,6 +201,8 @@ public class Training {
         if (parent != training.parent) return false;
         if (name != null ? !name.equals(training.name) : training.name != null) return false;
         if (date != null ? !date.equals(training.date) : training.date != null) return false;
+        if (pictureLink != null ? !pictureLink.equals(training.pictureLink) : training.pictureLink != null)
+            return false;
         if (description != null ? !description.equals(training.description) : training.description != null)
             return false;
         if (place != null ? !place.equals(training.place) : training.place != null) return false;
@@ -182,7 +210,9 @@ public class Training {
         if (coach != null ? !coach.equals(training.coach) : training.coach != null) return false;
         if (users != null ? !users.equals(training.users) : training.users != null) return false;
         if (category != null ? !category.equals(training.category) : training.category != null) return false;
-        return !(state != null ? !state.equals(training.state) : training.state != null);
+        if (state != null ? !state.equals(training.state) : training.state != null) return false;
+        if (spareUsers != null ? !spareUsers.equals(training.spareUsers) : training.spareUsers != null) return false;
+        return !(omissions != null ? !omissions.equals(training.omissions) : training.omissions != null);
 
     }
 
@@ -191,6 +221,7 @@ public class Training {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (date != null ? date.hashCode() : 0);
+        result = 31 * result + (pictureLink != null ? pictureLink.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (place != null ? place.hashCode() : 0);
         result = 31 * result + amount;
@@ -200,6 +231,8 @@ public class Training {
         result = 31 * result + (users != null ? users.hashCode() : 0);
         result = 31 * result + (category != null ? category.hashCode() : 0);
         result = 31 * result + (state != null ? state.hashCode() : 0);
+        result = 31 * result + (spareUsers != null ? spareUsers.hashCode() : 0);
+        result = 31 * result + (omissions != null ? omissions.hashCode() : 0);
         result = 31 * result + (int) (parent ^ (parent >>> 32));
         return result;
     }
