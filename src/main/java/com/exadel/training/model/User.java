@@ -37,6 +37,13 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<UserFeedback> userFeedbacks;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Training> trainings;
+
+    @OneToMany(mappedBy = "user")
+    private  List<Omission> omissions;
+
     public User() {
     }
 
@@ -99,6 +106,22 @@ public class User {
 
     public void addRole(Role role) {
         this.roles.add(role);
+    }
+
+    public List<Training> getTrainings() {
+        return trainings;
+    }
+
+    public void setTrainings(List<Training> trainings) {
+        this.trainings = trainings;
+    }
+
+    public List<UserFeedback> getUserFeedbacks() {
+        return userFeedbacks;
+    }
+
+    public void setUserFeedbacks(List<UserFeedback> userFeedbacks) {
+        this.userFeedbacks = userFeedbacks;
     }
 
     @Override

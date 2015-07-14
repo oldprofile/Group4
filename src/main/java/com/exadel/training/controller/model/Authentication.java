@@ -1,4 +1,4 @@
-package com.exadel.training.common;
+package com.exadel.training.controller.model;
 
 import java.io.Serializable;
 
