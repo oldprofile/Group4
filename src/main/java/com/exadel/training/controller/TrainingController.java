@@ -1,11 +1,9 @@
 package com.exadel.training.controller;
 
-import com.exadel.training.common.RoleType;
-import com.exadel.training.controller.model.Authentication;
+import com.exadel.training.controller.model.Training.TrainingFull;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
 import com.exadel.training.service.TrainingService;
-import com.exadel.training.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,17 +43,17 @@ public class TrainingController {
         return trs;
     }
 
-    @RequestMapping(value = "/state", method = RequestMethod.GET)
-    @ResponseBody
-    List<Training> findByStateName() {
-        List<Training> trs = trainingService.getTrainingsByStateName("will be");
-        return trs;
-    }
-
     @RequestMapping(value = "/validTrainings", method = RequestMethod.GET)
     @ResponseBody
     List<Training> findValid() {
         List<Training> trs =  trainingService.getValidTrainings();
         return trs;
     }
+
+   /* @RequestMapping(value = "/create_training", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody User save(@RequestBody TrainingFull trainingFull)  {
+        User user = userService.findUserByLoginAndPassword(project.getLogin(), Long.parseLong(project.getPassword()));
+        // Role role = roleService.getRoleByID(1);
+        return user;
+    }*/
 }
