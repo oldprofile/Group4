@@ -30,8 +30,7 @@ public class TrainingFeedback{
 
     @NotNull
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinTable(name = "tfeedbacks_users",
-            joinColumns = @JoinColumn(name = "feedbacker_id"))
+    @JoinTable(name = "tfeedbacks_users")
     private User feedbacker;
 
     @NotNull

@@ -1,4 +1,6 @@
-package com.exadel.training.controller.model;
+package com.exadel.training.controller.model.Feedback;
+
+import com.exadel.training.model.UserFeedback;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -137,5 +139,12 @@ public class UserFeedbackModel implements Serializable {
                 ", feedbackerName='" + feedbackerName + '\'' +
                 ", userName='" + userName + '\'' +
                 '}';
+    }
+
+    public static UserFeedbackModel parseUserFeedback(UserFeedback userFeedback) {
+        UserFeedbackModel userFeedbackModel = new UserFeedbackModel(userFeedback.getAttendance(), userFeedback.getAttitude(),
+                userFeedback.getCommSkills(), userFeedback.getQuestions(), userFeedback.getMotivation(), userFeedback.getFocusOnResult(),
+                userFeedback.getOther(), userFeedback.getDate(),  userFeedback.getFeedbacker().getName(), userFeedback.getUser().getName());
+        return userFeedbackModel;
     }
 }
