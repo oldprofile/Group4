@@ -52,6 +52,7 @@ public class Training {
     private List<User> spareUsers;
 
     @OneToMany(mappedBy = "training")
+    @JsonBackReference
     private List<Omission> omissions;
 
     private long parent;
