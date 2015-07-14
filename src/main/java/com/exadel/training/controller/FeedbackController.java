@@ -1,5 +1,6 @@
 package com.exadel.training.controller;
 
+import com.exadel.training.controller.model.UserFeedbackModel;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.TrainingFeedback;
 import com.exadel.training.model.User;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,10 +36,17 @@ public class FeedbackController {
 
     @RequestMapping(value = "/user_feedback", method = RequestMethod.GET)
     public @ResponseBody
-    List<UserFeedback> getUserFeedbacks()  {
+    List<UserFeedbackModel> getUserFeedbacks()  {
         User user = userService.getUserByID(1L);
         List<UserFeedback> userFeedbackList = userFeedbackService.getUserFeedbacks(user);
-        return userFeedbackList;
+        List<UserFeedbackModel> userFeedbackModels = new ArrayList<UserFeedbackModel>();
+        for(UserFeedback u : userFeedbackList)
+        {
+            UserFeedbackModel userFeedbackModel = new UserFeedbackModel(u.getAttendance(), u.getAttitude(), u.getCommSkills(), u.getQuestions(),
+            u.getMotivation(), u.getFocusOnResult(), u.getOther(), u.getDate(), u.getFeedbacker().getName(), u.getUser().getName());
+            userFeedbackModels.add(userFeedbackModel);
+        }
+        return userFeedbackModels;
     }
 
     @RequestMapping(value = "/training_feedback", method = RequestMethod.GET)
