@@ -20,19 +20,19 @@
 </head>
 <body ng-app="myApp" ng-controller="MainController" class="auth-class waiting-for-angular">
     <div id="initializing-panel"></div>
-    <div id="content-outer" ng-show="isLogged">
+    <div id="content-outer">
         
-        <header-menu></header-menu>
+        <header-menu ng-show="isLogged"></header-menu>
  
         <div ng-view class="ng-view-content"></div>
         
-        <my-app-footer></my-app-footer>
+        <my-app-footer ng-show="isLogged"></my-app-footer>
     
     
     </div>
     
      
-    <login-card ng-hide="isLogged"></login-card>
+    
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
   -->
@@ -76,7 +76,7 @@
     <script src="page_profile/profileService.js"></script>
     <script src="page_common/login/loginService.js"></script>
     <script src="page_common/general/userHolderService.js"></script>
-    <script src="page_courseinfo/couresinfoService.js"></script>
+    <script src="page_courseinfo/courseinfoService.js"></script>
     
     
     <script src="components/version/version.js"></script>

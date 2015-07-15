@@ -16,7 +16,7 @@ var app = angular.module('myApp', [
     'myApp.menuApp',
     'myApp.footerApp',
     'myApp.login',
-    'myApp.courseinfo'
+    'myApp.courseinfo',
     
 ]).config(['$routeProvider', function($routeProvider) {
   $routeProvider.otherwise({redirectTo: '/mycourses'});
@@ -30,13 +30,17 @@ app.controller('MainController',['$scope',function($scope){
 }]);
 
 
-app.directive('authClass', ['userService',function(userService) {
+app.directive('authClass', ['$location','userService',function($location,userService) {
     return {
       restrict: 'C',
       link: function(scope, elem, attrs) {
           //hide content before auth
         scope.isLogged = false;  
         
+          if(scope.isLogged == false){
+              $location.path('login');
+          }
+          
         elem.removeClass('waiting-for-angular');
 //        var login = elem.find('#login-holder');
 //        var main = elem.find('#content');
@@ -49,6 +53,8 @@ app.directive('authClass', ['userService',function(userService) {
             //deny from server
             //showLoginForm(elem);
             scope.isLogged = false;
+            userService.clearUser();
+            $location.path('login');
         });
           
           
@@ -56,6 +62,8 @@ app.directive('authClass', ['userService',function(userService) {
           //confirm form server    
           alert(JSON.stringify(data)); 
             scope.isLogged = true;
+            userService.setUser(data.login,data.name,data.password,data.role);
+            $location.path('/');
           //hideLoginForm(elem);
         });
           
@@ -63,7 +71,8 @@ app.directive('authClass', ['userService',function(userService) {
         scope.$on('hideLoginEvent',function(event, data){
             //hideLoginForm(elem);
             scope.isLogged = true;
-            userService.setUser(data.login,data.password);
+            userService.setUser(data.login,data.login,data.password,{});
+            $location.path('/');
         });
           
       }

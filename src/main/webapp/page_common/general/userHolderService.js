@@ -26,12 +26,14 @@ angular.module('myApp').factory('userService', ['$http',function ($http) {
   }
 
   var userApi = {
-    setUser: function (login,username, password, role) {
+    setUser: function (login,username, password, role_) {
       currentUser.login = login;    
       currentUser.username = username;
       currentUser.password = password;
+      currentUser.role = role.admin;
         
       $http.defaults.headers.common.Authorization = login;    
+        
     },
     getUser: function () {
       return angular.copy(currentUser);

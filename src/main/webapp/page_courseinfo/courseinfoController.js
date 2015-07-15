@@ -1,13 +1,13 @@
 angular.module('myApp.courseinfo')
-.controller('CourseInfoController', ['$scope','$routeParams','courseInfoService', function($scope,$routeParams, courseInfoService) {
+.controller('CourseInfoController', ['$scope','$routeParams','courseInfoService','userService', function($scope,$routeParams, courseInfoService,userService) {
 
     $scope.courseName = $routeParams.coursename;
     
     var courseInfoData = {
-        login: "Dosant",
+        login: userService.getUser().login,
         trainingName: $routeParams.coursename
     };
-    
+    alert(courseInfoData.login);
     courseInfoService.getCourseInfo(courseInfoData).success(function(data){
         alert("Success");
     }).error(function(err){
