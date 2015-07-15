@@ -32,7 +32,7 @@ public class Training {
 
     private int amount;
 
-    private String language;
+    private int language;
 
     private boolean isInternal;
 
@@ -107,11 +107,11 @@ public class Training {
         this.amount = amount;
     }
 
-    public String getLanguage() {
+    public int getLanguage() {
         return language;
     }
 
-    public void setLanguage(String language) {
+    public void setLanguage(int language) {
         this.language = language;
     }
 

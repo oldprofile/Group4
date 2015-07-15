@@ -14,19 +14,19 @@ public enum StateTraining {
 
     public static StateTraining parseStringToStateTraining(String state) throws NoSuchFieldException {
         switch (state) {
-            case "Finished": {
+            case "1": {
                 return StateTraining.Finished;
             }
-            case "Ahead": {
+            case "2": {
                 return  StateTraining.Ahead;
             }
-            case "InProcess": {
+            case "3": {
                 return  StateTraining.InProcess;
             }
-            case  "Canceled": {
+            case  "4": {
                 return  StateTraining.Canceled;
             }
-            case  "Draft": {
+            case  "5": {
                 return  StateTraining.Draft;
             }
             default: {
@@ -37,19 +37,19 @@ public enum StateTraining {
     public static String parseStateTrainingToString(StateTraining state) throws NoSuchFieldException {
         switch (state) {
             case InProcess: {
-                return "InProcess";
+                return "1";
             }
             case Ahead: {
-                return "Ahead";
+                return "2";
             }
             case Finished: {
-                return "Finished";
+                return "3";
             }
             case Canceled: {
-                return "Canceled";
+                return "4";
             }
             case Draft: {
-                return "Draft";
+                return "5";
             }
             default: {
                 throw new NoSuchFieldException("don't find such type.");

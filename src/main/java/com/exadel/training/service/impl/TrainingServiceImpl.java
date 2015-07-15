@@ -1,10 +1,13 @@
 package com.exadel.training.service.impl;
 
+import com.exadel.training.common.LanguageTraining;
 import com.exadel.training.controller.model.Training.TrainingForCreation;
 import com.exadel.training.model.Category;
 import com.exadel.training.model.Training;
+import com.exadel.training.model.User;
 import com.exadel.training.repository.impl.CategoryRepository;
 import com.exadel.training.repository.impl.TrainingRepository;
+import com.exadel.training.repository.impl.UserRepository;
 import com.exadel.training.service.TrainingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +24,9 @@ public class TrainingServiceImpl implements TrainingService {
     private TrainingRepository trainingRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private CategoryRepository categoryRepository;
 
     @Override
@@ -30,11 +36,15 @@ public class TrainingServiceImpl implements TrainingService {
         mainTraining.setDateTime(dateTimes.get(dateTimes.size() - 1));
         mainTraining.setName(trainingForCreation.getName());
         mainTraining.setDescription(trainingForCreation.getDescription());
-        //User coach = findUserByLogin(trainingForCreation.getUserLogin());
-        //mainTraining.setCoach();
-        mainTraining.setLanguage(trainingForCreation.getLanguage());
+        User coach = userRepository.findUserByLogin(trainingForCreation.getUserLogin());
+        mainTraining.setCoach(coach);
+        try {
+            mainTraining.setLanguage(LanguageTraining.parseStringLanguageTrainingToInt(trainingForCreation.getLanguage()));
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
         mainTraining.setIsInternal(trainingForCreation.isInternal());
-        Category category = categoryRepository.findByName(trainingForCreation.getCategory());
+        Category category = categoryRepository.findById(trainingForCreation.getIdCategory());
         mainTraining.setCategory(category);
         mainTraining.setParent(0);
         trainingRepository.saveAndFlush(mainTraining);
@@ -43,9 +53,12 @@ public class TrainingServiceImpl implements TrainingService {
             newTraining.setDateTime(dateTimes.get(i));
             newTraining.setName(trainingForCreation.getName());
             newTraining.setDescription(trainingForCreation.getDescription());
-            //User coach = findUserByLogin(trainingForCreation.getUserLogin());
-            //newTraining.setCoach();
-            newTraining.setLanguage(trainingForCreation.getLanguage());
+            newTraining.setCoach(coach);
+            try {
+                newTraining.setLanguage(LanguageTraining.parseStringLanguageTrainingToInt(trainingForCreation.getLanguage()));
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+            }
             newTraining.setIsInternal(trainingForCreation.isInternal());
             newTraining.setCategory(category);
             newTraining.setParent(mainTraining.getId());
