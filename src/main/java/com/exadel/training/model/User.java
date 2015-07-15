@@ -35,7 +35,7 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
-    private List<UserFeedback> userFeedbacks;
+    private List<UserFeedback> feedbacksOnUser;
 
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Training> trainings;
@@ -46,8 +46,11 @@ public class User {
     @OneToMany(mappedBy = "coach")
     private  List<Training> ownTrainings;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private UserFeedback userFeedback;
+    @OneToMany(mappedBy = "feedbacker")
+    private List <UserFeedback> userFeedback;
+
+    @OneToMany(mappedBy = "feedbacker")
+    private List <TrainingFeedback> trainingFeedback;
 
     public User() {
     }
@@ -121,12 +124,12 @@ public class User {
         this.trainings = trainings;
     }
 
-    public List<UserFeedback> getUserFeedbacks() {
-        return userFeedbacks;
+    public List<UserFeedback> getFeedbacksOnUser() {
+        return feedbacksOnUser;
     }
 
-    public void setUserFeedbacks(List<UserFeedback> userFeedbacks) {
-        this.userFeedbacks = userFeedbacks;
+    public void setFeedbacksOnUser(List<UserFeedback> feedbacksOnUser) {
+        this.feedbacksOnUser = feedbacksOnUser;
     }
 
     public List<Omission> getOmissions() {
@@ -145,12 +148,20 @@ public class User {
         this.ownTrainings = ownTrainings;
     }
 
-    public UserFeedback getUserFeedback() {
+    public List<UserFeedback> getUserFeedback() {
         return userFeedback;
     }
 
-    public void setUserFeedback(UserFeedback userFeedback) {
+    public void setUserFeedback(List<UserFeedback> userFeedback) {
         this.userFeedback = userFeedback;
+    }
+
+    public List<TrainingFeedback> getTrainingFeedback() {
+        return trainingFeedback;
+    }
+
+    public void setTrainingFeedback(List<TrainingFeedback> trainingFeedback) {
+        this.trainingFeedback = trainingFeedback;
     }
 
     @Override
@@ -166,7 +177,7 @@ public class User {
         if (!login.equals(user.login)) return false;
         if (!name.equals(user.name)) return false;
         if (!roles.equals(user.roles)) return false;
-        if (!userFeedbacks.equals(user.userFeedbacks)) return false;
+        if (!feedbacksOnUser.equals(user.feedbacksOnUser)) return false;
 
         return true;
     }
@@ -179,7 +190,7 @@ public class User {
         result = 31 * result + name.hashCode();
         result = 31 * result + login.hashCode();
         result = 31 * result + (int) (password ^ (password >>> 32));
-        result = 31 * result + userFeedbacks.hashCode();
+        result = 31 * result + feedbacksOnUser.hashCode();
         return result;
     }
 }

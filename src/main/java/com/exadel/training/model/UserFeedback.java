@@ -31,16 +31,10 @@ public class UserFeedback{
 
     private Date date;
 
-    @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinTable(name = "ufeedbacks_feedbacker",
-            joinColumns = @JoinColumn(name = "feedbacker_feedbackerFeedback"))
+    @ManyToOne(cascade = CascadeType.ALL)
     private User feedbacker;
 
-    @NotNull
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinTable(name = "ufeedbacks_users",
-            joinColumns = @JoinColumn(name = "user_userFeedback"))
     private User user;
 
     // for english

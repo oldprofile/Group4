@@ -1,5 +1,6 @@
 package com.exadel.training.model;
 
+import com.exadel.training.controller.model.Training.TrainingForCreation;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 

@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by Клим on 14.07.2015.
  */
-public class TrainingFull {
+public class TrainingInfo {
 
     private String name;
 
@@ -34,10 +34,10 @@ public class TrainingFull {
 
     private List<UserShort> spareUsers;
 
-    public TrainingFull() {
+    public TrainingInfo() {
     }
 
-    public TrainingFull(Training training) {
+    public TrainingInfo(Training training) {
         this.name = training.getName();
         this.amount = training.getAmount();
         this.dateTime = training.getDateTime();
