@@ -38,14 +38,6 @@ public class TrainingController {
         return training;
     }
 
-    @RequestMapping(value = "/create_training", method = RequestMethod.POST, consumes = "application/json")
-    public @ResponseBody User save(@RequestBody TrainingInfo trainingInfo)  {
-        //User user = userService.findUserByLoginAndPassword(project.getLogin(), Long.parseLong(project.getPassword()));
-        // Role role = roleService.getRoleByID(1);
-        //return user;
-        return null;
-    }
-
     @RequestMapping(value = "/training_info", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody
     TrainingInfo postTrainingInfo (@RequestBody() TrainingNameAndUserLogin trainingNameAndUserLogin) {
