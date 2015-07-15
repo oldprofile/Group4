@@ -11,6 +11,7 @@
             password: $scope.password,
         }
         
+        alert(JSON.stringify(loginData));
         loginService.postLoginCred(loginData).success(function(data){
             alert(JSON.stringify(data))
         }).error(function(error){
