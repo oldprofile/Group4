@@ -49,7 +49,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/find_user_by_login", method = RequestMethod.GET)
-    public @ResponseBody String findUserByLogin() {
+    public @ResponseBody String findUserByLogin(/*@RequestBody String login*/) {
         return  userService.findUserByLogin("1").getLogin();
     }
 
