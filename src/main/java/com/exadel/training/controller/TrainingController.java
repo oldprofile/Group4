@@ -43,7 +43,7 @@ public class TrainingController {
     TrainingInfo postTrainingInfo (@RequestBody() TrainingNameAndUserLogin trainingNameAndUserLogin) {
         String trainingName = trainingNameAndUserLogin.getTrainingName();
         String userLogin = trainingNameAndUserLogin.getLogin();
-        TrainingInfo trainingInfo = new TrainingInfo(trainingService.getTrainingByNameAndUserLogin(trainingName, userLogin));
+        TrainingInfo trainingInfo = new TrainingInfo(trainingService.getTrainingByName(trainingName));
         return trainingInfo;
     }
 
