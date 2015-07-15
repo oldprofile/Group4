@@ -1,6 +1,7 @@
 package com.exadel.training.service.impl;
 
 import com.exadel.training.common.LanguageTraining;
+import com.exadel.training.common.StateTraining;
 import com.exadel.training.controller.model.Training.TrainingForCreation;
 import com.exadel.training.model.Category;
 import com.exadel.training.model.Training;
@@ -30,19 +31,16 @@ public class TrainingServiceImpl implements TrainingService {
     private CategoryRepository categoryRepository;
 
     @Override
-    public Training addTraining(TrainingForCreation trainingForCreation) {
+    public Training addTraining(TrainingForCreation trainingForCreation) throws NoSuchFieldException {
         List<Date> dateTimes = trainingForCreation.getDateTimes();
         Training mainTraining = new Training();
         mainTraining.setDateTime(dateTimes.get(dateTimes.size() - 1));
         mainTraining.setName(trainingForCreation.getName());
         mainTraining.setDescription(trainingForCreation.getDescription());
         User coach = userRepository.findUserByLogin(trainingForCreation.getUserLogin());
+        mainTraining.setState(StateTraining.parseToInt("Draft"));
         mainTraining.setCoach(coach);
-        try {
-            mainTraining.setLanguage(LanguageTraining.parseStringLanguageTrainingToInt(trainingForCreation.getLanguage()));
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        }
+        mainTraining.setLanguage(LanguageTraining.parseToInt(trainingForCreation.getLanguage()));
         mainTraining.setIsInternal(trainingForCreation.isInternal());
         Category category = categoryRepository.findById(trainingForCreation.getIdCategory());
         mainTraining.setCategory(category);
@@ -54,13 +52,10 @@ public class TrainingServiceImpl implements TrainingService {
             newTraining.setName(trainingForCreation.getName());
             newTraining.setDescription(trainingForCreation.getDescription());
             newTraining.setCoach(coach);
-            try {
-                newTraining.setLanguage(LanguageTraining.parseStringLanguageTrainingToInt(trainingForCreation.getLanguage()));
-            } catch (NoSuchFieldException e) {
-                e.printStackTrace();
-            }
+            newTraining.setLanguage(LanguageTraining.parseToInt(trainingForCreation.getLanguage()));
             newTraining.setIsInternal(trainingForCreation.isInternal());
             newTraining.setCategory(category);
+            newTraining.setState(StateTraining.parseToInt("Draft"));
             newTraining.setParent(mainTraining.getId());
             trainingRepository.saveAndFlush(newTraining);
         }

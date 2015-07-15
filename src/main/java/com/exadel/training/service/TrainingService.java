@@ -10,7 +10,7 @@ import java.util.List;
  * Created by Клим on 10.07.2015.
  */
 public interface TrainingService {
-    Training addTraining(TrainingForCreation trainingForCreation);
+    Training addTraining(TrainingForCreation trainingForCreation) throws NoSuchFieldException;
     Training getTrainingByID(long id);
     Training getTrainingByName(String name);
     Training getTrainingByNameAndUserLogin(String trainingName, String userLogin);
