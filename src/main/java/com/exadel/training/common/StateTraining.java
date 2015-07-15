@@ -9,7 +9,8 @@ public enum StateTraining {
     Finished,
     Ahead,
     InProcess,
-    Canceled;
+    Canceled,
+    Draft;
 
     public static StateTraining parseStringToStateTraining(String state) throws NoSuchFieldException {
         switch (state) {
@@ -24,6 +25,9 @@ public enum StateTraining {
             }
             case  "Canceled": {
                 return  StateTraining.Canceled;
+            }
+            case  "Draft": {
+                return  StateTraining.Draft;
             }
             default: {
                 throw new NoSuchFieldException("don't find such type.");
@@ -43,6 +47,9 @@ public enum StateTraining {
             }
             case Canceled: {
                 return "Canceled";
+            }
+            case Draft: {
+                return "Draft";
             }
             default: {
                 throw new NoSuchFieldException("don't find such type.");

@@ -1,12 +1,15 @@
 package com.exadel.training.service.impl;
 
+import com.exadel.training.controller.model.Training.TrainingForCreation;
 import com.exadel.training.model.Category;
 import com.exadel.training.model.Training;
+import com.exadel.training.repository.impl.CategoryRepository;
 import com.exadel.training.repository.impl.TrainingRepository;
 import com.exadel.training.service.TrainingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,10 +20,40 @@ public class TrainingServiceImpl implements TrainingService {
     @Autowired
     private TrainingRepository trainingRepository;
 
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     @Override
-    public Training addTraining(Training training) {
-        Training newTraining = trainingRepository.saveAndFlush(training);
-        return newTraining;
+    public Training addTraining(TrainingForCreation trainingForCreation) {
+        List<Date> dateTimes = trainingForCreation.getDateTimes();
+        Training mainTraining = new Training();
+        mainTraining.setDateTime(dateTimes.get(dateTimes.size() - 1));
+        //mainTraining.setId();
+        mainTraining.setName(trainingForCreation.getName());
+        mainTraining.setDescription(trainingForCreation.getDescription());
+        //User coach = findUserByLogin(trainingForCreation.getUserLogin());
+        //mainTraining.setCoach();
+        mainTraining.setLanguage(trainingForCreation.getLanguage());
+        mainTraining.setIsInternal(trainingForCreation.isInternal());
+        Category category = categoryRepository.findByName(trainingForCreation.getCategory());
+        mainTraining.setCategory(category);
+        mainTraining.setParent(0);
+        trainingRepository.saveAndFlush(mainTraining);
+        for(int i = 0; i < dateTimes.size(); ++i) {
+            Training newTraining = new Training();
+            newTraining.setDateTime(dateTimes.get(i));
+            //newTraining.setId();
+            newTraining.setName(trainingForCreation.getName());
+            newTraining.setDescription(trainingForCreation.getDescription());
+            //User coach = findUserByLogin(trainingForCreation.getUserLogin());
+            //newTraining.setCoach();
+            newTraining.setLanguage(trainingForCreation.getLanguage());
+            newTraining.setIsInternal(trainingForCreation.isInternal());
+            newTraining.setCategory(category);
+            newTraining.setParent(mainTraining.getId());
+            trainingRepository.saveAndFlush(newTraining);
+        }
+        return mainTraining;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.exadel.training.controller;
 
-import com.exadel.training.controller.model.Training.TrainingFull;
+import com.exadel.training.controller.model.Training.TrainingForCreation;
+import com.exadel.training.controller.model.Training.TrainingInfo;
 import com.exadel.training.controller.model.Training.TrainingNameAndUserLogin;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
@@ -38,7 +39,7 @@ public class TrainingController {
     }
 
     @RequestMapping(value = "/create_training", method = RequestMethod.POST, consumes = "application/json")
-    public @ResponseBody User save(@RequestBody TrainingFull trainingFull)  {
+    public @ResponseBody User save(@RequestBody TrainingInfo trainingInfo)  {
         //User user = userService.findUserByLoginAndPassword(project.getLogin(), Long.parseLong(project.getPassword()));
         // Role role = roleService.getRoleByID(1);
         //return user;
@@ -46,20 +47,28 @@ public class TrainingController {
     }
 
     @RequestMapping(value = "/training_info", method = RequestMethod.POST, consumes = "application/json")
-    public @ResponseBody TrainingFull save(@RequestBody TrainingNameAndUserLogin trainingNameAndUserLogin) {
+    public @ResponseBody
+    TrainingInfo postTrainingInfo (@RequestBody() TrainingNameAndUserLogin trainingNameAndUserLogin) {
         String trainingName = trainingNameAndUserLogin.getTrainingName();
-        String userLogin = trainingNameAndUserLogin.getUserLogin();
-        TrainingFull trainingFull = new TrainingFull(trainingService.getTrainingByNameAndUserLogin(trainingName, userLogin));
-        return trainingFull;
+        String userLogin = trainingNameAndUserLogin.getLogin();
+        TrainingInfo trainingInfo = new TrainingInfo(trainingService.getTrainingByNameAndUserLogin(trainingName, userLogin));
+        return trainingInfo;
+    }
+
+    @RequestMapping(value = "/create_training", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody
+    Training createTraining(@RequestBody TrainingForCreation trainingForCreation) {
+        Training training = trainingService.addTraining(trainingForCreation);
+        return training;
     }
 
     @RequestMapping(value = "/training_full", method = RequestMethod.GET)
     @ResponseBody
-    TrainingFull getTrainingFull() {
+    TrainingInfo getTrainingFull() {
         String trainingName = "english";
         String userLogin = "ken";
         Training training = trainingService.getTrainingByNameAndUserLogin(trainingName, userLogin); //trainingService.getTrainingByNameAndUserLogin(trainingName, userLogin);
-        TrainingFull trainingFull = new TrainingFull(training);
-        return trainingFull;
+        TrainingInfo trainingInfo = new TrainingInfo(training);
+        return trainingInfo;
     }
 }
