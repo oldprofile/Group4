@@ -1,6 +1,7 @@
 package com.exadel.training.service;
 
 import com.exadel.training.common.RoleType;
+import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
 
 import java.util.List;
@@ -11,7 +12,11 @@ import java.util.List;
 public interface UserService {
    User getUserByID(long id);
    User findUserByLoginAndPassword(String name, long password);
-   List<User> findUserByRole(RoleType type) throws NoSuchFieldException;
+   User findUserByLogin(String Login);
 
+   List<User> findUserByRole(RoleType type) throws NoSuchFieldException;
+   List<Training> selectAllTraining(String login);
+
+   void deleteUserTrainingRelationShip(String login, String trainingName);
    void saveUser(User user);
 }

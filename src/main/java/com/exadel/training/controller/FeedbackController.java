@@ -1,10 +1,13 @@
 package com.exadel.training.controller;
 
+import com.exadel.training.controller.model.Feedback.TrainingFeedbackModel;
+import com.exadel.training.controller.model.Feedback.UserFeedbackModel;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.TrainingFeedback;
 import com.exadel.training.model.User;
 import com.exadel.training.model.UserFeedback;
 import com.exadel.training.service.TrainingFeedbackService;
+import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserFeedbackService;
 import com.exadel.training.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,6 +31,9 @@ public class FeedbackController {
     UserFeedbackService userFeedbackService;
 
     @Autowired
+    TrainingService trainingService;
+
+    @Autowired
     TrainingFeedbackService trainingFeedbackService;
 
     @Autowired
@@ -34,17 +41,26 @@ public class FeedbackController {
 
     @RequestMapping(value = "/user_feedback", method = RequestMethod.GET)
     public @ResponseBody
-    List<UserFeedback> getUserFeedbacks()  {
+    List<UserFeedbackModel> getUserFeedbacks()  {
         User user = userService.getUserByID(1L);
         List<UserFeedback> userFeedbackList = userFeedbackService.getUserFeedbacks(user);
-        return userFeedbackList;
+        List<UserFeedbackModel> userFeedbackModels = new ArrayList<UserFeedbackModel>();
+        for(UserFeedback u : userFeedbackList)
+        {
+            userFeedbackModels.add(UserFeedbackModel.parseUserFeedback(u));
+        }
+        return userFeedbackModels;
     }
 
     @RequestMapping(value = "/training_feedback", method = RequestMethod.GET)
     public @ResponseBody
-    List<TrainingFeedback> getTrainingFeedbacks()  {
-        Training training = new Training();
-        List<TrainingFeedback> trainingFeedbackList = trainingFeedbackService.getTrainingFeedbacks(training);
-        return trainingFeedbackList;
+    List<TrainingFeedbackModel> getTrainingFeedbacks()  {
+        List<TrainingFeedback> trainingFeedbacks = trainingFeedbackService.getTrainingFeedbacks(trainingService.getTrainingByID(1));
+        List<TrainingFeedbackModel> trainingFeedbackModels = new ArrayList<TrainingFeedbackModel>();
+        for(TrainingFeedback t : trainingFeedbacks)
+        {
+            trainingFeedbackModels.add(TrainingFeedbackModel.parseTrainingFeedback(t));
+        }
+        return trainingFeedbackModels;
     }
 }

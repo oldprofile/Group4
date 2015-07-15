@@ -6,7 +6,7 @@ package com.exadel.training.common;
 public enum RoleType {
     Admin,
     Employee,
-    ExCoache,
+    ExCoach,
     ExEmployee;
 
     public static RoleType parseIntToRoleType(int type) throws NoSuchFieldException {
@@ -18,7 +18,7 @@ public enum RoleType {
                 return  RoleType.Employee;
             }
             case 3: {
-                return  RoleType.ExCoache;
+                return  RoleType.ExCoach;
             }
             case  4: {
                 return  RoleType.ExEmployee;
@@ -36,7 +36,7 @@ public enum RoleType {
                 case Employee: {
                     return 2l;
                 }
-                case ExCoache: {
+                case ExCoach: {
                     return 3l;
                 }
                 case ExEmployee: {
