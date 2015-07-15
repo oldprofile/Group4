@@ -1,6 +1,6 @@
 angular.module('myApp.mycourses')
 .factory('mycourses', ['$http', function($http) {
-  return $http.get('https://s3.amazonaws.com/codecademy-content/courses/ltp4/emails-api/emails.json')
+  return $http.get('assets/mycourses_test.json')
             .success(function(data) {
               return data;
             })

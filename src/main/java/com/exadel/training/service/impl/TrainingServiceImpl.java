@@ -1,12 +1,18 @@
 package com.exadel.training.service.impl;
 
+import com.exadel.training.common.LanguageTraining;
+import com.exadel.training.controller.model.Training.TrainingForCreation;
 import com.exadel.training.model.Category;
 import com.exadel.training.model.Training;
+import com.exadel.training.model.User;
+import com.exadel.training.repository.impl.CategoryRepository;
 import com.exadel.training.repository.impl.TrainingRepository;
+import com.exadel.training.repository.impl.UserRepository;
 import com.exadel.training.service.TrainingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,10 +23,48 @@ public class TrainingServiceImpl implements TrainingService {
     @Autowired
     private TrainingRepository trainingRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
+
     @Override
-    public Training addTraining(Training training) {
-        Training newTraining = trainingRepository.saveAndFlush(training);
-        return newTraining;
+    public Training addTraining(TrainingForCreation trainingForCreation) {
+        List<Date> dateTimes = trainingForCreation.getDateTimes();
+        Training mainTraining = new Training();
+        mainTraining.setDateTime(dateTimes.get(dateTimes.size() - 1));
+        mainTraining.setName(trainingForCreation.getName());
+        mainTraining.setDescription(trainingForCreation.getDescription());
+        User coach = userRepository.findUserByLogin(trainingForCreation.getUserLogin());
+        mainTraining.setCoach(coach);
+        try {
+            mainTraining.setLanguage(LanguageTraining.parseStringLanguageTrainingToInt(trainingForCreation.getLanguage()));
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        mainTraining.setIsInternal(trainingForCreation.isInternal());
+        Category category = categoryRepository.findById(trainingForCreation.getIdCategory());
+        mainTraining.setCategory(category);
+        mainTraining.setParent(0);
+        trainingRepository.saveAndFlush(mainTraining);
+        for(int i = 0; i < dateTimes.size(); ++i) {
+            Training newTraining = new Training();
+            newTraining.setDateTime(dateTimes.get(i));
+            newTraining.setName(trainingForCreation.getName());
+            newTraining.setDescription(trainingForCreation.getDescription());
+            newTraining.setCoach(coach);
+            try {
+                newTraining.setLanguage(LanguageTraining.parseStringLanguageTrainingToInt(trainingForCreation.getLanguage()));
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+            }
+            newTraining.setIsInternal(trainingForCreation.isInternal());
+            newTraining.setCategory(category);
+            newTraining.setParent(mainTraining.getId());
+            trainingRepository.saveAndFlush(newTraining);
+        }
+        return mainTraining;
     }
 
     @Override
@@ -34,6 +78,12 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
+    public Training getTrainingByNameAndUserLogin(String trainingName, String userLogin) {
+        Training newTraining = trainingRepository.findByTrainingNameAndUserLogin(trainingName, userLogin);
+        return newTraining;
+    }
+
+    @Override
     public List<Training> getAllTrainings() {
         return trainingRepository.findAll();
     }
@@ -41,11 +91,6 @@ public class TrainingServiceImpl implements TrainingService {
     @Override
     public List<Training> getTrainingsByCategoryName(String name) {
         return trainingRepository.findByCategoryName(name);
-    }
-
-    @Override
-    public List<Training> getTrainingsByStateName(String name) {
-        return trainingRepository.findByStateName(name);
     }
 
     @Override
@@ -58,5 +103,6 @@ public class TrainingServiceImpl implements TrainingService {
     public Training editTraining(Training training) {
         return trainingRepository.saveAndFlush(training);
     }
+
 
 }

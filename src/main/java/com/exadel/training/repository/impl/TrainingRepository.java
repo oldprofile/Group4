@@ -17,9 +17,11 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
     //@Query(value =  "select tr from Training tr where category.name = ?1")
     List<Training> findByCategoryName(String name);
 
-    List<Training> findByStateName(String name);
+    @Query("select tr from Training as tr  inner join tr.listeners as trus where tr.name = ?1 and trus.login = ?2")
+    Training findByTrainingNameAndUserLogin(String trainingName, String userLogin);
 
-    @Query("select tr from Training tr where tr.state in (1,2)")
+
+    @Query("select tr from Training as tr where tr.state in (1,2)")
     List<Training> findValidTrainings();
 
 

@@ -17,8 +17,7 @@ public class State {
 
     private String name;
 
-    @OneToMany(mappedBy = "state")
-    @JsonBackReference
+    /*@OneToMany(mappedBy = "state")
     private List<Training> trainings;
 
     public State() {
@@ -50,5 +49,5 @@ public class State {
 
     public void setTrainings(List<Training> trainings) {
         this.trainings = trainings;
-    }
+    }*/
 }

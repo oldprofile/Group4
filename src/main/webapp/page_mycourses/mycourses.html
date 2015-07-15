@@ -1,9 +1,15 @@
 <div ng-controller="MyCoursesController">
 
-    {{c}}
+    
 <div ng-repeat="course in mycourses">
     
-    <p>{{course.message}}</p>
+    <p>{{course.courseName}}</p>
+    <img ng-src="{{course.courseImage}}">
+    <p>Lesson #{{course.courseLesson}}</p>
+    <p>Coach: {{course.courseCoach}}</p>
+    <p>Date: {{course.courseDatetime}}</p>
+    <p>Place: {{course.coursePlace}}</p>
+    <a href="/#/courseinfo/angular">angular</a>
     
 </div>
 
