@@ -49,7 +49,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/find_user_by_login", method = RequestMethod.GET)
-    public @ResponseBody String findUserByLogin() {
+    public @ResponseBody String findUserByLogin(/*@RequestBody String login*/) {
         return  userService.findUserByLogin("1").getLogin();
     }
 
@@ -62,7 +62,11 @@ public class UserController {
 
     @RequestMapping(value = "/join_training", method = RequestMethod.GET)
     public void joinTraining(/*@RequestBody UserLeaveTraining userLeaveTraining*/HttpServletResponse response) {
-        userService.insertUserTrainingRelationShip("1","Front end");
-        response.setStatus(HttpServletResponse.SC_ACCEPTED);
+       try {
+           userService.insertUserTrainingRelationShip("1", "Front end");
+           response.setStatus(HttpServletResponse.SC_ACCEPTED);
+       }catch (NullPointerException e) {
+           response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+       }
     }
 }
