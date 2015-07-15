@@ -52,9 +52,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUserTrainingRelationShip(String login, String trainingName) {
-        long userID = userRepository.findUserByLoginAndPassword("1",1l).getId();
-        long trainingID = trainingRepository.findByName("Front end").getId();
+        long userID = userRepository.findUserByLogin(login).getId();
+        long trainingID = trainingRepository.findByName(trainingName).getId();
         userRepository.deleteUserTrainingRelationShip(trainingID, userID);
+    }
+
+    @Override
+    public void insertUserTrainingRelationShip(String login, String trainingName) {
+        long userID = userRepository.findUserByLogin(login).getId();
+        long trainingID = trainingRepository.findByName(trainingName).getId();
+        userRepository.insertUserTrainingRelationShip(trainingID, userID);
     }
 
     @Override

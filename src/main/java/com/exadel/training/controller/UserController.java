@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,9 +54,15 @@ public class UserController {
     }
 
     @RequestMapping(value = "/leave_training", method = RequestMethod.GET)
-    public @ResponseBody String leaveTraining(/*@RequestBody UserLeaveTraining userLeaveTraining*/) {
+    public void leaveTraining(/*@RequestBody UserLeaveTraining userLeaveTraining*/HttpServletResponse response) {
         // userService.LeaveTraining(userLeaveTraining.getLogin(), userLeaveTraining.getNameTraining());
         userService.deleteUserTrainingRelationShip("1","Front end");
-        return "ok";
+        response.setStatus(HttpServletResponse.SC_ACCEPTED);
+    }
+
+    @RequestMapping(value = "/join_training", method = RequestMethod.GET)
+    public void joinTraining(/*@RequestBody UserLeaveTraining userLeaveTraining*/HttpServletResponse response) {
+        userService.insertUserTrainingRelationShip("1","Front end");
+        response.setStatus(HttpServletResponse.SC_ACCEPTED);
     }
 }

@@ -18,5 +18,6 @@ public interface UserService {
    List<Training> selectAllTraining(String login);
 
    void deleteUserTrainingRelationShip(String login, String trainingName);
+   void insertUserTrainingRelationShip(String login, String trainingName);
    void saveUser(User user);
 }
