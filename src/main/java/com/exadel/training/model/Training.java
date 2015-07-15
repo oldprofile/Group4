@@ -59,10 +59,6 @@ public class Training {
     public Training() {
     }
 
-    public Training(long id) {
-        this.id = id;
-    }
-
     public long getId() {
         return id;
     }

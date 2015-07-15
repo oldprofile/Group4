@@ -28,7 +28,6 @@ public class TrainingServiceImpl implements TrainingService {
         List<Date> dateTimes = trainingForCreation.getDateTimes();
         Training mainTraining = new Training();
         mainTraining.setDateTime(dateTimes.get(dateTimes.size() - 1));
-        //mainTraining.setId();
         mainTraining.setName(trainingForCreation.getName());
         mainTraining.setDescription(trainingForCreation.getDescription());
         //User coach = findUserByLogin(trainingForCreation.getUserLogin());
@@ -42,7 +41,6 @@ public class TrainingServiceImpl implements TrainingService {
         for(int i = 0; i < dateTimes.size(); ++i) {
             Training newTraining = new Training();
             newTraining.setDateTime(dateTimes.get(i));
-            //newTraining.setId();
             newTraining.setName(trainingForCreation.getName());
             newTraining.setDescription(trainingForCreation.getDescription());
             //User coach = findUserByLogin(trainingForCreation.getUserLogin());
