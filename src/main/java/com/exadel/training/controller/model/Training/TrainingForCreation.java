@@ -14,7 +14,7 @@ public class TrainingForCreation {
 
     private String description;
 
-    private String category;
+    private int idCategory;
 
     private String additional;
 
@@ -53,12 +53,12 @@ public class TrainingForCreation {
         this.description = description;
     }
 
-    public String getCategory() {
-        return category;
+    public int getIdCategory() {
+        return idCategory;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setIdCategory(int idCategory) {
+        this.idCategory = idCategory;
     }
 
     public String getAdditional() {
