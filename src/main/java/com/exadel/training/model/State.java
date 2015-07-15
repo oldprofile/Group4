@@ -17,7 +17,7 @@ public class State {
 
     private String name;
 
-    @OneToMany(mappedBy = "state")
+    //@OneToMany(mappedBy = "state")
     private List<Training> trainings;
 
     public State() {
