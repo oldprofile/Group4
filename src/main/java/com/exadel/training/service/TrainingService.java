@@ -12,10 +12,11 @@ public interface TrainingService {
     Training addTraining(Training training);
     Training getTrainingByID(long id);
     Training getTrainingByName(String name);
+    Training getTrainingByNameAndUserLogin(String trainingName, String userLogin);
     List<Training> getAllTrainings();
     List<Training> getTrainingsByCategoryName(String name);
-    List<Training> getTrainingsByStateName(String name);
     List<Training> getValidTrainings();
     Training editTraining(Training training);
+
 
 }

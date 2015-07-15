@@ -31,15 +31,10 @@ public class UserFeedback{
 
     private Date date;
 
-    @NotNull
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinTable(name = "ufeedbacks_users",
-            joinColumns = @JoinColumn(name = "feedbacker_id"))
+    @ManyToOne(cascade = CascadeType.ALL)
     private User feedbacker;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinTable(name = "ufeedbacks_users",
-            joinColumns = @JoinColumn(name = "user_userFeedback"))
     private User user;
 
     // for english
@@ -47,7 +42,9 @@ public class UserFeedback{
     //private level;
 
 
-    public UserFeedback() {}
+    public UserFeedback() {
+        this.date = new Date();
+    }
 
     public UserFeedback(String attendance, String attitude, String commSkills, String questions, String motivation, String focusOnResult, String other, User feedbacker, User user) {
         this.attendance = attendance;

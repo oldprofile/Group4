@@ -118,3 +118,4 @@ bower_components/
 tmp
 .DS_Store
 >>>>>>> 844490a4fceaccb4538d1293665444de29aeea47
+src/main/resources/application.properties

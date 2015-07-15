@@ -1,6 +1,7 @@
 package com.exadel.training.controller;
 
-import com.exadel.training.controller.model.Authentication;
+import com.exadel.training.controller.model.Training.TrainingFull;
+import com.exadel.training.controller.model.Training.TrainingNameAndUserLogin;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
 import com.exadel.training.service.TrainingService;
@@ -23,37 +24,42 @@ public class TrainingController {
     TrainingService trainingService;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    @ResponseBody
-    List<Training> trainingList() {
+     @ResponseBody
+     List<Training> trainingList() {
         List<Training> list = trainingService.getAllTrainings();
         return list;
     }
 
-    @RequestMapping(value = "/name", method = RequestMethod.GET)
+    @RequestMapping(value = "/training_name", method = RequestMethod.GET)
     @ResponseBody
-    Training findByName() {
-        Training tr = trainingService.getTrainingByName("english");
-        return tr;
+    Training trainingName() {
+        Training training = trainingService.getTrainingByName("english");
+        return training;
     }
 
-    @RequestMapping(value = "/category", method = RequestMethod.GET)
-    @ResponseBody
-    List<Training> findByCategoryName() {
-        List<Training> trs = trainingService.getTrainingsByCategoryName("Java");
-        return trs;
+    @RequestMapping(value = "/create_training", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody User save(@RequestBody TrainingFull trainingFull)  {
+        //User user = userService.findUserByLoginAndPassword(project.getLogin(), Long.parseLong(project.getPassword()));
+        // Role role = roleService.getRoleByID(1);
+        //return user;
+        return null;
     }
 
-    @RequestMapping(value = "/state", method = RequestMethod.GET)
-    @ResponseBody
-    List<Training> findByStateName() {
-        List<Training> trs = trainingService.getTrainingsByStateName("will be");
-        return trs;
+    @RequestMapping(value = "/training_info", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody TrainingFull save(@RequestBody TrainingNameAndUserLogin trainingNameAndUserLogin) {
+        String trainingName = trainingNameAndUserLogin.getTrainingName();
+        String userLogin = trainingNameAndUserLogin.getUserLogin();
+        TrainingFull trainingFull = new TrainingFull(trainingService.getTrainingByNameAndUserLogin(trainingName, userLogin));
+        return trainingFull;
     }
 
-    @RequestMapping(value = "/validTrainings", method = RequestMethod.GET)
+    @RequestMapping(value = "/training_full", method = RequestMethod.GET)
     @ResponseBody
-    List<Training> findValid() {
-        List<Training> trs =  trainingService.getValidTrainings();
-        return trs;
+    TrainingFull getTrainingFull() {
+        String trainingName = "english";
+        String userLogin = "ken";
+        Training training = trainingService.getTrainingByNameAndUserLogin(trainingName, userLogin); //trainingService.getTrainingByNameAndUserLogin(trainingName, userLogin);
+        TrainingFull trainingFull = new TrainingFull(training);
+        return trainingFull;
     }
 }

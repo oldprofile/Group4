@@ -34,6 +34,12 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
+    public Training getTrainingByNameAndUserLogin(String trainingName, String userLogin) {
+        Training newTraining = trainingRepository.findByTrainingNameAndUserLogin(trainingName, userLogin);
+        return newTraining;
+    }
+
+    @Override
     public List<Training> getAllTrainings() {
         return trainingRepository.findAll();
     }
@@ -41,11 +47,6 @@ public class TrainingServiceImpl implements TrainingService {
     @Override
     public List<Training> getTrainingsByCategoryName(String name) {
         return trainingRepository.findByCategoryName(name);
-    }
-
-    @Override
-    public List<Training> getTrainingsByStateName(String name) {
-        return trainingRepository.findByStateName(name);
     }
 
     @Override
@@ -58,5 +59,6 @@ public class TrainingServiceImpl implements TrainingService {
     public Training editTraining(Training training) {
         return trainingRepository.saveAndFlush(training);
     }
+
 
 }
