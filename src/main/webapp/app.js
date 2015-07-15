@@ -15,6 +15,7 @@ var app = angular.module('myApp', [
     'myApp.login',
     'myApp.menuApp',
     'myApp.footerApp',
+    'myApp.login',
     
 ]).config(['$routeProvider', function($routeProvider) {
   $routeProvider.otherwise({redirectTo: '/mycourses'});
@@ -27,13 +28,14 @@ app.controller('MainController',['$scope',function($scope){
     
 }]);
 
-app.directive('authClass', function() {
+
+app.directive('authClass', ['userService',function(userService) {
     return {
       restrict: 'C',
       link: function(scope, elem, attrs) {
           //hide content before auth
         scope.isLogged = false;  
-        scope.isAngularLoaded = true;
+        
         elem.removeClass('waiting-for-angular');
 //        var login = elem.find('#login-holder');
 //        var main = elem.find('#content');
@@ -60,11 +62,14 @@ app.directive('authClass', function() {
         scope.$on('hideLoginEvent',function(event, data){
             //hideLoginForm(elem);
             scope.isLogged = true;
+            userService.setUser(data.login,data.password);
         });
           
       }
     }
-  });
+  }]);
+
+
 
 
 
