@@ -38,9 +38,9 @@ public class UserController {
         return userShortList;
     }
 
-    @RequestMapping(value = "/all_trainings_of_user", method = RequestMethod.POST, consumes = "application/json")
-    public  @ResponseBody List<AllTrainingUserShort> getAllTrainingOfUser(@RequestBody String login) {
-        List<Training> trainings = userService.selectAllTraining("1");
+    @RequestMapping(value = "/all_trainings_of_user", method = RequestMethod.GET)
+    public  @ResponseBody List<AllTrainingUserShort> getAllTrainingOfUser(/*@RequestBody String login*/) {
+        List<Training> trainings = userService.selectAllTraining("agsdagdo1");
         List<AllTrainingUserShort> trainingUserShorts = new ArrayList<>();
         for(Training training : trainings) {
             trainingUserShorts.add(AllTrainingUserShort.parseAllTrainingUserShort(training));
@@ -56,13 +56,18 @@ public class UserController {
     @RequestMapping(value = "/leave_training", method = RequestMethod.GET)
     public void leaveTraining(/*@RequestBody UserLeaveTraining userLeaveTraining*/HttpServletResponse response) {
         // userService.LeaveTraining(userLeaveTraining.getLogin(), userLeaveTraining.getNameTraining());
-        userService.deleteUserTrainingRelationShip("1","Front end");
+        userService.deleteUserTrainingRelationShip("1", "Front end");
         response.setStatus(HttpServletResponse.SC_ACCEPTED);
     }
 
     @RequestMapping(value = "/join_training", method = RequestMethod.GET)
     public void joinTraining(/*@RequestBody UserLeaveTraining userLeaveTraining*/HttpServletResponse response) {
-        userService.insertUserTrainingRelationShip("1","Front end");
-        response.setStatus(HttpServletResponse.SC_ACCEPTED);
+      try {
+          userService.insertUserTrainingRelationShip("1asds", "Front end");
+          response.setStatus(HttpServletResponse.SC_ACCEPTED);
+      }
+        catch (NullPointerException e) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        }
     }
 }
