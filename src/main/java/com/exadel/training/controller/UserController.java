@@ -2,7 +2,6 @@ package com.exadel.training.controller;
 
 import com.exadel.training.common.RoleType;
 import com.exadel.training.controller.model.User.AllTrainingUserShort;
-import com.exadel.training.controller.model.User.UserLeaveTraining;
 import com.exadel.training.controller.model.User.UserShort;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
@@ -48,8 +47,15 @@ public class UserController {
         return trainingUserShorts;
     }
 
-    @RequestMapping(value = "/leave_training", method = RequestMethod.POST, consumes = "application/json")
-    public void leaveTraining(@RequestBody UserLeaveTraining userLeaveTraining) {
+    @RequestMapping(value = "/find_user_by_login", method = RequestMethod.GET)
+    public @ResponseBody String findUserByLogin() {
+        return  userService.findUserByLogin("1").getLogin();
+    }
 
+    @RequestMapping(value = "/leave_training", method = RequestMethod.GET)
+    public @ResponseBody String leaveTraining(/*@RequestBody UserLeaveTraining userLeaveTraining*/) {
+        // userService.LeaveTraining(userLeaveTraining.getLogin(), userLeaveTraining.getNameTraining());
+        userService.deleteUserTrainingRelationShip("1","Front end");
+        return "ok";
     }
 }

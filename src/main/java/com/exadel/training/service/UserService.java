@@ -12,9 +12,11 @@ import java.util.List;
 public interface UserService {
    User getUserByID(long id);
    User findUserByLoginAndPassword(String name, long password);
+   User findUserByLogin(String Login);
+
    List<User> findUserByRole(RoleType type) throws NoSuchFieldException;
    List<Training> selectAllTraining(String login);
 
-   void LeaveTraining(String login);
+   void deleteUserTrainingRelationShip(String login, String trainingName);
    void saveUser(User user);
 }
