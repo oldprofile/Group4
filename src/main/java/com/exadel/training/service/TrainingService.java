@@ -1,6 +1,7 @@
 package com.exadel.training.service;
 
 
+import com.exadel.training.controller.model.Training.TrainingForCreation;
 import com.exadel.training.model.Training;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
  * Created by Клим on 10.07.2015.
  */
 public interface TrainingService {
-    Training addTraining(Training training);
+    Training addTraining(TrainingForCreation trainingForCreation);
     Training getTrainingByID(long id);
     Training getTrainingByName(String name);
     Training getTrainingByNameAndUserLogin(String trainingName, String userLogin);

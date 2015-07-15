@@ -7,7 +7,7 @@ public class TrainingNameAndUserLogin {
 
     private String trainingName;
 
-    private String userLogin;
+    private String login;
 
     public TrainingNameAndUserLogin() {
     }
@@ -20,13 +20,11 @@ public class TrainingNameAndUserLogin {
         this.trainingName = trainingName;
     }
 
-    public String getUserLogin() {
-        return userLogin;
+    public String getLogin() {
+        return login;
     }
 
-    public void setUserLogin(String userLogin) {
-        this.userLogin = userLogin;
+    public void setLogin(String login) {
+        this.login = login;
     }
-
-
 }
