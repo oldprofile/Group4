@@ -1,6 +1,13 @@
 
   'use strict';
   angular.module('myApp.login',['http-auth-interceptor'])
+ .config(['$routeProvider', function($routeProvider) {
+  $routeProvider.when('/login', {
+    templateUrl: 'page_common/login/login.html',
+    controller: 'LoginController'
+  })
+}])
+  
   
   .controller('LoginController',['$scope','$http','loginService', function ($scope, $http, loginService){      
     $scope.submit = function() {
@@ -11,6 +18,7 @@
             password: $scope.password,
         }
         
+        alert(JSON.stringify(loginData));
         loginService.postLoginCred(loginData).success(function(data){
             alert(JSON.stringify(data))
         }).error(function(error){
@@ -23,10 +31,5 @@
         
     };
   }])
-   .directive('loginCard',function(){
-        return {
-            restrict: "E",
-            templateUrl: "page_common/login/login.html"
-        };
-    });
+
 
