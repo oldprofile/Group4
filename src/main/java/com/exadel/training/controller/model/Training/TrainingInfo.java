@@ -4,6 +4,7 @@ import com.exadel.training.model.Omission;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +31,8 @@ public class TrainingInfo {
 
     private boolean isRepeating;
 
+    private boolean isSubscriber;
+
     private List<UserShort> listeners;
 
     private List<UserShort> spareUsers;
@@ -51,6 +54,14 @@ public class TrainingInfo {
         else this.isRepeating = true;
         this.listeners = UserShort.parceListUserShort(training.getListeners());
         this.spareUsers = UserShort.parceListUserShort((training.getSpareUsers()));
+    }
+
+    public static List<TrainingInfo> parseList(List<Training> trainings) {
+        List<TrainingInfo> trainingsInfo = new ArrayList<>();
+        for(int i = 0 ; i < trainings.size(); ++i) {
+            trainingsInfo.add(new TrainingInfo(trainings.get(i)));
+        }
+        return trainingsInfo;
     }
 
     public String getName() {
@@ -123,6 +134,14 @@ public class TrainingInfo {
 
     public void setIsRepeating(boolean isRepeating) {
         this.isRepeating = isRepeating;
+    }
+
+    public boolean isSubscriber() {
+        return isSubscriber;
+    }
+
+    public void setIsSubscriber(boolean isSubscriber) {
+        this.isSubscriber = isSubscriber;
     }
 
     public List<UserShort> getListeners() {
