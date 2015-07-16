@@ -10,7 +10,7 @@
                 <img width=400 src="http://www.exuberantsolutions.com/images/AngularShieldLogo.png" alt="...">    
             </div>
             <div class="col-md-7">
-              <form class="form-course" name="courseForm" ng-controller="CreateCourseController" novalidate>
+              <form class="form-course" name="courseForm" novalidate>
                   <input class="form-control" type="text" name="name" placeholder="Course name" ng-model="courseInfo.name" required>
                   <span style="color:red" ng-show="courseForm.name.$dirty && courseForm.name.$invalid">
                       <span ng-show="courseForm.name.$error.required">Course name is required.</span>
@@ -57,6 +57,8 @@
                   <span ng-show="courseForm.participantsNumber.$error.required">Desirable number of participants is required.</span>
                       <span ng-show="courseForm.participantsNumber.$error.number">Invalid number of participants.</span>
                   </span>
+                  
+                  <datepicker1></datepicker1>
 
                   <textarea class="form-control" name="additional" rows="3" placeholder="Additional info (optional)" ng-model="courseInfo.additional"></textarea>
 

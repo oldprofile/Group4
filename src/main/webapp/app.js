@@ -15,6 +15,7 @@ var app = angular.module('myApp', [
     'myApp.version',
     'myApp.login',
     'myApp.menuApp',
+    'createcourse.datepickerApp',
     'myApp.footerApp',
     'myApp.login',
     'myApp.courseinfo',

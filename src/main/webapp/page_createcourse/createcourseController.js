@@ -6,18 +6,18 @@ angular.module('myApp.createcourse')
         isInternal: true},
         {name: 'External',
         isInternal: false}];
-    $scope.languages = ['Russian', 'English'];
     console.log($scope.types);
+    $scope.languages = ['Russian', 'English'];
     
     $scope.courseInfo = {};
     
     /////Hardcode/////
-    $scope.courseInfo.dateTimes=['2015-07-09 02:10 AM', '2015-07-13 05:21 AM', '2015-03-02 21:08 AM'];
+    $scope.courseInfo.dateTimes=['08-08-2015 23:10:00', '04-09-2015 13:15:00', '28-01-2013 02:10:00'];
     $scope.courseInfo.userLogin="user123";
     //////////////////
     
     $scope.saveData = function() {
-        console.log($scope.courseInfo);
+        console.log($scope.courseInfo);                //TEMP
         createcourse.createCourse($scope.courseInfo);
     }
     getCategories.success(function(data) {
