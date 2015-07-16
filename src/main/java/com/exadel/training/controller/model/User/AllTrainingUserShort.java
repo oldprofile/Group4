@@ -11,9 +11,9 @@ import java.util.Date;
 public class AllTrainingUserShort {
 
     private String trainingName;
-    private String trainningCoach;
+    private String trainingCoach;
     private String trainingImage;
-    private String dataTraining;
+    private String dateTraining;
     private String trainingPlace;
 
     public AllTrainingUserShort() {
@@ -36,21 +36,21 @@ public class AllTrainingUserShort {
     }
 
     public String getTrainningCoach() {
-        return trainningCoach;
+        return trainingCoach;
     }
 
     public void setTrainningCoach(String trainningCoach) {
-        this.trainningCoach = trainningCoach;
+        this.trainingCoach = trainningCoach;
     }
 
-    public String getDataTraining() {
-        return dataTraining;
+    public String getDateTraining() {
+        return dateTraining;
     }
 
-    public void setDataTraining(Date dataTraining) {
+    public void setDateTraining(Date dataTraining) {
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-        this.dataTraining = sdf.format(dataTraining);
+        this.dateTraining = sdf.format(dataTraining);
     }
 
     public String getTrainingPlace() {
@@ -63,7 +63,7 @@ public class AllTrainingUserShort {
 
     public static AllTrainingUserShort parseAllTrainingUserShort(Training training) {
         AllTrainingUserShort trainingUserShort = new AllTrainingUserShort();
-        trainingUserShort.setDataTraining(training.getDateTime());
+        trainingUserShort.setDateTraining(training.getDateTime());
         trainingUserShort.setTrainningCoach(training.getCoach().getName());
         trainingUserShort.setTrainingImage(training.getPictureLink());
         trainingUserShort.setTrainingPlace(training.getPlace());
