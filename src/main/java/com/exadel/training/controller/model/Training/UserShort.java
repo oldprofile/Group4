@@ -14,6 +14,9 @@ public class UserShort {
 
     private String login;
 
+    public UserShort() {
+    }
+
     public UserShort (User user) {
         this.login = user.getLogin();
         this.name = user.getName();
@@ -24,5 +27,21 @@ public class UserShort {
         for(int i = 0; i < users.size(); ++i)
             shortList.add(new UserShort(users.get(i)));
         return shortList;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 }
