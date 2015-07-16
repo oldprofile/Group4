@@ -38,8 +38,9 @@ public class UserFeedback{
     private User user;
 
     // for english
-    //private assessment;
-    //private level;
+    private int assessment;
+
+    private int level;
 
 
     public UserFeedback() {
@@ -57,6 +58,21 @@ public class UserFeedback{
         this.date = new Date();
         this.feedbacker = feedbacker;
         this.user = user;
+    }
+
+    public UserFeedback(String attendance, String attitude, String commSkills, String questions, String motivation, String focusOnResult, String other, Date date, User feedbacker, User user, int assessment, int level) {
+        this.attendance = attendance;
+        this.attitude = attitude;
+        this.commSkills = commSkills;
+        this.questions = questions;
+        this.motivation = motivation;
+        this.focusOnResult = focusOnResult;
+        this.other = other;
+        this.date = date;
+        this.feedbacker = feedbacker;
+        this.user = user;
+        this.assessment = assessment;
+        this.level = level;
     }
 
     public long getId() {
@@ -141,5 +157,21 @@ public class UserFeedback{
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public int getAssessment() {
+        return assessment;
+    }
+
+    public void setAssessment(int assessment) {
+        this.assessment = assessment;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 }
