@@ -70,9 +70,12 @@ app.directive('authClass', ['$location','userService',function($location,userSer
           
         scope.$on('hideLoginEvent',function(event, data){
             //hideLoginForm(elem);
-            scope.isLogged = true;
-            userService.setUser(data.login,data.login,data.password,{});
-            $location.path('/');
+            
+            if(data.login == "test" && data.password == "test"){
+                scope.isLogged = true;
+                userService.setUser(data.login,data.login,data.password,{});
+                $location.path('/');
+            }
         });
           
       }
