@@ -1,5 +1,6 @@
 package com.exadel.training.controller;
 
+import com.exadel.training.controller.model.Training.ShortTrainingInfo;
 import com.exadel.training.controller.model.Training.TrainingForCreation;
 import com.exadel.training.controller.model.Training.TrainingInfo;
 import com.exadel.training.controller.model.Training.TrainingNameAndUserLogin;
@@ -31,13 +32,10 @@ public class TrainingController {
     TrainingService trainingService;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-     @ResponseBody
-     List<AllTrainingUserShort> trainingList() {
-        List<Training> list = trainingService.getAllTrainings();
-        List<AllTrainingUserShort> returnList = new ArrayList<>();
-        for(int i = 0; i < list.size(); ++i){
-            returnList.add(AllTrainingUserShort.parseAllTrainingUserShort(list.get(i)));
-        }
+    @ResponseBody
+    List<ShortTrainingInfo> trainingList() {
+        List<Training> list = trainingService.getValidTrainings();
+        List<ShortTrainingInfo> returnList = ShortTrainingInfo.parceList(list);
         return returnList;
     }
 
@@ -65,8 +63,8 @@ public class TrainingController {
     }
 
     @RequestMapping(value = "/create_training", method = RequestMethod.POST, consumes = "application/json")
-    public @ResponseBody
-    Training createTraining(@RequestBody TrainingForCreation trainingForCreation) {
+     public @ResponseBody
+     ShortTrainingInfo createTraining(@RequestBody TrainingForCreation trainingForCreation) {
         Training training = null;
         try {
             training = trainingService.addTraining(trainingForCreation);
@@ -75,18 +73,46 @@ public class TrainingController {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return training;
+        return new ShortTrainingInfo(training);
+    }
+
+    @RequestMapping(value = "/test_create_training", method = RequestMethod.GET)
+    public @ResponseBody
+    ShortTrainingInfo testCreateTraining() {
+        TrainingForCreation trainingForCreation = new TrainingForCreation();
+        trainingForCreation.setName("training");
+        trainingForCreation.setLanguage("english");
+        trainingForCreation.setAdditional("");
+        trainingForCreation.setAudience("");
+        ArrayList<String> list = new ArrayList<>();
+        list.add("1-1-2015 23:23:23");
+        list.add("2-2-2015 23:23:23");
+        trainingForCreation.setDateTimes(list);
+        trainingForCreation.setDescription("training");
+        trainingForCreation.setIdCategory(1);
+        trainingForCreation.setIsInternal(true);
+        trainingForCreation.setUserLogin("1");
+        trainingForCreation.setParticipantsNumber(10);
+        Training training = null;
+        try {
+            training = trainingService.addTraining(trainingForCreation);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return new ShortTrainingInfo(training);
     }
 
     @RequestMapping(value = "/approve_training", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody
-    Training approveTraining(@RequestBody TrainingNameAndUserLogin trainingNameAndUserLogin) {
+    ShortTrainingInfo approveTraining(@RequestBody TrainingNameAndUserLogin trainingNameAndUserLogin) {
         Training training = null;
         try {
             training = trainingService.approveTraining(trainingNameAndUserLogin.getTrainingName());
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
-        return training;
+        return new ShortTrainingInfo(training);
     }
 }
