@@ -66,7 +66,7 @@ public class UserController {
     @RequestMapping(value = "/join_training", method = RequestMethod.GET)
     public void joinTraining(/*@RequestBody UserLeaveTraining userLeaveTraining*/HttpServletResponse response) {
        try {
-           userService.insertUserTrainingRelationShip("1", "Front end");
+         //  userService.insertUserTrainingRelationShip("1", "Front end");
            response.setStatus(HttpServletResponse.SC_ACCEPTED);
 
            WrapperNotificationMail notificationMail = new WrapperNotificationMail();

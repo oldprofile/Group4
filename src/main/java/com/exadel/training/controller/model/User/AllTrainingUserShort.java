@@ -43,11 +43,11 @@ public class AllTrainingUserShort {
         this.trainingCoach = trainningCoach;
     }
 
-    public String getDataTraining() {
+    public String getDateTraining() {
         return dateTraining;
     }
 
-    public void setDataTraining(Date dataTraining) {
+    public void setDateTraining(Date dataTraining) {
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         this.dateTraining = sdf.format(dataTraining);
@@ -63,7 +63,7 @@ public class AllTrainingUserShort {
 
     public static AllTrainingUserShort parseAllTrainingUserShort(Training training) {
         AllTrainingUserShort trainingUserShort = new AllTrainingUserShort();
-        trainingUserShort.setDataTraining(training.getDateTime());
+        trainingUserShort.setDateTraining(training.getDateTime());
         trainingUserShort.setTrainningCoach(training.getCoach().getName());
         trainingUserShort.setTrainingImage(training.getPictureLink());
         trainingUserShort.setTrainingPlace(training.getPlace());

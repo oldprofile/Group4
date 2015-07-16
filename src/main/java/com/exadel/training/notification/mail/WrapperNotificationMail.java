@@ -10,21 +10,6 @@ import java.util.Properties;
  * Created by HP on 16.07.2015.
  */
 public class WrapperNotificationMail {
-    private MimeMessage mimeMessage;
-    private String from = "artem6695@mail.ru";
-    private String password = "jrcfyf";
-    private String host = "localhost";
-    private Properties properties = System.getProperties();
-    private Session session;
-
-    String mailSmtpHost = "localhost";
-
-    String mailTo = "artem6695@mail.ru";
-    String mailCc = "artem6695@mail.ru";
-    String mailFrom = "artem6695@mail.ru";
-    String mailSubject = "Email from Java";
-    String mailText = "This is an email from Java";
-
     public WrapperNotificationMail() {
 
 
@@ -34,10 +19,11 @@ public class WrapperNotificationMail {
         final String password = "jordan23!";
 
         Properties props = new Properties();
-        props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "25");
+        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.debug", "true");
 
         Session session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
