@@ -5,6 +5,7 @@ import com.exadel.training.controller.model.User.AllTrainingUserShort;
 import com.exadel.training.controller.model.User.UserShort;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
+import com.exadel.training.notification.mail.WrapperNotificationMail;
 import com.exadel.training.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,8 +67,26 @@ public class UserController {
        try {
            userService.insertUserTrainingRelationShip("1", "Front end");
            response.setStatus(HttpServletResponse.SC_ACCEPTED);
+
+           WrapperNotificationMail notificationMail = new WrapperNotificationMail();
+           try {
+               notificationMail.sendMessage("artem6695@mail.ru");
+           } catch (MessagingException e) {
+               e.printStackTrace();
+           }
+
        }catch (NullPointerException e) {
            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
        }
+    }
+
+    @RequestMapping(value = "/all_trainings_sorted_by_date", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody List<AllTrainingUserShort> getAllTrainingSortedByDate(@RequestBody String login ) {
+        List<Training> trainings = userService.selectAllTrainingSortedByDate(login);
+        List<AllTrainingUserShort> allTrainingUserShorts = new ArrayList<>();
+        for(Training training : trainings) {
+            allTrainingUserShorts.add(AllTrainingUserShort.parseAllTrainingUserShort(training));
+        }
+        return  allTrainingUserShorts;
     }
 }

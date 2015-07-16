@@ -51,6 +51,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<Training> selectAllTrainingSortedByDate(String login) {
+        return userRepository.selectAllTrainingSortedByDate(login);
+    }
+
+    @Override
     public void deleteUserTrainingRelationShip(String login, String trainingName) {
         long userID = userRepository.findUserByLogin(login).getId();
         long trainingID = trainingRepository.findByName(trainingName).getId();

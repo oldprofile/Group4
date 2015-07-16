@@ -2,6 +2,7 @@ package com.exadel.training.controller.model.User;
 
 import com.exadel.training.model.Training;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -12,7 +13,7 @@ public class AllTrainingUserShort {
     private String trainingName;
     private String trainningCoach;
     private String trainingImage;
-    private Date dataTraining;
+    private String dataTraining;
     private String trainingPlace;
 
     public AllTrainingUserShort() {
@@ -42,12 +43,14 @@ public class AllTrainingUserShort {
         this.trainningCoach = trainningCoach;
     }
 
-    public Date getDataTraining() {
+    public String getDataTraining() {
         return dataTraining;
     }
 
     public void setDataTraining(Date dataTraining) {
-        this.dataTraining = dataTraining;
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        this.dataTraining = sdf.format(dataTraining);
     }
 
     public String getTrainingPlace() {
