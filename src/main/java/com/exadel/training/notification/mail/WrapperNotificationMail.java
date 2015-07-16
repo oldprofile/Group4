@@ -12,31 +12,52 @@ import java.util.Properties;
 public class WrapperNotificationMail {
     private MimeMessage mimeMessage;
     private String from = "artem6695@mail.ru";
+    private String password = "jrcfyf";
     private String host = "localhost";
     private Properties properties = System.getProperties();
     private Session session;
 
+    String mailSmtpHost = "localhost";
+
+    String mailTo = "artem6695@mail.ru";
+    String mailCc = "artem6695@mail.ru";
+    String mailFrom = "artem6695@mail.ru";
+    String mailSubject = "Email from Java";
+    String mailText = "This is an email from Java";
+
     public WrapperNotificationMail() {
-        properties.setProperty("mail.smtp.host", host);
-        properties.setProperty("mail.smtp.port", "25");
-        properties.put("mail.smtp.auth", "true"); //enable authentication
-        properties.put("mail.smtp.starttls.enable", "true"); //enable STARTTLS
-        final String password = "jrcfyf"; // correct password for gmail id
-        Authenticator auth = new Authenticator() {
-            //override the getPasswordAuthentication method
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(from, password);
-            }
-        };
-        Session session = Session.getInstance(properties,auth);
+
 
     }
     public void sendMessage(String to) throws MessagingException {
-        mimeMessage = new MimeMessage(session);
-        mimeMessage.setFrom(new InternetAddress(from));
-        mimeMessage.addRecipient(Message.RecipientType.TO,
-                new InternetAddress(to));
-        mimeMessage.setSubject("This is the Subject Line!");
-        Transport.send(mimeMessage);
+        final String username = "mrartem6695@gmail.com";
+        final String password = "jordan23!";
+
+        Properties props = new Properties();
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "25");
+
+        Session session = Session.getInstance(props,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(username, password);
+                    }
+                });
+
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("mrartem6695@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse("mrartem6695@gmail.com"));
+            message.setSubject("Testing Subject");
+            message.setText("Dear Mail Crawler,"
+                    + "\n\n No spam to my email, please!");
+
+            Transport.send(message);
+
+            System.out.println("Done");
+
     }
 }

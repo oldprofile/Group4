@@ -2,6 +2,7 @@ package com.exadel.training.controller;
 
 import com.exadel.training.common.RoleType;
 import com.exadel.training.controller.model.User.AllTrainingUserShort;
+import com.exadel.training.controller.model.User.UserLogin;
 import com.exadel.training.controller.model.User.UserShort;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
@@ -41,8 +42,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/all_trainings_of_user", method = RequestMethod.POST, consumes = "application/json")
-    public  @ResponseBody List<AllTrainingUserShort> getAllTrainingOfUser(@RequestBody String login) {
-        List<Training> trainings = userService.selectAllTraining("1");
+    public  @ResponseBody List<AllTrainingUserShort> getAllTrainingOfUser(@RequestBody UserLogin login) {
+        List<Training> trainings = userService.selectAllTraining(login.getLogin());
         List<AllTrainingUserShort> trainingUserShorts = new ArrayList<>();
         for(Training training : trainings) {
             trainingUserShorts.add(AllTrainingUserShort.parseAllTrainingUserShort(training));
@@ -51,8 +52,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/find_user_by_login", method = RequestMethod.GET)
-    public @ResponseBody String findUserByLogin(/*@RequestBody String login*/) {
-        return  userService.findUserByLogin("1").getLogin();
+    public @ResponseBody String findUserByLogin(@RequestBody UserLogin login) {
+        return  userService.findUserByLogin(login.getLogin()).getLogin();
     }
 
     @RequestMapping(value = "/leave_training", method = RequestMethod.GET)
@@ -81,8 +82,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/all_trainings_sorted_by_date", method = RequestMethod.POST, consumes = "application/json")
-    public @ResponseBody List<AllTrainingUserShort> getAllTrainingSortedByDate(@RequestBody String login ) {
-        List<Training> trainings = userService.selectAllTrainingSortedByDate(login);
+    public @ResponseBody List<AllTrainingUserShort> getAllTrainingSortedByDate(@RequestBody UserLogin login ) {
+        List<Training> trainings = userService.selectAllTrainingSortedByDate(login.getLogin());
         List<AllTrainingUserShort> allTrainingUserShorts = new ArrayList<>();
         for(Training training : trainings) {
             allTrainingUserShorts.add(AllTrainingUserShort.parseAllTrainingUserShort(training));
