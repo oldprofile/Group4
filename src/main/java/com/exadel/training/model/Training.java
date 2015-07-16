@@ -1,9 +1,5 @@
 package com.exadel.training.model;
 
-import com.exadel.training.controller.model.Training.TrainingForCreation;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;

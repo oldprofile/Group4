@@ -16,6 +16,8 @@ public class TrainingForCreation {
 
     private int idCategory;
 
+    private int participantsNumber;
+
     private String additional;
 
     private String audience;
@@ -59,6 +61,14 @@ public class TrainingForCreation {
 
     public void setIdCategory(int idCategory) {
         this.idCategory = idCategory;
+    }
+
+    public int getParticipantsNumber() {
+        return participantsNumber;
+    }
+
+    public void setParticipantsNumber(int participantsNumber) {
+        this.participantsNumber = participantsNumber;
     }
 
     public String getAdditional() {

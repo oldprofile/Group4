@@ -44,6 +44,7 @@ public class TrainingServiceImpl implements TrainingService {
         mainTraining.setIsInternal(trainingForCreation.isInternal());
         Category category = categoryRepository.findById(trainingForCreation.getIdCategory());
         mainTraining.setCategory(category);
+        mainTraining.setAmount(trainingForCreation.getParticipantsNumber());
         mainTraining.setParent(0);
         trainingRepository.saveAndFlush(mainTraining);
         for(int i = 0; i < dateTimes.size(); ++i) {
@@ -55,6 +56,7 @@ public class TrainingServiceImpl implements TrainingService {
             newTraining.setLanguage(LanguageTraining.parseToInt(trainingForCreation.getLanguage()));
             newTraining.setIsInternal(trainingForCreation.isInternal());
             newTraining.setCategory(category);
+            newTraining.setAmount(trainingForCreation.getParticipantsNumber());
             newTraining.setState(StateTraining.parseToInt("Draft"));
             newTraining.setParent(mainTraining.getId());
             trainingRepository.saveAndFlush(newTraining);
@@ -69,7 +71,13 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Override
     public Training getTrainingByName(String name) {
-        return trainingRepository.findByName(name);
+        List<Training> trainings = trainingRepository.findAllByName(name);
+        if(trainings.size() == 1)
+            return trainings.get(0);
+        else {
+            Training training = trainingRepository.findNearestTrainingsByName(name).get(0);
+            return training;
+        }
     }
 
     @Override
@@ -99,5 +107,18 @@ public class TrainingServiceImpl implements TrainingService {
         return trainingRepository.saveAndFlush(training);
     }
 
+    @Override
+    public Training approveTraining(String trainingName) throws NoSuchFieldException {
+        List<Training> trainings = trainingRepository.findAllByName(trainingName);
+        for(int i = 0; i < trainings.size(); ++i) {
+            trainings.get(i).setState(StateTraining.parseToInt("Ahead"));
+            trainingRepository.saveAndFlush(trainings.get(i));
+        }
+        return trainings.get(0);
+    }
 
+    @Override
+    public List<Training> getTrainingByNearestDate() {
+        return trainingRepository.findNearestTraining();
+    }
 }

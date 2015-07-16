@@ -18,6 +18,6 @@ public interface TrainingService {
     List<Training> getTrainingsByCategoryName(String name);
     List<Training> getValidTrainings();
     Training editTraining(Training training);
-
-
+    Training approveTraining(String trainingName) throws NoSuchFieldException;
+    List<Training> getTrainingByNearestDate();
 }
