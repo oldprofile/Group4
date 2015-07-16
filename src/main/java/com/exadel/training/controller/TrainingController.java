@@ -81,7 +81,7 @@ public class TrainingController {
     ShortTrainingInfo testCreateTraining() {
         TrainingForCreation trainingForCreation = new TrainingForCreation();
         trainingForCreation.setName("training");
-        trainingForCreation.setLanguage("english");
+        trainingForCreation.setLanguage("English");
         trainingForCreation.setAdditional("");
         trainingForCreation.setAudience("");
         ArrayList<String> list = new ArrayList<>();
