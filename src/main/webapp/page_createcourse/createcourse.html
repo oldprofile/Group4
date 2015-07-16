@@ -1,0 +1,78 @@
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <div class="row">
+            <center><h3>Create course</h3></center>
+        </div>
+
+        <div class="row">
+            <div class="col-md-5">
+                <img width=400 src="http://www.exuberantsolutions.com/images/AngularShieldLogo.png" alt="...">    
+            </div>
+            <div class="col-md-7">
+              <form class="form-course" name="courseForm" ng-controller="CreateCourseController" novalidate>
+                  <input class="form-control" type="text" name="name" placeholder="Course name" ng-model="courseInfo.name" required>
+                  <span style="color:red" ng-show="courseForm.name.$dirty && courseForm.name.$invalid">
+                      <span ng-show="courseForm.name.$error.required">Course name is required.</span>
+                  </span>
+
+                  <textarea class="form-control" name="description" rows="3" placeholder="Course description" ng-model="courseInfo.description" required></textarea>
+                  <span style="color:red" ng-show="courseForm.description.$dirty && courseForm.description.$invalid">
+                      <span ng-show="courseForm.description.$error.required">Course description is required.</span>
+                  </span>
+
+                  <input class="form-control" name="audience" type="text" placeholder="Target audience" ng-model="courseInfo.audience" required>
+                  <span style="color:red" ng-show="courseForm.audience.$dirty && courseForm.audience.$invalid">
+                      <span ng-show="courseForm.audience.$error.required">Target audience is required.</span>
+                  </span>
+
+                  <select class="form-control" ng-model="courseInfo.categoryName" ng-options="category for category in categories">
+                      <option value="">Select category</option>
+                  </select>
+
+                  <select class="form-control" ng-model="courseInfo.isInternal" ng-options="type.name for type in types track by type.isInternal">
+                      <option value="">Select course type</option>
+                  </select>
+
+                  <select class="form-control" ng-model="courseInfo.repeat" ng-options="type for type in repeat">
+                      <option value="">Select repeat type</option>
+                      
+                  </select>
+
+                  <select class="form-control" ng-model="courseInfo.language" ng-options="lang for lang in languages">
+                      <option value="">Select course language</option>
+                  </select>
+
+                  <!--Datetime picker-->
+
+                  <div class="dropdown">
+                      <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown">
+                          <div class="input-group">
+                              <input type="text" class="form-control" data-ng-model="data.dateDropDownInput">
+                              <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                          </div>
+                      </a>
+                      <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                          <datetimepicker data-ng-model="data.dateDropDownInput" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"/>
+                      </ul>
+                  </div>
+
+                  <input class="form-control" name="participantsNumber" type="number" placeholder="Desirable number of participants" ng-model="courseInfo.participantsNumber" required>
+                  <span style="color:red" ng-show="courseForm.participantsNumber.$dirty && courseForm.participantsNumber.$invalid">
+                  <span ng-show="courseForm.participantsNumber.$error.required">Desirable number of participants is required.</span>
+                      <span ng-show="courseForm.participantsNumber.$error.number">Invalid number of participants.</span>
+                  </span>
+
+                  <textarea class="form-control" name="additional" rows="3" placeholder="Additional info (optional)" ng-model="courseInfo.additional"></textarea>
+
+                  <input type="submit" ng-click="saveData()" class="btn btn-primary btn-lg" value="Create course!"></input>
+                </form>
+            </div>
+
+        <!-- ng-disabled="courseForm.name.$dirty && courseForm.name.$invalid ||
+                        courseForm.description.$dirty && courseForm.description.$invalid || courseForm.audience.$dirty && courseForm.audience.$invalid ||
+                        courseForm.participantsNumber.$dirty && courseForm.participantsNumber.$invalid" -->
+        </div>
+    </div>
+<div class="col-md-2"></div>
+</div>
