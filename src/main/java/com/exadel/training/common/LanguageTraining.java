@@ -4,42 +4,29 @@ package com.exadel.training.common;
  * Created by Клим on 15.07.2015.
  */
 public enum LanguageTraining {
-    Russian,
-    English;
+    russian,
+    english;
 
-    public static LanguageTraining parseStringToLanguageTraining(String language) throws NoSuchFieldException {
+    public static int parseToInt(String language) throws NoSuchFieldException {
         switch (language) {
-            case "1": {
-                return LanguageTraining.Russian;
-            }
-            case "2": {
-                return  LanguageTraining.English;
-            }
-            default: {
-                throw new NoSuchFieldException("don't find such type.");
-            }
-        }
-    }
-    public static String parseLanguageTrainingToString(LanguageTraining languageTraining) throws NoSuchFieldException {
-        switch (languageTraining) {
-            case Russian: {
-                return "1";
-            }
-            case English: {
-                return "2";
-            }
-            default: {
-                throw new NoSuchFieldException("don't find such type.");
-            }
-        }
-    }
-    public static int parseStringLanguageTrainingToInt(String languageTraining) throws NoSuchFieldException {
-        switch (languageTraining) {
-            case "Russian": {
+            case "russian": {
                 return 1;
             }
-            case "English": {
-                return 2;
+            case "english": {
+                return  2;
+            }
+            default: {
+                throw new NoSuchFieldException("don't find such type.");
+            }
+        }
+    }
+    public static String parseToString(int language) throws NoSuchFieldException {
+        switch (language) {
+            case 1: {
+                return "russian";
+            }
+            case 2: {
+                return "english";
             }
             default: {
                 throw new NoSuchFieldException("don't find such type.");

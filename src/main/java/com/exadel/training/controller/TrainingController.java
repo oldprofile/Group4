@@ -19,6 +19,7 @@ import java.util.List;
  * Created by Клим on 10.07.2015.
  */
 @Controller
+@RequestMapping("/training_controller")
 public class TrainingController {
 
     @Autowired
@@ -31,11 +32,11 @@ public class TrainingController {
         return list;
     }
 
-    @RequestMapping(value = "/training_name", method = RequestMethod.GET)
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
     @ResponseBody
-    Training trainingName() {
-        Training training = trainingService.getTrainingByName("english");
-        return training;
+    List<Training> trainingTest() {
+        List<Training> list = trainingService.getTrainingByNearestDate();
+        return list;
     }
 
     @RequestMapping(value = "/training_info", method = RequestMethod.POST, consumes = "application/json")
@@ -44,23 +45,33 @@ public class TrainingController {
         String trainingName = trainingNameAndUserLogin.getTrainingName();
         String userLogin = trainingNameAndUserLogin.getLogin();
         TrainingInfo trainingInfo = new TrainingInfo(trainingService.getTrainingByName(trainingName));
+        if(trainingService.getTrainingByNameAndUserLogin(trainingName, userLogin) == null)
+            trainingInfo.setIsSubscriber(false);
+        else trainingInfo.setIsSubscriber(true);
         return trainingInfo;
     }
 
     @RequestMapping(value = "/create_training", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody
     Training createTraining(@RequestBody TrainingForCreation trainingForCreation) {
-        Training training = trainingService.addTraining(trainingForCreation);
+        Training training = null;
+        try {
+            training = trainingService.addTraining(trainingForCreation);
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
         return training;
     }
 
-    @RequestMapping(value = "/training_full", method = RequestMethod.GET)
-    @ResponseBody
-    TrainingInfo getTrainingFull() {
-        String trainingName = "english";
-        String userLogin = "ken";
-        Training training = trainingService.getTrainingByNameAndUserLogin(trainingName, userLogin); //trainingService.getTrainingByNameAndUserLogin(trainingName, userLogin);
-        TrainingInfo trainingInfo = new TrainingInfo(training);
-        return trainingInfo;
+    @RequestMapping(value = "/approve_training", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody
+    Training approveTraining(@RequestBody TrainingNameAndUserLogin trainingNameAndUserLogin) {
+        Training training = null;
+        try {
+            training = trainingService.approveTraining(trainingNameAndUserLogin.getTrainingName());
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        return training;
     }
 }
