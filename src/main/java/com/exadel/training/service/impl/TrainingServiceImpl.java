@@ -13,8 +13,12 @@ import com.exadel.training.service.TrainingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Created by Клим on 10.07.2015.
@@ -31,8 +35,13 @@ public class TrainingServiceImpl implements TrainingService {
     private CategoryRepository categoryRepository;
 
     @Override
-    public Training addTraining(TrainingForCreation trainingForCreation) throws NoSuchFieldException {
-        List<Date> dateTimes = trainingForCreation.getDateTimes();
+    public Training addTraining(TrainingForCreation trainingForCreation) throws NoSuchFieldException, ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        List<String> dates = trainingForCreation.getDateTimes();
+        List<Date> dateTimes = new ArrayList<>();
+        for(int i = 0; i < dates.size(); ++i){
+            dateTimes.add(sdf.parse(dates.get(i)));
+        }
         Training mainTraining = new Training();
         mainTraining.setDateTime(dateTimes.get(dateTimes.size() - 1));
         mainTraining.setName(trainingForCreation.getName());
