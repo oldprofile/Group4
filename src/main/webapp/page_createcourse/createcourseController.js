@@ -1,10 +1,15 @@
 angular.module('myApp.createcourse')
-.controller('CreateCourseController', ['$scope', 'getCategories', function($scope, getCategories) {
+.controller('CreateCourseController', ['$scope', 'getCategories', 'createcourse', function($scope, getCategories, createcourse) {
     $scope.categoriesObj = [];
     $scope.categories = [];
-    $scope.accessibility = ['Internal', 'External'];
+    $scope.types = [
+        {name: 'Internal',
+        isInternal: true},
+        {name: 'External',
+        isInternal: false}];
     $scope.repeat = ['Once-only', 'Repeating'];
     $scope.languages = ['Russian', 'English'];
+    console.log($scope.types);
     
     $scope.courseInfo = {};
     
@@ -15,19 +20,16 @@ angular.module('myApp.createcourse')
     
     $scope.courseInfo.categoryName = "";
     $scope.courseInfo.category = 0;
-    $scope.courseInfo.isInternal = true;
     
     $scope.saveData = function() {
         var index = $scope.categories.indexOf($scope.courseInfo.categoryName);
         $scope.courseInfo.category = $scope.categoriesObj[index].id;
-        $scope.courseInfo.isInternal = (($scope.courseInfo.accessibility == 'External') ? false : true);
+        console.log($scope.courseInfo);
+        createcourse.createCourse($scope.courseInfo);
     }
     getCategories.success(function(data) {
         $scope.categoriesObj = data;
-        alert(JSON.stringify(data));
-        
         for (var c=0; c<$scope.categoriesObj.length; c++){
-            alert(JSON.stringify($scope.categoriesObj[c]));
             $scope.categories.push($scope.categoriesObj[c].name);
         }
         $scope.courseInfo.category = $scope.categories[0]; 

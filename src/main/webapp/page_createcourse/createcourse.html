@@ -30,12 +30,13 @@
                       <option value="">Select category</option>
                   </select>
 
-                  <select class="form-control" ng-model="courseInfo.accessibility" ng-options="type for type in accessibility">
+                  <select class="form-control" ng-model="courseInfo.isInternal" ng-options="type.name for type in types track by type.isInternal">
                       <option value="">Select course type</option>
                   </select>
 
                   <select class="form-control" ng-model="courseInfo.repeat" ng-options="type for type in repeat">
                       <option value="">Select repeat type</option>
+                      
                   </select>
 
                   <select class="form-control" ng-model="courseInfo.language" ng-options="lang for lang in languages">
@@ -56,7 +57,7 @@
                       </ul>
                   </div>
 
-                  <input class="form-control" name="participantsNumber" type="number" placeholder="Desirable number of participants" ng-model="formInfo.participantsNumber" required>
+                  <input class="form-control" name="participantsNumber" type="number" placeholder="Desirable number of participants" ng-model="courseInfo.participantsNumber" required>
                   <span style="color:red" ng-show="courseForm.participantsNumber.$dirty && courseForm.participantsNumber.$invalid">
                   <span ng-show="courseForm.participantsNumber.$error.required">Desirable number of participants is required.</span>
                       <span ng-show="courseForm.participantsNumber.$error.number">Invalid number of participants.</span>

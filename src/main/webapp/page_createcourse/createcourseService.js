@@ -4,7 +4,7 @@ angular.module('myApp.createcourse')
     var createcourse = {};
     
     createcourse.createCourse = function(courseData){
-        return $http.post('/authentication/log_password', courseData).success(function(data) {
+        return $http.post('/create_training', courseData).success(function(data) {
               return data;
             })
             .error(function(err) {
