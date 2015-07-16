@@ -26,17 +26,12 @@
                       <span ng-show="courseForm.audience.$error.required">Target audience is required.</span>
                   </span>
 
-                  <select class="form-control" ng-model="courseInfo.categoryName" ng-options="category for category in categories">
+                  <select class="form-control" ng-model="courseInfo.idCategory" ng-options="category.id as category.name for category in categoriesObj">
                       <option value="">Select category</option>
                   </select>
 
-                  <select class="form-control" ng-model="courseInfo.isInternal" ng-options="type.name for type in types track by type.isInternal">
+                  <select class="form-control" ng-model="courseInfo.isInternal" ng-options="type.isInternal as type.name for type in types">
                       <option value="">Select course type</option>
-                  </select>
-
-                  <select class="form-control" ng-model="courseInfo.repeat" ng-options="type for type in repeat">
-                      <option value="">Select repeat type</option>
-                      
                   </select>
 
                   <select class="form-control" ng-model="courseInfo.language" ng-options="lang for lang in languages">
