@@ -28,6 +28,13 @@ public interface UserRepository extends JpaRepository<User,Long>{
 
    // @Query("delete from User as u inner join u.training as t where u.login = ?2 and t.name = ?1")
    @Modifying
-   @Query(value = "delete from users_trainings ut where ut.trainings = :trainingID and ut.listeners = :userID",nativeQuery = true)
+   @Query(value = "delete from users_trainings  where trainings = :trainingID and listeners = :userID",nativeQuery = true)
     void deleteUserTrainingRelationShip(@Param("trainingID")Long trainingID, @Param("userID")Long userID);
+
+   @Modifying
+   @Query(value = "insert into users_trainings values(:trainingID,:userID)", nativeQuery = true)
+    void insertUserTrainingRelationShip(@Param("trainingID")Long trainingID, @Param("userID")Long userID);
+
+    @Query("select  distinct u.trainings from User as u inner join u.trainings as t where u.login = ?1 order by t.dateTime")
+    List<Training> selectAllTrainingSortedByDate(String login);
 }
