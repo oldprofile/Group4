@@ -69,4 +69,14 @@ public class UserController {
            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
        }
     }
+
+    @RequestMapping(value = "/all_trainings_sorted_by_date", method = RequestMethod.GET)
+    public @ResponseBody List<AllTrainingUserShort> getAllTrainingSortedByDate(/*RequestBody String login*/) {
+        List<Training> trainings = userService.selectAllTrainingSortedByDate("1");
+        List<AllTrainingUserShort> allTrainingUserShorts = new ArrayList<>();
+        for(Training training : trainings) {
+            allTrainingUserShorts.add(AllTrainingUserShort.parseAllTrainingUserShort(training));
+        }
+        return  allTrainingUserShorts;
+    }
 }
