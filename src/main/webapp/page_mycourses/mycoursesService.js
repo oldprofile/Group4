@@ -1,7 +1,7 @@
 angular.module('myApp.mycourses')
 .factory('mycourses', ['$http','userService', function($http,userService) {
     
-  return $http.post('user_controller/all_trainings_sorted_by_date',{login:userService.getUser().login} )
+  return $http.post('user_controller/all_trainings_of_user',{login:userService.getUser().login} )
             .success(function(data) {
               JSON.stringify(data);
               return data;
