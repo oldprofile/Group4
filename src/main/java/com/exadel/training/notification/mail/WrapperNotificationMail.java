@@ -10,54 +10,36 @@ import java.util.Properties;
  * Created by HP on 16.07.2015.
  */
 public class WrapperNotificationMail {
-    private MimeMessage mimeMessage;
-    private String from = "artem6695@mail.ru";
-    private String password = "jrcfyf";
-    private String host = "localhost";
-    private Properties properties = System.getProperties();
+
+    private final String username = "mrartem6695@gmail.com";
+    private final String password = "jordan23!";
+    private Properties properties;
     private Session session;
 
-    String mailSmtpHost = "localhost";
-
-    String mailTo = "artem6695@mail.ru";
-    String mailCc = "artem6695@mail.ru";
-    String mailFrom = "artem6695@mail.ru";
-    String mailSubject = "Email from Java";
-    String mailText = "This is an email from Java";
-
     public WrapperNotificationMail() {
+        properties = new Properties();
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true");
+        properties.put("mail.smtp.host", "smtp.gmail.com");
+        properties.put("mail.smtp.port", "587");
+        properties.put("mail.smtp.debug", "true");
 
-
-    }
-    public void sendMessage(String to) throws MessagingException {
-        final String username = "mrartem6695@gmail.com";
-        final String password = "jordan23!";
-
-        Properties props = new Properties();
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "25");
-
-        Session session = Session.getInstance(props,
+        session = Session.getInstance(properties,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
                         return new PasswordAuthentication(username, password);
                     }
                 });
-
-
+    }
+    public void sendMessage(String to, String text, String topic) throws MessagingException {
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("mrartem6695@gmail.com"));
+            message.setFrom(new InternetAddress(username));
             message.setRecipients(Message.RecipientType.TO,
-                    InternetAddress.parse("mrartem6695@gmail.com"));
-            message.setSubject("Testing Subject");
-            message.setText("Dear Mail Crawler,"
-                    + "\n\n No spam to my email, please!");
+                    InternetAddress.parse(to));
+            message.setSubject(topic);
+            message.setText(text);
 
             Transport.send(message);
-
             System.out.println("Done");
-
     }
 }

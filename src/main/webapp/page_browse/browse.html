@@ -1,12 +1,17 @@
-<div ng-controller="BrowseController">
+<div>
     
-<div ng-repeat="training in allTraining">
+<div ng-repeat="training in allTrainings">
     
-    <p>{{training.name}}</p>
+    <p>{{training.trainingName}}</p>
+    <p>{{training.trainingCoach}}</p>
+    <p>{{training.trainingImage}}</p>
+    <p>{{training.dateTraining | date : shortDate  }}</p>
+    <p>{{training.trainingPlace}}</p>
+    <a ng-href="#/courseinfo/{{training.trainingName}}">more</a>
    
     
 </div>
-    
+   
 
 
 

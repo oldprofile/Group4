@@ -1,11 +1,14 @@
 angular.module('myApp.browse')
 .controller('BrowseController',['$scope','browseService', function($scope, browseService){
-    
-    browseService.getAllTrainings
+    alert("browse");
+    browseService.getAllTrainings()
         .success(function(data){
               
-        $scope.allTraining = data;
+            $scope.allTrainings = data;
         
+        }).error(function(err){
+            alert("err");
         })
+
     
 }]);

@@ -3,12 +3,12 @@ package com.exadel.training.controller.model.User;
 /**
  * Created by HP on 14.07.2015.
  */
-public class UserLeaveTraining {
+public class UserLeaveAndJoinTraining {
 
     private String login;
     private String nameTraining;
 
-    public UserLeaveTraining() {
+    public UserLeaveAndJoinTraining() {
     }
 
     public String getLogin() {
