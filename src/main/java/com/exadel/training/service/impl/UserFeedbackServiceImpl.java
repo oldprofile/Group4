@@ -1,5 +1,6 @@
 package com.exadel.training.service.impl;
 
+import com.exadel.training.controller.model.Feedback.UserFeedbackModel;
 import com.exadel.training.model.User;
 import com.exadel.training.model.UserFeedback;
 import com.exadel.training.repository.impl.UserFeedbackRepository;
@@ -21,16 +22,15 @@ public class UserFeedbackServiceImpl implements UserFeedbackService {
     UserFeedbackRepository userFeedbackRepository;
 
     @Override
-    public void addUserFeedback(User feedbacker, User user, String attendance, String attitude, String commSkills, String questions, String motivation, String focusOnResult, String other) {
+    public void addUserFeedback(User feedbacker, User user, UserFeedbackModel userFeedbackModel) {
 
-        UserFeedback ufeedback = new UserFeedback(attendance, attitude, commSkills, questions, motivation,
-                focusOnResult, other, feedbacker, user);
-
+        UserFeedback ufeedback = new UserFeedback(userFeedbackModel.getAttendance(), userFeedbackModel.getAttitude(), userFeedbackModel.getCommSkills(),
+                userFeedbackModel.getQuestions(), userFeedbackModel.getMotivation(),userFeedbackModel.getFocusOnResult(), userFeedbackModel.getOther(), feedbacker, user);
         userFeedbackRepository.save(ufeedback);
     }
 
     @Override
-    public List<UserFeedback> getUserFeedbacks(User user) {
-        return userFeedbackRepository.findFeedbackByUser(user);
+    public List<UserFeedback> getUserFeedbacksOrderByDate(User user) {
+        return userFeedbackRepository.findFeedbackByUserOrderByDateAsc(user);
     }
 }
