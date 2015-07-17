@@ -1,13 +1,11 @@
 package com.exadel.training.controller;
 
 import com.exadel.training.common.RoleType;
-import com.exadel.training.controller.model.User.AllTrainingUserShort;
-import com.exadel.training.controller.model.User.UserLeaveAndJoinTraining;
-import com.exadel.training.controller.model.User.UserLogin;
-import com.exadel.training.controller.model.User.UserShort;
+import com.exadel.training.controller.model.User.*;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
 import com.exadel.training.service.UserService;
+import com.twilio.sdk.TwilioRestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -56,8 +54,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "/leave_training", method = RequestMethod.POST, consumes = "application/json")
-    public void leaveTraining(@RequestBody UserLeaveAndJoinTraining userLeaveAndJoinTraining) {
+    public void leaveTraining(@RequestBody UserLeaveAndJoinTraining userLeaveAndJoinTraining) throws TwilioRestException {
         userService.deleteUserTrainingRelationShip(userLeaveAndJoinTraining.getLogin(), userLeaveAndJoinTraining.getNameTraining());
+
     }
 
     @RequestMapping(value = "/join_training", method = RequestMethod.POST, consumes = "application/json")
@@ -71,12 +70,26 @@ public class UserController {
     }
 
     @RequestMapping(value = "/all_trainings_sorted_by_date", method = RequestMethod.POST, consumes = "application/json")
-    public @ResponseBody List<AllTrainingUserShort> getAllTrainingSortedByDate(@RequestBody UserLogin login ) {
-        List<Training> trainings = userService.selectAllTrainingSortedByDate(login.getLogin());
+    public @ResponseBody List<AllTrainingUserShort> getAllTrainingSortedByDate(@RequestBody AllTrainingUserSortedAndState loginAndState ) {
+        List<Training> trainings = userService.selectAllTrainingSortedByDate(loginAndState.getLogin(),loginAndState.getStates());
         List<AllTrainingUserShort> allTrainingUserShorts = new ArrayList<>();
         for(Training training : trainings) {
             allTrainingUserShorts.add(AllTrainingUserShort.parseAllTrainingUserShort(training));
         }
         return  allTrainingUserShorts;
+    }
+
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public @ResponseBody List<AllTrainingUserShort> t() {
+        List<Integer> l = new ArrayList<>();
+        l.add(1);
+        l.add(2);
+        List<Training> trainings = userService.selectAllTrainingSortedByDate("1",l);
+        List<AllTrainingUserShort> allTrainingUserShorts = new ArrayList<>();
+        for(Training training : trainings) {
+            allTrainingUserShorts.add(AllTrainingUserShort.parseAllTrainingUserShort(training));
+        }
+        return  allTrainingUserShorts;
+
     }
 }
