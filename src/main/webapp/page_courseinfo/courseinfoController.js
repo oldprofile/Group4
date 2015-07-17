@@ -27,6 +27,9 @@ angular.module('myApp.courseinfo')
         //$scope.isSubscriber = false;
         $scope.courseName = $routeParams.coursename;
         console.log(JSON.stringify(data));
+        $scope.course = data;
+        
+        
         
         
     }).error(function(err){

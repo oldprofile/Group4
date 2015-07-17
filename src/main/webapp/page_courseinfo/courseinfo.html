@@ -1,14 +1,21 @@
 
 <div ng-controller="CourseInfoController">
 
-    
-    {{courseName}} 
-    
+    <div>
+        <h3>{{course.name}}</h3>
+        <p>Date: {{course.dateTime}}</p>
+        <p>{{course.description}}</p>
+        <p>unit: {{course.place}}</p>
+        <p>people: {{course.amount}}</p>
+    </div>
     
     <div>
         <button class="btn btn-default" role="button" ng-click="subscribe()">{{subButtonText}}</button>
         
         <a class="btn btn-default" role="button">Edit</a>
     </div>
+    
+    
+
 
 </div>
