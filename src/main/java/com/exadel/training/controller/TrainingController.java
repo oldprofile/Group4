@@ -44,7 +44,7 @@ public class TrainingController {
     List<Training> trainingTest() throws ParseException {
         List<Training> list = trainingService.getTrainingByNearestDate();
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         String date = "08-08-2015 23:10:00";
         Date dateTime = sdf.parse(date);
         return list;
