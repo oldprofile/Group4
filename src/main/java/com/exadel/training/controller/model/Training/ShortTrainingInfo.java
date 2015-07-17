@@ -15,7 +15,7 @@ public class ShortTrainingInfo {
     private String trainingImage;
     private String dateTraining;
     private String trainingPlace;
-    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
 
     public ShortTrainingInfo() {
     }
