@@ -9,18 +9,25 @@ angular.module('myApp.courseinfo')
         trainingName: $routeParams.coursename
     };
     
+    var courseInfoData1 = {
+        login: userService.getUser().login,
+        nameTraining: $routeParams.coursename
+    };
+    
     $scope.isSubscriber = false;
     $scope.subscribe = function(){
         var isSub = $scope.isSubscriber;
         if(isSub){
-            alert("leave post");
-        } else {
-            alert("sub post");
-        }
-        $scope.subButtonText = !isSub ? "Leave" : "Subscribe";
-        $scope.isSubscriber = !isSub;
-        
-        
+            courseInfoService.leave(courseInfoData1).success(function(data){
+                
+                $scope.isSubscriber = false;
+            }).error(function(err){});
+        } else {   
+            courseInfoService.subscribe(courseInfoData1).success(function(data){
+                
+                $scope.isSubscriber = true;
+            }).error(function(err){});
+        }    
     }
     
     courseInfoService.getCourseInfo(courseInfoData).success(function(data){
@@ -28,6 +35,7 @@ angular.module('myApp.courseinfo')
         $scope.courseName = $routeParams.coursename;
         console.log(JSON.stringify(data));
         $scope.course = data;
+        $scope.isSubscriber = data.subscriber;
         
         
         
