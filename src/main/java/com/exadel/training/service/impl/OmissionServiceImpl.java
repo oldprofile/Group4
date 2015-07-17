@@ -21,4 +21,9 @@ public class OmissionServiceImpl implements OmissionService{
     public List<Omission> getOmissionsByTrainingName(String trainingName) {
         return omissionRepository.findByTrainingName(trainingName);
     }
+
+    @Override
+    public List<Omission> findByTrainingNameAndUserLogin(String trainingName, String userLogin) {
+        return omissionRepository.findByTrainingNameAndUserLogin(trainingName, userLogin);
+    }
 }

@@ -4,6 +4,7 @@ import com.exadel.training.model.Omission;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,28 +15,18 @@ import java.util.List;
 public class TrainingInfo {
 
     private String name;
-
-    private Date dateTime;
-
+    private String dateTime;
     private String pictureLink;
-
     private String description;
-
     private String place;
-
     private int amount;
-
     private int language;
-
     private boolean isInternal;
-
     private boolean isRepeating;
-
     private boolean isSubscriber;
-
     private List<UserShort> listeners;
-
     private List<UserShort> spareUsers;
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
 
     public TrainingInfo() {
     }
@@ -43,7 +34,7 @@ public class TrainingInfo {
     public TrainingInfo(Training training) {
         this.name = training.getName();
         this.amount = training.getAmount();
-        this.dateTime = training.getDateTime();
+        this.dateTime = sdf.format(training.getDateTime());
         this.description = training.getDescription();
         this.language = training.getLanguage();
         this.pictureLink = training.getPictureLink();
@@ -72,11 +63,11 @@ public class TrainingInfo {
         this.name = name;
     }
 
-    public Date getDateTime() {
+    public String getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(Date dateTime) {
+    public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
     }
 

@@ -1,1 +1,20 @@
-<p>Browse</p>
+<div>
+    
+<div ng-repeat="training in allTrainings">
+    
+    <p>{{training.trainingName}}</p>
+    <p>{{training.trainingCoach}}</p>
+    <p>{{training.trainingImage}}</p>
+    <p>{{training.dateTraining | date : shortDate  }}</p>
+    <p>{{training.trainingPlace}}</p>
+    <a ng-href="#/courseinfo/{{training.trainingName}}">more</a>
+   
+    
+</div>
+   
+
+
+
+</div>
+
+<a href="#/createcourse">Create course!</a>

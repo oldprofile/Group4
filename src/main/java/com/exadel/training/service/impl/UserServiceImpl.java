@@ -51,8 +51,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Training> selectAllTrainingSortedByDate(String login) {
-        return userRepository.selectAllTrainingSortedByDate(login);
+    public List<Training> selectAllTrainingSortedByDate(String login, List<Integer> state) {
+        return userRepository.selectAllTrainingSortedByDate(login, state);
     }
 
     @Override
@@ -65,8 +65,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void insertUserTrainingRelationShip(String login, String trainingName) {
         long userID = userRepository.findUserByLogin(login).getId();
-        long trainingID = trainingRepository.findByName(trainingName).getId();
-        userRepository.insertUserTrainingRelationShip(trainingID, userID);
+        Training training = trainingRepository.findByName(trainingName);
+        if(training.getListeners().size() < training.getAmount()) {
+            userRepository.insertUserTrainingRelationShip(training.getId(), userID);
+        }
     }
 
     @Override

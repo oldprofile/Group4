@@ -46,11 +46,14 @@ public class Training {
     //@ManyToOne(cascade = CascadeType.ALL)
     private int state;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<User> spareUsers;
 
     @OneToMany(mappedBy = "training")
     private List<Omission> omissions;
+
+    @OneToMany(mappedBy = "training")
+    private  List<TrainingFeedback> feedbacks;
 
     public Training() {
     }
@@ -183,4 +186,11 @@ public class Training {
         this.omissions = omissions;
     }
 
+    public List<TrainingFeedback> getFeedbacks() {
+        return feedbacks;
+    }
+
+    public void setFeedbacks(List<TrainingFeedback> feedbacks) {
+        this.feedbacks = feedbacks;
+    }
 }

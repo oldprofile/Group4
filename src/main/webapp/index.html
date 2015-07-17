@@ -21,13 +21,13 @@
   <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
     
 </head>
-<body ng-app="myApp" ng-controller="MainController" class="auth-class waiting-for-angular">
+<body ng-app="myApp" class="auth-class waiting-for-angular">
     <div id="initializing-panel"></div>
     <div id="content-outer">
         
         <header-menu ng-show="isLogged"></header-menu>
  
-        <div ng-view class="ng-view-content"></div>
+        <div ng-view class="container ng-view-content"></div>
         
         <my-app-footer ng-show="isLogged"></my-app-footer>
     

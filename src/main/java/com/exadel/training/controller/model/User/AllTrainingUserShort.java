@@ -49,7 +49,7 @@ public class AllTrainingUserShort {
 
     public void setDateTraining(Date dataTraining) {
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
         this.dateTraining = sdf.format(dataTraining);
     }
 
