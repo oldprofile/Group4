@@ -1,9 +1,6 @@
 package com.exadel.training.controller;
 
-import com.exadel.training.controller.model.Training.ShortTrainingInfo;
-import com.exadel.training.controller.model.Training.TrainingForCreation;
-import com.exadel.training.controller.model.Training.TrainingInfo;
-import com.exadel.training.controller.model.Training.TrainingNameAndUserLogin;
+import com.exadel.training.controller.model.Training.*;
 import com.exadel.training.controller.model.User.AllTrainingUserShort;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
@@ -29,7 +26,7 @@ public class TrainingController {
     @Autowired
     TrainingService trainingService;
 
-    @RequestMapping(/*value = "/list/{authorization}",*/ method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     List<ShortTrainingInfo> trainingList(/* @PathVariable("authorization") String userLogin*/) {
         List<Training> list = trainingService.getValidTrainings();
@@ -91,10 +88,10 @@ public class TrainingController {
         return new ShortTrainingInfo(training);
     }
 
-    @RequestMapping(value = "/list_by_category/{categoryId}", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/list_by_category", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody
-    List <ShortTrainingInfo> trainingListByCategory(@PathVariable("categoryId") int categoryId) {
-        List<Training> trainings = trainingService.getValidTrainingsByCategoryId(categoryId);
+    List <ShortTrainingInfo> trainingListByCategory(@RequestBody CategoryId categoryId) {
+        List<Training> trainings = trainingService.getValidTrainingsByCategoryId(categoryId.getCategoryId());
         return ShortTrainingInfo.parseList(trainings);
     }
 
