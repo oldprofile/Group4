@@ -88,10 +88,10 @@ public class TrainingController {
         return new ShortTrainingInfo(training);
     }
 
-    @RequestMapping(value = "/list_by_category", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/list_by_category/{categoryId}", method = RequestMethod.GET)
     public @ResponseBody
-    List <ShortTrainingInfo> trainingListByCategory(@RequestBody CategoryId categoryId) {
-        List<Training> trainings = trainingService.getValidTrainingsByCategoryId(categoryId.getCategoryId());
+    List <ShortTrainingInfo> trainingListByCategory(@PathVariable("categoryId") int categoryId) {
+        List<Training> trainings = trainingService.getValidTrainingsByCategoryId(categoryId);
         return ShortTrainingInfo.parseList(trainings);
     }
 
