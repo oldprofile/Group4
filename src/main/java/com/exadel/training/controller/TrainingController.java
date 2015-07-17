@@ -76,6 +76,18 @@ public class TrainingController {
         return new ShortTrainingInfo(training);
     }
 
+    @RequestMapping(value = "/approve_training", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody
+    ShortTrainingInfo approveTraining(@RequestBody TrainingNameAndUserLogin trainingNameAndUserLogin) {
+        Training training = null;
+        try {
+            training = trainingService.approveTraining(trainingNameAndUserLogin.getTrainingName());
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        return new ShortTrainingInfo(training);
+    }
+
     @RequestMapping(value = "/test_create_training", method = RequestMethod.GET)
     public @ResponseBody
     ShortTrainingInfo testCreateTraining() {
@@ -96,23 +108,17 @@ public class TrainingController {
         Training training = null;
         try {
             training = trainingService.addTraining(trainingForCreation);
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
+        } catch (NoSuchFieldException | ParseException e) {
             e.printStackTrace();
         }
         return new ShortTrainingInfo(training);
     }
 
-    @RequestMapping(value = "/approve_training", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/test_delete_training", method = RequestMethod.GET)
     public @ResponseBody
-    ShortTrainingInfo approveTraining(@RequestBody TrainingNameAndUserLogin trainingNameAndUserLogin) {
-        Training training = null;
-        try {
-            training = trainingService.approveTraining(trainingNameAndUserLogin.getTrainingName());
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        }
-        return new ShortTrainingInfo(training);
+    ShortTrainingInfo testDeleteTraining() {
+        String trainingName = "training";
+        Training delTraining = trainingService.deleteTrainingsByName(trainingName);
+        return  new ShortTrainingInfo(delTraining);
     }
 }

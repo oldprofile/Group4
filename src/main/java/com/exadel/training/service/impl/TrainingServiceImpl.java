@@ -130,4 +130,18 @@ public class TrainingServiceImpl implements TrainingService {
     public List<Training> getTrainingByNearestDate() {
         return trainingRepository.findNearestTraining();
     }
+
+    @Override
+    public Training deleteTrainingsByName(String trainingName) {
+        List<Training> trainings = trainingRepository.findAllByName(trainingName);
+        for(Training training: trainings){
+            training.setCategory(null);
+            training.setParent(0);
+            training.setFeedbacks(null);
+            trainingRepository.saveAndFlush(training);
+            trainingRepository.delete(training);
+        }
+        //trainingRepository.deleteTrainingsByName(trainingName);
+        return trainings.get(0);
+    }
 }

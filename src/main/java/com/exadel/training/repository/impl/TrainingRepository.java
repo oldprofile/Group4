@@ -2,6 +2,7 @@ package com.exadel.training.repository.impl;
 
 import com.exadel.training.model.Training;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.Date;
@@ -37,4 +38,8 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
 
     @Query("select  tr from Training as tr where tr.state in (2,3) order by tr.dateTime asc")
     List<Training> findNearestTraining();
+
+    @Modifying
+    @Query(value = "delete from trainings where name = ?1", nativeQuery = true)
+    void deleteTrainingsByName(String trainingName);
 }

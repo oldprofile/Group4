@@ -21,4 +21,5 @@ public interface TrainingService {
     Training editTraining(Training training);
     Training approveTraining(String trainingName) throws NoSuchFieldException;
     List<Training> getTrainingByNearestDate();
+    Training deleteTrainingsByName(String trainingName);
 }
