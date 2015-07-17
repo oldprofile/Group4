@@ -29,7 +29,7 @@ public class ShortTrainingInfo {
         trainingPlace = training.getPlace();
     }
 
-    public static List<ShortTrainingInfo> parceList(List<Training> trainings) {
+    public static List<ShortTrainingInfo> parseList(List<Training> trainings) {
         List <ShortTrainingInfo> shortTrainings = new ArrayList<>();
         for (Training training : trainings) {
             shortTrainings.add(new ShortTrainingInfo(training));

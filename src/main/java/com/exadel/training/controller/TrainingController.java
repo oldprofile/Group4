@@ -33,7 +33,7 @@ public class TrainingController {
     @ResponseBody
     List<ShortTrainingInfo> trainingList(/* @PathVariable("authorization") String userLogin*/) {
         List<Training> list = trainingService.getValidTrainings();
-        List<ShortTrainingInfo> returnList = ShortTrainingInfo.parceList(list);
+        List<ShortTrainingInfo> returnList = ShortTrainingInfo.parseList(list);
         /*for(int i = 0; i < list.size(); ++i) {
             if(trainingService.getTrainingByNameAndUserLogin(list.get(i).getName(), userLogin) == null)
                 returnList.get(i).setIsSubscriber(false);
@@ -50,7 +50,7 @@ public class TrainingController {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         String date = "08-08-2015 23:10:00.000";
         Date dateTime = sdf.parse(date);
-        return ShortTrainingInfo.parceList(list);
+        return ShortTrainingInfo.parseList(list);
     }
 
     @RequestMapping(value = "/training_info", method = RequestMethod.POST, consumes = "application/json")
@@ -89,6 +89,20 @@ public class TrainingController {
             e.printStackTrace();
         }
         return new ShortTrainingInfo(training);
+    }
+
+    @RequestMapping(value = "/list_by_category/{categoryId}", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody
+    List <ShortTrainingInfo> trainingListByCategory(@PathVariable("categoryId") int categoryId) {
+        List<Training> trainings = trainingService.getValidTrainingsByCategoryId(categoryId);
+        return ShortTrainingInfo.parseList(trainings);
+    }
+
+    @RequestMapping(value = "/test_category_name", method = RequestMethod.GET)
+    public @ResponseBody
+    List <ShortTrainingInfo> testTrainingListByCategory() {
+        List<Training> trainings = trainingService.getValidTrainingsByCategoryId(1);
+        return ShortTrainingInfo.parseList(trainings);
     }
 
     @RequestMapping(value = "/test_create_training", method = RequestMethod.GET)

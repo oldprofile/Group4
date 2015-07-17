@@ -16,7 +16,7 @@ public interface TrainingService {
     Training getTrainingByName(String name);
     Training getTrainingByNameAndUserLogin(String trainingName, String userLogin);
     List<Training> getAllTrainings();
-    List<Training> getTrainingsByCategoryName(String name);
+    List<Training> getValidTrainingsByCategoryId(int id);
     List<Training> getValidTrainings();
     Training editTraining(Training training);
     Training approveTraining(String trainingName) throws NoSuchFieldException;
