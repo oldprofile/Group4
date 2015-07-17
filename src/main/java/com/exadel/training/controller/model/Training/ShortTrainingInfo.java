@@ -15,6 +15,7 @@ public class ShortTrainingInfo {
     private String trainingImage;
     private String dateTraining;
     private String trainingPlace;
+    private boolean isSubscriber;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
 
     public ShortTrainingInfo() {
@@ -75,5 +76,13 @@ public class ShortTrainingInfo {
 
     public void setTrainingPlace(String trainingPlace) {
         this.trainingPlace = trainingPlace;
+    }
+
+    public boolean getIsSubscriber() {
+        return isSubscriber;
+    }
+
+    public void setIsSubscriber(boolean isSubscriber) {
+        this.isSubscriber = isSubscriber;
     }
 }

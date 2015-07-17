@@ -10,11 +10,9 @@ import com.exadel.training.model.User;
 import com.exadel.training.service.TrainingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,11 +29,16 @@ public class TrainingController {
     @Autowired
     TrainingService trainingService;
 
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @RequestMapping(/*value = "/list/{authorization}",*/ method = RequestMethod.GET)
     @ResponseBody
-    List<ShortTrainingInfo> trainingList() {
+    List<ShortTrainingInfo> trainingList(/* @PathVariable("authorization") String userLogin*/) {
         List<Training> list = trainingService.getValidTrainings();
         List<ShortTrainingInfo> returnList = ShortTrainingInfo.parceList(list);
+        /*for(int i = 0; i < list.size(); ++i) {
+            if(trainingService.getTrainingByNameAndUserLogin(list.get(i).getName(), userLogin) == null)
+                returnList.get(i).setIsSubscriber(false);
+            else returnList.get(i).setIsSubscriber(true);
+        }*/
         return returnList;
     }
 
