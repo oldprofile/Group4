@@ -52,6 +52,9 @@ public class Training {
     @OneToMany(mappedBy = "training")
     private List<Omission> omissions;
 
+    @OneToMany(mappedBy = "training")
+    private  List<TrainingFeedback> feedbacks;
+
     public Training() {
     }
 
@@ -183,4 +186,11 @@ public class Training {
         this.omissions = omissions;
     }
 
+    public List<TrainingFeedback> getFeedbacks() {
+        return feedbacks;
+    }
+
+    public void setFeedbacks(List<TrainingFeedback> feedbacks) {
+        this.feedbacks = feedbacks;
+    }
 }
