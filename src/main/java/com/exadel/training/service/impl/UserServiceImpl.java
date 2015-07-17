@@ -65,8 +65,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void insertUserTrainingRelationShip(String login, String trainingName) {
         long userID = userRepository.findUserByLogin(login).getId();
-        long trainingID = trainingRepository.findByName(trainingName).getId();
-        userRepository.insertUserTrainingRelationShip(trainingID, userID);
+        Training training = trainingRepository.findByName(trainingName);
+        if(training.getListeners().size() < training.getAmount()) {
+            userRepository.insertUserTrainingRelationShip(training.getId(), userID);
+        }
     }
 
     @Override
