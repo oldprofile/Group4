@@ -58,7 +58,7 @@ public class UserController {
         String header = httpServletRequest.getHeader("authorization");
         String login = cryptService.decrypt(header);
         List<Training> trainings = userService.selectAllTraining(login);
-        List<AllTrainingUserShort> trainingUserShorts = new ArrayList<>();
+        List<AllTrainingUserShort> trainingUserShorts = new ArrayList<AllTrainingUserShort>();
         for(Training training : trainings) {
             trainingUserShorts.add(AllTrainingUserShort.parseAllTrainingUserShort(training));
         }
