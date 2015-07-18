@@ -3,7 +3,7 @@
 body{
     
     padding-top: 70px; 
-    height: 100vh;
+    height: 100vh !important;
     
 }
 
@@ -24,7 +24,7 @@ body.waiting-for-angular div#initializing-panel {
   height: 100%;
 }
 div#content-outer {
-    min-height: 100%;
+    min-height: 100% !important;
     position: relative;
 
 }

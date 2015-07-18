@@ -12,5 +12,5 @@ import java.util.List;
  * Created by asd on 12.07.2015.
  */
 public interface TrainingFeedbackRepository extends JpaRepository<TrainingFeedback, Long> {
-    List<TrainingFeedback> findFeedbackByTraining(Training training);
+    List<TrainingFeedback> findFeedbackByTrainingOrderByDateAsc(Training training);
 }

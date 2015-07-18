@@ -31,6 +31,7 @@ public class User {
     @Column(unique = true)
     private String login;
 
+    @NotNull
     private long password;
 
     @OneToMany(mappedBy = "user")
@@ -47,10 +48,13 @@ public class User {
     private  List<Training> ownTrainings;
 
     @OneToMany(mappedBy = "feedbacker")
-    private List <UserFeedback> userFeedback;
+    private List<UserFeedback> userFeedback;
 
     @OneToMany(mappedBy = "feedbacker")
-    private List <TrainingFeedback> trainingFeedback;
+    private List<TrainingFeedback> trainingFeedback;
+
+    @ManyToMany(mappedBy = "spareUsers")
+    private  List<Training> spareTrainings;
 
     public User() {
     }

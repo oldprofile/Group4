@@ -1,9 +1,5 @@
 package com.exadel.training.model;
 
-import com.exadel.training.controller.model.Training.TrainingForCreation;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -50,11 +46,14 @@ public class Training {
     //@ManyToOne(cascade = CascadeType.ALL)
     private int state;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<User> spareUsers;
 
     @OneToMany(mappedBy = "training")
     private List<Omission> omissions;
+
+    @OneToMany(mappedBy = "training")
+    private  List<TrainingFeedback> feedbacks;
 
     public Training() {
     }
@@ -187,4 +186,11 @@ public class Training {
         this.omissions = omissions;
     }
 
+    public List<TrainingFeedback> getFeedbacks() {
+        return feedbacks;
+    }
+
+    public void setFeedbacks(List<TrainingFeedback> feedbacks) {
+        this.feedbacks = feedbacks;
+    }
 }

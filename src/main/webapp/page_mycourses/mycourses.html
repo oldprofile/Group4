@@ -1,17 +1,29 @@
-<div ng-controller="MyCoursesController">
-
+<div>
     
-<div ng-repeat="course in mycourses">
+    <p>{{d | date:"mediumTime"  }}</p>
     
-    <p>{{course.courseName}}</p>
-    <img ng-src="{{course.courseImage}}">
-    <p>Lesson #{{course.courseLesson}}</p>
-    <p>Coach: {{course.courseCoach}}</p>
-    <p>Date: {{course.courseDatetime}}</p>
-    <p>Place: {{course.coursePlace}}</p>
-    <a href="/#/courseinfo/angular">angular</a>
-    
-</div>
+    <div ng-show="isNoCourses">
+        <h2>No Courses, browse them</h2>
+    </div>    
+    <div ng-repeat="course in mycourses" ng-hide="isNoCourses">
+
+        <p>{{course.trainingName}}</p>
+        <img ng-src="https://angularjs.org/img/AngularJS-large.png">
+        <p>Lesson #1</p>
+        <p>Coach: {{course.trainingCoach}}</p>
+        <p>Date: {{course.dateTraining | date:"medium" }}</p>
+        <p>Place: {{course.trainingPlace}}</p>
+
+        <a ng-href="#/courseinfo/{{course.trainingName}}">more</a>
 
 
+    </div>
+
+
+
+
+
+
+    <a href="#/createcourse">Create course!</a>
+    
 </div>

@@ -11,5 +11,5 @@ import java.util.List;
  * Created by asd on 12.07.2015.
  */
 public interface UserFeedbackRepository extends JpaRepository <UserFeedback, Long> {
-    List<UserFeedback> findFeedbackByUser(User user);
+    List<UserFeedback> findFeedbackByUserOrderByDateAsc(User user);
 }

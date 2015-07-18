@@ -15,16 +15,19 @@
   <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
   <link rel="stylesheet" href="app.css">
   <link rel="stylesheet" href="page_common/login/LoginCardStyle.css">
+    <link rel="stylesheet" href="page_createcourse/createcourse.css">
+    <link rel="stylesheet" href="components/angular-bootstrap-datetimepicker/src/css/datetimepicker.css"/>
+    
   <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
     
 </head>
-<body ng-app="myApp" ng-controller="MainController" class="auth-class waiting-for-angular">
+<body ng-app="myApp" class="auth-class waiting-for-angular">
     <div id="initializing-panel"></div>
     <div id="content-outer">
         
         <header-menu ng-show="isLogged"></header-menu>
  
-        <div ng-view class="ng-view-content"></div>
+        <div ng-view class="container ng-view-content"></div>
         
         <my-app-footer ng-show="isLogged"></my-app-footer>
     
@@ -44,6 +47,8 @@
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
     <script src="bower_components/angular-http-auth/src/http-auth-interceptor.js"></script>
+    <script src="bower_components/moment/moment.js"></script>
+    <script src="components/angular-bootstrap-datetimepicker/src/js/datetimepicker.js"></script>
     
     
     
@@ -53,6 +58,7 @@
     <script src="view1/view1.js"></script>
     <script src="view2/view2.js"></script>
     <script src="page_mycourses/mycourses.js"></script>
+    <script src="page_createcourse/createcourse.js"></script>
     <script src="page_browse/browse.js"></script>
     <script src="page_profile/profile.js"></script>
     <script src="page_admin/admin.js"></script>
@@ -68,6 +74,7 @@
     <script src="page_mycourses/mycoursesController.js"></script>
     <script src="page_profile/profileController.js"></script>
     <script src="page_courseinfo/courseinfoController.js"></script>
+    <script src="page_createcourse/createcourseController.js"></script>
     
     <!-- ###Pages Serivces### -->
     <script src="page_admin/adminService.js"></script>
@@ -77,6 +84,8 @@
     <script src="page_common/login/loginService.js"></script>
     <script src="page_common/general/userHolderService.js"></script>
     <script src="page_courseinfo/courseinfoService.js"></script>
+    <script src="page_createcourse/createcourseService.js"></script>
+    <script src="page_common/general/getCategoriesService.js"></script>
     
     
     <script src="components/version/version.js"></script>

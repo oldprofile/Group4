@@ -9,6 +9,7 @@ var app = angular.module('myApp', [
     'myApp.view2',
     'myApp.mycourses',
     'myApp.browse',
+    'myApp.createcourse',
     'myApp.profile',
     'myApp.admin',
     'myApp.version',
@@ -70,9 +71,12 @@ app.directive('authClass', ['$location','userService',function($location,userSer
           
         scope.$on('hideLoginEvent',function(event, data){
             //hideLoginForm(elem);
-            scope.isLogged = true;
-            userService.setUser(data.login,data.login,data.password,{});
-            $location.path('/');
+            
+            if(data.login == "test" && data.password == "test"){
+                scope.isLogged = true;
+                userService.setUser(data.login,data.login,data.password,{});
+                $location.path('/');
+            }
         });
           
       }
@@ -104,7 +108,3 @@ app.directive('authClass', ['$location','userService',function($location,userSer
 //            elem.find('#content-outer').show();
 //        }
     }
-
-
-
-

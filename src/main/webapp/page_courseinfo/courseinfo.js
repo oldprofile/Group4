@@ -7,6 +7,6 @@ angular.module('myApp.courseinfo', ['ngRoute'])
   $routeProvider.when('/courseinfo/:coursename', {
     templateUrl: 'page_courseinfo/courseinfo.html',
     controller: 'CourseInfoController'
-  });
+  }).otherwise('/mycourses');
 }]);
 
