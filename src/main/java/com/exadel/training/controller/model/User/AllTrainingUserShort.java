@@ -15,6 +15,7 @@ public class AllTrainingUserShort {
     private String trainingImage;
     private String dateTraining;
     private String trainingPlace;
+    private Boolean isCoach;
 
     public AllTrainingUserShort() {
     }
@@ -35,14 +36,6 @@ public class AllTrainingUserShort {
         this.trainingImage = trainingImage;
     }
 
-    public String getTrainningCoach() {
-        return trainingCoach;
-    }
-
-    public void setTrainningCoach(String trainningCoach) {
-        this.trainingCoach = trainningCoach;
-    }
-
     public String getDateTraining() {
         return dateTraining;
     }
@@ -61,10 +54,31 @@ public class AllTrainingUserShort {
         this.trainingPlace = trainingPlace;
     }
 
+    public Boolean getIsCoach() {
+        return isCoach;
+    }
+
+    public void setIsCoach(Boolean isCoach) {
+        this.isCoach = isCoach;
+    }
+
+    public void setDateTraining(String dateTraining) {
+        this.dateTraining = dateTraining;
+    }
+
+    public String getTrainingCoach() {
+        return trainingCoach;
+    }
+
+    public void setTrainingCoach(String trainingCoach) {
+        this.trainingCoach = trainingCoach;
+    }
+
+
     public static AllTrainingUserShort parseAllTrainingUserShort(Training training) {
         AllTrainingUserShort trainingUserShort = new AllTrainingUserShort();
         trainingUserShort.setDateTraining(training.getDateTime());
-        trainingUserShort.setTrainningCoach(training.getCoach().getName());
+        trainingUserShort.setTrainingCoach(training.getCoach().getName());
         trainingUserShort.setTrainingImage(training.getPictureLink());
         trainingUserShort.setTrainingPlace(training.getPlace());
         trainingUserShort.setTrainingName(training.getName());

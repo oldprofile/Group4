@@ -46,10 +46,12 @@ public class UserController {
         String header = httpServletRequest.getHeader("authorization");
         List<User> userList =  userService.findUsersByRole(RoleType.parseIntToRoleType(type));
         List<UserShort> userShortList = new ArrayList<UserShort>();
+
         for(int i = 0; i < userList.size(); i++ ) {
             User user = userList.get(i);
             userShortList.add(UserShort.parseUserShort(user));
         }
+
         return userShortList;
     }
 
@@ -58,16 +60,25 @@ public class UserController {
         String header = httpServletRequest.getHeader("authorization");
         String login = cryptService.decrypt(header);
         List<Training> trainings = userService.selectAllTraining(login);
-        List<AllTrainingUserShort> trainingUserShorts = new ArrayList<AllTrainingUserShort>();
+        User user = userService.findUserByLogin(login);
+        List<AllTrainingUserShort> allTrainingUserShorts = new ArrayList<AllTrainingUserShort>();
+
         for(Training training : trainings) {
-            trainingUserShorts.add(AllTrainingUserShort.parseAllTrainingUserShort(training));
+            AllTrainingUserShort allTrainingUserShort = AllTrainingUserShort.parseAllTrainingUserShort(training);
+            if(training.getCoach().getId() == user.getId()) {
+                allTrainingUserShort.setIsCoach(true);
+            } else {
+                allTrainingUserShort.setIsCoach(false);
+            }
+            allTrainingUserShorts.add(allTrainingUserShort);
         }
-        if(trainingUserShorts.isEmpty()) {
+
+        if(allTrainingUserShorts.isEmpty()) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         } else {
             response.setStatus(HttpServletResponse.SC_ACCEPTED);
         }
-        return trainingUserShorts;
+        return allTrainingUserShorts;
     }
 
     @RequestMapping(value = "/find_user_by_login", method = RequestMethod.GET)
@@ -75,6 +86,7 @@ public class UserController {
         String header = httpServletRequest.getHeader("authorization");
         String login = cryptService.decrypt(header);
         User user = userService.findUserByLogin(login);
+
         if(user == EMPTY) {
             httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
         } else {
@@ -84,15 +96,16 @@ public class UserController {
     }
 
     @RequestMapping(value = "/leave_training", method = RequestMethod.POST, consumes = "application/json")
-    public void leaveTraining(@RequestBody UserLeaveAndJoinTraining userLeaveAndJoinTraining,HttpServletRequest httpServletRequest) throws TwilioRestException {
+    public void leaveTraining(@RequestBody UserLeaveAndJoinTraining userLeaveAndJoinTraining,HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws TwilioRestException {
         String header = httpServletRequest.getHeader("authorization");
         userService.deleteUserTrainingRelationShip(userLeaveAndJoinTraining.getLogin(), userLeaveAndJoinTraining.getNameTraining());
-
+        httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
     }
 
     @RequestMapping(value = "/join_training", method = RequestMethod.POST, consumes = "application/json")
     public void joinTraining(@RequestBody UserLeaveAndJoinTraining userLeaveAndJoinTraining,HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) {
        String header = httpServletRequest.getHeader("authorization");
+
        try {
            userService.insertUserTrainingRelationShip(userLeaveAndJoinTraining.getLogin(), userLeaveAndJoinTraining.getNameTraining());
            httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
@@ -102,13 +115,29 @@ public class UserController {
     }
 
     @RequestMapping(value = "/all_trainings_sorted_by_date", method = RequestMethod.POST, consumes = "application/json")
-    public @ResponseBody List<AllTrainingUserShort> getAllTrainingSortedByDate(@RequestBody AllTrainingUserSortedAndState loginAndState, HttpServletRequest httpServletRequest) {
+    public @ResponseBody List<AllTrainingUserShort> getAllTrainingSortedByDate(@RequestBody AllTrainingUserSortedAndState loginAndState,
+                                                                               HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         String header = httpServletRequest.getHeader("authorization");
         List<Training> trainings = userService.selectAllTrainingSortedByDate(loginAndState.getLogin(),loginAndState.getState());
+        User user = userService.findUserByLogin(loginAndState.getLogin());
         List<AllTrainingUserShort> allTrainingUserShorts = new ArrayList<>();
+
         for(Training training : trainings) {
-            allTrainingUserShorts.add(AllTrainingUserShort.parseAllTrainingUserShort(training));
+            AllTrainingUserShort allTrainingUserShort = AllTrainingUserShort.parseAllTrainingUserShort(training);
+            if(training.getCoach().getId() == user.getId()) {
+                allTrainingUserShort.setIsCoach(true);
+            } else {
+                allTrainingUserShort.setIsCoach(false);
+            }
+            allTrainingUserShorts.add(allTrainingUserShort);
         }
+
+        if(allTrainingUserShorts.isEmpty()) {
+            httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        } else {
+            httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+        }
+
         return  allTrainingUserShorts;
     }
 
@@ -116,6 +145,7 @@ public class UserController {
     public @ResponseBody void findMyTraining(@RequestBody UserLoginAndTraining userLoginAndTraining,HttpServletResponse response, HttpServletRequest httpServletRequest) {
         String header = httpServletRequest.getHeader("authorization");
         Training training = userService.findMyTraining(userLoginAndTraining.getLogin(),userLoginAndTraining.getTrainingName());
+
         if(training == null) {
             response.setStatus(HttpServletResponse.SC_ACCEPTED);
         } else {
@@ -124,15 +154,29 @@ public class UserController {
     }
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public @ResponseBody List<AllTrainingUserShort> t() {
+    public @ResponseBody List<AllTrainingUserShort> t(HttpServletResponse httpServletResponse) {
         List<Integer> l = new ArrayList<>();
-        l.add(1);
         l.add(2);
+        l.add(3);
         List<Training> trainings = userService.selectAllTrainingSortedByDate("1",l);
+        User user = userService.findUserByLogin("1");
         List<AllTrainingUserShort> allTrainingUserShorts = new ArrayList<>();
         for(Training training : trainings) {
-            allTrainingUserShorts.add(AllTrainingUserShort.parseAllTrainingUserShort(training));
+            AllTrainingUserShort allTrainingUserShort = AllTrainingUserShort.parseAllTrainingUserShort(training);
+            if(training.getCoach().getId() == user.getId()) {
+                allTrainingUserShort.setIsCoach(true);
+            } else {
+                allTrainingUserShort.setIsCoach(false);
+            }
+            allTrainingUserShorts.add(allTrainingUserShort);
         }
+
+        if(allTrainingUserShorts.isEmpty()) {
+            httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        } else {
+            httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+        }
+
         return  allTrainingUserShorts;
 
     }
