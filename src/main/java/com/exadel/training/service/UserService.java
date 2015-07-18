@@ -13,6 +13,7 @@ public interface UserService {
    User getUserByID(long id);
    User findUserByLoginAndPassword(String name, long password);
    User findUserByLogin(String Login);
+   Training findMyTraining(String login, String trainingName);
 
    List<User> findUserByRole(RoleType type) throws NoSuchFieldException;
    List<Training> selectAllTraining(String login);

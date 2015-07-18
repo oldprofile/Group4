@@ -32,12 +32,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserByLoginAndPassword(String login,long password) {
-        return userRepository.findUserByLoginAndPassword(login,password);
+        return userRepository.findUserByLoginAndPassword(login, password);
     }
 
     @Override
     public User findUserByLogin(String Login) {
         return userRepository.findUserByLogin(Login);
+    }
+
+    @Override
+    public Training findMyTraining(String login, String trainingName) {
+        return userRepository.findMyTraining(login, trainingName);
     }
 
     @Override
