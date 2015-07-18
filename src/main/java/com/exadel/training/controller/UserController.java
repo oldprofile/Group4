@@ -30,8 +30,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
     private CryptService cryptService;
+    private static final Object EMPTY = null;
 
     public UserController() {
         try {
@@ -41,10 +41,10 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/find_by_role", method = RequestMethod.POST, consumes = "application/json")
-    public @ResponseBody List<UserShort> findByRole(@RequestBody int type, HttpServletRequest httpServletRequest) throws NoSuchFieldException {
+    @RequestMapping(value = "/find_by_role/{type}", method = RequestMethod.GET)
+    public @ResponseBody List<UserShort> findByRole(@PathVariable("type") int type, HttpServletRequest httpServletRequest) throws NoSuchFieldException {
         String header = httpServletRequest.getHeader("authorization");
-        List<User> userList =  userService.findUserByRole(RoleType.parseIntToRoleType(type));
+        List<User> userList =  userService.findUsersByRole(RoleType.parseIntToRoleType(type));
         List<UserShort> userShortList = new ArrayList<UserShort>();
         for(int i = 0; i < userList.size(); i++ ) {
             User user = userList.get(i);
@@ -75,7 +75,7 @@ public class UserController {
         String header = httpServletRequest.getHeader("authorization");
         String login = cryptService.decrypt(header);
         User user = userService.findUserByLogin(login);
-        if(user == null) {
+        if(user == EMPTY) {
             httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
