@@ -5,6 +5,7 @@ var app = angular.module('myApp', [
     'ngRoute',
     'ui.bootstrap',
     'http-auth-interceptor',
+    'akoenig.deckgrid',
     'myApp.view1',
     'myApp.view2',
     'myApp.mycourses',
@@ -39,6 +40,7 @@ app.directive('authClass', ['$location','userService',function($location,userSer
         scope.isLogged = false;  
         
           if(scope.isLogged == false){
+              scope.prevPath = $location.path();
               $location.path('login');
           }
           
@@ -55,6 +57,7 @@ app.directive('authClass', ['$location','userService',function($location,userSer
             //showLoginForm(elem);
             scope.isLogged = false;
             userService.clearUser();
+            scope.prevPath = $location.path();
             $location.path('login');
         });
           
@@ -64,7 +67,8 @@ app.directive('authClass', ['$location','userService',function($location,userSer
           alert(JSON.stringify(data)); 
             scope.isLogged = true;
             userService.setUser(data.login,data.name,data.password,data.role);
-            $location.path('/');
+            
+            $location.path(scope.prevPath);
           //hideLoginForm(elem);
         });
           
@@ -75,7 +79,7 @@ app.directive('authClass', ['$location','userService',function($location,userSer
             if(data.login == "test" && data.password == "test"){
                 scope.isLogged = true;
                 userService.setUser(data.login,data.login,data.password,{});
-                $location.path('/');
+                $location.path(scope.prevPath);
             }
         });
           

@@ -1,7 +1,7 @@
 <div>
     
-    <p>{{d | date:"mediumTime"  }}</p>
-    
+    <dos-head-tool ng-model="dosFilter"></dos-head-tool>
+    {{dosFilter.filterString}}
     <div ng-show="isNoCourses">
         <h2>No Courses, browse them</h2>
     </div>    

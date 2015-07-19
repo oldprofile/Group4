@@ -20,11 +20,11 @@ public class AllTrainingUserSortedAndState {
         this.login = login;
     }
 
-    public List<Integer> getStates() {
+    public List<Integer> getState() {
         return state;
     }
 
-    public void setStates(List<Integer> state) {
+    public void setState(List<Integer> state) {
         this.state = state;
     }
 }

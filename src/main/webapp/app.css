@@ -48,3 +48,34 @@ div#content-outer {
     margin-right: 25px;
     font-size: 10px;
 }
+
+
+/* 
+    !!!!Deckgrid!!!! 
+*/
+
+.deckgrid[deckgrid]::before {
+    /* Specifies that the grid should have a maximum of 4 columns. Each column will have the classes 'column' and 'column-1-4' */
+    width: 100%;
+    content: '4 .column.column-1-4';
+    font-size: 0; /* See https://github.com/akoenig/angular-deckgrid/issues/14#issuecomment-35728861 */
+    visibility: hidden;
+}
+.deckgrid{
+    height: auto;
+    width: 100%;
+    overflow:auto; 
+}
+
+.deckgrid .column {
+    float: left;
+    
+}
+
+.deckgrid .column-1-4 {
+    width: 25%;
+}
+
+.card {
+    padding-bottom: 16px;
+}

@@ -4,18 +4,22 @@
 angular.module('myApp').factory('userService', ['$http',function ($http) {
   
   var role = {
+   admin: {
+      id: 1,
+      string: "Admin"
+    },      
    user: {
        id: 2,
-       string: "user"
+       string: "Employee"
    },
-    admin: {
-      id: 1,
-      string: "admin"
-    },
-    extCoach : {
+    exCoach : {
         id:3,
-        string: "externalCoach"    
-    }   
+        string: "ExCoach"    
+    }, 
+    exEmployee : {
+        id:4,
+        string: "exEmployee"    
+    }  
   }    
     
   var currentUser =  {
@@ -30,6 +34,7 @@ angular.module('myApp').factory('userService', ['$http',function ($http) {
       currentUser.login = login;    
       currentUser.username = username;
       currentUser.password = password;
+      
       currentUser.role = role.admin;
         
       $http.defaults.headers.common.Authorization = login;    

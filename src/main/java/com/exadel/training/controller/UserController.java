@@ -71,7 +71,7 @@ public class UserController {
 
     @RequestMapping(value = "/all_trainings_sorted_by_date", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody List<AllTrainingUserShort> getAllTrainingSortedByDate(@RequestBody AllTrainingUserSortedAndState loginAndState ) {
-        List<Training> trainings = userService.selectAllTrainingSortedByDate(loginAndState.getLogin(),loginAndState.getStates());
+        List<Training> trainings = userService.selectAllTrainingSortedByDate(loginAndState.getLogin(),loginAndState.getState());
         List<AllTrainingUserShort> allTrainingUserShorts = new ArrayList<>();
         for(Training training : trainings) {
             allTrainingUserShorts.add(AllTrainingUserShort.parseAllTrainingUserShort(training));
