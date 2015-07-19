@@ -46,8 +46,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findUserByRole(RoleType type) throws NoSuchFieldException {
-       return userRepository.findUsersByRole(RoleType.parseRoleTypeToInt(type));
+    public List<User> findUsersByRole(RoleType type) throws NoSuchFieldException {
+       return userRepository.findUsersByRole(RoleType.parseRoleTypeToLong(type));
     }
 
     @Override
@@ -61,6 +61,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteUserTrainingRelationShip(String login, String trainingName) {
         long userID = userRepository.findUserByLogin(login).getId();
         long trainingID = trainingRepository.findByName(trainingName).getId();
@@ -68,6 +69,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void insertUserTrainingRelationShip(String login, String trainingName) {
         long userID = userRepository.findUserByLogin(login).getId();
         Training training = trainingRepository.findByName(trainingName);
@@ -77,6 +79,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void saveUser(User user) {
         userRepository.save(user);
     }

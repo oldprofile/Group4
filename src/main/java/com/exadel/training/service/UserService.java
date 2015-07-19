@@ -15,7 +15,7 @@ public interface UserService {
    User findUserByLogin(String Login);
    Training findMyTraining(String login, String trainingName);
 
-   List<User> findUserByRole(RoleType type) throws NoSuchFieldException;
+   List<User> findUsersByRole(RoleType type) throws NoSuchFieldException;
    List<Training> selectAllTraining(String login);
    List<Training> selectAllTrainingSortedByDate(String login, List<Integer> state);
 

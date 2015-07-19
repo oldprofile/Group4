@@ -23,9 +23,9 @@ import java.io.UnsupportedEncodingException;
 @RequestMapping("/authentication")
 public class AuthenticationController {
 
+    private static final Object EMPTY = null;
     @Autowired
     private UserService userService;
-
     @Autowired
     private RoleService roleService;
 
@@ -43,14 +43,14 @@ public class AuthenticationController {
     public @ResponseBody Authentication save(@RequestBody Authentication project, HttpServletResponse httpServletResponse) {
         String login = project.getLogin();
         Long password = project.getPassword();
-        User user = userService.findUserByLoginAndPassword(login, password);
 
-        try {
-            httpServletResponse.setHeader("token",cryptService.encrypt(login));
-        } catch (UnsupportedEncodingException | BadPaddingException | IllegalBlockSizeException e) {
-            e.printStackTrace();
-        }
-
+         User user = userService.findUserByLoginAndPassword(login, password);
+         httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+            try {
+                httpServletResponse.setHeader("token", cryptService.encrypt(login));
+            } catch (UnsupportedEncodingException | BadPaddingException | IllegalBlockSizeException e) {
+                e.printStackTrace();
+            }
         return Authentication.parseAuthentication(user);
     }
     @RequestMapping(value = "/test", method = RequestMethod.GET)
