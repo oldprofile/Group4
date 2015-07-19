@@ -10,6 +10,9 @@ import java.util.List;
  * Created by HP on 08.07.2015.
  */
 public interface UserService {
+
+   Boolean checkUserByLogin(String login);
+
    User getUserByID(long id);
    User findUserByLoginAndPassword(String name, long password);
    User findUserByLogin(String Login);
@@ -18,6 +21,7 @@ public interface UserService {
    List<User> findUsersByRole(RoleType type) throws NoSuchFieldException;
    List<Training> selectAllTraining(String login);
    List<Training> selectAllTrainingSortedByDate(String login, List<Integer> state);
+   List<User> searchUsersByName(String name);
 
    void deleteUserTrainingRelationShip(String login, String trainingName);
    void insertUserTrainingRelationShip(String login, String trainingName);

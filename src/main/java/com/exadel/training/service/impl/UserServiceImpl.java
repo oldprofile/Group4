@@ -25,6 +25,11 @@ public class UserServiceImpl implements UserService {
     private TrainingRepository trainingRepository;
 
     @Override
+    public Boolean checkUserByLogin(String login) {
+        return userRepository.checkUserByLogin(login);
+    }
+
+    @Override
     public User getUserByID(long id) {
         User user = userRepository.getOne(id);
         return user;
@@ -58,6 +63,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Training> selectAllTrainingSortedByDate(String login, List<Integer> state) {
         return userRepository.selectAllTrainingSortedByDate(login, state);
+    }
+
+    @Override
+    public List<User> searchUsersByName(String name) {
+        return userRepository.searchUsersByName('%'+name+'%');
     }
 
     @Override
