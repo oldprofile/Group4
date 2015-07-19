@@ -23,11 +23,11 @@ import java.io.UnsupportedEncodingException;
 @RequestMapping("/authentication")
 public class AuthenticationController {
 
+    private static final Object EMPTY = null;
     @Autowired
     private UserService userService;
     @Autowired
     private RoleService roleService;
-    private static final Object EMPTY = null;
 
     private CryptService cryptService;
 

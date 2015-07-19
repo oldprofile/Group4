@@ -28,10 +28,10 @@ import java.util.List;
 @RequestMapping("/user_controller")
 public class UserController {
 
+    private static final Object EMPTY = null;
     @Autowired
     private UserService userService;
     private CryptService cryptService;
-    private static final Object EMPTY = null;
 
     public UserController() {
         try {
@@ -129,6 +129,7 @@ public class UserController {
             } else {
                 allTrainingUserShort.setIsCoach(false);
             }
+
             allTrainingUserShorts.add(allTrainingUserShort);
         }
 
