@@ -84,10 +84,10 @@ public class UserController {
     }
 
     @RequestMapping(value = "/leave_training", method = RequestMethod.POST, consumes = "application/json")
-    public void leaveTraining(@RequestBody UserLeaveAndJoinTraining userLeaveAndJoinTraining,HttpServletRequest httpServletRequest) throws TwilioRestException {
+    public void leaveTraining(@RequestBody UserLeaveAndJoinTraining userLeaveAndJoinTraining,HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) throws TwilioRestException {
         String header = httpServletRequest.getHeader("authorization");
         userService.deleteUserTrainingRelationShip(userLeaveAndJoinTraining.getLogin(), userLeaveAndJoinTraining.getNameTraining());
-
+        httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
     }
 
     @RequestMapping(value = "/join_training", method = RequestMethod.POST, consumes = "application/json")
