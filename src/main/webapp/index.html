@@ -16,6 +16,9 @@
   <link rel="stylesheet" href="app.css">
   <link rel="stylesheet" href="page_common/login/LoginCardStyle.css">
     <link rel="stylesheet" href="page_createcourse/createcourse.css">
+    <link rel="stylesheet" href="page_common/datepicker/datepicker1.css">
+    <link rel="stylesheet" href="page_common/datepicker/onceonly.css">
+    <link rel="stylesheet" href="page_common/datepicker/repeating.css">
     <link rel="stylesheet" href="components/angular-bootstrap-datetimepicker/src/css/datetimepicker.css"/>
     
   <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
@@ -30,7 +33,6 @@
         <div ng-view class="ng-view-content"></div>
         
         <my-app-footer ng-show="isLogged"></my-app-footer>
-    
     
     </div>
     
@@ -68,6 +70,7 @@
     <script src="page_common/footer.js"></script>
     <script src="page_courseinfo/courseinfo.js"></script>
     <script src="page_common/datepicker/datepicker.js"></script>
+    <script src="page_common/image_loader/imageLoader.js"></script>
     
     <!-- ###Pages Controllers### -->
     <script src="page_admin/adminController.js"></script>
@@ -77,6 +80,13 @@
     <script src="page_courseinfo/courseinfoController.js"></script>
     <script src="page_createcourse/createcourseController.js"></script>
     <script src="page_common/datepicker/datepickerController.js"></script>
+    <script src="page_common/image_loader/imageLoaderController.js"></script>
+    
+    <script src="components/ui-bootstrap-custom-0.13.0.js"></script>
+    <script src="components/ui-bootstrap-custom-tpls-0.13.0.js"></script>
+    
+    <!-- ###Page Filters### -->
+    <script src="page_common/datepicker/datepickerFilter.js"></script>
     
     <!-- ###Pages Serivces### -->
     <script src="page_admin/adminService.js"></script>
@@ -88,6 +98,7 @@
     <script src="page_courseinfo/courseinfoService.js"></script>
     <script src="page_createcourse/createcourseService.js"></script>
     <script src="page_common/general/getCategoriesService.js"></script>
+    <script src="page_common/image_loader/imageLoaderService.js"></script>
     
     
     <script src="components/version/version.js"></script>

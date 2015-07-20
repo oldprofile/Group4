@@ -1,0 +1,39 @@
+<div class="once-only-container" class="row">
+    
+    <div class="col-xs-8 col-xs-8 inputs-container scroll" scroll="onceOnlyDates">
+        
+        <!--Datetimepicker-->
+        <div class="row" ng-repeat="date in onceOnlyDates">
+            <div class="dropdown col-xs-10">
+                <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown">
+                    <div class="input-group" id="inputDate">
+                        <input type="text" class="form-control" data-ng-model="newDate">
+                        <span class="input-group-addon">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                        </span>
+                    </div>
+                </a>
+                
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                    <datetimepicker data-ng-model="newDate" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"/>
+                </ul>
+            </div>
+            <div class="col-xs-1">
+                <button type="button" class="btn btn-danger" ng-click="deleteDate($index)">
+                        <span class="glyphicon glyphicon-remove"></span>
+                </button>
+            </div>
+            <div class="col-xs-1"></div>
+        </div>
+        
+        <div class="row">
+            <div class="col-xs-3">
+                <button type="button" class="btn btn-primary btn-sm" ng-click="addDate()">Add date</button>
+            </div>
+            <div class="col-xs-9"></div>
+        </div>
+        
+    </div>
+    
+    <div class="col-xs-4 col-xs-4"></div>
+</div>
