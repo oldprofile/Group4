@@ -77,7 +77,8 @@ public class TrainingController {
         String userLogin = cryptService.decrypt(header);
 
         if(userService.checkUserByLogin(userLogin)) {
-            TrainingInfo trainingInfo = new TrainingInfo(trainingService.getTrainingByName(trainingName));
+            TrainingInfo trainingInfo = new TrainingInfo(trainingService.getTrainingByName(trainingName),
+                    trainingService.getDatesByTrainingName(trainingName));
             if (trainingService.getTrainingByNameAndUserLogin(trainingName, userLogin) == null)
                 trainingInfo.setIsSubscriber(false);
             else trainingInfo.setIsSubscriber(true);
