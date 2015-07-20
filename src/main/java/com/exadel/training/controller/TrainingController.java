@@ -1,20 +1,15 @@
 package com.exadel.training.controller;
 
-import com.exadel.training.controller.model.Training.ShortTrainingInfo;
-import com.exadel.training.controller.model.Training.TrainingForCreation;
-import com.exadel.training.controller.model.Training.TrainingInfo;
-import com.exadel.training.controller.model.Training.TrainingNameAndUserLogin;
+import com.exadel.training.controller.model.Training.*;
 import com.exadel.training.controller.model.User.AllTrainingUserShort;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
 import com.exadel.training.service.TrainingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,21 +28,26 @@ public class TrainingController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    List<ShortTrainingInfo> trainingList() {
+    List<ShortTrainingInfo> trainingList(/* @PathVariable("authorization") String userLogin*/) {
         List<Training> list = trainingService.getValidTrainings();
-        List<ShortTrainingInfo> returnList = ShortTrainingInfo.parceList(list);
+        List<ShortTrainingInfo> returnList = ShortTrainingInfo.parseList(list);
+        /*for(int i = 0; i < list.size(); ++i) {
+            if(trainingService.getTrainingByNameAndUserLogin(list.get(i).getName(), userLogin) == null)
+                returnList.get(i).setIsSubscriber(false);
+            else returnList.get(i).setIsSubscriber(true);
+        }*/
         return returnList;
     }
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     @ResponseBody
-    List<Training> trainingTest() throws ParseException {
+    List<ShortTrainingInfo> trainingTest() throws ParseException {
         List<Training> list = trainingService.getTrainingByNearestDate();
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-        String date = "08-08-2015 23:10:00";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        String date = "08-08-2015 23:10:00.000";
         Date dateTime = sdf.parse(date);
-        return list;
+        return ShortTrainingInfo.parseList(list);
     }
 
     @RequestMapping(value = "/training_info", method = RequestMethod.POST, consumes = "application/json")
@@ -76,6 +76,32 @@ public class TrainingController {
         return new ShortTrainingInfo(training);
     }
 
+    @RequestMapping(value = "/approve_training", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody
+    ShortTrainingInfo approveTraining(@RequestBody TrainingNameAndUserLogin trainingNameAndUserLogin) {
+        Training training = null;
+        try {
+            training = trainingService.approveTraining(trainingNameAndUserLogin.getTrainingName());
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        return new ShortTrainingInfo(training);
+    }
+
+    @RequestMapping(value = "/list_by_category/{categoryId}", method = RequestMethod.GET)
+    public @ResponseBody
+    List <ShortTrainingInfo> trainingListByCategory(@PathVariable("categoryId") int categoryId) {
+        List<Training> trainings = trainingService.getValidTrainingsByCategoryId(categoryId);
+        return ShortTrainingInfo.parseList(trainings);
+    }
+
+    @RequestMapping(value = "/test_category_name", method = RequestMethod.GET)
+    public @ResponseBody
+    List <ShortTrainingInfo> testTrainingListByCategory() {
+        List<Training> trainings = trainingService.getValidTrainingsByCategoryId(1);
+        return ShortTrainingInfo.parseList(trainings);
+    }
+
     @RequestMapping(value = "/test_create_training", method = RequestMethod.GET)
     public @ResponseBody
     ShortTrainingInfo testCreateTraining() {
@@ -96,23 +122,17 @@ public class TrainingController {
         Training training = null;
         try {
             training = trainingService.addTraining(trainingForCreation);
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
+        } catch (NoSuchFieldException | ParseException e) {
             e.printStackTrace();
         }
         return new ShortTrainingInfo(training);
     }
 
-    @RequestMapping(value = "/approve_training", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/test_delete_training", method = RequestMethod.GET)
     public @ResponseBody
-    ShortTrainingInfo approveTraining(@RequestBody TrainingNameAndUserLogin trainingNameAndUserLogin) {
-        Training training = null;
-        try {
-            training = trainingService.approveTraining(trainingNameAndUserLogin.getTrainingName());
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        }
-        return new ShortTrainingInfo(training);
+    ShortTrainingInfo testDeleteTraining() {
+        String trainingName = "training";
+        Training delTraining = trainingService.deleteTrainingsByName(trainingName);
+        return  new ShortTrainingInfo(delTraining);
     }
 }

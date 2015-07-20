@@ -2,12 +2,13 @@ package com.exadel.training.controller.model.Feedback;
 
 import com.exadel.training.model.TrainingFeedback;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by asd on 14.07.2015.
  */
-public class TrainingFeedbackModel {
+public class TrainingFeedbackModel implements Serializable {
     private String clear;
 
     private String interesting;

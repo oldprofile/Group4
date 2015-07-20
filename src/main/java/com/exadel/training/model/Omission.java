@@ -1,7 +1,5 @@
 package com.exadel.training.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
 
 /**
@@ -22,4 +20,39 @@ public class Omission {
     private User user;
 
     private boolean isOmission;
+
+    public Omission() {
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Training getTraining() {
+        return training;
+    }
+
+    public void setTraining(Training training) {
+        this.training = training;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public boolean isOmission() {
+        return isOmission;
+    }
+
+    public void setOmission(boolean isOmission) {
+        this.isOmission = isOmission;
+    }
 }

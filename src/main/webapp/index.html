@@ -24,13 +24,13 @@
   <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
     
 </head>
-<body ng-app="myApp" ng-controller="MainController" class="auth-class waiting-for-angular">
+<body ng-app="myApp" class="auth-class waiting-for-angular">
     <div id="initializing-panel"></div>
     <div id="content-outer">
         
         <header-menu ng-show="isLogged"></header-menu>
  
-        <div ng-view class="ng-view-content"></div>
+        <div ng-view class="container ng-view-content"></div>
         
         <my-app-footer ng-show="isLogged"></my-app-footer>
     
@@ -50,6 +50,7 @@
     <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
     <script src="bower_components/angular-http-auth/src/http-auth-interceptor.js"></script>
     <script src="bower_components/moment/moment.js"></script>
+    <script src="bower_components/angular-deckgrid/angular-deckgrid.js"></script>
     <script src="components/angular-bootstrap-datetimepicker/src/js/datetimepicker.js"></script>
     
     
@@ -68,6 +69,7 @@
     
     <script src="page_common/header-menu.js"></script>
     <script src="page_common/footer.js"></script>
+    <script src="page_common/dosHeadToolsDirecitve/dosHeadTools.js"></script>
     <script src="page_courseinfo/courseinfo.js"></script>
     <script src="page_common/datepicker/datepicker.js"></script>
     <script src="page_common/image_loader/imageLoader.js"></script>

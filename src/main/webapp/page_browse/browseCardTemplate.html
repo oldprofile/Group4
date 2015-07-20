@@ -1,0 +1,8 @@
+    <div class="card">
+    <p>{{card.trainingName}}</p>
+    <p>Coach: {{card.trainingCoach}}</p>
+    <p>{{card.trainingImage}}</p>
+    <p>When: {{card.dateTraining | date:"medium"}}</p>
+    <p>Where: {{card.trainingPlace}}</p>
+    <a ng-href="#/courseinfo/{{card.trainingName}}">more</a>
+    </div>    

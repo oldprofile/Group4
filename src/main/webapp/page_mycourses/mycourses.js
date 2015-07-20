@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp.mycourses', ['ngRoute'])
+angular.module('myApp.mycourses', ['ngRoute','dosHeadToolModule'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/mycourses', {

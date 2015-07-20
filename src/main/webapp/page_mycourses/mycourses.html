@@ -1,22 +1,18 @@
-<div ng-controller="MyCoursesController">
+<div>
     
-<div ng-repeat="course in mycourses">
-    
-    <p>{{course.trainingName}}</p>
-    <img ng-src="https://angularjs.org/img/AngularJS-large.png">
-    <p>Lesson #1</p>
-    <p>Coach: {{course.trainningCoach}}</p>
-    <p>Date: {{course.dataTraining | date}}</p>
-    <p>Place: {{course.trainingPlace}}</p>
-    
-    <a ng-href="#/courseinfo/{{course.trainingName}}">more</a>
-    
+    <dos-head-tool ng-model="dosFilter"></dos-head-tool>
+    {{dosFilter.filterString}}
+    <div ng-show="isNoCourses">
+        <h2>No Courses, browse them</h2>
+    </div>    
+     <div deckgrid source="mycourses" cardTemplate="page_mycourses/mycoursescardtemplate.html" class="deckgrid-my-courses"></div>   
+
+
+
+
+
+
+
+    <a href="#/createcourse">Create course!</a>
     
 </div>
-    
-
-
-
-</div>
-
-<a href="#/createcourse">Create course!</a>

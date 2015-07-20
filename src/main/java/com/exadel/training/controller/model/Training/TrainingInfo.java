@@ -26,7 +26,7 @@ public class TrainingInfo {
     private boolean isSubscriber;
     private List<UserShort> listeners;
     private List<UserShort> spareUsers;
-    private SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
 
     public TrainingInfo() {
     }

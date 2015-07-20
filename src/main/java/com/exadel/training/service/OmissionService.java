@@ -9,4 +9,5 @@ import java.util.List;
  */
 public interface OmissionService {
     List<Omission> getOmissionsByTrainingName(String trainingName);
+    List<Omission> findByTrainingNameAndUserLogin(String trainingName, String userLogin);
 }

@@ -25,6 +25,11 @@ public class UserServiceImpl implements UserService {
     private TrainingRepository trainingRepository;
 
     @Override
+    public Boolean checkUserByLogin(String login) {
+        return userRepository.checkUserByLogin(login);
+    }
+
+    @Override
     public User getUserByID(long id) {
         User user = userRepository.getOne(id);
         return user;
@@ -32,7 +37,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserByLoginAndPassword(String login,long password) {
-        return userRepository.findUserByLoginAndPassword(login,password);
+        return userRepository.findUserByLoginAndPassword(login, password);
     }
 
     @Override
@@ -41,8 +46,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findUserByRole(RoleType type) throws NoSuchFieldException {
-       return userRepository.findUsersByRole(RoleType.parseRoleTypeToInt(type));
+    public Training findMyTraining(String login, String trainingName) {
+        return userRepository.findMyTraining(login, trainingName);
+    }
+
+    @Override
+    public List<User> findUsersByRole(RoleType type) throws NoSuchFieldException {
+       return userRepository.findUsersByRole(RoleType.parseRoleTypeToLong(type));
     }
 
     @Override
@@ -51,11 +61,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Training> selectAllTrainingSortedByDate(String login) {
-        return userRepository.selectAllTrainingSortedByDate(login);
+    public List<Training> selectAllTrainingSortedByDate(String login, List<Integer> state) {
+        return userRepository.selectAllTrainingSortedByDate(login, state);
     }
 
     @Override
+    public List<User> searchUsersByName(String nameOrLogin) {
+        return userRepository.searchUsersByName('%' + nameOrLogin + '%');
+    }
+
+    @Override
+    @Transactional
     public void deleteUserTrainingRelationShip(String login, String trainingName) {
         long userID = userRepository.findUserByLogin(login).getId();
         long trainingID = trainingRepository.findByName(trainingName).getId();
@@ -63,13 +79,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void insertUserTrainingRelationShip(String login, String trainingName) {
         long userID = userRepository.findUserByLogin(login).getId();
-        long trainingID = trainingRepository.findByName(trainingName).getId();
-        userRepository.insertUserTrainingRelationShip(trainingID, userID);
+        Training training = trainingRepository.findByName(trainingName);
+        if(training.getListeners().size() < training.getAmount()) {
+            userRepository.insertUserTrainingRelationShip(training.getId(), userID);
+        }
     }
 
     @Override
+    @Transactional
     public void saveUser(User user) {
         userRepository.save(user);
     }

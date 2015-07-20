@@ -10,13 +10,18 @@ import java.util.List;
  * Created by HP on 08.07.2015.
  */
 public interface UserService {
+
+   Boolean checkUserByLogin(String login);
+
    User getUserByID(long id);
    User findUserByLoginAndPassword(String name, long password);
    User findUserByLogin(String Login);
+   Training findMyTraining(String login, String trainingName);
 
-   List<User> findUserByRole(RoleType type) throws NoSuchFieldException;
+   List<User> findUsersByRole(RoleType type) throws NoSuchFieldException;
    List<Training> selectAllTraining(String login);
-   List<Training> selectAllTrainingSortedByDate(String login);
+   List<Training> selectAllTrainingSortedByDate(String login, List<Integer> state);
+   List<User> searchUsersByName(String nameOrLogin);
 
    void deleteUserTrainingRelationShip(String login, String trainingName);
    void insertUserTrainingRelationShip(String login, String trainingName);

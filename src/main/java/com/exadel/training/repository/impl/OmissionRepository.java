@@ -10,4 +10,5 @@ import java.util.List;
  */
 public interface OmissionRepository extends JpaRepository<Omission, Long> {
     List<Omission> findByTrainingName(String name);
+    List<Omission> findByTrainingNameAndUserLogin(String trainingName, String userLogin);
 }
