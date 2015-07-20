@@ -28,7 +28,7 @@ public enum RoleType {
             }
         }
     }
-    public static long parseRoleTypeToInt(RoleType type) throws NoSuchFieldException    {
+    public static long parseRoleTypeToLong(RoleType type) throws NoSuchFieldException    {
         switch (type) {
                 case Admin: {
                     return 1l;
