@@ -6,6 +6,8 @@ import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
 import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
+import com.exadel.training.tokenAuthentification.impl.DESCryptServiceImpl;
+import com.exadel.training.tokenAuthentification.impl.DecoratorDESCryptServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +35,14 @@ public class TrainingController {
     @Autowired
     UserService userService;
     CryptService cryptService;
+
+    public TrainingController() {
+        try {
+            cryptService = new DecoratorDESCryptServiceImpl(new DESCryptServiceImpl());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
