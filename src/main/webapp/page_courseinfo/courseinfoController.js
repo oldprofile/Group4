@@ -44,4 +44,6 @@ angular.module('myApp.courseinfo')
         alert("Can't Access training info");
     });
     
+    
+    
 }]);
