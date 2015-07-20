@@ -16,7 +16,7 @@ import java.util.List;
 public class TrainingInfo {
 
     private String name;
-    private List<String> dateTime;
+    private List<String> dateTimes;
     private String pictureLink;
     private String description;
     private String place;
@@ -37,8 +37,9 @@ public class TrainingInfo {
 
     public TrainingInfo(Training training, List<Date> dateTimes) throws NoSuchFieldException {
         this.name = training.getName();
+        this.dateTimes = new ArrayList<>();
         for(int i = 0; i < dateTimes.size(); ++i)
-            this.dateTime.add(sdf.format(dateTimes.get(i)));
+            this.dateTimes.add(sdf.format(dateTimes.get(i)));
         this.pictureLink = training.getPictureLink();
         this.description = training.getDescription();
         this.place = training.getPlace();
@@ -51,8 +52,8 @@ public class TrainingInfo {
         else this.isRepeating = true;
         this.additional = training.getAdditional();
         this.audience = training.getAudience();
-        this.listeners = UserShort.parceListUserShort(training.getListeners());
-        this.spareUsers = UserShort.parceListUserShort((training.getSpareUsers()));
+        this.listeners = UserShort.parseListUserShort(training.getListeners());
+        this.spareUsers = UserShort.parseListUserShort((training.getSpareUsers()));
     }
 
     public String getName() {
@@ -64,11 +65,11 @@ public class TrainingInfo {
     }
 
     public List<String> getDateTime() {
-        return dateTime;
+        return dateTimes;
     }
 
     public void setDateTime(List<String> dateTime) {
-        this.dateTime = dateTime;
+        this.dateTimes = dateTime;
     }
 
     public String getPictureLink() {
