@@ -72,7 +72,7 @@ public class TrainingController {
     @RequestMapping(value = "/training_info/{trainingName}", method = RequestMethod.GET/*consumes = "application/json"*/)
     public @ResponseBody
     TrainingInfo postTrainingInfo (@PathVariable("trainingName") String trainingName,
-                                   HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException {
+                                   HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
         String header = httpServletRequest.getHeader("authorization");
         String userLogin = cryptService.decrypt(header);
 
@@ -86,7 +86,6 @@ public class TrainingController {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
         }
-
     }
 
     @RequestMapping(value = "/create_training", method = RequestMethod.POST, consumes = "application/json")
