@@ -7,7 +7,7 @@ angular.module('myApp.createcourse')
         return $http.post('/training_controller/create_training', courseData)
             .success(function(data) {
             alert('Course created successfully!');
-            $location.path("/createdSuccessfully");
+            $location.path("/mycourses");
             return data;
         })
             .error(function(err) {
