@@ -25,8 +25,8 @@ public interface UserRepository extends JpaRepository<User,Long>{
 
    User findUserByLogin(String login);
 
-   @Query("select u from User as u where u.name LIKE ?1 ")
-   List<User> searchUsersByName(String name);
+   @Query("select u from User as u where u.name LIKE ?1 or u.login LIKE ?1")
+   List<User> searchUsersByName(String nameOrLogin);
 
    @Query("select u from User as u where u.login LIKE ?1")
    List<User> searchUsersByLogin(String login);

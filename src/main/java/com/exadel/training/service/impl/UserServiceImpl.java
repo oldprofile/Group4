@@ -66,8 +66,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> searchUsersByName(String name) {
-        return userRepository.searchUsersByName('%'+name+'%');
+    public List<User> searchUsersByName(String nameOrLogin) {
+        return userRepository.searchUsersByName('%' + nameOrLogin + '%');
     }
 
     @Override
