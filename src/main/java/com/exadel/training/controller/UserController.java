@@ -1,8 +1,8 @@
 package com.exadel.training.controller;
 
-import com.exadel.training.TokenAuthentification.CryptService;
-import com.exadel.training.TokenAuthentification.impl.DESCryptServiceImpl;
-import com.exadel.training.TokenAuthentification.impl.DecoratorDESCryptServiceImpl;
+import com.exadel.training.tokenAuthentification.CryptService;
+import com.exadel.training.tokenAuthentification.impl.DESCryptServiceImpl;
+import com.exadel.training.tokenAuthentification.impl.DecoratorDESCryptServiceImpl;
 import com.exadel.training.common.RoleType;
 import com.exadel.training.controller.model.User.*;
 import com.exadel.training.model.Training;
