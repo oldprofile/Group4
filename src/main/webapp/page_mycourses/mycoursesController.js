@@ -3,6 +3,9 @@ angular.module('myApp.mycourses')
 
     
     $scope.isNoCourses = false;
+    $scope.mycourses = [];
+   
+    
     mycourses.success(function(data) {
         
         console.log("Getting courses: " + JSON.stringify(data));
@@ -12,6 +15,8 @@ angular.module('myApp.mycourses')
         }
         $scope.isNoCourses = false;
         $scope.mycourses = data;
+        
+        
         
     }).error(function(err){
         alert("err getting training");

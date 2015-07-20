@@ -5,7 +5,7 @@
     <div ng-show="isNoCourses">
         <h2>No Courses, browse them</h2>
     </div>    
-     <div deckgrid source="mycourses" cardTemplate="page_mycourses/mycoursescardtemplate.html" class="deckgrid-my-courses"></div>   
+     <div deckgrid source="mycourses | filter:dosFilter.filterObject" cardTemplate="page_mycourses/mycoursescardtemplate.html" class="deckgrid-my-courses"></div>   
 
 
 
