@@ -9,22 +9,15 @@ import java.util.List;
 public class TrainingForCreation {
 
     private String name;
-
     private String userLogin;
-
     private String description;
-
     private int idCategory;
-
+    private int participantsNumber;
     private String additional;
-
     private String audience;
-
     private String language;
-
     private boolean isInternal;
-
-    private List<Date> dateTimes;
+    private List<String> dateTimes;
 
     public TrainingForCreation() {
     }
@@ -61,6 +54,14 @@ public class TrainingForCreation {
         this.idCategory = idCategory;
     }
 
+    public int getParticipantsNumber() {
+        return participantsNumber;
+    }
+
+    public void setParticipantsNumber(int participantsNumber) {
+        this.participantsNumber = participantsNumber;
+    }
+
     public String getAdditional() {
         return additional;
     }
@@ -93,11 +94,11 @@ public class TrainingForCreation {
         this.isInternal = isInternal;
     }
 
-    public List<Date> getDateTimes() {
+    public List<String> getDateTimes() {
         return dateTimes;
     }
 
-    public void setDateTimes(List<Date> dateTimes) {
+    public void setDateTimes(List<String> dateTimes) {
         this.dateTimes = dateTimes;
     }
 }

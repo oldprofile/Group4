@@ -11,12 +11,11 @@ import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserFeedbackService;
 import com.exadel.training.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,28 +38,51 @@ public class FeedbackController {
     @Autowired
     UserService userService;
 
-    @RequestMapping(value = "/user_feedback", method = RequestMethod.GET)
-    public @ResponseBody
-    List<UserFeedbackModel> getUserFeedbacks()  {
-        User user = userService.getUserByID(1L);
-        List<UserFeedback> userFeedbackList = userFeedbackService.getUserFeedbacks(user);
+    @RequestMapping(value = "/user_feedback", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody List<UserFeedbackModel> getUserFeedbacks(@RequestBody String login)  {
+        User user = userService.findUserByLogin(login);
+        List<UserFeedback> userFeedbackList = userFeedbackService.getUserFeedbacksOrderByDate(user);
         List<UserFeedbackModel> userFeedbackModels = new ArrayList<UserFeedbackModel>();
         for(UserFeedback u : userFeedbackList)
         {
-            userFeedbackModels.add(UserFeedbackModel.parseUserFeedback(u));
+            userFeedbackModels.add(UserFeedbackModel.parseToUserFeedbackModel(u));
         }
         return userFeedbackModels;
     }
 
+    @RequestMapping(value = "/create_user_feedback", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody void addUserFeedback(@RequestBody UserFeedbackModel userFeedbackModel, @RequestBody String userLogin, @RequestBody String feedbackerLogin, HttpServletResponse response) {
+        User user = userService.findUserByLogin(userLogin);
+        User feedbacker = userService.findUserByLogin(feedbackerLogin);
+        try {
+            userFeedbackService.addUserFeedback(feedbacker, user, userFeedbackModel);
+            response.setStatus(HttpServletResponse.SC_CREATED);
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
+    }
+
     @RequestMapping(value = "/training_feedback", method = RequestMethod.GET)
-    public @ResponseBody
-    List<TrainingFeedbackModel> getTrainingFeedbacks()  {
-        List<TrainingFeedback> trainingFeedbacks = trainingFeedbackService.getTrainingFeedbacks(trainingService.getTrainingByID(1));
+    public @ResponseBody List<TrainingFeedbackModel> getTrainingFeedbacks(@RequestBody String trainingName)  {
+        Training t = trainingService.getTrainingByName(trainingName);
+        List<TrainingFeedback> trainingFeedbacks = trainingFeedbackService.getTrainingFeedbacksOrderByDate(t);
         List<TrainingFeedbackModel> trainingFeedbackModels = new ArrayList<TrainingFeedbackModel>();
-        for(TrainingFeedback t : trainingFeedbacks)
+        for(TrainingFeedback tf : trainingFeedbacks)
         {
-            trainingFeedbackModels.add(TrainingFeedbackModel.parseTrainingFeedback(t));
+            trainingFeedbackModels.add(TrainingFeedbackModel.parseTrainingFeedback(tf));
         }
         return trainingFeedbackModels;
+    }
+
+    @RequestMapping(value = "/create_training_feedback", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody void addTrainingFeedback(@RequestBody TrainingFeedbackModel trainingFeedbackModel, @RequestBody String trainingName, @RequestBody String feedbackerLogin, HttpServletResponse response) {
+        Training training = trainingService.getTrainingByName(trainingName);
+        User feedbacker = userService.findUserByLogin(feedbackerLogin);
+        try {
+            trainingFeedbackService.addTrainingFeedback(feedbacker, training, trainingFeedbackModel);
+            response.setStatus(HttpServletResponse.SC_CREATED);
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
     }
 }

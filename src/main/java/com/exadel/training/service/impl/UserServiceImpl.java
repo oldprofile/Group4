@@ -8,8 +8,8 @@ import com.exadel.training.repository.impl.UserRepository;
 import com.exadel.training.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -25,37 +25,53 @@ public class UserServiceImpl implements UserService {
     private TrainingRepository trainingRepository;
 
     @Override
+    public Boolean checkUserByLogin(String login) {
+        return userRepository.checkUserByLogin(login);
+    }
+
+    @Override
     public User getUserByID(long id) {
         User user = userRepository.getOne(id);
         return user;
     }
 
     @Override
-    @Transactional
     public User findUserByLoginAndPassword(String login,long password) {
-        return userRepository.findUserByLoginAndPassword(login,password);
+        return userRepository.findUserByLoginAndPassword(login, password);
     }
 
     @Override
-    @Transactional
     public User findUserByLogin(String Login) {
         return userRepository.findUserByLogin(Login);
     }
 
     @Override
-    @Transactional
-    public List<User> findUserByRole(RoleType type) throws NoSuchFieldException {
-       return userRepository.findUsersByRole(RoleType.parseRoleTypeToInt(type));
+    public Training findMyTraining(String login, String trainingName) {
+        return userRepository.findMyTraining(login, trainingName);
     }
 
     @Override
-    @Transactional(readOnly = true)
+    public List<User> findUsersByRole(RoleType type) throws NoSuchFieldException {
+       return userRepository.findUsersByRole(RoleType.parseRoleTypeToLong(type));
+    }
+
+    @Override
     public List<Training> selectAllTraining(String login) {
         return userRepository.selectAllTraining(login);
     }
 
     @Override
+    public List<Training> selectAllTrainingSortedByDate(String login, List<Integer> state) {
+        return userRepository.selectAllTrainingSortedByDate(login, state);
+    }
 
+    @Override
+    public List<User> searchUsersByName(String nameOrLogin) {
+        return userRepository.searchUsersByName('%' + nameOrLogin + '%');
+    }
+
+    @Override
+    @Transactional
     public void deleteUserTrainingRelationShip(String login, String trainingName) {
         long userID = userRepository.findUserByLogin(login).getId();
         long trainingID = trainingRepository.findByName(trainingName).getId();
@@ -66,8 +82,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void insertUserTrainingRelationShip(String login, String trainingName) {
         long userID = userRepository.findUserByLogin(login).getId();
-        long trainingID = trainingRepository.findByName(trainingName).getId();
-        userRepository.insertUserTrainingRelationShip(trainingID, userID);
+        Training training = trainingRepository.findByName(trainingName);
+        if(training.getListeners().size() < training.getAmount()) {
+            userRepository.insertUserTrainingRelationShip(training.getId(), userID);
+        }
     }
 
     @Override

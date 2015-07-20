@@ -1,23 +1,12 @@
 <div>
     
-    <p>{{d | date:"mediumTime"  }}</p>
-    
+    <dos-head-tool ng-model="dosFilter"></dos-head-tool>
+    {{dosFilter.filterString}}
     <div ng-show="isNoCourses">
         <h2>No Courses, browse them</h2>
     </div>    
-    <div ng-repeat="course in mycourses" ng-hide="isNoCourses">
+     <div deckgrid source="mycourses" cardTemplate="page_mycourses/mycoursescardtemplate.html" class="deckgrid-my-courses"></div>   
 
-        <p>{{course.trainingName}}</p>
-        <img ng-src="https://angularjs.org/img/AngularJS-large.png">
-        <p>Lesson #1</p>
-        <p>Coach: {{course.trainingCoach}}</p>
-        <p>Date: {{course.dateTraining | date:"medium" }}</p>
-        <p>Place: {{course.trainingPlace}}</p>
-
-        <a ng-href="#/courseinfo/{{course.trainingName}}">more</a>
-
-
-    </div>
 
 
 

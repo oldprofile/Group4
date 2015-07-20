@@ -13,16 +13,18 @@ import java.util.List;
  */
 public interface TrainingRepository extends JpaRepository<Training, Long> {
 
-    @Query(value = "select tr from Training tr where tr.name = ?1 and tr.parent = 0")
-    Training findByName( String name);
+    //@Query(value = "select tr from Training tr where tr.name = ?1 and tr.parent = 0")
+    //Training findTrainingName( String name);
 
-    @Query(value = "select tr from Training tr where tr.name = ?")
-    List<Training> findAllByName( String name);
+    @Query(value = "select tr from Training tr where tr.name = ?1")
+    List<Training> findTrainingsByName(String name);
 
     Training findById(long id);
 
+    Training findByName(String name);
+
     @Query(value =  "select tr from Training tr where tr.category.id = ?1 and tr.state in (2,3)")
-    List<Training> findValidByCategoryId(int id);
+    List<Training> findValidTrainingsByCategoryId(int id);
 
     @Query("select tr from Training as tr  inner join tr.listeners as trus where tr.name = ?1 and trus.login = ?2")
     Training findByTrainingNameAndUserLogin(String trainingName, String userLogin);
@@ -37,9 +39,12 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
 
 
     @Query("select  tr from Training as tr where tr.state in (2,3) order by tr.dateTime asc")
-    List<Training> findNearestTraining();
+    List<Training> findNearestTrainings();
 
     @Modifying
     @Query(value = "delete from trainings where name = ?1", nativeQuery = true)
     void deleteTrainingsByName(String trainingName);
+
+    @Query("select tr from Training as tr where tr.name like ?1")
+    List<Training> searchTrainingsByName(String trainingName);
 }
