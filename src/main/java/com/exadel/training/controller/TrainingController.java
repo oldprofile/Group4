@@ -1,6 +1,6 @@
 package com.exadel.training.controller;
 
-import com.exadel.training.TokenAuthentification.CryptService;
+import com.exadel.training.tokenAuthentification.CryptService;
 import com.exadel.training.controller.model.Training.*;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;

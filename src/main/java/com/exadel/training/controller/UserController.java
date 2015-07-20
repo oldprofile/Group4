@@ -1,13 +1,13 @@
 package com.exadel.training.controller;
 
-import com.exadel.training.tokenAuthentification.CryptService;
-import com.exadel.training.tokenAuthentification.impl.DESCryptServiceImpl;
-import com.exadel.training.tokenAuthentification.impl.DecoratorDESCryptServiceImpl;
 import com.exadel.training.common.RoleType;
 import com.exadel.training.controller.model.User.*;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
 import com.exadel.training.service.UserService;
+import com.exadel.training.tokenAuthentification.CryptService;
+import com.exadel.training.tokenAuthentification.impl.DESCryptServiceImpl;
+import com.exadel.training.tokenAuthentification.impl.DecoratorDESCryptServiceImpl;
 import com.twilio.sdk.TwilioRestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,6 +32,8 @@ public class UserController {
     @Autowired
     private UserService userService;
     private CryptService cryptService;
+  //  @Autowired
+  //  private Session session;
 
     public UserController() {
         try {
@@ -231,7 +233,13 @@ public class UserController {
 
     }
     @RequestMapping(value = "test_s",method = RequestMethod.GET)
-    public @ResponseBody List<UserShort> s() {
+    public @ResponseBody List<UserShort> s() throws InterruptedException {
+
+
+       //    FullTextSession fullTextSession = Search.getFullTextSession(session);
+       //    fullTextSession.createIndexer().startAndWait();
+
+
         List<User> s1 = userService.searchUsersByName("a");
         List<UserShort> s2 = new ArrayList<>();
         if(userService.checkUserByLogin("as")) {

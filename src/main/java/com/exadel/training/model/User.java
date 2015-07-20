@@ -1,6 +1,8 @@
 package com.exadel.training.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.search.annotations.*;
+import org.hibernate.search.annotations.Index;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -25,6 +27,7 @@ public class User {
     private Set<Role> roles;
 
     @NotNull
+    @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
     private String name;
 
     @NotNull
