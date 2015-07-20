@@ -16,7 +16,7 @@ import java.util.List;
 public class TrainingInfo {
 
     private String name;
-    private String dateTime;
+    private List<String> dateTime;
     private String pictureLink;
     private String description;
     private String place;
@@ -35,9 +35,10 @@ public class TrainingInfo {
     public TrainingInfo() {
     }
 
-    public TrainingInfo(Training training) throws NoSuchFieldException {
+    public TrainingInfo(Training training, List<Date> dateTimes) throws NoSuchFieldException {
         this.name = training.getName();
-        this.dateTime = sdf.format(training.getDateTime());
+        for(int i = 0; i < dateTimes.size(); ++i)
+            this.dateTime.add(sdf.format(dateTimes.get(i)));
         this.pictureLink = training.getPictureLink();
         this.description = training.getDescription();
         this.place = training.getPlace();
@@ -54,14 +55,6 @@ public class TrainingInfo {
         this.spareUsers = UserShort.parceListUserShort((training.getSpareUsers()));
     }
 
-    public static List<TrainingInfo> parseList(List<Training> trainings) throws NoSuchFieldException {
-        List<TrainingInfo> trainingsInfo = new ArrayList<>();
-        for(int i = 0 ; i < trainings.size(); ++i) {
-            trainingsInfo.add(new TrainingInfo(trainings.get(i)));
-        }
-        return trainingsInfo;
-    }
-
     public String getName() {
         return name;
     }
@@ -70,11 +63,11 @@ public class TrainingInfo {
         this.name = name;
     }
 
-    public String getDateTime() {
+    public List<String> getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(String dateTime) {
+    public void setDateTime(List<String> dateTime) {
         this.dateTime = dateTime;
     }
 
@@ -126,7 +119,7 @@ public class TrainingInfo {
         this.language = language;
     }
 
-    public boolean isInternal() {
+    public boolean getIsInternal() {
         return isInternal;
     }
 
