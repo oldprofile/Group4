@@ -64,9 +64,9 @@ app.directive('authClass', ['$location','userService',function($location,userSer
           
         scope.$on('event:auth-loginConfirmed', function(event,data) {
           //confirm form server    
-          alert(JSON.stringify(data)); 
+            console.log("Confirm User:" + JSON.stringify(data)); 
             scope.isLogged = true;
-            userService.setUser(data.login,data.name,data.password,data.role);
+            userService.setUser(data.login,data.name,data.password,data.role,data.token);
             
             $location.path(scope.prevPath);
           //hideLoginForm(elem);
@@ -78,7 +78,7 @@ app.directive('authClass', ['$location','userService',function($location,userSer
             
             if(data.login == "test" && data.password == "test"){
                 scope.isLogged = true;
-                userService.setUser(data.login,data.login,data.password,{});
+                userService.setUser(data.login,data.login,data.password,{},"");
                 $location.path(scope.prevPath);
             }
         });

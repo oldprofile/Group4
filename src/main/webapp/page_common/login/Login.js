@@ -20,14 +20,14 @@
         
         alert(JSON.stringify(loginData));
         loginService.postLoginCred(loginData).success(function(data){
-            alert("DataFromServer: " + JSON.stringify(data))
         }).error(function(error){
             alert("login error from server");
+            $scope.$emit('hideLoginEvent',loginData);
         })
         
         //Test Submit
         
-        $scope.$emit('hideLoginEvent',loginData);
+        
         
     };
   }])
