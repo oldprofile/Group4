@@ -13,6 +13,7 @@ import com.exadel.training.service.TrainingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import java.util.TimeZone;
  * Created by Клим on 10.07.2015.
  */
 @Service
+@Transactional
 public class TrainingServiceImpl implements TrainingService {
     @Autowired
     private TrainingRepository trainingRepository;
@@ -80,7 +82,7 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Override
     public Training getTrainingByName(String name) {
-        List<Training> trainings = trainingRepository.findAllByName(name);
+        List<Training> trainings = trainingRepository.findTrainingsByName(name);
         if(trainings.size() == 1)
             return trainings.get(0);
         else {
@@ -102,7 +104,7 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Override
     public List<Training> getValidTrainingsByCategoryId(int id) {
-        return trainingRepository.findValidByCategoryId(id);
+        return trainingRepository.findValidTrainingsByCategoryId(id);
     }
 
     @Override
@@ -118,7 +120,7 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Override
     public Training approveTraining(String trainingName) throws NoSuchFieldException {
-        List<Training> trainings = trainingRepository.findAllByName(trainingName);
+        List<Training> trainings = trainingRepository.findTrainingsByName(trainingName);
         for(int i = 0; i < trainings.size(); ++i) {
             trainings.get(i).setState(StateTraining.parseToInt("Ahead"));
             trainingRepository.saveAndFlush(trainings.get(i));
@@ -127,21 +129,27 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
-    public List<Training> getTrainingByNearestDate() {
-        return trainingRepository.findNearestTraining();
+    public List<Training> getTrainingsByNearestDate() {
+        return trainingRepository.findNearestTrainings();
     }
 
     @Override
+    @Transactional
     public Training deleteTrainingsByName(String trainingName) {
-        List<Training> trainings = trainingRepository.findAllByName(trainingName);
-        for(Training training: trainings){
+        List<Training> trainings = trainingRepository.findTrainingsByName(trainingName);
+        /*for(Training training: trainings){
             training.setCategory(null);
-            training.setParent(0);
             training.setFeedbacks(null);
+            training.setCoach(null);
             trainingRepository.saveAndFlush(training);
             trainingRepository.delete(training);
-        }
-        //trainingRepository.deleteTrainingsByName(trainingName);
+        }*/
+        trainingRepository.deleteTrainingsByName(trainingName);
         return trainings.get(0);
+    }
+
+    @Override
+    public List<Training> searchTrainingsByName(String trainingName) {
+        return trainingRepository.searchTrainingsByName("%" + trainingName + "%");
     }
 }
