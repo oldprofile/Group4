@@ -20,16 +20,16 @@ public interface UserRepository extends JpaRepository<User,Long>{
    @Query("select case when (count(u)>0) then true else false end from User as u where u.login = ?1")
    Boolean checkUserByLogin(String login);
 
+   @Query(value = "select count(*) > 0 from users_trainings u where :trainingID = trainings and :userID = listeners",nativeQuery = true)
+   int checkSubscribeToTraining(@Param("trainingID")Long trainingName,@Param("userID") Long user);
+
   //  @Query("select u from User u where u.login = ?1 AND u.password = ?2")
    User findUserByLoginAndPassword(String login,long password);
 
    User findUserByLogin(String login);
 
-   @Query("select u from User as u where u.name LIKE ?1 or u.login LIKE ?1")
-   List<User> searchUsersByName(String nameOrLogin);
-
-   @Query("select u from User as u where u.login LIKE ?1")
-   List<User> searchUsersByLogin(String login);
+   @Query(value = "SELECT * FROM users WHERE MATCH (name,login) AGAINST (:name in boolean mode) ", nativeQuery = true)
+   List<User> searchUsersByName(@Param("name")String name);
 
    @Query("select u from User as u inner join u.roles as r where r.id = ?1 ")
    List<User> findUsersByRole(long type);

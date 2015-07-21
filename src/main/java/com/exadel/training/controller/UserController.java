@@ -239,6 +239,8 @@ public class UserController {
        //    FullTextSession fullTextSession = Search.getFullTextSession(session);
        //    fullTextSession.createIndexer().startAndWait();
 
+        List<User> users = userService.searchUsersByName("art");
+        Boolean is = userService.checkSubscribeToTraining(1L,1L);
 
         List<User> s1 = userService.searchUsersByName("a");
         List<UserShort> s2 = new ArrayList<>();
