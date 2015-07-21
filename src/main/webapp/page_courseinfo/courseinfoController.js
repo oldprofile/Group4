@@ -1,5 +1,5 @@
 angular.module('myApp.courseinfo')
-.controller('CourseInfoController', ['$scope','$routeParams','courseInfoService','userService','$modal', function($scope,$routeParams, courseInfoService,userService,$modal) {
+.controller('CourseInfoController', ['$scope','$routeParams','courseInfoService','userService','$modal','feedbacksService', function($scope,$routeParams, courseInfoService,userService,$modal,feedbacksService) {
 
     $scope.courseName = $routeParams.coursename;
     $scope.subButtonText = "Subscribe";
@@ -60,9 +60,9 @@ angular.module('myApp.courseinfo')
     });
     
     feedbackModalInstance.result.then(function (feedback) {
-      alert(JSON.stringify(feedback));
+      feedbacksService.createTrainingFeedback(feedback);
     }, function () {
-      alert("Feedback");
+      //cancel feedback
     });
     
     }
@@ -81,7 +81,8 @@ angular.module('myApp.courseinfo')
   }
   
   $scope.ok = function () {
-    $modalInstance.close(courseinfo);
+    alert(JSON.stringify($scope.feedback))
+    $modalInstance.close($scope.feedback);
   };
 
   $scope.cancel = function () {
