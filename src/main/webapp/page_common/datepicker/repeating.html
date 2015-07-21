@@ -2,8 +2,8 @@
     
     <!--Repeats-->
     <div class="form-group form-group-md row repeating-row">
-        <label class="col-md-2 control-label" for="repeats">Repeats:</label>
-        <div class="col-md-6">
+        <label class="col-xs-3 control-label" for="repeats">Repeats:</label>
+        <div class="col-xs-6">
             <select class="form-control" id="repeats" ng-model="repeatType">
                 <option value="">No repeat</option>
                 <option value="days">Daily</option>
@@ -11,26 +11,26 @@
                 <option value="months">Monthly</option>
             </select>
         </div>
-        <div class="col-md-4"></div>
+        <div class="col-xs-3"></div>
     </div>
     
     <!--Repeats every-->
     <div class="form-group form-group-md row repeating-row">
-        <label class="col-md-2 control-label" for="repeats">Repeat every:</label>
-        <div class="col-md-2">
+        <label class="col-xs-3 control-label" for="repeats">Repeat every:</label>
+        <div class="col-xs-3">
             <select class="form-control" ng-model="test "id="repeatsEvery" ng-options="n for n in [] | range:1:30">
             </select>
         </div>
-        <div class="col-md-2">
+        <div class="col-xs-3">
              <label class="col-md-1 control-label" for="repeats" align="left">{{repeatType}}</label>
         </div>
-        <div class="col-md-7"></div>
+        <div class="col-xs-3"></div>
     </div>
     
     <!--Repeat on-->
     <div class="form-group form-group-md row repeating-row" ng-show="repeatType == 'weeks'">
-        <label class="col-md-2 control-label" for="repeats">Repeat on:</label>
-        <div class="col-md-10">
+        <label class="col-xs-3 control-label" for="repeats">Repeat on:</label>
+        <div class="col-xs-9">
             <label class="checkbox-inline" ng-model="day" ng-repeat="day in ['M', 'T', 'W', 'Th', 'F', 'Sa', 'S']">
                 <input type="checkbox" value="">{{day}}
             </label>
@@ -39,8 +39,8 @@
     
     <!--Repeat by-->
     <div class="form-group form-group-md row repeating-row" ng-show="repeatType == 'months'">
-        <label class="col-md-2 control-label" for="repeats">Repeat on:</label>
-        <div class="col-md-10">
+        <label class="col-xs-3 control-label" for="repeats">Repeat on:</label>
+        <div class="col-xs-9">
             <label class="checkbox-inline" ng-model="monthRepeat">
                 <label class="radio-inline"><input type="radio">day of the month</label>
                 <label class="radio-inline"><input type="radio">day of the week</label>
@@ -50,9 +50,9 @@
     
     <!--Starts on-->
     <div class="form-group form-group-md row repeating-row">
-        <label class="col-md-2 control-label" for="repeats">Starts on:</label>
+        <label class="col-xs-3 control-label" for="repeats">Starts on:</label>
         
-        <div class="dropdown col-md-6">
+        <div class="dropdown col-xs-9">
             <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown">
                 <div class="input-group">
                     <input type="text" class="form-control" data-ng-model="startDate">
@@ -63,14 +63,13 @@
                 <datetimepicker data-ng-model="startDate" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"/>
             </ul>
         </div>
-        <div class="col-md-4"></div>
     </div>
     
     <!--Ends on-->
     <div class="form-group form-group-md row repeating-row">
-        <label class="col-md-2 control-label" for="repeats">Ends on:</label>
+        <label class="col-xs-3 control-label" for="repeats">Ends on:</label>
         
-        <div class="dropdown col-md-6">
+        <div class="dropdown col-xs-9">
             <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown">
                 <div class="input-group">
                     <input type="text" class="form-control" data-ng-model="endDate">
@@ -81,7 +80,6 @@
                 <datetimepicker data-ng-model="endDate" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"/>
             </ul>
         </div>
-        <div class="col-md-4"></div>
     </div>
     
 </form>

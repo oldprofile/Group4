@@ -30,16 +30,12 @@ angular.module('myApp.courseinfo')
         }    
     }
     
-    courseInfoService.getCourseInfo(courseInfoData).success(function(data){
+    courseInfoService.getCourseInfo($routeParams.coursename).success(function(data){
         //$scope.isSubscriber = false;
         $scope.courseName = $routeParams.coursename;
         console.log(JSON.stringify(data));
         $scope.course = data;
         $scope.isSubscriber = data.subscriber;
-        
-        
-        
-        
     }).error(function(err){
         alert("Can't Access training info");
     });

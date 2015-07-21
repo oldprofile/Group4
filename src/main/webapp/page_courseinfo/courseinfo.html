@@ -4,6 +4,7 @@
             <p>Date: {{course.dateTime | date:medium}}</p>
             <p>{{course.description}}</p>
             <p>unit: {{course.place}}</p>
+            <p>yoyoyo</p>
             <p>people: {{course.amount}}</p>
             <b>{{isSubscriber ? "You Are In!" : ""}}</b>
 
@@ -11,7 +12,7 @@
 
         <div>
             <button class="btn btn-default" role="button" ng-click="subscribe()">{{isSubscriber ? "Leave" : "Subscribe" }}</button>
-            <a ng-href="/editcourse/{{course.name}}" class="btn btn-default" role="button">Edit</a>
+            <a ng-href="#/editcourse/{{course.name}}" class="btn btn-default" role="button">Edit</a>
             <button class="btn btn-default" role="button" >Leave Feedback</button>
         </div>
      </div>

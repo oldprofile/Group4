@@ -11,6 +11,7 @@ angular.module('myApp')
         scope.languages = ['Russian', 'English'];
         
         scope.courseInfo = {};
+        scope.courseInfo.dateTime = [];
         
         getCategories.success(function(data) {
             scope.categoriesObj = data;

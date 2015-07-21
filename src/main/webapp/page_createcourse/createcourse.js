@@ -6,8 +6,5 @@ angular.module('myApp.createcourse', ['ngRoute', 'ui.bootstrap.datetimepicker', 
   $routeProvider.when('/createcourse', {
     templateUrl: 'page_createcourse/createcourse.html',
     controller: 'CreateCourseController'
-  }).when('/editcourse/:coursename', {
-    templateUrl: 'page_createcourse/createcourse.html',
-    controller: 'EditCourseController'
   });
 }]);
