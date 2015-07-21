@@ -75,11 +75,9 @@ public class FeedbackController {
     }
 
     @RequestMapping(value = "/create_training_feedback", method = RequestMethod.POST, consumes = "application/json")
-    public @ResponseBody void addTrainingFeedback(@RequestBody TrainingFeedbackModel trainingFeedbackModel, @RequestBody String trainingName, @RequestBody String feedbackerLogin, HttpServletResponse response) {
-        Training training = trainingService.getTrainingByName(trainingName);
-        User feedbacker = userService.findUserByLogin(feedbackerLogin);
+    public @ResponseBody void addTrainingFeedback(@RequestBody TrainingFeedbackModel trainingFeedbackModel, HttpServletResponse response) {
         try {
-            trainingFeedbackService.addTrainingFeedback(feedbacker, training, trainingFeedbackModel);
+            trainingFeedbackService.addTrainingFeedback(trainingFeedbackModel);
             response.setStatus(HttpServletResponse.SC_CREATED);
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

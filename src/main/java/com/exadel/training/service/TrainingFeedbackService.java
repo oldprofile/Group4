@@ -12,6 +12,6 @@ import java.util.List;
  * Created by asd on 12.07.2015.
  */
 public interface TrainingFeedbackService {
-    public void addTrainingFeedback(User feedbacker, Training training, TrainingFeedbackModel trainingFeedbackModel);
+    public void addTrainingFeedback(TrainingFeedbackModel trainingFeedbackModel);
     public List<TrainingFeedback> getTrainingFeedbacksOrderByDate(Training training);
 }
