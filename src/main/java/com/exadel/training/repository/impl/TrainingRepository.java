@@ -51,6 +51,6 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
     @Query("select tr.dateTime from Training as tr where tr.name = ?1 order by tr.dateTime asc")
     List<Date> findDatesByTrainingsName(String trainingName);
 
-    @Query("select tr from Training as tr where tr.state in (1,4)")
+    @Query("select tr from Training as tr where tr.state in (1,4) and tr.parent = 0")
     List<Training> findDraftAndEditedTrainings();
 }
