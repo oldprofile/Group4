@@ -77,11 +77,13 @@ public class TrainingController {
         String userLogin = cryptService.decrypt(header);
 
         if(userService.checkUserByLogin(userLogin)) {
-            TrainingInfo trainingInfo = new TrainingInfo(trainingService.getTrainingByName(trainingName),
+            Training training = trainingService.getTrainingByName(trainingName);
+            TrainingInfo trainingInfo = new TrainingInfo(training,
                     trainingService.getDatesByTrainingName(trainingName));
-            if (trainingService.getTrainingByNameAndUserLogin(trainingName, userLogin) == null)
-                trainingInfo.setIsSubscriber(false);
-            else trainingInfo.setIsSubscriber(true);
+            if (trainingService.getTrainingByNameAndUserLogin(trainingName, userLogin) != null)
+                trainingInfo.setIsSubscriber(true);
+            if (userLogin.equals(training.getCoach().getName()))
+                trainingInfo.setIsCoach(true);
             return trainingInfo;
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -98,6 +100,10 @@ public class TrainingController {
 
         if(userService.checkUserByLogin(userLogin)) {
             Training training = null;
+            if (trainingService.getTrainingByName(trainingForCreation.getName()) != null) {
+                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+                return null;
+            }
             try {
                 training = trainingService.addTraining(trainingForCreation);
             } catch (NoSuchFieldException | ParseException e) {

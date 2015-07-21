@@ -20,6 +20,7 @@ public class TrainingInfo {
 
     private String name;
     private List<String> dateTimes;
+    private String coach;
     private String pictureLink;
     private String description;
     private String place;
@@ -30,9 +31,11 @@ public class TrainingInfo {
     private boolean isRepeating;
     private boolean isSubscriber;
     private boolean isFeedback;
+    private boolean isCoach;
     private String additional;
     private String audience;
     private String state;
+    private boolean subscribeAvailability;
     private List<UserShort> listeners;
     private List<UserShort> spareUsers;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
@@ -41,25 +44,31 @@ public class TrainingInfo {
     }
 
     public TrainingInfo(Training training, List<Date> dateTimes/*, List<User> listeners, List<User> spareUsers*/) throws NoSuchFieldException {
-        this.name = training.getName();
-        this.dateTimes = new ArrayList<>();
+        name = training.getName();
+        dateTimes = new ArrayList<>();
         for(int i = 0; i < dateTimes.size(); ++i)
             this.dateTimes.add(sdf.format(dateTimes.get(i)));
-        this.pictureLink = training.getPictureLink();
-        this.description = training.getDescription();
-        this.place = training.getPlace();
-        this.idCategory = training.getCategory().getId();
-        this.participantsNumber = training.getAmount();
-        this.language = LanguageTraining.parseToString(training.getLanguage());
-        this.isInternal = training.isInternal();
+        coach = training.getCoach().getName();
+        pictureLink = training.getPictureLink();
+        description = training.getDescription();
+        place = training.getPlace();
+        idCategory = training.getCategory().getId();
+        participantsNumber = training.getAmount();
+        language = LanguageTraining.parseToString(training.getLanguage());
+        isInternal = training.isInternal();
         if(training.getParent() == 0)
-            this.isRepeating = false;
-        else this.isRepeating = true;
-        this.additional = training.getAdditional();
-        this.audience = training.getAudience();
-        this.state = StateTraining.parseToString(training.getState());
-        this.listeners = UserShort.parseListUserShort(training.getListeners());
-        this.spareUsers = UserShort.parseListUserShort((training.getSpareUsers()));
+            isRepeating = false;
+        else isRepeating = true;
+        isSubscriber = false;
+        isCoach = false;
+        additional = training.getAdditional();
+        audience = training.getAudience();
+        state = StateTraining.parseToString(training.getState());
+        listeners = UserShort.parseListUserShort(training.getListeners());
+        spareUsers = UserShort.parseListUserShort((training.getSpareUsers()));
+        if(participantsNumber < listeners.size())
+            subscribeAvailability = true;
+        else subscribeAvailability = false;
     }
 
     public String getName() {
@@ -204,5 +213,29 @@ public class TrainingInfo {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public boolean getSubscribeAvailability() {
+        return subscribeAvailability;
+    }
+
+    public void setSubscribeAvailability(boolean subscribeAvailability) {
+        this.subscribeAvailability = subscribeAvailability;
+    }
+
+    public String getCoach() {
+        return coach;
+    }
+
+    public void setCoach(String coach) {
+        this.coach = coach;
+    }
+
+    public boolean getisCoach() {
+        return isCoach;
+    }
+
+    public void setIsCoach(boolean isCoach) {
+        this.isCoach = isCoach;
     }
 }
