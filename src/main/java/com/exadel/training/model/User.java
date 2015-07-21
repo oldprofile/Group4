@@ -37,6 +37,8 @@ public class User {
     @NotNull
     private long password;
 
+    private String numberPhone;
+
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<UserFeedback> feedbacksOnUser;
@@ -169,6 +171,22 @@ public class User {
 
     public void setTrainingFeedback(List<TrainingFeedback> trainingFeedback) {
         this.trainingFeedback = trainingFeedback;
+    }
+
+    public String getNumberPhone() {
+        return numberPhone;
+    }
+
+    public void setNumberPhone(String numberPhone) {
+        this.numberPhone = numberPhone;
+    }
+
+    public List<Training> getSpareTrainings() {
+        return spareTrainings;
+    }
+
+    public void setSpareTrainings(List<Training> spareTrainings) {
+        this.spareTrainings = spareTrainings;
     }
 
     @Override
