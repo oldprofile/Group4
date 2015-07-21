@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp.createcourse', ['ngRoute', 'ui.bootstrap.datetimepicker'])
+angular.module('myApp.createcourse', ['ngRoute', 'ui.bootstrap.datetimepicker', 'ui.bootstrap'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/createcourse', {

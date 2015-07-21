@@ -1,17 +1,27 @@
 angular.module('myApp.createcourse')
-.factory('createcourse',['$http', function($http) {
+.factory('createcourse',['$http', '$location', function($http, $location) {
     
     var createcourse = {};
     
     createcourse.createCourse = function(courseData){
-        return $http.post('/create_training', courseData).success(function(data) {
-              return data;
-            })
+        var fd = new FormData();
+        fd.append('courseInfo', JSON.stringify(courseData));
+        
+        return $http.post('/training_controller/create_training', fd, {
+            headers : {
+                'Content-Type' : undefined
+            },
+            transformRequest : angular.identity
+        })
+            .success(function(data) {
+            alert('Course created successfully!');
+            $location.path("/mycourses");
+            return data;
+        })
             .error(function(err) {
               return err;
             }) 
     }
-    
-  return createcourse;
-  }
+    return createcourse;
+}
 ]);

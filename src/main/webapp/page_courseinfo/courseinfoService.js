@@ -2,9 +2,8 @@ angular.module('myApp.courseinfo')
 .factory('courseInfoService', ['$http', function($http) {
   var courseInfoService = {};
     
-    courseInfoService.getCourseInfo = function(courseData){
-        return $http.post('/training_controller/training_info',courseData).success(function(data) {
-              
+    courseInfoService.getCourseInfo = function(courseName){
+        return $http.get('/training_controller/training_info/' + courseName).success(function(data) {    
               return data;
             })
             .error(function(err) {

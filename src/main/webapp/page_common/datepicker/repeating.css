@@ -1,0 +1,9 @@
+div.repeating-container {
+    max-height: 245px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+div.repeating-row {
+    margin: 10px;
+}
