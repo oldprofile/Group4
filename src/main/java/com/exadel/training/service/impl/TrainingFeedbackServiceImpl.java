@@ -32,9 +32,12 @@ public class TrainingFeedbackServiceImpl implements TrainingFeedbackService {
 
     @Override
     public void addTrainingFeedback(TrainingFeedbackModel trainingFeedbackModel) {
-
+        String login = trainingFeedbackModel.getFeedbackerLogin();
+        User feedbacker = userService.findUserByLogin(login);
+        String name = trainingFeedbackModel.getTrainingName();
+        Training training = trainingService.getTrainingByName(name);
         TrainingFeedback tfeedback = new TrainingFeedback(trainingFeedbackModel.getClear(), trainingFeedbackModel.getInteresting(), trainingFeedbackModel.getNewMaterial(),
-                Integer.getInteger(trainingFeedbackModel.getEffective()), trainingFeedbackModel.getRecommendation(), trainingFeedbackModel.getOther(), userService.findUserByLogin(trainingFeedbackModel.getFeedbackerLogin()), trainingService.getTrainingByName(trainingFeedbackModel.getTrainingName()));
+                Integer.parseInt(trainingFeedbackModel.getEffective()), trainingFeedbackModel.getRecommendation(), trainingFeedbackModel.getOther(), feedbacker, training);
         trainingFeedbackRepository.save(tfeedback);
     }
 
