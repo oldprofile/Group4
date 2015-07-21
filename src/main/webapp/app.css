@@ -14,9 +14,9 @@ body.waiting-for-angular div#content-outer {
   min-height: 100%;
   position: relative;
 }
-body.waiting-for-angular div#initializing-panel {
+.waiting-for-angular{
   display: block;
-  background: url(images/loading.gif) center center no-repeat;
+  background: url(assets/puff.svg) center center no-repeat;
   position:absolute;
   top:0;
   left:0;
@@ -54,49 +54,68 @@ div#content-outer {
     !!!!Deckgrid!!!! 
 */
 
-.deckgrid[deckgrid]::before {
-    /* Specifies that the grid should have a maximum of 4 columns. Each column will have the classes 'column' and 'column-1-4' */
-    width: 100%;
-    content: '4 .column.column-1-4';
-    font-size: 0; /* See https://github.com/akoenig/angular-deckgrid/issues/14#issuecomment-35728861 */
-    visibility: hidden;
-}
-.deckgrid{
-    height: auto;
-    width: 100%;
-    overflow:auto; 
-}
 
-.deckgrid .column {
-    float: left;
+.cardlayout {
     
-}
-
-.deckgrid .column-1-4 {
-    width: 25%;
+    overflow: auto;
 }
 
 .card {
-    padding-bottom: 16px;
+    padding: 0px;
+    margin-bottom: 15px;
 }
 
-.deckgrid-my-courses[deckgrid]::before {
-    /* Specifies that the grid should have a maximum of 4 columns. Each column will have the classes 'column' and 'column-1-4' */
-    width: 100%;
-    content: '2 .column.column-1-2';
-    font-size: 0; /* See https://github.com/akoenig/angular-deckgrid/issues/14#issuecomment-35728861 */
-    visibility: hidden;
+/*
+
+DOS-HEAD-TOOL
+
+*/
+#localSearch {
+    float: right;
+    
 }
-.deckgrid-my-courses{
-    height: auto;
-    width: 100%;
-    overflow:auto; 
+.localSearchForm{
+    width: 200px;
+    height: 36px;
+    border-radius: 16px;
 }
-.deckgrid-my-courses .column {
-    float: left;
+
+#segmented-picker {
+   align-content: center;
+    width: 240px;
+    margin: auto;
+   
+}
+
+.segmented-button{
+    width: 80px;
+    height: 36px;
+    background-color: white!important;
+    box-shadow: none !important;
+    border-color: #ccc !important;
+}
+.segmented-button.active{
+    
+    background-color: #fafafa !important;
+    font-weight: 600 !imporant;
+    color:gray !important;
     
 }
 
-.deckgrid-my-courses .column-1-2 {
-    width: 50%;
+
+
+.segmented-button-left{
+    border-radius: 16px 0px 0px 16px;
+}
+
+.segmented-button-right{
+    border-radius: 0px 16px 16px 0px;
+}
+
+.dos-head-tool {
+    margin: 0;
+    width: 240;
+    height: 44px;
+    padding-bottom: 16px;
+    
 }

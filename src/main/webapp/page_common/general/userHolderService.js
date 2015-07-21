@@ -1,7 +1,7 @@
 'use strict'
 
 
-angular.module('myApp').factory('userService', ['$http',function ($http) {
+angular.module('myApp').factory('userService',['$http',function ($http) {
   
   var role = {
    admin: {
@@ -30,6 +30,8 @@ angular.module('myApp').factory('userService', ['$http',function ($http) {
   }
 
   var userApi = {
+    isLogged: false,  
+      
     setUser: function (login,username, password, role_, token) {
       currentUser.login = login;    
       currentUser.username = username;
@@ -37,9 +39,12 @@ angular.module('myApp').factory('userService', ['$http',function ($http) {
       
       currentUser.role = role.admin;
         
-        
+      
       alert("token: " + token);    
-      $http.defaults.headers.common.Authorization = token;    
+      $http.defaults.headers.common.Authorization = token;  
+        
+      this.isLogged = true;
+        
         
     },
     getUser: function () {
@@ -47,7 +52,19 @@ angular.module('myApp').factory('userService', ['$http',function ($http) {
     },
     clearUser: function () {
       currentUser = {};
-    }
+    },
+      
+    logout: function(){
+      return $http.post("user_controller/logout").success(function(data){
+          this.clearUser();
+          this.isLogged = false;
+          
+          return data;
+    }).error(function(err){
+          return err;
+      })
+        
+    }  
   };
   return userApi;
 }]);

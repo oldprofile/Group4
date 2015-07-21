@@ -1,7 +1,8 @@
 
 'use strict';
 
-angular.module('myApp.courseinfo', ['ngRoute'])
+angular.module('myApp.courseinfo', ['ngRoute','ui.bootstrap',
+    'ui.bootstrap.tpls'])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/courseinfo/:coursename', {

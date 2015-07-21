@@ -1,6 +1,8 @@
 package com.exadel.training.controller;
 
 import com.exadel.training.TokenAuthentification.CryptService;
+import com.exadel.training.TokenAuthentification.impl.DESCryptServiceImpl;
+import com.exadel.training.TokenAuthentification.impl.DecoratorDESCryptServiceImpl;
 import com.exadel.training.controller.model.Training.*;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
@@ -33,6 +35,14 @@ public class TrainingController {
     @Autowired
     UserService userService;
     CryptService cryptService;
+
+    public TrainingController() {
+        try {
+            cryptService = new DecoratorDESCryptServiceImpl(new DESCryptServiceImpl());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody

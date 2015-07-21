@@ -1,19 +1,6 @@
 angular.module('dosHeadToolModule',[])
 .controller("DosHeadToolController",['$scope',function($scope){
-    
-  
-
-  $scope.radioModel = 'All';
-
-  $scope.checkModel = {
-    All: true,
-    Student: false,
-    Coach: false,
-  };
-    
-    
-    
-    
+  $scope.radioModel = 'All';   
 }])
 .directive('dosHeadTool',function(){
     

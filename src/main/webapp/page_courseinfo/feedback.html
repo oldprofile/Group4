@@ -1,0 +1,63 @@
+<div class="modal-header">
+  <h3 class="modal-title">Leave your Feedback</h3>
+  <h5 class="modal-title">{{courseinfo.name}}</h5>
+  <h5 class="modal-title">{{courseinfo.coach}}</h5>
+</div>
+        <div class="modal-body">
+            
+          <form>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" name="clear"  ng-model="feedback.clear" >
+                Was the course <b>clear?</b>
+              </label>
+            </div>
+            
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" name="interesting"  ng-model="feedback.interesting" >
+                Was it <b>interesting?</b>
+              </label>
+            </div>
+            
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" name="newMaterial"  ng-model="feedback.newMaterial" >
+                Was the material <b>fresh?</b>
+              </label>
+            </div>
+            
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" name="recommendation"  ng-model="feedback.recommendation" >                  Will you recommend this <b>course?</b>
+              </label>
+            </div>
+            
+            <div class="select">
+              
+                <select ng-model="feedback.effective">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+                Rate <b>the effectiveness!</b>
+              
+            </div>
+            
+            <div class="other-textarea" style="padding-top:16px;">
+              <p>Anything else?</p>
+              <textarea class="form-control" name="description" rows="3" placeholder="Имеете шота сказать?" ng-model="feedback.other"></textarea> 
+            </div>
+            
+            
+            
+          
+          </form>
+          
+        </div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ok()">Leave Feedback</button>
+    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+</div>
