@@ -232,14 +232,16 @@ public class UserController {
         return  allTrainingUserShorts;
 
     }
-    @RequestMapping(value = "test_s",method = RequestMethod.GET)
-    public @ResponseBody List<UserShort> s() throws InterruptedException {
+    @RequestMapping(value = "/test_s",method = RequestMethod.GET)
+    public @ResponseBody List<AllTrainingUserShort> s() throws InterruptedException {
 
 
        //    FullTextSession fullTextSession = Search.getFullTextSession(session);
        //    fullTextSession.createIndexer().startAndWait();
 
-        List<User> users = userService.searchUsersByName("art");
+
+     //   List<User> users = userService.searchUsersByName("art");
+         /*
         Boolean is = userService.checkSubscribeToTraining(1L,1L);
 
         List<User> s1 = userService.searchUsersByName("a");
@@ -248,7 +250,20 @@ public class UserController {
             for (User user : s1) {
                 s2.add(UserShort.parseUserShort(user));
             }
+        }*/
+        List<AllTrainingUserShort> allTrainingUserShorts = new ArrayList<AllTrainingUserShort>();
+        List<Training> trainings = userService.selectAllTraining("1");
+        User user = userService.findUserByLogin("1");
+        for (Training training : trainings) {
+            AllTrainingUserShort allTrainingUserShort = AllTrainingUserShort.parseAllTrainingUserShort(training);
+            if (training.getCoach().getId() == user.getId()) {
+                allTrainingUserShort.setIsCoach(true);
+            } else {
+                allTrainingUserShort.setIsCoach(false);
+            }
+
+            allTrainingUserShorts.add(allTrainingUserShort);
         }
-        return s2;
+        return allTrainingUserShorts;
     }
 }

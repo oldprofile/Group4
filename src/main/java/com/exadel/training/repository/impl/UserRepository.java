@@ -49,6 +49,6 @@ public interface UserRepository extends JpaRepository<User,Long>{
    @Query(value = "insert into users_trainings values(:trainingID,:userID)", nativeQuery = true)
     void insertUserTrainingRelationShip(@Param("userID")Long userID, @Param("trainingID")Long trainingID);
 
-    @Query("select distinct t from User as u inner join u.trainings as t where u.login = ?1 and t.state in (?2) order by t.dateTime desc")
+    @Query("select distinct t from User as u inner join u.trainings as t where u.login = ?1 and t.state in (?2) order by t.dateTime asc ")
     List<Training> selectAllTrainingSortedByDate(String login, List<Integer> state);
 }
