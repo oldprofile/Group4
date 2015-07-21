@@ -23,7 +23,7 @@ public class User {
     @Column(unique = true)
     private String email;
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL)
     private Set<Role> roles;
 
     @NotNull
