@@ -19,13 +19,13 @@ public class TrainingFeedbackModel implements Serializable {
 
     private boolean newMaterial;
 
-    private int effective;
+    private String effective;
 
     private boolean recommendation;
 
     private String other;
 
-    private String feedbackerName;
+    private String feedbackerLogin;
 
     private String date;
 
@@ -36,14 +36,14 @@ public class TrainingFeedbackModel implements Serializable {
     public TrainingFeedbackModel() {
     }
 
-    public TrainingFeedbackModel(boolean clear, boolean interesting, boolean newMaterial, int effective, boolean recommendation, String other, String feedbackerName, String date, String trainingName) {
+    public TrainingFeedbackModel(boolean clear, boolean interesting, boolean newMaterial, String effective, boolean recommendation, String other, String feedbackerLogin, String date, String trainingName) {
         this.clear = clear;
         this.interesting = interesting;
         this.newMaterial = newMaterial;
         this.effective = effective;
         this.recommendation = recommendation;
         this.other = other;
-        this.feedbackerName = feedbackerName;
+        this.feedbackerLogin = feedbackerLogin;
         this.date = date;
         this.trainingName = trainingName;
     }
@@ -72,11 +72,11 @@ public class TrainingFeedbackModel implements Serializable {
         this.newMaterial = newMaterial;
     }
 
-    public int getEffective() {
+    public String getEffective() {
         return effective;
     }
 
-    public void setEffective(int effective) {
+    public void setEffective(String effective) {
         this.effective = effective;
     }
 
@@ -96,12 +96,12 @@ public class TrainingFeedbackModel implements Serializable {
         this.other = other;
     }
 
-    public String getFeedbackerName() {
-        return feedbackerName;
+    public String getFeedbackerLogin() {
+        return feedbackerLogin;
     }
 
-    public void setFeedbackerName(String feedbackerName) {
-        this.feedbackerName = feedbackerName;
+    public void setFeedbackerLogin(String feedbackerLogin) {
+        this.feedbackerLogin = feedbackerLogin;
     }
 
     public String getDate() {
@@ -121,7 +121,7 @@ public class TrainingFeedbackModel implements Serializable {
     }
 
     public static TrainingFeedbackModel parseTrainingFeedback(TrainingFeedback trainingFeedback) {
-        TrainingFeedbackModel trainingFeedbackModel = new TrainingFeedbackModel(trainingFeedback.getClear(), trainingFeedback.getInteresting(), trainingFeedback.getNewMaterial(), trainingFeedback.getEffective(),
+        TrainingFeedbackModel trainingFeedbackModel = new TrainingFeedbackModel(trainingFeedback.getClear(), trainingFeedback.getInteresting(), trainingFeedback.getNewMaterial(), String.valueOf(trainingFeedback.getEffective()),
                 trainingFeedback.getRecommendation(), trainingFeedback.getOther(), trainingFeedback.getFeedbacker().getName(), sdf.format(trainingFeedback.getDate()), trainingFeedback.getTraining().getName());
         return trainingFeedbackModel;
     }
