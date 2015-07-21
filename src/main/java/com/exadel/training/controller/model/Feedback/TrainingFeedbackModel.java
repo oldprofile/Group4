@@ -27,16 +27,12 @@ public class TrainingFeedbackModel implements Serializable {
 
     private String feedbackerLogin;
 
-    private String date;
-
     private String trainingName;
-
-    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
 
     public TrainingFeedbackModel() {
     }
 
-    public TrainingFeedbackModel(boolean clear, boolean interesting, boolean newMaterial, String effective, boolean recommendation, String other, String feedbackerLogin, String date, String trainingName) {
+    public TrainingFeedbackModel(boolean clear, boolean interesting, boolean newMaterial, String effective, boolean recommendation, String other, String feedbackerLogin, String trainingName) {
         this.clear = clear;
         this.interesting = interesting;
         this.newMaterial = newMaterial;
@@ -44,7 +40,6 @@ public class TrainingFeedbackModel implements Serializable {
         this.recommendation = recommendation;
         this.other = other;
         this.feedbackerLogin = feedbackerLogin;
-        this.date = date;
         this.trainingName = trainingName;
     }
 
@@ -104,14 +99,6 @@ public class TrainingFeedbackModel implements Serializable {
         this.feedbackerLogin = feedbackerLogin;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
     public String getTrainingName() {
         return trainingName;
     }
@@ -122,7 +109,7 @@ public class TrainingFeedbackModel implements Serializable {
 
     public static TrainingFeedbackModel parseTrainingFeedback(TrainingFeedback trainingFeedback) {
         TrainingFeedbackModel trainingFeedbackModel = new TrainingFeedbackModel(trainingFeedback.getClear(), trainingFeedback.getInteresting(), trainingFeedback.getNewMaterial(), String.valueOf(trainingFeedback.getEffective()),
-                trainingFeedback.getRecommendation(), trainingFeedback.getOther(), trainingFeedback.getFeedbacker().getName(), sdf.format(trainingFeedback.getDate()), trainingFeedback.getTraining().getName());
+                trainingFeedback.getRecommendation(), trainingFeedback.getOther(), trainingFeedback.getFeedbacker().getName(), trainingFeedback.getTraining().getName());
         return trainingFeedbackModel;
     }
 
