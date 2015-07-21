@@ -1,6 +1,6 @@
 angular.module('myApp.createcourse')
 .controller('CreateCourseController', ['$scope', 'createcourse', 'initCourseService', function($scope, createcourse, initCourseService) {
-    $scope.isEdited = 'false';
+    $scope.isEdited = false;
     
     initCourseService($scope);
                                        

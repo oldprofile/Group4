@@ -12,8 +12,9 @@
                             <td>{{course.trainingName}}</td> <!--course.name-->
                             <td>{{course.trainingCoach}}</td>
                             <td>{{course.state}}</td> <!--course.status-->
-                            <td align="right">
-                                <input type="submit" ng-href="" class="btn btn-default btn-md" value="Go to course page">
+                            <td align="right"><a ng-href="#/editcourse/{{course.trainingName}}">
+                                <input type="submit" class="btn btn-default btn-md" value="Go to course page">
+                                </a>
                             </td> <!--button-->
                         </tr>
                     </table>
