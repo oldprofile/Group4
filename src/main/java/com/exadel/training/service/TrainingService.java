@@ -25,4 +25,5 @@ public interface TrainingService {
     Training deleteTrainingsByName(String trainingName);
     List<Training> searchTrainingsByName(String trainingName);
     List<Date> getDatesByTrainingName(String trainingName);
+    List<Training> getTrainingForApprove();
 }

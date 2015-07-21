@@ -157,4 +157,9 @@ public class TrainingServiceImpl implements TrainingService {
     public List<Date> getDatesByTrainingName(String trainingName) {
         return trainingRepository.findDatesByTrainingsName(trainingName);
     }
+
+    @Override
+    public List<Training> getTrainingForApprove() {
+        return trainingRepository.findDraftAndEditedTrainings();
+    }
 }
