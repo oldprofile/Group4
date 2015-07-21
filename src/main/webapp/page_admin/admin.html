@@ -9,8 +9,9 @@
                 <div class="col-xs-8 table-responsive well scroll">
                     <table class="table table-striped">
                         <tr ng-repeat="course in toApproveList track by $index">
-                            <td>{{course.name}}</td> <!--course.name-->
-                            <td>{{course.status}}</td> <!--course.status-->
+                            <td>{{course.trainingName}}</td> <!--course.name-->
+                            <td>{{course.trainingCoach}}</td>
+                            <td>{{course.state}}</td> <!--course.status-->
                             <td align="right">
                                 <input type="submit" ng-href="" class="btn btn-default btn-md" value="Go to course page">
                             </td> <!--button-->
