@@ -1,6 +1,8 @@
 package com.exadel.training.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.search.annotations.*;
+import org.hibernate.search.annotations.Index;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -25,6 +27,7 @@ public class User {
     private Set<Role> roles;
 
     @NotNull
+    @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
     private String name;
 
     @NotNull
@@ -33,6 +36,8 @@ public class User {
 
     @NotNull
     private long password;
+
+    private String numberPhone;
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
@@ -166,6 +171,22 @@ public class User {
 
     public void setTrainingFeedback(List<TrainingFeedback> trainingFeedback) {
         this.trainingFeedback = trainingFeedback;
+    }
+
+    public String getNumberPhone() {
+        return numberPhone;
+    }
+
+    public void setNumberPhone(String numberPhone) {
+        this.numberPhone = numberPhone;
+    }
+
+    public List<Training> getSpareTrainings() {
+        return spareTrainings;
+    }
+
+    public void setSpareTrainings(List<Training> spareTrainings) {
+        this.spareTrainings = spareTrainings;
     }
 
     @Override

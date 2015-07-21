@@ -16,15 +16,15 @@ public class TrainingFeedback{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    private String clear;
+    private boolean clear;
 
-    private String interesting;
+    private boolean interesting;
 
-    private String newMaterial;
+    private boolean newMaterial;
 
     private int effective;
 
-    private String recommendation;
+    private boolean recommendation;
 
     private String other;
 
@@ -41,7 +41,7 @@ public class TrainingFeedback{
         this.date = new Date();
     }
 
-    public TrainingFeedback(String clear, String interesting, String newMaterial, int effective, String recommendation,
+    public TrainingFeedback(boolean clear, boolean interesting, boolean newMaterial, int effective, boolean recommendation,
                             String other, User feedbacker, Training training) {
         this.clear = clear;
         this.interesting = interesting;
@@ -58,27 +58,27 @@ public class TrainingFeedback{
         return id;
     }
 
-    public String getClear() {
+    public boolean getClear() {
         return clear;
     }
 
-    public void setClear(String clear) {
+    public void setClear(boolean clear) {
         this.clear = clear;
     }
 
-    public String getInteresting() {
+    public boolean getInteresting() {
         return interesting;
     }
 
-    public void setInteresting(String interesting) {
+    public void setInteresting(boolean interesting) {
         this.interesting = interesting;
     }
 
-    public String getNewMaterial() {
+    public boolean getNewMaterial() {
         return newMaterial;
     }
 
-    public void setNewMaterial(String newMaterial) {
+    public void setNewMaterial(boolean newMaterial) {
         this.newMaterial = newMaterial;
     }
 
@@ -90,11 +90,11 @@ public class TrainingFeedback{
         this.effective = effective;
     }
 
-    public String getRecommendation() {
+    public boolean getRecommendation() {
         return recommendation;
     }
 
-    public void setRecommendation(String recommendation) {
+    public void setRecommendation(boolean recommendation) {
         this.recommendation = recommendation;
     }
 

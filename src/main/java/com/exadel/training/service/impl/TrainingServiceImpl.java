@@ -152,4 +152,14 @@ public class TrainingServiceImpl implements TrainingService {
     public List<Training> searchTrainingsByName(String trainingName) {
         return trainingRepository.searchTrainingsByName("%" + trainingName + "%");
     }
+
+    @Override
+    public List<Date> getDatesByTrainingName(String trainingName) {
+        return trainingRepository.findDatesByTrainingsName(trainingName);
+    }
+
+    @Override
+    public List<Training> getTrainingForApprove() {
+        return trainingRepository.findDraftAndEditedTrainings();
+    }
 }

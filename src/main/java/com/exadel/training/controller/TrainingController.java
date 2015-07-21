@@ -1,13 +1,13 @@
 package com.exadel.training.controller;
 
-import com.exadel.training.TokenAuthentification.CryptService;
-import com.exadel.training.TokenAuthentification.impl.DESCryptServiceImpl;
-import com.exadel.training.TokenAuthentification.impl.DecoratorDESCryptServiceImpl;
+import com.exadel.training.tokenAuthentification.CryptService;
 import com.exadel.training.controller.model.Training.*;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
 import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
+import com.exadel.training.tokenAuthentification.impl.DESCryptServiceImpl;
+import com.exadel.training.tokenAuthentification.impl.DecoratorDESCryptServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -46,7 +46,7 @@ public class TrainingController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    List<ShortTrainingInfo> trainingList(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException {
+    List<ShortTrainingInfo> trainingList(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
 
         String header = httpServletRequest.getHeader("authorization");
         String userLogin = cryptService.decrypt(header);
@@ -72,12 +72,13 @@ public class TrainingController {
     @RequestMapping(value = "/training_info/{trainingName}", method = RequestMethod.GET/*consumes = "application/json"*/)
     public @ResponseBody
     TrainingInfo postTrainingInfo (@PathVariable("trainingName") String trainingName,
-                                   HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException {
+                                   HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
         String header = httpServletRequest.getHeader("authorization");
         String userLogin = cryptService.decrypt(header);
 
         if(userService.checkUserByLogin(userLogin)) {
-            TrainingInfo trainingInfo = new TrainingInfo(trainingService.getTrainingByName(trainingName));
+            TrainingInfo trainingInfo = new TrainingInfo(trainingService.getTrainingByName(trainingName),
+                    trainingService.getDatesByTrainingName(trainingName));
             if (trainingService.getTrainingByNameAndUserLogin(trainingName, userLogin) == null)
                 trainingInfo.setIsSubscriber(false);
             else trainingInfo.setIsSubscriber(true);
@@ -86,13 +87,12 @@ public class TrainingController {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
         }
-
     }
 
     @RequestMapping(value = "/create_training", method = RequestMethod.POST, consumes = "application/json")
      public @ResponseBody
      ShortTrainingInfo createTraining(@RequestBody TrainingForCreation trainingForCreation,
-                                      HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest ) throws BadPaddingException, IOException, IllegalBlockSizeException {
+                                      HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest ) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
         String header = httpServletRequest.getHeader("authorization");
         String userLogin = cryptService.decrypt(header);
 
@@ -113,7 +113,7 @@ public class TrainingController {
     @RequestMapping(value = "/approve_training/{trainingName}", method = RequestMethod.POST)
     public @ResponseBody
     ShortTrainingInfo approveTraining(@PathVariable("trainingName") String trainingName,
-                                      HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException {
+                                      HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
         String header = httpServletRequest.getHeader("authorization");
         String userLogin = cryptService.decrypt(header);
 
@@ -134,7 +134,7 @@ public class TrainingController {
     @RequestMapping(value = "/list_by_category/{categoryId}", method = RequestMethod.GET)
     public @ResponseBody
     List <ShortTrainingInfo> trainingListByCategory(@PathVariable("categoryId") int categoryId,
-                          HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException {
+                          HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
         String header = httpServletRequest.getHeader("authorization");
         String userLogin = cryptService.decrypt(header);
         if(userService.checkUserByLogin(userLogin)) {
@@ -148,7 +148,7 @@ public class TrainingController {
 
     @RequestMapping(value = "/delete_training/{trainingName}", method = RequestMethod.DELETE)
     public @ResponseBody ShortTrainingInfo deleteTraining(@PathVariable("trainingName") String trainingName,
-                            HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+                            HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws NoSuchFieldException {
         if(userService.checkUserByLogin("login")) {
             Training delTraining = trainingService.deleteTrainingsByName(trainingName);
             return new ShortTrainingInfo(delTraining);
@@ -161,11 +161,25 @@ public class TrainingController {
     @RequestMapping(value = "/search_training/{trainingName}", method = RequestMethod.GET)
     public @ResponseBody
     List<ShortTrainingInfo> findTraining(@PathVariable("trainingName") String trainingName,
-                     HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException {
+                     HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
         String header = httpServletRequest.getHeader("authorization");
         String userLogin = cryptService.decrypt(header);
         if(userService.checkUserByLogin(userLogin)) {
             List<Training> trainings = trainingService.searchTrainingsByName(trainingName);
+            return ShortTrainingInfo.parseList(trainings);
+        } else {
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return null;
+        }
+    }
+
+    @RequestMapping(value = "/trainings_for_approve", method = RequestMethod.GET)
+    public @ResponseBody
+    List<ShortTrainingInfo> getTrainingForApproved(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
+        String header = httpServletRequest.getHeader("authorization");
+        String userLogin = cryptService.decrypt(header);
+        if(userService.checkUserByLogin(userLogin)) {
+            List<Training> trainings = trainingService.getTrainingForApprove();
             return ShortTrainingInfo.parseList(trainings);
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -180,7 +194,7 @@ public class TrainingController {
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     @ResponseBody
-    List<ShortTrainingInfo> trainingTest() throws ParseException {
+    List<ShortTrainingInfo> trainingTest() throws ParseException, NoSuchFieldException {
         List<Training> list = trainingService.getTrainingsByNearestDate();
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
@@ -191,14 +205,14 @@ public class TrainingController {
 
     @RequestMapping(value = "/test_category_name", method = RequestMethod.GET)
     public @ResponseBody
-    List <ShortTrainingInfo> testTrainingListByCategory() {
+    List <ShortTrainingInfo> testTrainingListByCategory() throws NoSuchFieldException {
         List<Training> trainings = trainingService.getValidTrainingsByCategoryId(1);
         return ShortTrainingInfo.parseList(trainings);
     }
 
     @RequestMapping(value = "/test_create_training", method = RequestMethod.GET)
     public @ResponseBody
-    ShortTrainingInfo testCreateTraining() {
+    ShortTrainingInfo testCreateTraining() throws NoSuchFieldException {
         TrainingForCreation trainingForCreation = new TrainingForCreation();
         trainingForCreation.setName("training");
         trainingForCreation.setLanguage("English");
@@ -220,5 +234,18 @@ public class TrainingController {
             e.printStackTrace();
         }
         return new ShortTrainingInfo(training);
+    }
+
+    @RequestMapping(value = "/test_training_info", method = RequestMethod.GET/*consumes = "application/json"*/)
+    public @ResponseBody
+    TrainingInfo testPostTrainingInfo () throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
+        String trainingName = "angular";
+        String userLogin = "1";
+        TrainingInfo trainingInfo = new TrainingInfo(trainingService.getTrainingByName(trainingName),
+                trainingService.getDatesByTrainingName(trainingName));
+        if (trainingService.getTrainingByNameAndUserLogin(trainingName, userLogin) == null)
+            trainingInfo.setIsSubscriber(false);
+        else trainingInfo.setIsSubscriber(true);
+        return trainingInfo;
     }
 }
