@@ -9,6 +9,7 @@ public enum StateTraining {
     Draft,
     Ahead,
     InProcess,
+    Edited,
     Finished,
     Canceled;
 
@@ -23,10 +24,13 @@ public enum StateTraining {
             case 3: {
                 return  "InProcess";
             }
-            case  4: {
-                return  "Finished";
+            case 4: {
+                return "Edited";
             }
             case  5: {
+                return  "Finished";
+            }
+            case  6: {
                 return  "Canceled";
             }
             default: {
@@ -45,11 +49,14 @@ public enum StateTraining {
             case "InProcess": {
                 return 3;
             }
-            case "Finished": {
+            case "Edited": {
                 return 4;
             }
-            case "Canceled": {
+            case "Finished": {
                 return 5;
+            }
+            case "Canceled": {
+                return 6;
             }
             default: {
                 throw new NoSuchFieldException("don't find such type.");

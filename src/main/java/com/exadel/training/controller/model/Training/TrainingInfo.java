@@ -1,9 +1,12 @@
 package com.exadel.training.controller.model.Training;
 
 import com.exadel.training.common.LanguageTraining;
+import com.exadel.training.common.StateTraining;
 import com.exadel.training.model.Omission;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
+import com.exadel.training.repository.impl.TrainingRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,8 +29,10 @@ public class TrainingInfo {
     private boolean isInternal;
     private boolean isRepeating;
     private boolean isSubscriber;
+    private boolean isFeedback;
     private String additional;
     private String audience;
+    private String state;
     private List<UserShort> listeners;
     private List<UserShort> spareUsers;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
@@ -35,7 +40,7 @@ public class TrainingInfo {
     public TrainingInfo() {
     }
 
-    public TrainingInfo(Training training, List<Date> dateTimes) throws NoSuchFieldException {
+    public TrainingInfo(Training training, List<Date> dateTimes/*, List<User> listeners, List<User> spareUsers*/) throws NoSuchFieldException {
         this.name = training.getName();
         this.dateTimes = new ArrayList<>();
         for(int i = 0; i < dateTimes.size(); ++i)
@@ -52,6 +57,7 @@ public class TrainingInfo {
         else this.isRepeating = true;
         this.additional = training.getAdditional();
         this.audience = training.getAudience();
+        this.state = StateTraining.parseToString(training.getState());
         this.listeners = UserShort.parseListUserShort(training.getListeners());
         this.spareUsers = UserShort.parseListUserShort((training.getSpareUsers()));
     }
@@ -144,6 +150,14 @@ public class TrainingInfo {
         this.isSubscriber = isSubscriber;
     }
 
+    public boolean isFeedback() {
+        return isFeedback;
+    }
+
+    public void setIsFeedback(boolean isFeedback) {
+        this.isFeedback = isFeedback;
+    }
+
     public String getAdditional() {
         return additional;
     }
@@ -182,5 +196,13 @@ public class TrainingInfo {
 
     public void setSdf(SimpleDateFormat sdf) {
         this.sdf = sdf;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }
