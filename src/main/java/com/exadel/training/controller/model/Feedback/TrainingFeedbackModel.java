@@ -1,36 +1,42 @@
 package com.exadel.training.controller.model.Feedback;
 
+import com.exadel.training.controller.model.User.UserShort;
 import com.exadel.training.model.TrainingFeedback;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by asd on 14.07.2015.
  */
 public class TrainingFeedbackModel implements Serializable {
-    private String clear;
+    private boolean clear;
 
-    private String interesting;
+    private boolean interesting;
 
-    private String newMaterial;
+    private boolean newMaterial;
 
     private int effective;
 
-    private String recommendation;
+    private boolean recommendation;
 
     private String other;
 
     private String feedbackerName;
 
-    private Date date;
+    private String date;
 
     private String trainingName;
+
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
 
     public TrainingFeedbackModel() {
     }
 
-    public TrainingFeedbackModel(String clear, String interesting, String newMaterial, int effective, String recommendation, String other, String feedbackerName, Date date, String trainingName) {
+    public TrainingFeedbackModel(boolean clear, boolean interesting, boolean newMaterial, int effective, boolean recommendation, String other, String feedbackerName, String date, String trainingName) {
         this.clear = clear;
         this.interesting = interesting;
         this.newMaterial = newMaterial;
@@ -42,27 +48,27 @@ public class TrainingFeedbackModel implements Serializable {
         this.trainingName = trainingName;
     }
 
-    public String getClear() {
+    public boolean getClear() {
         return clear;
     }
 
-    public void setClear(String clear) {
+    public void setClear(boolean clear) {
         this.clear = clear;
     }
 
-    public String getInteresting() {
+    public boolean getInteresting() {
         return interesting;
     }
 
-    public void setInteresting(String interesting) {
+    public void setInteresting(boolean interesting) {
         this.interesting = interesting;
     }
 
-    public String getNewMaterial() {
+    public boolean getNewMaterial() {
         return newMaterial;
     }
 
-    public void setNewMaterial(String newMaterial) {
+    public void setNewMaterial(boolean newMaterial) {
         this.newMaterial = newMaterial;
     }
 
@@ -74,11 +80,11 @@ public class TrainingFeedbackModel implements Serializable {
         this.effective = effective;
     }
 
-    public String getRecommendation() {
+    public boolean getRecommendation() {
         return recommendation;
     }
 
-    public void setRecommendation(String recommendation) {
+    public void setRecommendation(boolean recommendation) {
         this.recommendation = recommendation;
     }
 
@@ -98,11 +104,11 @@ public class TrainingFeedbackModel implements Serializable {
         this.feedbackerName = feedbackerName;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -114,24 +120,17 @@ public class TrainingFeedbackModel implements Serializable {
         this.trainingName = trainingName;
     }
 
-    @Override
-    public String toString() {
-        return "TrainingFeedbackModel{" +
-                "clear='" + clear + '\'' +
-                ", interesting='" + interesting + '\'' +
-                ", newMaterial='" + newMaterial + '\'' +
-                ", effective=" + effective +
-                ", recommendation='" + recommendation + '\'' +
-                ", other='" + other + '\'' +
-                ", feedbackerName='" + feedbackerName + '\'' +
-                ", date=" + date +
-                ", trainingName='" + trainingName + '\'' +
-                '}';
-    }
-
     public static TrainingFeedbackModel parseTrainingFeedback(TrainingFeedback trainingFeedback) {
         TrainingFeedbackModel trainingFeedbackModel = new TrainingFeedbackModel(trainingFeedback.getClear(), trainingFeedback.getInteresting(), trainingFeedback.getNewMaterial(), trainingFeedback.getEffective(),
-                trainingFeedback.getRecommendation(), trainingFeedback.getOther(), trainingFeedback.getFeedbacker().getName(), trainingFeedback.getDate(), trainingFeedback.getTraining().getName());
+                trainingFeedback.getRecommendation(), trainingFeedback.getOther(), trainingFeedback.getFeedbacker().getName(), sdf.format(trainingFeedback.getDate()), trainingFeedback.getTraining().getName());
         return trainingFeedbackModel;
+    }
+
+    public static List<TrainingFeedbackModel> parseTrainingFeedbackList(List<TrainingFeedback> trainingFeedbackList) {
+        List<TrainingFeedbackModel> trainingFeedbackModelList = new ArrayList<TrainingFeedbackModel>();
+        for(TrainingFeedback trainingFeedback: trainingFeedbackList) {
+            trainingFeedbackModelList.add(TrainingFeedbackModel.parseTrainingFeedback(trainingFeedback));
+        }
+        return trainingFeedbackModelList;
     }
 }
