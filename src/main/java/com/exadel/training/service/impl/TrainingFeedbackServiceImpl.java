@@ -45,4 +45,9 @@ public class TrainingFeedbackServiceImpl implements TrainingFeedbackService {
     public List<TrainingFeedback> getTrainingFeedbacksOrderByDate(Training training) {
         return trainingFeedbackRepository.findFeedbackByTrainingOrderByDateAsc(training);
     }
+
+    @Override
+    public  Boolean hasFeedback(String login, String name) {
+        return trainingFeedbackRepository.checkFeedbackByLoginAndName(login, name);
+    }
 }
