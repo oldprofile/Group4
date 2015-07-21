@@ -208,8 +208,11 @@ public class UserController {
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public @ResponseBody List<AllTrainingUserShort> t(HttpServletResponse httpServletResponse) {
         List<Integer> l = new ArrayList<>();
+        l.add(1);
         l.add(2);
         l.add(3);
+        l.add(4);
+        l.add(5);
         List<Training> trainings = userService.selectAllTrainingSortedByDate("1",l);
         User user = userService.findUserByLogin("1");
         List<AllTrainingUserShort> allTrainingUserShorts = new ArrayList<>();
@@ -233,7 +236,7 @@ public class UserController {
 
     }
     @RequestMapping(value = "/test_s",method = RequestMethod.GET)
-    public @ResponseBody List<AllTrainingUserShort> s() throws InterruptedException {
+    public @ResponseBody List<UserShort> s() throws InterruptedException {
 
 
        //    FullTextSession fullTextSession = Search.getFullTextSession(session);
@@ -241,7 +244,7 @@ public class UserController {
 
 
      //   List<User> users = userService.searchUsersByName("art");
-         /*
+
         Boolean is = userService.checkSubscribeToTraining(1L,1L);
 
         List<User> s1 = userService.searchUsersByName("a");
@@ -250,20 +253,8 @@ public class UserController {
             for (User user : s1) {
                 s2.add(UserShort.parseUserShort(user));
             }
-        }*/
-        List<AllTrainingUserShort> allTrainingUserShorts = new ArrayList<AllTrainingUserShort>();
-        List<Training> trainings = userService.selectAllTraining("1");
-        User user = userService.findUserByLogin("1");
-        for (Training training : trainings) {
-            AllTrainingUserShort allTrainingUserShort = AllTrainingUserShort.parseAllTrainingUserShort(training);
-            if (training.getCoach().getId() == user.getId()) {
-                allTrainingUserShort.setIsCoach(true);
-            } else {
-                allTrainingUserShort.setIsCoach(false);
-            }
-
-            allTrainingUserShorts.add(allTrainingUserShort);
         }
-        return allTrainingUserShorts;
+
+        return s2;
     }
 }
