@@ -2,6 +2,7 @@ package com.exadel.training.controller.model.Training;
 
 import com.exadel.training.common.LanguageTraining;
 import com.exadel.training.common.StateTraining;
+import com.exadel.training.controller.model.User.UserShort;
 import com.exadel.training.model.Omission;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
@@ -20,10 +21,11 @@ public class TrainingInfo {
 
     private String name;
     private List<String> dateTimes;
-    private String coach;
+    private String coachName;
     private String pictureLink;
     private String description;
     private String place;
+    private int lessonNumber;
     private int idCategory;
     private int participantsNumber;
     private String language;
@@ -36,6 +38,7 @@ public class TrainingInfo {
     private String audience;
     private String state;
     private boolean subscribeAvailability;
+    private boolean feedbackAvailability;
     private List<UserShort> listeners;
     private List<UserShort> spareUsers;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
@@ -43,12 +46,12 @@ public class TrainingInfo {
     public TrainingInfo() {
     }
 
-    public TrainingInfo(Training training, List<Date> dateTimes/*, List<User> listeners, List<User> spareUsers*/) throws NoSuchFieldException {
+    public TrainingInfo(Training training, List<Date> dateTimes) throws NoSuchFieldException {
         name = training.getName();
         dateTimes = new ArrayList<>();
         for(int i = 0; i < dateTimes.size(); ++i)
             this.dateTimes.add(sdf.format(dateTimes.get(i)));
-        coach = training.getCoach().getName();
+        coachName = training.getCoach().getName();
         pictureLink = training.getPictureLink();
         description = training.getDescription();
         place = training.getPlace();
@@ -56,19 +59,15 @@ public class TrainingInfo {
         participantsNumber = training.getAmount();
         language = LanguageTraining.parseToString(training.getLanguage());
         isInternal = training.isInternal();
-        if(training.getParent() == 0)
-            isRepeating = false;
-        else isRepeating = true;
+        isRepeating = training.getParent() != 0;
         isSubscriber = false;
         isCoach = false;
         additional = training.getAdditional();
         audience = training.getAudience();
         state = StateTraining.parseToString(training.getState());
-        listeners = UserShort.parseListUserShort(training.getListeners());
-        spareUsers = UserShort.parseListUserShort((training.getSpareUsers()));
-        if(participantsNumber < listeners.size())
-            subscribeAvailability = true;
-        else subscribeAvailability = false;
+        listeners = UserShort.parseUserShortList(training.getListeners());
+        spareUsers = UserShort.parseUserShortList((training.getSpareUsers()));
+        subscribeAvailability = participantsNumber < listeners.size();
     }
 
     public String getName() {
@@ -143,7 +142,7 @@ public class TrainingInfo {
         this.isInternal = isInternal;
     }
 
-    public boolean isRepeating() {
+    public boolean getisRepeating() {
         return isRepeating;
     }
 
@@ -151,7 +150,7 @@ public class TrainingInfo {
         this.isRepeating = isRepeating;
     }
 
-    public boolean isSubscriber() {
+    public boolean getIsSubscriber() {
         return isSubscriber;
     }
 
@@ -223,15 +222,15 @@ public class TrainingInfo {
         this.subscribeAvailability = subscribeAvailability;
     }
 
-    public String getCoach() {
-        return coach;
+    public String getCoachName() {
+        return coachName;
     }
 
-    public void setCoach(String coach) {
-        this.coach = coach;
+    public void setCoachName(String coachName) {
+        this.coachName = coachName;
     }
 
-    public boolean getisCoach() {
+    public boolean getIsCoach() {
         return isCoach;
     }
 
