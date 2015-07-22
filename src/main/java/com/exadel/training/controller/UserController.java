@@ -68,6 +68,11 @@ public class UserController {
         return userShortList;
     }
 
+    @RequestMapping(value = "/user_info/{login}", method = RequestMethod.GET)
+    public @ResponseBody UserShort userInfo(@PathVariable("login") String login, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+      return  UserShort.parseUserShort(userService.findUserByLogin(login));
+    }
+
     @RequestMapping(value = "/all_trainings_of_user", method = RequestMethod.GET)
     public  @ResponseBody List<AllTrainingUserShort> getAllTrainingOfUser(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException {
 
@@ -100,6 +105,44 @@ public class UserController {
 
         return allTrainingUserShorts;
     }
+
+    @RequestMapping(value = "/all_trainings_of_user_by_type_coach", method = RequestMethod.GET)
+    public  @ResponseBody List<AllTrainingUserShort> getAllTrainingOfUserByTypeCoachTrue (HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException {
+
+        //String header = httpServletRequest.getHeader("authorization");
+       // String login = cryptService.decrypt(header);
+        List<AllTrainingUserShort> allTrainingUserShorts = new ArrayList<AllTrainingUserShort>();
+
+     //   if(userService.checkUserByLogin(login)) {
+        List<Integer> l = new ArrayList<>();
+        l.add(1);
+        l.add(2);
+        l.add(3);
+        l.add(4);
+        l.add(5);
+            List<Training> trainings = userService.selectAllTrainingSortedByDateTypeCoachTrue("1",l);
+            User user = userService.findUserByLogin("1");
+
+            for (Training training : trainings) {
+                AllTrainingUserShort allTrainingUserShort = AllTrainingUserShort.parseAllTrainingUserShort(training);
+                if (training.getCoach().getId() == user.getId()) {
+                    allTrainingUserShort.setIsCoach(true);
+                }
+                allTrainingUserShorts.add(allTrainingUserShort);
+            }
+
+            if (allTrainingUserShorts.isEmpty()) {
+                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            } else {
+                httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+            }
+       // } else {
+         //   httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        //}
+
+        return allTrainingUserShorts;
+    }
+
 
     @RequestMapping(value = "/find_user_by_login", method = RequestMethod.GET)
     public @ResponseBody UserShort findUserByLogin( HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException {
