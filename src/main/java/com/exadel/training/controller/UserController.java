@@ -69,8 +69,18 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user_info/{login}", method = RequestMethod.GET)
-    public @ResponseBody UserShort userInfo(@PathVariable("login") String login, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
-      return  UserShort.parseUserShort(userService.findUserByLogin(login));
+    public @ResponseBody UserShort userInfo(@PathVariable("login") String login, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException {
+
+        String header = httpServletRequest.getHeader("authorization");
+        String mainLogin = cryptService.decrypt(header);
+
+        if(userService.checkUserByLogin(mainLogin)) {
+            httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+            return UserShort.parseUserShort(userService.findUserByLogin(login));
+        } else {
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return new UserShort();
+        }
     }
 
     @RequestMapping(value = "/all_trainings_of_user", method = RequestMethod.GET)
