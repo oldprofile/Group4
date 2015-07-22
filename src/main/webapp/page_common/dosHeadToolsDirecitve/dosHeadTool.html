@@ -1,16 +1,19 @@
-<div>
-    
-    
-    <div class="btn-group">
-            <label class="btn btn-default" ng-model="radioModel" btn-radio="'All'">All</label>
-            <label class="btn btn-default" ng-model="radioModel" btn-radio="'Student'">Student</label>
-            <label class="btn btn-default" ng-model="radioModel" btn-radio="'Coach'">Coach</label>
+<div class="dos-head-tool row">
+    <div class="col-sm-2 col-xs-0"></div>
+    <div class="col-sm-8 col-xs-6">
+        <div id="segmented-picker">
+            <div class="btn-group">
+                    <label class="btn btn-default segmented-button segmented-button-left" ng-model="radioModel" btn-radio="'All'">All</label>
+                    <label class="btn btn-default segmented-button" ng-model="radioModel" btn-radio="'Student'">Student</label>
+                    <label class="btn btn-default segmented-button segmented-button-right" ng-model="radioModel" btn-radio="'Coach'">Coach</label>
+            </div>
+        </div>
     </div>
-    {{radioModel}}
-    
-    <form name="localSearch">
-  <label>Search:
-    <input type="text" class ="form-control" name="search" ng-model="search">
-  </label>
-    </form>
+    <div class="col-sm-2 col-xs-6">
+        <form name="localSearch" id="localSearch">
+
+        <input type="text" class = "form-control localSearchForm" name="search" ng-model="search" placeholder="Search">
+
+        </form>
+    </div>    
 </div>

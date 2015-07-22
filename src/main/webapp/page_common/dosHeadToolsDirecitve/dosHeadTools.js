@@ -1,19 +1,6 @@
 angular.module('dosHeadToolModule',[])
 .controller("DosHeadToolController",['$scope',function($scope){
-    
-  
-
-  $scope.radioModel = 'All';
-
-  $scope.checkModel = {
-    All: true,
-    Student: false,
-    Coach: false,
-  };
-    
-    
-    
-    
+  $scope.radioModel = 'All';   
 }])
 .directive('dosHeadTool',function(){
     
@@ -62,22 +49,27 @@ angular.module('dosHeadToolModule',[])
           ngModelController.$parsers.push(function(viewValue){
               var qType = viewValue.qType;
               var filterString;
+              var filterObject = {$:""}
               if(qType === "All"){
                   qType = "";
-                  filterString = viewValue.search.toLowerCase();
+                  filterString = "$:'" + viewValue.search.toLowerCase() + "'";
+                  filterObject = {$:viewValue.search.toLowerCase()}
                   
               } else if (qType === "Coach"){
                   qType = true;
-                  filterString = "{$:'" + viewValue.search.toLowerCase() + "', isCoach:" + qType + "}";
+                  filterString = "$:'" + viewValue.search.toLowerCase() + "', isCoach:" + qType;
+                  filterObject = {$:viewValue.search.toLowerCase(),isCoach:qType}
               } else if (qType === "Student"){
                   qType = false;
-                  filterString = "{$:'" + viewValue.search.toLowerCase() + "', isCoach:" + qType + "}";
+                  filterString = "$:'" + viewValue.search.toLowerCase() + "', isCoach:" + qType;
+                  filterObject = {$:viewValue.search.toLowerCase(),isCoach:qType}
               }
               
               return {
                   qType: qType,
                   search : viewValue.search,
-                  filterString: "'" + filterString.toString() + "'",
+                  filterString: filterString.toString(),
+                  filterObject: filterObject,
               };
               
               
