@@ -43,19 +43,27 @@ angular.module('myApp.courseinfo')
        
         $scope.isSubscriber = data.subscriber;
         $scope.isContentLoaded = true;
+      
+        feedbacksService.getTrainingFeedbacks($scope.courseName)
+          .success(function(data){
+          $scope.course.feedbacks = data;
+        })
         
         
         
     }).error(function(err){
         alert("Can't Access training info");
     });
+  
+  
+  
     
     $scope.leaveFeedback = function(){
 
       var feedbackModalInstance = $modal.open({
       animation: true,
       templateUrl: 'page_courseinfo/feedback.html',
-      controller: 'FeedbackModalInstanceController',
+      controller: 'LeaveFeedbackModalInstanceController',
       size: "lg",
       resolve: {
         courseinfo : function () {
@@ -73,10 +81,35 @@ angular.module('myApp.courseinfo')
     
     }
     
+    $scope.viewFeedback = function(feedback){
+      ;
+      var feedbackModalInstance = $modal.open({
+      animation: true,
+      templateUrl: 'page_courseinfo/feedback.html',
+      controller: 'ViewFeedbackModalInstanceController',
+      size: "lg",
+      resolve: {
+        feedback : function(){
+          return feedback;
+        },
+      }
+    });
+    
+    feedbackModalInstance.result.then(function (feedback) {
+      //
+    }, function () {
+      //cancel feedback
+    });
+    
+    }
+    
 }])
-.controller('FeedbackModalInstanceController',['$scope', '$modalInstance', 'courseinfo', function($scope, $modalInstance, courseinfo){
+
+
+
+.controller('LeaveFeedbackModalInstanceController',['$scope', '$modalInstance', 'courseinfo', function($scope, $modalInstance, courseinfo){
   $scope.courseinfo = courseinfo;
-  
+  $scope.isView = false;
   $scope.feedback = {
     clear: true,
     interesting: true,
@@ -85,10 +118,26 @@ angular.module('myApp.courseinfo')
     effective: "5",
     other: "",
     trainingName: courseinfo.name,
-  }
+  };
   
   $scope.ok = function () {
-    alert(JSON.stringify($scope.feedback))
+    
+    $modalInstance.close($scope.feedback);
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
+}])
+
+.controller('ViewFeedbackModalInstanceController',['$scope', '$modalInstance', 'feedback', function($scope, $modalInstance, feedback){
+  
+  $scope.feedback = feedback;
+  $scope.isView = true;
+  
+  
+  $scope.ok = function () {
+    
     $modalInstance.close($scope.feedback);
   };
 
