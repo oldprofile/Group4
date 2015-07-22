@@ -1,0 +1,18 @@
+.well {
+    height: 300px;
+}
+
+.scroll::-webkit-scrollbar-track {
+	width:8px;
+}
+
+.scroll::-webkit-scrollbar {
+	width: 12px;
+}
+
+.scroll::-webkit-scrollbar-thumb {
+	border: 1px solid #eeeeee;
+    background-clip: padding-box;
+	border-radius: 5px;
+	background-color: #eeeeee;
+}

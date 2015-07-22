@@ -1,0 +1,21 @@
+<div id="wrapper" ng-controller="DatepickerController">
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs" role="tablist" ng-model="page">
+        <li role="presentation" class="active"><a href ng-click="setPage(0)" aria-controls="home" role="tab" data-toggle="tab">Once-only</a></li>
+        <li role="presentation"><a href ng-click="setPage(1)" aria-controls="profile" role="tab" data-toggle="tab">Repeating</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div ng-include="page.url"></div>
+        </div>
+    </div>
+    
+    <!--Check dates
+    <div class="row">
+        <p ng-repeat="date in onceOnlyDates">{{date}}</p>
+    </div>
+    -->
+</div>

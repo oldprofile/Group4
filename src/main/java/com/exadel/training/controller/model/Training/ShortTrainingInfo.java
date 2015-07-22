@@ -1,5 +1,6 @@
 package com.exadel.training.controller.model.Training;
 
+import com.exadel.training.common.StateTraining;
 import com.exadel.training.model.Training;
 
 import java.text.SimpleDateFormat;
@@ -16,20 +17,22 @@ public class ShortTrainingInfo {
     private String dateTraining;
     private String trainingPlace;
     private boolean isSubscriber;
+    private String state;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
 
     public ShortTrainingInfo() {
     }
 
-    public ShortTrainingInfo(Training training) {
+    public ShortTrainingInfo(Training training) throws NoSuchFieldException {
         trainingName = training.getName();
         trainingCoach = training.getCoach().getName();
         trainingImage = training.getPictureLink();
         dateTraining = sdf.format(training.getDateTime());
         trainingPlace = training.getPlace();
+        state = StateTraining.parseToString(training.getState());
     }
 
-    public static List<ShortTrainingInfo> parseList(List<Training> trainings) {
+    public static List<ShortTrainingInfo> parseList(List<Training> trainings) throws NoSuchFieldException {
         List <ShortTrainingInfo> shortTrainings = new ArrayList<>();
         for (Training training : trainings) {
             shortTrainings.add(new ShortTrainingInfo(training));
@@ -84,5 +87,13 @@ public class ShortTrainingInfo {
 
     public void setIsSubscriber(boolean isSubscriber) {
         this.isSubscriber = isSubscriber;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }

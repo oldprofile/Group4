@@ -12,6 +12,8 @@ import java.util.List;
 public interface UserService {
 
    Boolean checkUserByLogin(String login);
+   Boolean checkSubscribeToTraining(Long trainingID, Long userID);
+   Boolean checkSubscribeToTraining(String trainingName, String login);
 
    User getUserByID(long id);
    User findUserByLoginAndPassword(String name, long password);
@@ -21,7 +23,7 @@ public interface UserService {
    List<User> findUsersByRole(RoleType type) throws NoSuchFieldException;
    List<Training> selectAllTraining(String login);
    List<Training> selectAllTrainingSortedByDate(String login, List<Integer> state);
-   List<User> searchUsersByName(String nameOrLogin);
+   List<User> searchUsersByName(String name);
 
    void deleteUserTrainingRelationShip(String login, String trainingName);
    void insertUserTrainingRelationShip(String login, String trainingName);

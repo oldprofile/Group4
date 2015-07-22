@@ -30,6 +30,10 @@ public class Training {
 
     private int language;
 
+    private String additional;
+
+    private String audience;
+
     private boolean isInternal;
 
     private long parent;
@@ -37,7 +41,7 @@ public class Training {
     @ManyToOne(cascade = CascadeType.ALL)
     private User coach;
 
-    @ManyToMany(mappedBy = "trainings")
+    @ManyToMany(mappedBy = "trainings", fetch = FetchType.EAGER)
     private List<User> listeners;
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -46,7 +50,7 @@ public class Training {
     //@ManyToOne(cascade = CascadeType.ALL)
     private int state;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<User> spareUsers;
 
     @OneToMany(mappedBy = "training")
@@ -82,6 +86,14 @@ public class Training {
         this.dateTime = dateTime;
     }
 
+    public String getPictureLink() {
+        return pictureLink;
+    }
+
+    public void setPictureLink(String pictureLink) {
+        this.pictureLink = pictureLink;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -114,12 +126,36 @@ public class Training {
         this.language = language;
     }
 
+    public String getAdditional() {
+        return additional;
+    }
+
+    public void setAdditional(String additional) {
+        this.additional = additional;
+    }
+
+    public String getAudience() {
+        return audience;
+    }
+
+    public void setAudience(String audience) {
+        this.audience = audience;
+    }
+
     public boolean isInternal() {
         return isInternal;
     }
 
     public void setIsInternal(boolean isInternal) {
         this.isInternal = isInternal;
+    }
+
+    public long getParent() {
+        return parent;
+    }
+
+    public void setParent(long parent) {
+        this.parent = parent;
     }
 
     public User getCoach() {
@@ -152,22 +188,6 @@ public class Training {
 
     public void setState(int state) {
         this.state = state;
-    }
-
-    public long getParent() {
-        return parent;
-    }
-
-    public void setParent(long parent) {
-        this.parent = parent;
-    }
-
-    public String getPictureLink() {
-        return pictureLink;
-    }
-
-    public void setPictureLink(String pictureLink) {
-        this.pictureLink = pictureLink;
     }
 
     public List<User> getSpareUsers() {

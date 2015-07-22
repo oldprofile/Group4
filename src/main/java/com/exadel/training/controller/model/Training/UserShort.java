@@ -22,7 +22,7 @@ public class UserShort {
         this.name = user.getName();
     }
 
-    public static List<UserShort> parceListUserShort( List<User> users) {
+    public static List<UserShort> parseListUserShort( List<User> users) {
         List<UserShort> shortList = new ArrayList<>();
         for(int i = 0; i < users.size(); ++i)
             shortList.add(new UserShort(users.get(i)));

@@ -30,6 +30,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Boolean checkSubscribeToTraining(Long trainingName, Long login) {
+        return userRepository.checkSubscribeToTraining(trainingName, login) == 1 ? true : false;
+    }
+
+    @Override
+    public Boolean checkSubscribeToTraining(String trainingName, String login) {
+        return userRepository.checkSubscribeToTraining(trainingName,login);
+    }
+
+    @Override
     public User getUserByID(long id) {
         User user = userRepository.getOne(id);
         return user;
@@ -66,8 +76,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> searchUsersByName(String nameOrLogin) {
-        return userRepository.searchUsersByName('%' + nameOrLogin + '%');
+    public List<User> searchUsersByName(String name) {
+        return userRepository.searchUsersByName("'" + name + "*'");
     }
 
     @Override
