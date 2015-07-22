@@ -1,6 +1,7 @@
 angular.module('myApp.createcourse')
 .controller('EditCourseController', ['$scope', '$routeParams', 'createcourse', 'courseInfoService', 'initCourseService', function($scope, $routeParams, createcourse, courseInfoService, initCourseService) {
     $scope.isEdited = true;
+    $scope.header = 'Edit';
     
     initCourseService($scope);
     

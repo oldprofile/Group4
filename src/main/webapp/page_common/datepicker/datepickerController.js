@@ -1,6 +1,5 @@
 angular.module('createcourse.datepickerApp')
-    .controller("DatepickerController",['$scope', function($scope, $location, $anchorScroll){
-        $scope.test = 1;   
+    .controller("DatepickerController",['$scope', function($scope, $location, $anchorScroll){  
         $scope.pages = [
             {
                 name: 'onceonly',
