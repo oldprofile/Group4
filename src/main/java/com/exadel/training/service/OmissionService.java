@@ -11,4 +11,6 @@ public interface OmissionService {
     List<Omission> getOmissionsByTrainingName(String trainingName);
     List<Omission> findByTrainingNameAndUserLogin(String trainingName, String userLogin);
     List<Omission> findByUserLogin(String userName);
+    List<Omission> findByTrainingNameAndUserLoginType(String trainingName, String userLogin, Boolean type);
+    List<Omission> findByUserLoginAndType(String login, Boolean type);
 }
