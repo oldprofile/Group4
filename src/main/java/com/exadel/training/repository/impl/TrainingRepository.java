@@ -17,7 +17,7 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
     //Training findTrainingName( String name);
 
     @Query(value = "select tr from Training tr where tr.name = ?1")
-    List<Training> findTrainingsByName( String name);
+    List<Training> findTrainingsByName(String name);
 
     Training findById(long id);
 

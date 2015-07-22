@@ -21,7 +21,7 @@ public interface UserRepository extends JpaRepository<User,Long>{
    Boolean checkUserByLogin(String login);
 
   //  @Query("select u from User u where u.login = ?1 AND u.password = ?2")
-   User findUserByLoginAndPassword(String login,long password);
+   User findUserByLoginAndPassword(String login, long password);
 
    User findUserByLogin(String login);
 
@@ -43,11 +43,11 @@ public interface UserRepository extends JpaRepository<User,Long>{
    // @Query("delete from User as u inner join u.training as t where u.login = ?2 and t.name = ?1")
    @Modifying
    @Query(value = "delete from users_trainings  where trainings = :trainingID and listeners = :userID",nativeQuery = true)
-    void deleteUserTrainingRelationShip(@Param("trainingID")Long trainingID, @Param("userID")Long userID);
+    void deleteUserTrainingRelationShip(@Param("trainingID") Long trainingID, @Param("userID") Long userID);
 
    @Modifying
    @Query(value = "insert into users_trainings values(:trainingID,:userID)", nativeQuery = true)
-    void insertUserTrainingRelationShip(@Param("userID")Long userID, @Param("trainingID")Long trainingID);
+    void insertUserTrainingRelationShip(@Param("userID") Long userID, @Param("trainingID") Long trainingID);
 
     @Query("select distinct t from User as u inner join u.trainings as t where u.login = ?1 and t.state in (?2) order by t.dateTime desc")
     List<Training> selectAllTrainingSortedByDate(String login, List<Integer> state);

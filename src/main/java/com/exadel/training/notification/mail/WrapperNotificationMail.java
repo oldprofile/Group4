@@ -25,7 +25,7 @@ public class WrapperNotificationMail {
         properties.put("mail.smtp.debug", "true");
 
         session = Session.getInstance(properties,
-                new javax.mail.Authenticator() {
+                new Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
                         return new PasswordAuthentication(username, password);
                     }
