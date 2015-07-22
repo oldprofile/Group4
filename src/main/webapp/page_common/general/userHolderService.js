@@ -36,9 +36,22 @@ angular.module('myApp').factory('userService',['$http',function ($http) {
       currentUser.login = login;    
       currentUser.username = username;
       currentUser.password = password;
+      alert(JSON.stringify(role_));
+      var nrole = role_.reduce(function(max,cur){
+        if(max.id < cur.id){
+          return max;
+        } else {
+          return cur;
+        }
+      });
       
-      currentUser.role = role.admin;
-        
+      for (var r in role){
+        if(role[r].id === nrole.id){  
+          currentUser.role =  role[r];
+        }
+      }
+      
+     
       
       alert("token: " + token);    
       $http.defaults.headers.common.Authorization = token;  
@@ -52,6 +65,10 @@ angular.module('myApp').factory('userService',['$http',function ($http) {
     },
     clearUser: function () {
       currentUser = {};
+    },
+    
+    isAdmin: function(){
+      return (currentUser.role === role.admin);
     },
       
     logout: function(){
