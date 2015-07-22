@@ -55,4 +55,14 @@ public class OmissionController {
         return  journalOmissionByUserLogins;
     }
 
+    @RequestMapping(value = "/find_omission_by_user_login_and_type", method = RequestMethod.GET)
+    @ResponseBody  List<JournalOmissionUserByTraining> findOmissionByTrainingAndUserLoginAndType() {
+        List<Omission> omissions = omissionService.findByTrainingNameAndUserLoginType("Front end","1",false);
+        List<JournalOmissionUserByTraining> journalOmissionUserByTrainings = new ArrayList<>();
+        for(Omission omission : omissions) {
+            journalOmissionUserByTrainings.add(JournalOmissionUserByTraining.parseJournalOmissionUserByTraining(omission));
+        }
+        return  journalOmissionUserByTrainings;
+    }
+
 }
