@@ -4,6 +4,7 @@ import com.exadel.training.common.RoleType;
 import com.exadel.training.controller.model.User.*;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
+import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
 import com.exadel.training.tokenAuthentification.CryptService;
 import com.exadel.training.tokenAuthentification.impl.DESCryptServiceImpl;
@@ -31,6 +32,8 @@ public class UserController {
     private static final Object EMPTY = null;
     @Autowired
     private UserService userService;
+    @Autowired
+    private TrainingService trainingService;
     private CryptService cryptService;
   //  @Autowired
   //  private Session session;
@@ -145,8 +148,13 @@ public class UserController {
 
        if(userService.checkUserByLogin(login)) {
            try {
-               userService.insertUserTrainingRelationShip(userLeaveAndJoinTraining.getLogin(), userLeaveAndJoinTraining.getNameTraining());
-               httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+               Training training = trainingService.getTrainingByName(userLeaveAndJoinTraining.getNameTraining());
+               if(training.getListeners().size() < training.getAmount()) {
+                   userService.insertUserTrainingRelationShip(userLeaveAndJoinTraining.getLogin(), userLeaveAndJoinTraining.getNameTraining());
+                   httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+               } else {
+                   httpServletResponse.setStatus(HttpServletResponse.SC_CONTINUE);
+               }
            } catch (NullPointerException e) {
                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
            }
