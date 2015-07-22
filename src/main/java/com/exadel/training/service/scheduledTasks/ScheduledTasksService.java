@@ -111,7 +111,7 @@ public class ScheduledTasksService {
     private void hasPased(NotificationTrainingModel notificationTrainingModel) throws NoSuchFieldException {
         Training training = trainingService.getTrainingByName(notificationTrainingModel.getName());
         int state = training.getState();
-        if (getHoursBeforeTraining(notificationTrainingModel) < 0 &&  (state == StateTraining.parseToInt("InProgress") || state == StateTraining.parseToInt("Ahead"))){
+        if (getHoursBeforeTraining(notificationTrainingModel) < 0 &&  (state == StateTraining.parseToInt("InProcess") || state == StateTraining.parseToInt("Ahead"))){
             training.setState(StateTraining.parseToInt("Finished"));
         }
     }
