@@ -30,8 +30,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean checkSubscribeToTraining(Long trainingName, Long login) {
-        return userRepository.checkSubscribeToTraining(trainingName, login) == 1 ? true : false;
+    public Boolean checkSubscribeToTraining(Long trainingID, Long userID) {
+        return userRepository.checkSubscribeToTraining(trainingID, userID) == 1 ? true : false;
     }
 
     @Override
