@@ -39,6 +39,7 @@ app.directive('authClass', ['$location','userService',function($location,userSer
       restrict: 'C',
       link: function(scope, elem, attrs) {
           //hide content before auth
+        
         scope.isLogged = userService.isLogged; 
         
           if(scope.isLogged == false){

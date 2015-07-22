@@ -6,7 +6,7 @@ menuApp.directive('headerMenu',function(){
     };
 });
 
-menuApp.controller("HeaderMenuController",['$scope','$location',"getCategories",'userService',function($scope, $location,getCategories, userService){
+menuApp.controller("HeaderMenuController",['$scope','$location',"getCategories",'userService','$window',function($scope, $location,getCategories, userService,$window){
     $scope.categories = [];
     $scope.isActive = function (viewLocation) {
      var viewLocationArray = viewLocation.split("/");
@@ -25,7 +25,12 @@ menuApp.controller("HeaderMenuController",['$scope','$location',"getCategories",
     })
     
     $scope.logoutFunction = function(){
-        userService.logout().success(function(data){$location.path("/")}).error(function(err){alert("Err Logout")});
+      alert("logoutFunction");
+        userService.logout().success(function(data){$window.location.reload();}).error(function(err){alert("Err Logout")});
+    }
+    
+    $scope.isAdmin = function(){
+      return userService.isAdmin();
     }
 }])
                           
