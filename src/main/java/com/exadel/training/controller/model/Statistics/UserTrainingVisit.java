@@ -3,12 +3,13 @@ package com.exadel.training.controller.model.Statistics;
 /**
  * Created by HP on 22.07.2015.
  */
-public class UserVisit {
+public class UserTrainingVisit {
 
     private double percent;
     private String login;
+    private String trainingName;
 
-    public UserVisit() {
+    public UserTrainingVisit(){
     }
 
     public double getPercent() {
@@ -27,4 +28,11 @@ public class UserVisit {
         this.login = login;
     }
 
+    public String getTrainingName() {
+        return trainingName;
+    }
+
+    public void setTrainingName(String trainingName) {
+        this.trainingName = trainingName;
+    }
 }
