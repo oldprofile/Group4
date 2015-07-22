@@ -207,6 +207,7 @@ public class UserController {
                    httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
                } else {
                    httpServletResponse.setStatus(HttpServletResponse.SC_CONTINUE);
+                   trainingService.addSpareUser(training.getName(),login);
                }
            } catch (NullPointerException e) {
                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
