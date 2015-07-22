@@ -16,4 +16,7 @@ public interface OmissionRepository extends JpaRepository<Omission, Long> {
 
     @Query(" select o from Omission as o where o.training.name = ?1 and o.user.login = ?2 and o.isOmission = ?3 ")
     List<Omission> findByTrainingNameAndUserLoginType(String trainingName, String userLogin, Boolean type);
+
+    @Query(" select o from Omission as o where o.user.login = ?1 and o.isOmission = ?2 ")
+    List<Omission> findByUserLoginAndType(String login, Boolean type);
 }
