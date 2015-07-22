@@ -14,4 +14,5 @@ import java.util.List;
 public interface TrainingFeedbackService {
     public void addTrainingFeedback(TrainingFeedbackModel trainingFeedbackModel);
     public List<TrainingFeedback> getTrainingFeedbacksOrderByDate(Training training);
+    public  Boolean hasFeedback(String login, String name);
 }

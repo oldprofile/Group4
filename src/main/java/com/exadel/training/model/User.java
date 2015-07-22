@@ -14,6 +14,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "users")
+@Indexed
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,7 +24,7 @@ public class User {
     @Column(unique = true)
     private String email;
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL)
     private Set<Role> roles;
 
     @NotNull

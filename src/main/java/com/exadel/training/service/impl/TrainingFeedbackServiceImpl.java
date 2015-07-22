@@ -32,18 +32,22 @@ public class TrainingFeedbackServiceImpl implements TrainingFeedbackService {
 
     @Override
     public void addTrainingFeedback(TrainingFeedbackModel trainingFeedbackModel) {
-        String feedbackerLogin = trainingFeedbackModel.getFeedbackerLogin();
-        User feedbacker = userService.findUserByLogin(feedbackerLogin);
-        String trainingName = trainingFeedbackModel.getTrainingName();
-        Training tr = trainingService.getTrainingByName(trainingName);
-
+        String login = trainingFeedbackModel.getFeedbackerLogin();
+        User feedbacker = userService.findUserByLogin(login);
+        String name = trainingFeedbackModel.getTrainingName();
+        Training training = trainingService.getTrainingByName(name);
         TrainingFeedback tfeedback = new TrainingFeedback(trainingFeedbackModel.getClear(), trainingFeedbackModel.getInteresting(), trainingFeedbackModel.getNewMaterial(),
-                        Integer.parseInt(trainingFeedbackModel.getEffective()), trainingFeedbackModel.getRecommendation(), trainingFeedbackModel.getOther(), feedbacker, tr );
+                Integer.parseInt(trainingFeedbackModel.getEffective()), trainingFeedbackModel.getRecommendation(), trainingFeedbackModel.getOther(), feedbacker, training);
         trainingFeedbackRepository.save(tfeedback);
     }
 
     @Override
     public List<TrainingFeedback> getTrainingFeedbacksOrderByDate(Training training) {
         return trainingFeedbackRepository.findFeedbackByTrainingOrderByDateAsc(training);
+    }
+
+    @Override
+    public  Boolean hasFeedback(String login, String name) {
+        return trainingFeedbackRepository.checkFeedbackByLoginAndName(login, name);
     }
 }

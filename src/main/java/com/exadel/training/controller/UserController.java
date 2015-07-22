@@ -208,8 +208,11 @@ public class UserController {
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public @ResponseBody List<AllTrainingUserShort> t(HttpServletResponse httpServletResponse) {
         List<Integer> l = new ArrayList<>();
+        l.add(1);
         l.add(2);
         l.add(3);
+        l.add(4);
+        l.add(5);
         List<Training> trainings = userService.selectAllTrainingSortedByDate("1",l);
         User user = userService.findUserByLogin("1");
         List<AllTrainingUserShort> allTrainingUserShorts = new ArrayList<>();
@@ -232,13 +235,17 @@ public class UserController {
         return  allTrainingUserShorts;
 
     }
-    @RequestMapping(value = "test_s",method = RequestMethod.GET)
+    @RequestMapping(value = "/test_s",method = RequestMethod.GET)
     public @ResponseBody List<UserShort> s() throws InterruptedException {
 
 
        //    FullTextSession fullTextSession = Search.getFullTextSession(session);
        //    fullTextSession.createIndexer().startAndWait();
 
+
+     //   List<User> users = userService.searchUsersByName("art");
+
+        Boolean is = userService.checkSubscribeToTraining(1L,1L);
 
         List<User> s1 = userService.searchUsersByName("a");
         List<UserShort> s2 = new ArrayList<>();
@@ -247,6 +254,7 @@ public class UserController {
                 s2.add(UserShort.parseUserShort(user));
             }
         }
+
         return s2;
     }
 }
