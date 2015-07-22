@@ -1,15 +1,18 @@
 package com.exadel.training.controller.model.Feedback;
 
+import com.exadel.training.controller.model.User.UserShort;
 import com.exadel.training.model.TrainingFeedback;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by asd on 14.07.2015.
  */
-public class TrainingFeedbackADDModel implements Serializable {
+public class TrainingFeedbackModel implements Serializable {
     private boolean clear;
 
     private boolean interesting;
@@ -26,10 +29,10 @@ public class TrainingFeedbackADDModel implements Serializable {
 
     private String trainingName;
 
-    public TrainingFeedbackADDModel() {
+    public TrainingFeedbackModel() {
     }
 
-    public TrainingFeedbackADDModel(boolean clear, boolean interesting, boolean newMaterial, String effective, boolean recommendation, String other, String feedbackerLogin, String trainingName) {
+    public TrainingFeedbackModel(boolean clear, boolean interesting, boolean newMaterial, String effective, boolean recommendation, String other, String feedbackerLogin, String trainingName) {
         this.clear = clear;
         this.interesting = interesting;
         this.newMaterial = newMaterial;
@@ -104,17 +107,17 @@ public class TrainingFeedbackADDModel implements Serializable {
         this.trainingName = trainingName;
     }
 
-    public static TrainingFeedbackADDModel parseTrainingFeedback(TrainingFeedback trainingFeedback) {
-        TrainingFeedbackADDModel trainingFeedbackADDModel = new TrainingFeedbackADDModel(trainingFeedback.getClear(), trainingFeedback.getInteresting(), trainingFeedback.getNewMaterial(), String.valueOf(trainingFeedback.getEffective()),
+    public static TrainingFeedbackModel parseTrainingFeedback(TrainingFeedback trainingFeedback) {
+        TrainingFeedbackModel trainingFeedbackModel = new TrainingFeedbackModel(trainingFeedback.getClear(), trainingFeedback.getInteresting(), trainingFeedback.getNewMaterial(), String.valueOf(trainingFeedback.getEffective()),
                 trainingFeedback.getRecommendation(), trainingFeedback.getOther(), trainingFeedback.getFeedbacker().getName(), trainingFeedback.getTraining().getName());
-        return trainingFeedbackADDModel;
+        return trainingFeedbackModel;
     }
 
-    public static List<TrainingFeedbackADDModel> parseTrainingFeedbackList(List<TrainingFeedback> trainingFeedbackList) {
-        List<TrainingFeedbackADDModel> trainingFeedbackADDModelList = new ArrayList<TrainingFeedbackADDModel>();
+    public static List<TrainingFeedbackModel> parseTrainingFeedbackList(List<TrainingFeedback> trainingFeedbackList) {
+        List<TrainingFeedbackModel> trainingFeedbackModelList = new ArrayList<TrainingFeedbackModel>();
         for(TrainingFeedback trainingFeedback: trainingFeedbackList) {
-            trainingFeedbackADDModelList.add(TrainingFeedbackADDModel.parseTrainingFeedback(trainingFeedback));
+            trainingFeedbackModelList.add(TrainingFeedbackModel.parseTrainingFeedback(trainingFeedback));
         }
-        return trainingFeedbackADDModelList;
+        return trainingFeedbackModelList;
     }
 }

@@ -5,7 +5,6 @@ import com.exadel.training.model.User;
 import com.exadel.training.model.UserFeedback;
 import com.exadel.training.repository.impl.UserFeedbackRepository;
 import com.exadel.training.service.UserFeedbackService;
-import com.exadel.training.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,15 +21,9 @@ public class UserFeedbackServiceImpl implements UserFeedbackService {
     @Autowired
     UserFeedbackRepository userFeedbackRepository;
 
-    @Autowired
-    UserService userService;
-
     @Override
-    public void addUserFeedback(UserFeedbackModel userFeedbackModel) {
-        String userLogin = userFeedbackModel.getUser();
-        User user = userService.findUserByLogin(userLogin);
-        String feedbackerLogin = userFeedbackModel.getFeedbacker();
-        User feedbacker = userService.findUserByLogin(feedbackerLogin);
+    public void addUserFeedback(User feedbacker, User user, UserFeedbackModel userFeedbackModel) {
+
         UserFeedback ufeedback = new UserFeedback(userFeedbackModel.getAttendance(), userFeedbackModel.getAttitude(), userFeedbackModel.getCommSkills(),
                 userFeedbackModel.getQuestions(), userFeedbackModel.getMotivation(),userFeedbackModel.getFocusOnResult(), userFeedbackModel.getOther(), feedbacker, user);
         userFeedbackRepository.save(ufeedback);
