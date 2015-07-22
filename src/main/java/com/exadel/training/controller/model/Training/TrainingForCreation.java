@@ -35,13 +35,12 @@ public class TrainingForCreation {
             dateTimes.add((String) jsonDate);
         }
         audience = (String)json.get("audience");
-        Object obj = json.get("participantsNumber");
-        Integer oiu = (Integer) obj;
+        participantsNumber = Integer.parseInt(String.valueOf((Long)json.get("participantsNumber")));
         additional = (String)json.get("additional");
         name = (String)json.get("name");
         description = (String)json.get("description");
         language = (String)json.get("language");
-        idCategory = Integer.parseInt((String)json.get("idCategory"));
+        idCategory = Integer.parseInt(String.valueOf((Long)json.get("idCategory")));
     }
 
     public String getName() {
