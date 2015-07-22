@@ -76,9 +76,9 @@
                     </thead>
                     <tr ng-repeat="f in course.feedbacks">
                       <td>{{$index + 1}}</td>
-                      <td>{{ f.name}}</td>
+                      <td>{{ f.feedbackerName}}</td>
                       <td>{{ f.date | date:"mediumDate" }}</td>
-                      <td ng-click="viewFeedback(f)">show me</td>
+                      <td> <a ng-click="viewFeedback(f)">show me</a></td>
                     </tr>
                   </table>
 
