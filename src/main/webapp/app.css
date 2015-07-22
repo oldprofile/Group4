@@ -1,8 +1,10 @@
 /* app css stylesheet */
 
+/*@import url(assets/SanFranciscoFont/usesf.css)*/
+
 body{
-    
-    padding-top: 70px; 
+    font-family: 'San Francisco Text', sans-serif !important;
+    padding-top: 62px; 
     height: 100vh !important;
     
 }
@@ -29,6 +31,13 @@ div#content-outer {
 
 }
 /* my-app-footer*/
+my-app-footer{
+  overflow: auto;
+  display: inline-block;
+  width: 100%;
+  height: 80px;
+}
+
 .footer {
   width: 100%;
   /* Set the fixed height of the footer here */
@@ -36,12 +45,16 @@ div#content-outer {
   position:absolute;
   bottom:0;
   left:0;
+  
  
 }
 
 .ng-view-content {
     /*footer height*/
-    padding-bottom:80px;
+  padding-bottom:80px;
+  overflow: auto;
+  display:block;
+  
 }
 
 .footer-link {
@@ -88,6 +101,7 @@ DOS-HEAD-TOOL
 }
 
 .segmented-button{
+    color: #4C4C4C;
     width: 80px;
     height: 36px;
     background-color: white!important;
@@ -97,8 +111,8 @@ DOS-HEAD-TOOL
 .segmented-button.active{
     
     background-color: #fafafa !important;
-    font-weight: 600 !imporant;
-    color:gray !important;
+    
+    color:#8C8C8C !important;
     
 }
 
@@ -118,4 +132,113 @@ DOS-HEAD-TOOL
     height: 44px;
     padding-bottom: 16px;
     
+}
+
+/*
+course-info
+*/
+; 
+
+.course-info-content
+{
+  
+  margin: 0;
+  padding: 0px 16px 0px 16px !important;
+  overflow: auto;
+  
+}
+.course-info-row{
+  padding: 0px 16px 0px 16px !important;
+  overflow: auto;
+}
+.course-info-text{
+  color: #4C4C4C;
+}
+.course-info-text>h1{
+  font-size: 48px;
+  color: #4C4C4C;
+  font-weight: 500;
+  margin: 0;
+  margin-top: 32px;
+  margin-bottom: 16px;
+  line-height: 58px;
+  width: 60%;
+  
+}
+.course-info-text>p{
+  font-size: 20px;
+  width: 100%;
+}
+
+.color-gray{
+  color: #8C8C8C !important;
+}
+.space-16{
+  margin-bottom: 16px !important;
+  margin-top: 16px !important;
+}
+
+.course-info-text>h5,
+.timetable>h5,
+.feedbacks>h5,
+.participants>h5{
+  font-size: 24px;
+  color: #4C4C4C ;
+  font-weight: 300;
+  margin: 0;
+ 
+}
+.info-small{
+  font-size: 16px !important;
+}
+
+.course-info-btn{
+  background-color: white !important;
+  font-size: 20px;
+  color: #4C4C4C;
+  border: none;
+  border-bottom: 3px solid #4C4C4C;
+  border-radius: 0px;
+  padding: 0px 10px 4px 10px;
+  box-shadow: none !important;
+}
+.course-info-btn:hover{
+  color: #8C8C8C;
+  border-bottom-color: #8C8C8C;
+  
+}
+.course-info-btn.glyphicon{
+  font-size: 20px;
+  border: none !important;
+}
+.no-border{
+  border: none !important;
+  border-bottom: none !important ;
+}
+.semi-bold{
+font-weight: 500;
+}
+
+.timetable{
+  padding-top: 50px;
+}
+
+
+/*modals*/
+.modal-btn{
+  background-color: white !important;
+  color: #4C4C4C;
+  border: none;
+  border-bottom: 3px solid #4C4C4C;
+  border-radius: 0px;
+  padding: 0px 8px 2px 8px;
+  box-shadow: none !important;
+}
+.modal-btn:hover{
+  color: #8C8C8C;
+  border-bottom-color: #8C8C8C;
+}
+.course-info-text-div{
+  margin: auto;
+  max-width: 700px;
 }

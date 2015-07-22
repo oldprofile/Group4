@@ -55,7 +55,7 @@ angular.module('myApp').factory('userService',['$http',function ($http) {
     },
       
     logout: function(){
-      return $http.post("user_controller/logout").success(function(data){
+      return $http.post("user_controller/logout",{}).success(function(data){
           this.clearUser();
           this.isLogged = false;
           

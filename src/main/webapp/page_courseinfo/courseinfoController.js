@@ -20,12 +20,14 @@ angular.module('myApp.courseinfo')
         var isSub = $scope.isSubscriber;
         if(isSub){
             courseInfoService.leave(courseInfoData1).success(function(data){
-                
+              $scope.course.subscriber = false;
+              $scope.course.promtText = courseInfoService.getPromtText($scope.course);
                 $scope.isSubscriber = false;
             }).error(function(err){});
         } else {   
             courseInfoService.subscribe(courseInfoData1).success(function(data){
-                
+                $scope.course.subscriber = true;
+              $scope.course.promtText = courseInfoService.getPromtText($scope.course);
                 $scope.isSubscriber = true;
             }).error(function(err){});
         }    
@@ -35,7 +37,10 @@ angular.module('myApp.courseinfo')
         //$scope.isSubscriber = false;
         $scope.courseName = $routeParams.coursename;
         console.log(JSON.stringify(data));
+        data.courseImg = "assets/angular_bg1.png";
+        data.promtText = courseInfoService.getPromtText(data);
         $scope.course = data;
+       
         $scope.isSubscriber = data.subscriber;
         $scope.isContentLoaded = true;
         
@@ -60,6 +65,7 @@ angular.module('myApp.courseinfo')
     });
     
     feedbackModalInstance.result.then(function (feedback) {
+      feedback.feedbackerLogin = userService.getUser().login;  
       feedbacksService.createTrainingFeedback(feedback);
     }, function () {
       //cancel feedback
@@ -78,6 +84,7 @@ angular.module('myApp.courseinfo')
     recommendation: true,
     effective: "5",
     other: "",
+    trainingName: courseinfo.name,
   }
   
   $scope.ok = function () {

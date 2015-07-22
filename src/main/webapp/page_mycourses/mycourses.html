@@ -8,7 +8,7 @@
 <!--     <div deckgrid source="mycourses | filter:dosFilter.filterObject" cardTemplate="page_mycourses/mycoursescardtemplate.html" class="deckgrid-my-courses"></div>   -->
     <div class="cardlayout" ng-class="{ 'waiting-for-angular': !isContentLoaded }">
         <div ng-repeat="c in mycourses | filter: dosFilter.filterObject">
-            <div class="col-xs-6 card">
+            <div class="col-sm-6 col-xs-12 card">
                 <p>{{c.trainingName}}</p>
                 <img ng-src="https://angularjs.org/img/AngularJS-large.png">
                 <p>Lesson #1</p>
