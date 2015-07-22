@@ -35,6 +35,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Boolean checkSubscribeToTraining(String trainingName, String login) {
+        return userRepository.checkSubscribeToTraining(trainingName,login);
+    }
+
+    @Override
     public User getUserByID(long id) {
         User user = userRepository.getOne(id);
         return user;

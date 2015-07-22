@@ -1,4 +1,4 @@
-package com.exadel.training.TokenAuthentification;
+package com.exadel.training.tokenAuthentification;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;

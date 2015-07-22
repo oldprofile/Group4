@@ -13,6 +13,7 @@ public interface UserService {
 
    Boolean checkUserByLogin(String login);
    Boolean checkSubscribeToTraining(Long trainingID, Long userID);
+   Boolean checkSubscribeToTraining(String trainingName, String login);
 
    User getUserByID(long id);
    User findUserByLoginAndPassword(String name, long password);
