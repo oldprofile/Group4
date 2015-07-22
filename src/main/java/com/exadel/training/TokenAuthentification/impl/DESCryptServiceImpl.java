@@ -1,6 +1,6 @@
-package com.exadel.training.tokenAuthentification.impl;
+package com.exadel.training.TokenAuthentification.impl;
 
-import com.exadel.training.tokenAuthentification.CryptService;
+import com.exadel.training.TokenAuthentification.CryptService;
 
 import javax.crypto.*;
 import java.io.IOException;

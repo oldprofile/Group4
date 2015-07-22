@@ -1,13 +1,13 @@
 package com.exadel.training.controller;
 
-import com.exadel.training.tokenAuthentification.CryptService;
+import com.exadel.training.TokenAuthentification.CryptService;
 import com.exadel.training.controller.model.Training.*;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
 import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
-import com.exadel.training.tokenAuthentification.impl.DESCryptServiceImpl;
-import com.exadel.training.tokenAuthentification.impl.DecoratorDESCryptServiceImpl;
+import com.exadel.training.TokenAuthentification.impl.DESCryptServiceImpl;
+import com.exadel.training.TokenAuthentification.impl.DecoratorDESCryptServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
