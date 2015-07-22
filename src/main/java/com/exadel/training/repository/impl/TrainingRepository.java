@@ -1,6 +1,7 @@
 package com.exadel.training.repository.impl;
 
 import com.exadel.training.model.Training;
+import com.exadel.training.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -53,4 +54,13 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
 
     @Query("select tr from Training as tr where tr.state in (1,4) and tr.parent = 0")
     List<Training> findDraftAndEditedTrainings();
+
+    @Query("select count(tr.dateTime) from Training as tr where tr.name = ?1 and  tr.dateTime <= ?2")
+    Integer findTrainingNumber(String trainingName, Date date);
+
+    @Query("select tr.listeners from Training as tr where tr.name = ?1 and tr.parent = 0")
+    List<User> findListenersByTrainingName(String trainingName);
+
+    @Query("select tr.spareUsers from Training as tr where tr.name = ?1 and tr.parent = 0")
+    List<User> findSpareUsersByTrainingName(String trainingName);
 }

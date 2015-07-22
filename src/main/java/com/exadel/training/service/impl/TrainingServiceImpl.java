@@ -162,4 +162,23 @@ public class TrainingServiceImpl implements TrainingService {
     public List<Training> getTrainingForApprove() {
         return trainingRepository.findDraftAndEditedTrainings();
     }
+
+    @Override
+    public List<User> getUsersByTrainingName(String trainingName) {
+        return trainingRepository.findListenersByTrainingName(trainingName);
+    }
+
+    @Override
+    public List<User> getSpareUsersByTrainingName(String trainingName) {
+        return trainingRepository.findSpareUsersByTrainingName(trainingName);
+    }
+
+    @Override
+    public Training addSpareUser(String trainingName, String userLogin) {
+        Training training = getTrainingByName(trainingName);
+        User user = userRepository.findUserByLogin(userLogin);
+        training.getSpareUsers().add(user);
+        trainingRepository.saveAndFlush(training);
+        return training;
+    }
 }
