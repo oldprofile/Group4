@@ -53,7 +53,4 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
 
     @Query("select tr from Training as tr where tr.state in (1,4) and tr.parent = 0")
     List<Training> findDraftAndEditedTrainings();
-
-    @Query("select count(tr.dateTime) from Training as tr where tr.name = ?1 and  tr.dateTime <= ?2")
-    Integer findTrainingNumber(String trainingName, Date date);
 }

@@ -2,7 +2,6 @@ package com.exadel.training.controller.model.Training;
 
 import com.exadel.training.common.LanguageTraining;
 import com.exadel.training.common.StateTraining;
-import com.exadel.training.controller.model.User.UserShort;
 import com.exadel.training.model.Omission;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
@@ -21,11 +20,9 @@ public class TrainingInfo {
 
     private String name;
     private List<String> dateTimes;
-    private String coachName;
     private String pictureLink;
     private String description;
     private String place;
-    private int lessonNumber;
     private int idCategory;
     private int participantsNumber;
     private String language;
@@ -33,12 +30,9 @@ public class TrainingInfo {
     private boolean isRepeating;
     private boolean isSubscriber;
     private boolean isFeedback;
-    private boolean isCoach;
     private String additional;
     private String audience;
     private String state;
-    private boolean subscribeAvailability;
-    private boolean feedbackAvailability;
     private List<UserShort> listeners;
     private List<UserShort> spareUsers;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
@@ -46,28 +40,26 @@ public class TrainingInfo {
     public TrainingInfo() {
     }
 
-    public TrainingInfo(Training training, List<Date> dateTimes) throws NoSuchFieldException {
-        name = training.getName();
-        dateTimes = new ArrayList<>();
+    public TrainingInfo(Training training, List<Date> dateTimes/*, List<User> listeners, List<User> spareUsers*/) throws NoSuchFieldException {
+        this.name = training.getName();
+        this.dateTimes = new ArrayList<>();
         for(int i = 0; i < dateTimes.size(); ++i)
             this.dateTimes.add(sdf.format(dateTimes.get(i)));
-        coachName = training.getCoach().getName();
-        pictureLink = training.getPictureLink();
-        description = training.getDescription();
-        place = training.getPlace();
-        idCategory = training.getCategory().getId();
-        participantsNumber = training.getAmount();
-        language = LanguageTraining.parseToString(training.getLanguage());
-        isInternal = training.isInternal();
-        isRepeating = training.getParent() != 0;
-        isSubscriber = false;
-        isCoach = false;
-        additional = training.getAdditional();
-        audience = training.getAudience();
-        state = StateTraining.parseToString(training.getState());
-        listeners = UserShort.parseUserShortList(training.getListeners());
-        spareUsers = UserShort.parseUserShortList((training.getSpareUsers()));
-        subscribeAvailability = participantsNumber < listeners.size();
+        this.pictureLink = training.getPictureLink();
+        this.description = training.getDescription();
+        this.place = training.getPlace();
+        this.idCategory = training.getCategory().getId();
+        this.participantsNumber = training.getAmount();
+        this.language = LanguageTraining.parseToString(training.getLanguage());
+        this.isInternal = training.isInternal();
+        if(training.getParent() == 0)
+            this.isRepeating = false;
+        else this.isRepeating = true;
+        this.additional = training.getAdditional();
+        this.audience = training.getAudience();
+        this.state = StateTraining.parseToString(training.getState());
+        this.listeners = UserShort.parseListUserShort(training.getListeners());
+        this.spareUsers = UserShort.parseListUserShort((training.getSpareUsers()));
     }
 
     public String getName() {
@@ -142,7 +134,7 @@ public class TrainingInfo {
         this.isInternal = isInternal;
     }
 
-    public boolean getisRepeating() {
+    public boolean isRepeating() {
         return isRepeating;
     }
 
@@ -150,7 +142,7 @@ public class TrainingInfo {
         this.isRepeating = isRepeating;
     }
 
-    public boolean getIsSubscriber() {
+    public boolean isSubscriber() {
         return isSubscriber;
     }
 
@@ -212,29 +204,5 @@ public class TrainingInfo {
 
     public void setState(String state) {
         this.state = state;
-    }
-
-    public boolean getSubscribeAvailability() {
-        return subscribeAvailability;
-    }
-
-    public void setSubscribeAvailability(boolean subscribeAvailability) {
-        this.subscribeAvailability = subscribeAvailability;
-    }
-
-    public String getCoachName() {
-        return coachName;
-    }
-
-    public void setCoachName(String coachName) {
-        this.coachName = coachName;
-    }
-
-    public boolean getIsCoach() {
-        return isCoach;
-    }
-
-    public void setIsCoach(boolean isCoach) {
-        this.isCoach = isCoach;
     }
 }

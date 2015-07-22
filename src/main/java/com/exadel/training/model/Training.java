@@ -1,8 +1,5 @@
 package com.exadel.training.model;
 
-import com.exadel.training.common.LanguageTraining;
-import org.json.simple.JSONObject;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -63,10 +60,6 @@ public class Training {
     private  List<TrainingFeedback> feedbacks;
 
     public Training() {
-    }
-
-    public Training(JSONObject json) throws NoSuchFieldException {
-
     }
 
     public long getId() {
