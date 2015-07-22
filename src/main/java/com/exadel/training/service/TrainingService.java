@@ -5,6 +5,7 @@ import com.exadel.training.controller.model.Training.TrainingForCreation;
 import com.exadel.training.model.Training;
 
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,4 +24,6 @@ public interface TrainingService {
     List<Training> getTrainingsByNearestDate();
     Training deleteTrainingsByName(String trainingName);
     List<Training> searchTrainingsByName(String trainingName);
+    List<Date> getDatesByTrainingName(String trainingName);
+    List<Training> getTrainingForApprove();
 }

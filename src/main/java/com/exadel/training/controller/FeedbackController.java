@@ -51,18 +51,16 @@ public class FeedbackController {
     }
 
     @RequestMapping(value = "/create_user_feedback", method = RequestMethod.POST, consumes = "application/json")
-    public @ResponseBody void addUserFeedback(@RequestBody UserFeedbackModel userFeedbackModel, @RequestBody String userLogin, @RequestBody String feedbackerLogin, HttpServletResponse response) {
-        User user = userService.findUserByLogin(userLogin);
-        User feedbacker = userService.findUserByLogin(feedbackerLogin);
+    public @ResponseBody void addUserFeedback(@RequestBody UserFeedbackModel userFeedbackModel, HttpServletResponse response) {
         try {
-            userFeedbackService.addUserFeedback(feedbacker, user, userFeedbackModel);
+            userFeedbackService.addUserFeedback(userFeedbackModel);
             response.setStatus(HttpServletResponse.SC_CREATED);
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 
-    @RequestMapping(value = "/training_feedback", method = RequestMethod.GET)
+    @RequestMapping(value = "/training_feedback", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody List<TrainingFeedbackModel> getTrainingFeedbacks(@RequestBody String trainingName)  {
         Training t = trainingService.getTrainingByName(trainingName);
         List<TrainingFeedback> trainingFeedbacks = trainingFeedbackService.getTrainingFeedbacksOrderByDate(t);
@@ -75,11 +73,9 @@ public class FeedbackController {
     }
 
     @RequestMapping(value = "/create_training_feedback", method = RequestMethod.POST, consumes = "application/json")
-    public @ResponseBody void addTrainingFeedback(@RequestBody TrainingFeedbackModel trainingFeedbackModel, @RequestBody String trainingName, @RequestBody String feedbackerLogin, HttpServletResponse response) {
-        Training training = trainingService.getTrainingByName(trainingName);
-        User feedbacker = userService.findUserByLogin(feedbackerLogin);
+    public @ResponseBody void addTrainingFeedback(@RequestBody TrainingFeedbackModel trainingFeedbackModel, HttpServletResponse response) {
         try {
-            trainingFeedbackService.addTrainingFeedback(feedbacker, training, trainingFeedbackModel);
+            trainingFeedbackService.addTrainingFeedback(trainingFeedbackModel);
             response.setStatus(HttpServletResponse.SC_CREATED);
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

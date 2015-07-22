@@ -6,6 +6,8 @@ import com.exadel.training.model.TrainingFeedback;
 import com.exadel.training.model.User;
 import com.exadel.training.repository.impl.TrainingFeedbackRepository;
 import com.exadel.training.service.TrainingFeedbackService;
+import com.exadel.training.service.TrainingService;
+import com.exadel.training.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,17 +24,30 @@ public class TrainingFeedbackServiceImpl implements TrainingFeedbackService {
     @Autowired
     TrainingFeedbackRepository trainingFeedbackRepository;
 
+    @Autowired
+    TrainingService trainingService;
+
+    @Autowired
+    UserService userService;
+
     @Override
-    public void addTrainingFeedback(User feedbacker, Training training, TrainingFeedbackModel trainingFeedbackModel) {
-
+    public void addTrainingFeedback(TrainingFeedbackModel trainingFeedbackModel) {
+        String login = trainingFeedbackModel.getFeedbackerLogin();
+        User feedbacker = userService.findUserByLogin(login);
+        String name = trainingFeedbackModel.getTrainingName();
+        Training training = trainingService.getTrainingByName(name);
         TrainingFeedback tfeedback = new TrainingFeedback(trainingFeedbackModel.getClear(), trainingFeedbackModel.getInteresting(), trainingFeedbackModel.getNewMaterial(),
-                trainingFeedbackModel.getEffective(), trainingFeedbackModel.getRecommendation(), trainingFeedbackModel.getOther(), feedbacker, training);
-
+                Integer.parseInt(trainingFeedbackModel.getEffective()), trainingFeedbackModel.getRecommendation(), trainingFeedbackModel.getOther(), feedbacker, training);
         trainingFeedbackRepository.save(tfeedback);
     }
 
     @Override
     public List<TrainingFeedback> getTrainingFeedbacksOrderByDate(Training training) {
         return trainingFeedbackRepository.findFeedbackByTrainingOrderByDateAsc(training);
+    }
+
+    @Override
+    public  Boolean hasFeedback(String login, String name) {
+        return trainingFeedbackRepository.checkFeedbackByLoginAndName(login, name);
     }
 }

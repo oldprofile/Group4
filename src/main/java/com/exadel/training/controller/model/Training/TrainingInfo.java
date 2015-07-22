@@ -1,8 +1,12 @@
 package com.exadel.training.controller.model.Training;
 
+import com.exadel.training.common.LanguageTraining;
+import com.exadel.training.common.StateTraining;
 import com.exadel.training.model.Omission;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
+import com.exadel.training.repository.impl.TrainingRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,15 +19,20 @@ import java.util.List;
 public class TrainingInfo {
 
     private String name;
-    private String dateTime;
+    private List<String> dateTimes;
     private String pictureLink;
     private String description;
     private String place;
-    private int amount;
-    private int language;
+    private int idCategory;
+    private int participantsNumber;
+    private String language;
     private boolean isInternal;
     private boolean isRepeating;
     private boolean isSubscriber;
+    private boolean isFeedback;
+    private String additional;
+    private String audience;
+    private String state;
     private List<UserShort> listeners;
     private List<UserShort> spareUsers;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
@@ -31,28 +40,26 @@ public class TrainingInfo {
     public TrainingInfo() {
     }
 
-    public TrainingInfo(Training training) {
+    public TrainingInfo(Training training, List<Date> dateTimes/*, List<User> listeners, List<User> spareUsers*/) throws NoSuchFieldException {
         this.name = training.getName();
-        this.amount = training.getAmount();
-        this.dateTime = sdf.format(training.getDateTime());
-        this.description = training.getDescription();
-        this.language = training.getLanguage();
+        this.dateTimes = new ArrayList<>();
+        for(int i = 0; i < dateTimes.size(); ++i)
+            this.dateTimes.add(sdf.format(dateTimes.get(i)));
         this.pictureLink = training.getPictureLink();
+        this.description = training.getDescription();
         this.place = training.getPlace();
+        this.idCategory = training.getCategory().getId();
+        this.participantsNumber = training.getAmount();
+        this.language = LanguageTraining.parseToString(training.getLanguage());
         this.isInternal = training.isInternal();
         if(training.getParent() == 0)
             this.isRepeating = false;
         else this.isRepeating = true;
-        this.listeners = UserShort.parceListUserShort(training.getListeners());
-        this.spareUsers = UserShort.parceListUserShort((training.getSpareUsers()));
-    }
-
-    public static List<TrainingInfo> parseList(List<Training> trainings) {
-        List<TrainingInfo> trainingsInfo = new ArrayList<>();
-        for(int i = 0 ; i < trainings.size(); ++i) {
-            trainingsInfo.add(new TrainingInfo(trainings.get(i)));
-        }
-        return trainingsInfo;
+        this.additional = training.getAdditional();
+        this.audience = training.getAudience();
+        this.state = StateTraining.parseToString(training.getState());
+        this.listeners = UserShort.parseListUserShort(training.getListeners());
+        this.spareUsers = UserShort.parseListUserShort((training.getSpareUsers()));
     }
 
     public String getName() {
@@ -63,12 +70,12 @@ public class TrainingInfo {
         this.name = name;
     }
 
-    public String getDateTime() {
-        return dateTime;
+    public List<String> getDateTime() {
+        return dateTimes;
     }
 
-    public void setDateTime(String dateTime) {
-        this.dateTime = dateTime;
+    public void setDateTime(List<String> dateTime) {
+        this.dateTimes = dateTime;
     }
 
     public String getPictureLink() {
@@ -95,23 +102,31 @@ public class TrainingInfo {
         this.place = place;
     }
 
-    public int getAmount() {
-        return amount;
+    public int getIdCategory() {
+        return idCategory;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void setIdCategory(int idCategory) {
+        this.idCategory = idCategory;
     }
 
-    public int getLanguage() {
+    public int getParticipantsNumber() {
+        return participantsNumber;
+    }
+
+    public void setParticipantsNumber(int participantsNumber) {
+        this.participantsNumber = participantsNumber;
+    }
+
+    public String getLanguage() {
         return language;
     }
 
-    public void setLanguage(int language) {
+    public void setLanguage(String language) {
         this.language = language;
     }
 
-    public boolean isInternal() {
+    public boolean getIsInternal() {
         return isInternal;
     }
 
@@ -135,6 +150,30 @@ public class TrainingInfo {
         this.isSubscriber = isSubscriber;
     }
 
+    public boolean isFeedback() {
+        return isFeedback;
+    }
+
+    public void setIsFeedback(boolean isFeedback) {
+        this.isFeedback = isFeedback;
+    }
+
+    public String getAdditional() {
+        return additional;
+    }
+
+    public void setAdditional(String additional) {
+        this.additional = additional;
+    }
+
+    public String getAudience() {
+        return audience;
+    }
+
+    public void setAudience(String audience) {
+        this.audience = audience;
+    }
+
     public List<UserShort> getListeners() {
         return listeners;
     }
@@ -149,5 +188,21 @@ public class TrainingInfo {
 
     public void setSpareUsers(List<UserShort> spareUsers) {
         this.spareUsers = spareUsers;
+    }
+
+    public SimpleDateFormat getSdf() {
+        return sdf;
+    }
+
+    public void setSdf(SimpleDateFormat sdf) {
+        this.sdf = sdf;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }
