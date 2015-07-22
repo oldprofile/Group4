@@ -3,9 +3,7 @@ package com.exadel.training.controller.model.Feedback;
 import com.exadel.training.model.UserFeedback;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by asd on 17.07.2015.
@@ -25,6 +23,8 @@ public class UserFeedbackModel implements Serializable{
 
     private String other;
 
+    private String date;
+
     private String feedbacker;
 
     private String user;
@@ -37,7 +37,7 @@ public class UserFeedbackModel implements Serializable{
     public UserFeedbackModel() {
     }
 
-    public UserFeedbackModel(String attendance, String attitude, String commSkills, String questions, String motivation, String focusOnResult, String other, String feedbacker, String user, String assessment, String level) {
+    public UserFeedbackModel(String attendance, String attitude, String commSkills, String questions, String motivation, String focusOnResult, String other, String date, String feedbacker, String user, String assessment, String level) {
         this.attendance = attendance;
         this.attitude = attitude;
         this.commSkills = commSkills;
@@ -45,6 +45,7 @@ public class UserFeedbackModel implements Serializable{
         this.motivation = motivation;
         this.focusOnResult = focusOnResult;
         this.other = other;
+        this.date = date;
         this.feedbacker = feedbacker;
         this.user = user;
         this.assessment = assessment;
@@ -107,6 +108,14 @@ public class UserFeedbackModel implements Serializable{
         this.other = other;
     }
 
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     public String getFeedbacker() {
         return feedbacker;
     }
@@ -139,16 +148,26 @@ public class UserFeedbackModel implements Serializable{
         this.level = level;
     }
 
-    public static UserFeedbackModel parseToUserFeedbackModel(UserFeedback userFeedback) {
-        return new UserFeedbackModel(userFeedback.getAttendance(), userFeedback.getAttitude(), userFeedback.getCommSkills(), userFeedback.getQuestions(),
-                userFeedback.getMotivation(), userFeedback.getFocusOnResult(), userFeedback.getOther(), userFeedback.getFeedbacker().getName(), userFeedback.getUser().getName(), String.valueOf(userFeedback.getAssessment()), String.valueOf(userFeedback.getLevel()));
+    @Override
+    public String toString() {
+        return "UserFeedbackModel{" +
+                "attendance='" + attendance + '\'' +
+                ", attitude='" + attitude + '\'' +
+                ", commSkills='" + commSkills + '\'' +
+                ", questions='" + questions + '\'' +
+                ", motivation='" + motivation + '\'' +
+                ", focusOnResult='" + focusOnResult + '\'' +
+                ", other='" + other + '\'' +
+                ", date='" + date + '\'' +
+                ", feedbacker='" + feedbacker + '\'' +
+                ", user='" + user + '\'' +
+                ", assessment=" + assessment +
+                ", level=" + level +
+                '}';
     }
 
-    public static List <UserFeedbackModel> parseUserFeedbacks (List<UserFeedback> userFeedbacks) {
-        List<UserFeedbackModel> userFeedbackModels = new ArrayList<UserFeedbackModel>();
-        for(UserFeedback userFeedback: userFeedbacks) {
-            userFeedbackModels.add(UserFeedbackModel.parseToUserFeedbackModel(userFeedback));
-        }
-        return userFeedbackModels;
+    public static UserFeedbackModel parseToUserFeedbackModel(UserFeedback userFeedback) {
+        return new UserFeedbackModel(userFeedback.getAttendance(), userFeedback.getAttitude(), userFeedback.getCommSkills(), userFeedback.getQuestions(),
+                userFeedback.getMotivation(), userFeedback.getFocusOnResult(), userFeedback.getOther(), userFeedback.getDate().toString(), userFeedback.getFeedbacker().getName(), userFeedback.getUser().getName(), String.valueOf(userFeedback.getAssessment()), String.valueOf(userFeedback.getLevel()));
     }
 }

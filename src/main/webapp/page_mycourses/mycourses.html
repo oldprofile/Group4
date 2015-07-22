@@ -5,23 +5,9 @@
     <div ng-show="isNoCourses">
         <h2>No Courses, browse them</h2>
     </div>    
-<!--     <div deckgrid source="mycourses | filter:dosFilter.filterObject" cardTemplate="page_mycourses/mycoursescardtemplate.html" class="deckgrid-my-courses"></div>   -->
-    <div class="cardlayout" ng-class="{ 'waiting-for-angular': !isContentLoaded }">
-        <div ng-repeat="c in mycourses | filter: dosFilter.filterObject">
-            <div class="col-sm-6 col-xs-12 card">
-                <p>{{c.trainingName}}</p>
-                <img ng-src="https://angularjs.org/img/AngularJS-large.png">
-                <p>Lesson #1</p>
-                <p>Coach: {{c.trainingCoach}}</p>
-                <p>Date: {{c.dateTraining | date:"medium" }}</p>
-                <p>Place: {{c.trainingPlace}}</p>
+     <div deckgrid source="mycourses" cardTemplate="page_mycourses/mycoursescardtemplate.html" class="deckgrid-my-courses"></div>   
 
-                <a ng-href="#/courseinfo/{{c.trainingName}}">more</a>
-            </div>
-        </div>
-    </div>    
 
-    
 
 
 

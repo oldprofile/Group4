@@ -26,4 +26,5 @@ public interface TrainingService {
     List<Training> searchTrainingsByName(String trainingName);
     List<Date> getDatesByTrainingName(String trainingName);
     List<Training> getTrainingForApprove();
+    Training addSpareUser(String trainingName, String userName);
 }

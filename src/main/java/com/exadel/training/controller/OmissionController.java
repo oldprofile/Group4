@@ -1,7 +1,6 @@
 package com.exadel.training.controller;
 
 import com.exadel.training.controller.model.Omission.JournalOmissionByTraining;
-import com.exadel.training.controller.model.Omission.JournalOmissionByUserLogin;
 import com.exadel.training.controller.model.Omission.JournalOmissionUserByTraining;
 import com.exadel.training.model.Omission;
 import com.exadel.training.service.OmissionService;
@@ -34,30 +33,8 @@ public class OmissionController {
     }
 
     @RequestMapping(value = "/find_omission_by_training_and_user_login", method = RequestMethod.GET)
-    @ResponseBody List<JournalOmissionUserByTraining> findOmissionByTrainingAndUserLogin() {
+    @ResponseBody List<JournalOmissionUserByTraining> findByTrainingAndUserLogin() {
         List<Omission> omissions = omissionService.findByTrainingNameAndUserLogin("Front end","1");
-        List<JournalOmissionUserByTraining> journalOmissionUserByTrainings = new ArrayList<>();
-        for(Omission omission : omissions) {
-            journalOmissionUserByTrainings.add(JournalOmissionUserByTraining.parseJournalOmissionUserByTraining(omission));
-        }
-        return  journalOmissionUserByTrainings;
-    }
-
-    @RequestMapping(value = "/find_omission_by_user_login", method = RequestMethod.GET)
-    @ResponseBody List<JournalOmissionByUserLogin> findOmissionByUserLogin() {
-        List<Omission> omissions = omissionService.findByUserLogin("1");
-        List<JournalOmissionByUserLogin> journalOmissionByUserLogins = new ArrayList<>();
-
-        for(Omission omission : omissions) {
-            journalOmissionByUserLogins.add(JournalOmissionByUserLogin.parseJournalOmissionByUserLogin(omission));
-        }
-
-        return  journalOmissionByUserLogins;
-    }
-
-    @RequestMapping(value = "/find_omission_by_user_login_and_type", method = RequestMethod.GET)
-    @ResponseBody  List<JournalOmissionUserByTraining> findOmissionByTrainingAndUserLoginAndType() {
-        List<Omission> omissions = omissionService.findByTrainingNameAndUserLoginType("Front end","1",false);
         List<JournalOmissionUserByTraining> journalOmissionUserByTrainings = new ArrayList<>();
         for(Omission omission : omissions) {
             journalOmissionUserByTrainings.add(JournalOmissionUserByTraining.parseJournalOmissionUserByTraining(omission));

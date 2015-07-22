@@ -1,14 +1,7 @@
-    <div class="cardlayout">
-        <div ng-repeat="t in allTrainings">
-            <div class="col-sm-3 col-xs-6 card">
-                <p>{{t.trainingName}}</p>
-                <p>Coach: {{t.trainingCoach}}</p>
-                <p>{{t.trainingImage}}</p>
-                <p>When: {{t.dateTraining | date:"medium"}}</p>
-                <p>Where: {{t.trainingPlace}}</p>
-                <a ng-href="#/courseinfo/{{t.trainingName}}">more</a>
-            </div>    
-        </div>  
-    </div>
+
+    
+ <div deckgrid source="allTrainings | filter:''" cardTemplate="page_browse/browseCardTemplate.html" class="deckgrid"></div>   
+
+   
 
 <p><a href="#/createcourse">Create course!</a></p>

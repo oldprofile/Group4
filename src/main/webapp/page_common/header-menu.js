@@ -6,12 +6,11 @@ menuApp.directive('headerMenu',function(){
     };
 });
 
-menuApp.controller("HeaderMenuController",['$scope','$location',"getCategories",'userService',function($scope, $location,getCategories, userService){
+menuApp.controller("HeaderMenuController",['$scope','$location',"getCategories",function($scope, $location,getCategories){
     $scope.categories = [];
     $scope.isActive = function (viewLocation) {
      var viewLocationArray = viewLocation.split("/");
      var locationArray = $location.path().split("/");
-     
      
      var active = (locationArray[1] === viewLocationArray[1]);
      return active;
@@ -23,10 +22,6 @@ menuApp.controller("HeaderMenuController",['$scope','$location',"getCategories",
     }).error(function(err){
         alert("Can't get categories")
     })
-    
-    $scope.logoutFunction = function(){
-        userService.logout().success(function(data){$location.path("/")}).error(function(err){alert("Err Logout")});
-    }
 }])
                           
  
