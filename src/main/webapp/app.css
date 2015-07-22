@@ -1,10 +1,8 @@
 /* app css stylesheet */
 
-/*@import url(assets/SanFranciscoFont/usesf.css)*/
-
 body{
-    font-family: 'San Francisco Text', sans-serif !important;
-    padding-top: 62px; 
+    
+    padding-top: 70px; 
     height: 100vh !important;
     
 }
@@ -16,9 +14,9 @@ body.waiting-for-angular div#content-outer {
   min-height: 100%;
   position: relative;
 }
-.waiting-for-angular{
+body.waiting-for-angular div#initializing-panel {
   display: block;
-  background: url(assets/puff.svg) center center no-repeat;
+  background: url(images/loading.gif) center center no-repeat;
   position:absolute;
   top:0;
   left:0;
@@ -31,13 +29,6 @@ div#content-outer {
 
 }
 /* my-app-footer*/
-my-app-footer{
-  overflow: auto;
-  display: inline-block;
-  width: 100%;
-  height: 80px;
-}
-
 .footer {
   width: 100%;
   /* Set the fixed height of the footer here */
@@ -45,16 +36,12 @@ my-app-footer{
   position:absolute;
   bottom:0;
   left:0;
-  
  
 }
 
 .ng-view-content {
     /*footer height*/
-  padding-bottom:80px;
-  overflow: auto;
-  display:block;
-  
+    padding-bottom:80px;
 }
 
 .footer-link {
@@ -67,178 +54,49 @@ my-app-footer{
     !!!!Deckgrid!!!! 
 */
 
+.deckgrid[deckgrid]::before {
+    /* Specifies that the grid should have a maximum of 4 columns. Each column will have the classes 'column' and 'column-1-4' */
+    width: 100%;
+    content: '4 .column.column-1-4';
+    font-size: 0; /* See https://github.com/akoenig/angular-deckgrid/issues/14#issuecomment-35728861 */
+    visibility: hidden;
+}
+.deckgrid{
+    height: auto;
+    width: 100%;
+    overflow:auto; 
+}
 
-.cardlayout {
+.deckgrid .column {
+    float: left;
     
-    overflow: auto;
+}
+
+.deckgrid .column-1-4 {
+    width: 25%;
 }
 
 .card {
-    padding: 0px;
-    margin-bottom: 15px;
-}
-
-/*
-
-DOS-HEAD-TOOL
-
-*/
-#localSearch {
-    float: right;
-    
-}
-.localSearchForm{
-    width: 200px;
-    height: 36px;
-    border-radius: 16px;
-}
-
-#segmented-picker {
-   align-content: center;
-    width: 240px;
-    margin: auto;
-   
-}
-
-.segmented-button{
-    color: #4C4C4C;
-    width: 80px;
-    height: 36px;
-    background-color: white!important;
-    box-shadow: none !important;
-    border-color: #ccc !important;
-}
-.segmented-button.active{
-    
-    background-color: #fafafa !important;
-    
-    color:#8C8C8C !important;
-    
-}
-
-
-
-.segmented-button-left{
-    border-radius: 16px 0px 0px 16px;
-}
-
-.segmented-button-right{
-    border-radius: 0px 16px 16px 0px;
-}
-
-.dos-head-tool {
-    margin: 0;
-    width: 240;
-    height: 44px;
     padding-bottom: 16px;
+}
+
+.deckgrid-my-courses[deckgrid]::before {
+    /* Specifies that the grid should have a maximum of 4 columns. Each column will have the classes 'column' and 'column-1-4' */
+    width: 100%;
+    content: '2 .column.column-1-2';
+    font-size: 0; /* See https://github.com/akoenig/angular-deckgrid/issues/14#issuecomment-35728861 */
+    visibility: hidden;
+}
+.deckgrid-my-courses{
+    height: auto;
+    width: 100%;
+    overflow:auto; 
+}
+.deckgrid-my-courses .column {
+    float: left;
     
 }
 
-/*
-course-info
-*/
-; 
-
-.course-info-content
-{
-  
-  margin: 0;
-  padding: 0px 16px 0px 16px !important;
-  overflow: auto;
-  
-}
-.course-info-row{
-  padding: 0px 16px 0px 16px !important;
-  overflow: auto;
-}
-.course-info-text{
-  color: #4C4C4C;
-}
-.course-info-text>h1{
-  font-size: 48px;
-  color: #4C4C4C;
-  font-weight: 500;
-  margin: 0;
-  margin-top: 32px;
-  margin-bottom: 16px;
-  line-height: 58px;
-  width: 60%;
-  
-}
-.course-info-text>p{
-  font-size: 20px;
-  width: 100%;
-}
-
-.color-gray{
-  color: #8C8C8C !important;
-}
-.space-16{
-  margin-bottom: 16px !important;
-  margin-top: 16px !important;
-}
-
-.course-info-text>h5,
-.timetable>h5,
-.feedbacks>h5,
-.participants>h5{
-  font-size: 24px;
-  color: #4C4C4C ;
-  font-weight: 300;
-  margin: 0;
- 
-}
-.info-small{
-  font-size: 16px !important;
-}
-
-.course-info-btn{
-  background-color: white !important;
-  font-size: 20px;
-  color: #4C4C4C;
-  border: none;
-  border-bottom: 3px solid #4C4C4C;
-  border-radius: 0px;
-  padding: 0px 10px 4px 10px;
-  box-shadow: none !important;
-}
-.course-info-btn:hover{
-  color: #8C8C8C;
-  border-bottom-color: #8C8C8C;
-  
-}
-.course-info-btn.glyphicon{
-  font-size: 20px;
-  border: none !important;
-}
-.no-border{
-  border: none !important;
-  border-bottom: none !important ;
-}
-.semi-bold{
-font-weight: 500;
-}
-
-.timetable{
-  padding-top: 50px;
-}
-
-
-/*modals*/
-.modal-btn{
-  background-color: white !important;
-  color: #4C4C4C;
-  border: none;
-  border-bottom: 3px solid #4C4C4C;
-  border-radius: 0px;
-  padding: 0px 8px 2px 8px;
-  box-shadow: none !important;
-}
-.modal-btn:hover{
-  color: #8C8C8C;
-  border-bottom-color: #8C8C8C;
-}
-.course-info-text-div{
-  margin: auto;
-  max-width: 700px;
+.deckgrid-my-courses .column-1-2 {
+    width: 50%;
 }
