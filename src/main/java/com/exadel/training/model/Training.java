@@ -44,7 +44,7 @@ public class Training {
     @ManyToOne(cascade = CascadeType.ALL)
     private User coach;
 
-    @ManyToMany(mappedBy = "trainings")
+    @ManyToMany(mappedBy = "trainings", fetch = FetchType.EAGER)
     private List<User> listeners;
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -53,7 +53,7 @@ public class Training {
     //@ManyToOne(cascade = CascadeType.ALL)
     private int state;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<User> spareUsers;
 
     @OneToMany(mappedBy = "training")
