@@ -1,5 +1,8 @@
 package com.exadel.training.model;
 
+import com.exadel.training.common.LanguageTraining;
+import org.json.simple.JSONObject;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -41,7 +44,7 @@ public class Training {
     @ManyToOne(cascade = CascadeType.ALL)
     private User coach;
 
-    @ManyToMany(mappedBy = "trainings")
+    @ManyToMany(mappedBy = "trainings", fetch = FetchType.EAGER)
     private List<User> listeners;
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -50,7 +53,7 @@ public class Training {
     //@ManyToOne(cascade = CascadeType.ALL)
     private int state;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<User> spareUsers;
 
     @OneToMany(mappedBy = "training")
@@ -60,6 +63,10 @@ public class Training {
     private  List<TrainingFeedback> feedbacks;
 
     public Training() {
+    }
+
+    public Training(JSONObject json) throws NoSuchFieldException {
+
     }
 
     public long getId() {

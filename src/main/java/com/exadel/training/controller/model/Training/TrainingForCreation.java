@@ -1,5 +1,10 @@
 package com.exadel.training.controller.model.Training;
 
+import com.exadel.training.common.LanguageTraining;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +25,22 @@ public class TrainingForCreation {
     private List<String> dateTimes;
 
     public TrainingForCreation() {
+    }
+
+    public TrainingForCreation(JSONObject json) throws NoSuchFieldException {
+        isInternal = (Boolean)json.get("isInternal");
+        JSONArray jsonDates = (JSONArray) json.get("dateTime");
+        dateTimes = new ArrayList<>();
+        for (Object jsonDate : jsonDates) {
+            dateTimes.add((String) jsonDate);
+        }
+        audience = (String)json.get("audience");
+        participantsNumber = Integer.parseInt(String.valueOf((Long)json.get("participantsNumber")));
+        additional = (String)json.get("additional");
+        name = (String)json.get("name");
+        description = (String)json.get("description");
+        language = (String)json.get("language");
+        idCategory = Integer.parseInt(String.valueOf((Long)json.get("idCategory")));
     }
 
     public String getName() {

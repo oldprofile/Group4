@@ -51,16 +51,18 @@ public class FeedbackController {
     }
 
     @RequestMapping(value = "/create_user_feedback", method = RequestMethod.POST, consumes = "application/json")
-    public @ResponseBody void addUserFeedback(@RequestBody UserFeedbackModel userFeedbackModel, HttpServletResponse response) {
+    public @ResponseBody void addUserFeedback(@RequestBody UserFeedbackModel userFeedbackModel, @RequestBody String userLogin, @RequestBody String feedbackerLogin, HttpServletResponse response) {
+        User user = userService.findUserByLogin(userLogin);
+        User feedbacker = userService.findUserByLogin(feedbackerLogin);
         try {
-            userFeedbackService.addUserFeedback(userFeedbackModel);
+            userFeedbackService.addUserFeedback(feedbacker, user, userFeedbackModel);
             response.setStatus(HttpServletResponse.SC_CREATED);
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 
-    @RequestMapping(value = "/training_feedback", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/training_feedback", method = RequestMethod.GET)
     public @ResponseBody List<TrainingFeedbackModel> getTrainingFeedbacks(@RequestBody String trainingName)  {
         Training t = trainingService.getTrainingByName(trainingName);
         List<TrainingFeedback> trainingFeedbacks = trainingFeedbackService.getTrainingFeedbacksOrderByDate(t);

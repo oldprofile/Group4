@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 /**
@@ -55,19 +53,6 @@ public class AuthenticationController {
             }
         return Authentication.parseAuthentication(user);
     }
-
-    @RequestMapping(value = "/logout", method = RequestMethod.POST,  consumes = "application/json")
-    public void logout(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException {
-        String header = httpServletRequest.getHeader("authorization");
-        String login = cryptService.decrypt(header);
-
-        if(userService.checkUserByLogin(login)) {
-            httpServletResponse.setStatus(HttpServletResponse.SC_OK);
-        } else {
-            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        }
-    }
-
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public @ResponseBody Authentication get() throws TwilioRestException {
         // Role role = roleService.getRoleByID(1);
