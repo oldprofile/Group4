@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * Created by HP on 23.07.2015.
  */
 @Controller
-@RequestMapping("/news")
+@RequestMapping("/news_controller")
 public class NewsController {
 
     @Autowired
