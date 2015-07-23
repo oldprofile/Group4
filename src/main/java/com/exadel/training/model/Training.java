@@ -50,10 +50,8 @@ public class Training {
     @ManyToOne(cascade = CascadeType.ALL)
     private Category category;
 
+    //@ManyToOne(cascade = CascadeType.ALL)
     private int state;
-
-    @OneToMany(mappedBy = "training")
-    private List<News> news;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<User> spareUsers;
@@ -229,13 +227,5 @@ public class Training {
 
     public void setFeedbacks(List<TrainingFeedback> feedbacks) {
         this.feedbacks = feedbacks;
-    }
-
-    public List<News> getNews() {
-        return news;
-    }
-
-    public void setNews(List<News> news) {
-        this.news = news;
     }
 }

@@ -60,21 +60,6 @@ public class UserFeedback{
         this.user = user;
     }
 
-    public UserFeedback(String attendance, String attitude, String commSkills, String questions, String motivation, String focusOnResult, String other, Date date, User feedbacker, User user, int assessment, int level) {
-        this.attendance = attendance;
-        this.attitude = attitude;
-        this.commSkills = commSkills;
-        this.questions = questions;
-        this.motivation = motivation;
-        this.focusOnResult = focusOnResult;
-        this.other = other;
-        this.date = date;
-        this.feedbacker = feedbacker;
-        this.user = user;
-        this.assessment = assessment;
-        this.level = level;
-    }
-
     public long getId() {
         return id;
     }
