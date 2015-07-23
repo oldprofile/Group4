@@ -116,21 +116,50 @@ public class UserController {
         return allTrainingUserShorts;
     }
 
-    @RequestMapping(value = "/all_trainings_of_user_by_type_coach", method = RequestMethod.GET)
-    public  @ResponseBody List<AllTrainingUserShort> getAllTrainingOfUserByTypeCoachTrue (HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException {
+    @RequestMapping(value = "/all_trainings_of_user_by_type_coach", method = RequestMethod.POST, consumes = "application/json")
+    public  @ResponseBody List<AllTrainingUserShort> getAllTrainingOfUserByTypeCoachTrue (@RequestBody AllTrainingUserSortedAndState allTrainingUserSortedAndState,
+                                                                                          HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException {
 
-        //String header = httpServletRequest.getHeader("authorization");
-       // String login = cryptService.decrypt(header);
+        String header = httpServletRequest.getHeader("authorization");
+        String login = cryptService.decrypt(header);
         List<AllTrainingUserShort> allTrainingUserShorts = new ArrayList<AllTrainingUserShort>();
 
-     //   if(userService.checkUserByLogin(login)) {
-        List<Integer> l = new ArrayList<>();
-        l.add(1);
-        l.add(2);
-        l.add(3);
-        l.add(4);
-        l.add(5);
-            List<Training> trainings = userService.selectAllTrainingSortedByDateTypeCoachTrue("1",l);
+        if(userService.checkUserByLogin(login)) {
+
+            List<Training> trainings = userService.selectAllTrainingSortedByDateTypeCoachTrue(allTrainingUserSortedAndState.getLogin(),allTrainingUserSortedAndState.getState());
+            User user = userService.findUserByLogin(login);
+
+            for (Training training : trainings) {
+                AllTrainingUserShort allTrainingUserShort = AllTrainingUserShort.parseAllTrainingUserShort(training);
+                if (training.getCoach().getId() == user.getId()) {
+                    allTrainingUserShort.setIsCoach(true);
+                }
+                allTrainingUserShorts.add(allTrainingUserShort);
+            }
+
+            if (allTrainingUserShorts.isEmpty()) {
+                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            } else {
+                httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+            }
+          } else {
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
+
+        return allTrainingUserShorts;
+    }
+
+    @RequestMapping(value = "/all_trainings_of_user_by_type_student", method = RequestMethod.POST, consumes = "application/json")
+    public  @ResponseBody List<AllTrainingUserShort> getAllTrainingOfUserByTypeCoachFalse (@RequestBody AllTrainingUserSortedAndState allTrainingUserSortedAndState,
+                                                                                          HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException {
+
+        String header = httpServletRequest.getHeader("authorization");
+        String login = cryptService.decrypt(header);
+        List<AllTrainingUserShort> allTrainingUserShorts = new ArrayList<AllTrainingUserShort>();
+
+        if(userService.checkUserByLogin(login)) {
+
+            List<Training> trainings = userService.selectAllTrainingSortedByDateTypeCoachFalse(allTrainingUserSortedAndState.getLogin(),allTrainingUserSortedAndState.getState());
             User user = userService.findUserByLogin("1");
 
             for (Training training : trainings) {
@@ -146,9 +175,9 @@ public class UserController {
             } else {
                 httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
             }
-       // } else {
-         //   httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        //}
+        } else {
+           httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
 
         return allTrainingUserShorts;
     }
@@ -276,6 +305,7 @@ public class UserController {
         l.add(4);
         l.add(5);
         List<Training> trainings = userService.selectAllTrainingSortedByDate("1",l);
+        List<Training> t = userService.selectAllTrainingSortedByDateTypeCoachFalse("1",l);
         User user = userService.findUserByLogin("1");
         List<AllTrainingUserShort> allTrainingUserShorts = new ArrayList<>();
         for(Training training : trainings) {
@@ -309,6 +339,7 @@ public class UserController {
 
         Boolean is = userService.checkSubscribeToTraining(1L,1L);
         Boolean i = userService.checkSubscribeToTraining("Front end","1");
+
 
         List<User> s1 = userService.searchUsersByName("a");
         List<UserShort> s2 = new ArrayList<>();
