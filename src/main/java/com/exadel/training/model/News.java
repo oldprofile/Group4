@@ -15,8 +15,8 @@ public class News {
     @ManyToOne(cascade = CascadeType.ALL)
     private User user;
 
-   // @ManyToOne(cascade = CascadeType.ALL)
-  //  private Training training;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Training training;
 
     private String action;
 
