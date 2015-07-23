@@ -26,7 +26,7 @@ public class NewsController {
     public @ResponseBody Page<News> getNewsPage(@PathVariable("pageNumber") String pageNumber) {
         Page<News> page = userNewsService.getNewsPage(Integer.parseInt(pageNumber));
         List<News> newsList = page.getContent();
-        return  page;
 
+        return  page;
     }
 }

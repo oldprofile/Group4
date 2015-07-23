@@ -18,7 +18,7 @@ import javax.transaction.Transactional;
 @Transactional
 public class NewsServiceImpl implements NewsService {
 
-    private static final int PAGE_SIZE = 3;
+    private static final int PAGE_SIZE = 2;
 
    @Autowired
     private NewsRepository newsRepository;
@@ -26,7 +26,7 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public Page<News> getNewsPage(Integer pageNumber) {
         PageRequest request =
-                new PageRequest(pageNumber - 1, PAGE_SIZE, Sort.Direction.DESC, "action");
+                new PageRequest(pageNumber - 1, PAGE_SIZE, Sort.Direction.ASC, "id");
         return newsRepository.findAll(request);
     }
 }
