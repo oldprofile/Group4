@@ -45,8 +45,12 @@ public class AuthenticationController {
     public @ResponseBody Authentication save(@RequestBody Authentication project, HttpServletResponse httpServletResponse) {
         String login = project.getLogin();
         Long password = project.getPassword();
-
-         User user = userService.findUserByLoginAndPassword(login, password);
+        User user = new User();
+         try {
+             user = userService.findUserByLoginAndPassword(login, password);
+         }catch (NullPointerException e){
+             httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+         }
          httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
             try {
                 httpServletResponse.setHeader("token", cryptService.encrypt(login));
