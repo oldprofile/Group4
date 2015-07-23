@@ -76,7 +76,15 @@ public class UserController {
 
         if(userService.checkUserByLogin(mainLogin)) {
             httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
-            return UserShort.parseUserShort(userService.findUserByLogin(login));
+            UserShort us = new UserShort();
+            try{
+                us = UserShort.parseUserShort(userService.findUserByLogin(login));
+                httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+            } catch (NullPointerException e) {
+                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            }
+
+            return us;
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return new UserShort();
