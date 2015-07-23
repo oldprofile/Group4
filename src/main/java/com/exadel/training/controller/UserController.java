@@ -302,9 +302,32 @@ public class UserController {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
     }
+    @RequestMapping(value = "/find_coach_of_user/{login}", method = RequestMethod.GET)
+    public @ResponseBody List<UserShort> findCoachOfUser(@PathVariable("login") String login,
+                                                         HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException {
+
+        String header = httpServletRequest.getHeader("authorization");
+        String mainLogin = cryptService.decrypt(header);
+        List<UserShort> userShorts = new ArrayList<>();
+
+        if(userService.checkUserByLogin(mainLogin)) {
+
+            for (User user : userService.findAllCoachOfUser(login)) {
+                userShorts.add(UserShort.parseUserShort(user));
+            }
+           
+            httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+        } else {
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
+
+        return userShorts;
+    }
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public @ResponseBody List<AllTrainingUserShort> t(HttpServletResponse httpServletResponse) throws NoSuchFieldException {
+
+        List<User> coaches = userService.findAllCoachOfUser("1");
         List<Integer> l = new ArrayList<>();
         l.add(1);
         l.add(2);

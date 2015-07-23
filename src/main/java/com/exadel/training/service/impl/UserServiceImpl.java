@@ -66,6 +66,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> findAllCoachOfUser(String login) {
+        return userRepository.findAllCoachOfUser(login);
+    }
+
+    @Override
     public List<Training> selectAllTraining(String login) {
         return userRepository.selectAllTraining(login);
     }
