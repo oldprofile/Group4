@@ -315,7 +315,7 @@ public class UserController {
             for (User user : userService.findAllCoachOfUser(login)) {
                 userShorts.add(UserShort.parseUserShort(user));
             }
-           
+
             httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);

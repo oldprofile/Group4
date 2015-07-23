@@ -19,8 +19,9 @@ public class AllTrainingUserShort {
     private String state;
     private int rating;
     private Boolean isCoach;
+    private int numberOfTraining;
 
-    public AllTrainingUserShort() {
+        public AllTrainingUserShort() {
     }
 
     public String getTrainingName() {
@@ -91,6 +92,14 @@ public class AllTrainingUserShort {
 
     public void setRating(int rating) {
         this.rating = rating;
+    }
+
+    public int getNumberOfTraining() {
+        return numberOfTraining;
+    }
+
+    public void setNumberOfTraining(int numberOfTraining) {
+        this.numberOfTraining = numberOfTraining;
     }
 
     public static AllTrainingUserShort parseAllTrainingUserShort(Training training) throws NoSuchFieldException {
