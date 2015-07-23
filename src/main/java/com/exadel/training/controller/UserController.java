@@ -4,6 +4,7 @@ import com.exadel.training.common.RoleType;
 import com.exadel.training.controller.model.User.*;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
+import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
 import com.exadel.training.tokenAuthentification.CryptService;
 import com.exadel.training.tokenAuthentification.impl.DESCryptServiceImpl;
@@ -31,6 +32,8 @@ public class UserController {
     private static final Object EMPTY = null;
     @Autowired
     private UserService userService;
+    @Autowired
+    private TrainingService trainingService;
     private CryptService cryptService;
   //  @Autowired
   //  private Session session;
@@ -65,6 +68,21 @@ public class UserController {
         return userShortList;
     }
 
+    @RequestMapping(value = "/user_info/{login}", method = RequestMethod.GET)
+    public @ResponseBody UserShort userInfo(@PathVariable("login") String login, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException {
+
+        String header = httpServletRequest.getHeader("authorization");
+        String mainLogin = cryptService.decrypt(header);
+
+        if(userService.checkUserByLogin(mainLogin)) {
+            httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+            return UserShort.parseUserShort(userService.findUserByLogin(login));
+        } else {
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return new UserShort();
+        }
+    }
+
     @RequestMapping(value = "/all_trainings_of_user", method = RequestMethod.GET)
     public  @ResponseBody List<AllTrainingUserShort> getAllTrainingOfUser(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException {
 
@@ -97,6 +115,44 @@ public class UserController {
 
         return allTrainingUserShorts;
     }
+
+    @RequestMapping(value = "/all_trainings_of_user_by_type_coach", method = RequestMethod.GET)
+    public  @ResponseBody List<AllTrainingUserShort> getAllTrainingOfUserByTypeCoachTrue (HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException {
+
+        //String header = httpServletRequest.getHeader("authorization");
+       // String login = cryptService.decrypt(header);
+        List<AllTrainingUserShort> allTrainingUserShorts = new ArrayList<AllTrainingUserShort>();
+
+     //   if(userService.checkUserByLogin(login)) {
+        List<Integer> l = new ArrayList<>();
+        l.add(1);
+        l.add(2);
+        l.add(3);
+        l.add(4);
+        l.add(5);
+            List<Training> trainings = userService.selectAllTrainingSortedByDateTypeCoachTrue("1",l);
+            User user = userService.findUserByLogin("1");
+
+            for (Training training : trainings) {
+                AllTrainingUserShort allTrainingUserShort = AllTrainingUserShort.parseAllTrainingUserShort(training);
+                if (training.getCoach().getId() == user.getId()) {
+                    allTrainingUserShort.setIsCoach(true);
+                }
+                allTrainingUserShorts.add(allTrainingUserShort);
+            }
+
+            if (allTrainingUserShorts.isEmpty()) {
+                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            } else {
+                httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+            }
+       // } else {
+         //   httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        //}
+
+        return allTrainingUserShorts;
+    }
+
 
     @RequestMapping(value = "/find_user_by_login", method = RequestMethod.GET)
     public @ResponseBody UserShort findUserByLogin( HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException {
@@ -145,8 +201,14 @@ public class UserController {
 
        if(userService.checkUserByLogin(login)) {
            try {
-               userService.insertUserTrainingRelationShip(userLeaveAndJoinTraining.getLogin(), userLeaveAndJoinTraining.getNameTraining());
-               httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+               Training training = trainingService.getTrainingByName(userLeaveAndJoinTraining.getNameTraining());
+               if(training.getListeners().size() < training.getAmount()) {
+                   userService.insertUserTrainingRelationShip(userLeaveAndJoinTraining.getLogin(), userLeaveAndJoinTraining.getNameTraining());
+                   httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+               } else {
+                   httpServletResponse.setStatus(HttpServletResponse.SC_CONTINUE);
+                   trainingService.addSpareUser(training.getName(),login);
+               }
            } catch (NullPointerException e) {
                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
            }
@@ -208,8 +270,11 @@ public class UserController {
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public @ResponseBody List<AllTrainingUserShort> t(HttpServletResponse httpServletResponse) {
         List<Integer> l = new ArrayList<>();
+        l.add(1);
         l.add(2);
         l.add(3);
+        l.add(4);
+        l.add(5);
         List<Training> trainings = userService.selectAllTrainingSortedByDate("1",l);
         User user = userService.findUserByLogin("1");
         List<AllTrainingUserShort> allTrainingUserShorts = new ArrayList<>();
@@ -232,13 +297,18 @@ public class UserController {
         return  allTrainingUserShorts;
 
     }
-    @RequestMapping(value = "test_s",method = RequestMethod.GET)
+    @RequestMapping(value = "/test_s",method = RequestMethod.GET)
     public @ResponseBody List<UserShort> s() throws InterruptedException {
 
 
        //    FullTextSession fullTextSession = Search.getFullTextSession(session);
        //    fullTextSession.createIndexer().startAndWait();
 
+
+     //   List<User> users = userService.searchUsersByName("art");
+
+        Boolean is = userService.checkSubscribeToTraining(1L,1L);
+        Boolean i = userService.checkSubscribeToTraining("Front end","1");
 
         List<User> s1 = userService.searchUsersByName("a");
         List<UserShort> s2 = new ArrayList<>();
@@ -247,6 +317,7 @@ public class UserController {
                 s2.add(UserShort.parseUserShort(user));
             }
         }
+
         return s2;
     }
 }

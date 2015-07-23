@@ -41,16 +41,18 @@ public class Training {
     @ManyToOne(cascade = CascadeType.ALL)
     private User coach;
 
-    @ManyToMany(mappedBy = "trainings")
+    @ManyToMany(mappedBy = "trainings", fetch = FetchType.EAGER)
     private List<User> listeners;
 
     @ManyToOne(cascade = CascadeType.ALL)
     private Category category;
 
-    //@ManyToOne(cascade = CascadeType.ALL)
     private int state;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "training")
+    private List<News> news;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<User> spareUsers;
 
     @OneToMany(mappedBy = "training")
@@ -212,5 +214,13 @@ public class Training {
 
     public void setFeedbacks(List<TrainingFeedback> feedbacks) {
         this.feedbacks = feedbacks;
+    }
+
+    public List<News> getNews() {
+        return news;
+    }
+
+    public void setNews(List<News> news) {
+        this.news = news;
     }
 }

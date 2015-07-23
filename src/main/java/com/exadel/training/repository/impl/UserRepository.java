@@ -20,16 +20,19 @@ public interface UserRepository extends JpaRepository<User,Long>{
    @Query("select case when (count(u)>0) then true else false end from User as u where u.login = ?1")
    Boolean checkUserByLogin(String login);
 
+   @Query("select case when (count(u)>0) then true else false end from User as u inner join u.trainings as t where u.login = ?2 and t.name = ?1 ")
+   Boolean checkSubscribeToTraining(String trainingName, String login);
+
+   @Query(value = "select count(*) > 0 from users_trainings u where :trainingID = trainings and :userID = listeners",nativeQuery = true)
+   int checkSubscribeToTraining(@Param("trainingID")Long trainingName,@Param("userID") Long user);
+
   //  @Query("select u from User u where u.login = ?1 AND u.password = ?2")
    User findUserByLoginAndPassword(String login,long password);
 
    User findUserByLogin(String login);
 
-   @Query("select u from User as u where u.name LIKE ?1 or u.login LIKE ?1")
-   List<User> searchUsersByName(String nameOrLogin);
-
-   @Query("select u from User as u where u.login LIKE ?1")
-   List<User> searchUsersByLogin(String login);
+   @Query(value = "SELECT * FROM users WHERE MATCH (name,login) AGAINST (:name in boolean mode) ", nativeQuery = true)
+   List<User> searchUsersByName(@Param("name")String name);
 
    @Query("select u from User as u inner join u.roles as r where r.id = ?1 ")
    List<User> findUsersByRole(long type);
@@ -49,6 +52,11 @@ public interface UserRepository extends JpaRepository<User,Long>{
    @Query(value = "insert into users_trainings values(:trainingID,:userID)", nativeQuery = true)
     void insertUserTrainingRelationShip(@Param("userID")Long userID, @Param("trainingID")Long trainingID);
 
-    @Query("select distinct t from User as u inner join u.trainings as t where u.login = ?1 and t.state in (?2) order by t.dateTime desc")
+    @Query("select distinct t from User as u inner join u.trainings as t where u.login = ?1 and t.state in (?2) order by t.dateTime asc ")
     List<Training> selectAllTrainingSortedByDate(String login, List<Integer> state);
+
+    @Query("select distinct t from User as u inner join u.trainings as t inner join t.coach as c where u.login = ?1 and t.state in (?2) and t.parent = 0 and c.id = u.id order by t.dateTime asc")
+    List<Training> selectAllTrainingSortedByDateTypeCoachTrue(String login, List<Integer> state);
+
+
 }

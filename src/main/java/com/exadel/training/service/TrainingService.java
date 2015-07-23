@@ -3,6 +3,7 @@ package com.exadel.training.service;
 
 import com.exadel.training.controller.model.Training.TrainingForCreation;
 import com.exadel.training.model.Training;
+import com.exadel.training.model.User;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -26,4 +27,7 @@ public interface TrainingService {
     List<Training> searchTrainingsByName(String trainingName);
     List<Date> getDatesByTrainingName(String trainingName);
     List<Training> getTrainingForApprove();
+    List<User> getUsersByTrainingName(String trainingName);
+    List<User> getSpareUsersByTrainingName(String trainingName);
+    Training addSpareUser(String trainingName, String userLogin);
 }
