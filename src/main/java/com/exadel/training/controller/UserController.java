@@ -76,10 +76,11 @@ public class UserController {
 
         if (userService.checkUserByLogin(mainLogin)) {
             httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
-            UserShort us = UserShort.parseUserShort(userService.findUserByLogin(login));
-            if (us != EMPTY) {
-                httpServletResponse.setStatus((HttpServletResponse.SC_ACCEPTED));
-            } else {
+            UserShort us = new UserShort();
+            try{
+                us = UserShort.parseUserShort(userService.findUserByLogin(login));
+                httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+            } catch (NullPointerException e) {
                 httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
             }
 
