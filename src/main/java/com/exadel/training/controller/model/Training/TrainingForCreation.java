@@ -22,6 +22,7 @@ public class TrainingForCreation {
     private String language;
     private boolean isInternal;
     private List<String> dateTimes;
+    private String privateLink;
 
     public TrainingForCreation() {
     }
@@ -33,13 +34,14 @@ public class TrainingForCreation {
         for (Object jsonDate : jsonDates) {
             dateTimes.add((String) jsonDate);
         }
+        String str = (String)json.get("pictureLink");
         audience = (String)json.get("audience");
-        participantsNumber = Integer.parseInt(String.valueOf((Long)json.get("participantsNumber")));
+        participantsNumber = Integer.parseInt(String.valueOf(json.get("participantsNumber")));
         additional = (String)json.get("additional");
         name = (String)json.get("name");
         description = (String)json.get("description");
         language = (String)json.get("language");
-        idCategory = Integer.parseInt(String.valueOf((Long)json.get("idCategory")));
+        idCategory = Integer.parseInt(String.valueOf(json.get("idCategory")));
     }
 
     public String getName() {

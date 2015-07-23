@@ -47,8 +47,10 @@ public class Training {
     @ManyToOne(cascade = CascadeType.ALL)
     private Category category;
 
-    //@ManyToOne(cascade = CascadeType.ALL)
     private int state;
+
+    //@OneToMany(mappedBy = "training")
+    //private List<News> news;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<User> spareUsers;
