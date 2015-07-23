@@ -84,4 +84,4 @@ angular.module('myApp').factory('userService',['$http',function ($http) {
     }  
   };
   return userApi;
-}]); 
+}]);

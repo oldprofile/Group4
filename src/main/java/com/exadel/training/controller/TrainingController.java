@@ -236,7 +236,7 @@ public class TrainingController {
         return new ShortTrainingInfo(training);
     }
 
-    @RequestMapping(value = "/test_training_info", method = RequestMethod.GET)
+    @RequestMapping(value = "/test_training_info", method = RequestMethod.GET/*consumes = "application/json"*/)
     public @ResponseBody
     TrainingInfo testPostTrainingInfo () throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
         String trainingName = "angular";
@@ -247,16 +247,5 @@ public class TrainingController {
             trainingInfo.setIsSubscriber(false);
         else trainingInfo.setIsSubscriber(true);
         return trainingInfo;
-    }
-
-    @RequestMapping(value = "/test_listeners", method = RequestMethod.GET)
-    public @ResponseBody
-    ShortTrainingInfo testGetListeners () throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
-        String trainingName = "angular";
-        Training training = trainingService.getTrainingByName(trainingName);
-        List<User> users = training.getListeners();
-        List<User> spareUser = training.getSpareUsers();
-        List<User> ussers = trainingService.getUsersByTrainingName(trainingName);
-        return new ShortTrainingInfo(training);
     }
 }

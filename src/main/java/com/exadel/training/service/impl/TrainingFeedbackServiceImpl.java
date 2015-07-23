@@ -10,6 +10,7 @@ import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class TrainingFeedbackServiceImpl implements TrainingFeedbackService {
     UserService userService;
 
     @Override
+    @Transactional
     public void addTrainingFeedback(TrainingFeedbackADDModel trainingFeedbackADDModel) {
         String login = trainingFeedbackADDModel.getFeedbackerLogin();
         User feedbacker = userService.findUserByLogin(login);

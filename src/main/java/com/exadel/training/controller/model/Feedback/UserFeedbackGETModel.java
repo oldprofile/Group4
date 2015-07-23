@@ -3,6 +3,7 @@ package com.exadel.training.controller.model.Feedback;
 import com.exadel.training.model.UserFeedback;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
 /**
  * Created by asd on 17.07.2015.
  */
-public class UserFeedbackModel implements Serializable{
+public class UserFeedbackGETModel implements Serializable{
     private String attendance;
 
     private String attitude;
@@ -25,19 +26,25 @@ public class UserFeedbackModel implements Serializable{
 
     private String other;
 
-    private String feedbacker;
+    private String feedbackerLogin;
 
-    private String user;
+    private String feedbackerName;
+
+    private String userLogin;
+
+    private String date;
 
     // for english
     private String assessment;
 
     private String level;
 
-    public UserFeedbackModel() {
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+
+    public UserFeedbackGETModel() {
     }
 
-    public UserFeedbackModel(String attendance, String attitude, String commSkills, String questions, String motivation, String focusOnResult, String other, String feedbacker, String user, String assessment, String level) {
+    public UserFeedbackGETModel(String attendance, String attitude, String commSkills, String questions, String motivation, String focusOnResult, String other, String feedbackerLogin, String feedbackerName, String userLogin, Date date, String assessment, String level) {
         this.attendance = attendance;
         this.attitude = attitude;
         this.commSkills = commSkills;
@@ -45,8 +52,10 @@ public class UserFeedbackModel implements Serializable{
         this.motivation = motivation;
         this.focusOnResult = focusOnResult;
         this.other = other;
-        this.feedbacker = feedbacker;
-        this.user = user;
+        this.feedbackerLogin = feedbackerLogin;
+        this.feedbackerName = feedbackerName;
+        this.userLogin = userLogin;
+        this.date = sdf.format(date);
         this.assessment = assessment;
         this.level = level;
     }
@@ -107,22 +116,6 @@ public class UserFeedbackModel implements Serializable{
         this.other = other;
     }
 
-    public String getFeedbacker() {
-        return feedbacker;
-    }
-
-    public void setFeedbacker(String feedbacker) {
-        this.feedbacker = feedbacker;
-    }
-
-    public String getUser() {
-        return user;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
-    }
-
     public String getAssessment() {
         return assessment;
     }
@@ -139,15 +132,47 @@ public class UserFeedbackModel implements Serializable{
         this.level = level;
     }
 
-    public static UserFeedbackModel parseToUserFeedbackModel(UserFeedback userFeedback) {
-        return new UserFeedbackModel(userFeedback.getAttendance(), userFeedback.getAttitude(), userFeedback.getCommSkills(), userFeedback.getQuestions(),
-                userFeedback.getMotivation(), userFeedback.getFocusOnResult(), userFeedback.getOther(), userFeedback.getFeedbacker().getName(), userFeedback.getUser().getName(), String.valueOf(userFeedback.getAssessment()), String.valueOf(userFeedback.getLevel()));
+    public String getFeedbackerLogin() {
+        return feedbackerLogin;
     }
 
-    public static List <UserFeedbackModel> parseUserFeedbacks (List<UserFeedback> userFeedbacks) {
-        List<UserFeedbackModel> userFeedbackModels = new ArrayList<UserFeedbackModel>();
+    public void setFeedbackerLogin(String feedbackerLogin) {
+        this.feedbackerLogin = feedbackerLogin;
+    }
+
+    public String getFeedbackerName() {
+        return feedbackerName;
+    }
+
+    public void setFeedbackerName(String feedbackerName) {
+        this.feedbackerName = feedbackerName;
+    }
+
+    public String getUserLogin() {
+        return userLogin;
+    }
+
+    public void setUserLogin(String userLogin) {
+        this.userLogin = userLogin;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public static UserFeedbackGETModel parseToUserFeedbackModel(UserFeedback userFeedback) {
+        return new UserFeedbackGETModel(userFeedback.getAttendance(), userFeedback.getAttitude(), userFeedback.getCommSkills(), userFeedback.getQuestions(),
+                userFeedback.getMotivation(), userFeedback.getFocusOnResult(), userFeedback.getOther(), userFeedback.getFeedbacker().getLogin(), userFeedback.getFeedbacker().getName(), userFeedback.getUser().getName(), userFeedback.getDate(), String.valueOf(userFeedback.getAssessment()), String.valueOf(userFeedback.getLevel()));
+    }
+
+    public static List <UserFeedbackGETModel> parseUserFeedbacks (List<UserFeedback> userFeedbacks) {
+        List<UserFeedbackGETModel> userFeedbackModels = new ArrayList<UserFeedbackGETModel>();
         for(UserFeedback userFeedback: userFeedbacks) {
-            userFeedbackModels.add(UserFeedbackModel.parseToUserFeedbackModel(userFeedback));
+            userFeedbackModels.add(UserFeedbackGETModel.parseToUserFeedbackModel(userFeedback));
         }
         return userFeedbackModels;
     }
