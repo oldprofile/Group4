@@ -2,8 +2,6 @@ package com.exadel.training.service.scheduledTasks;
 
 import com.exadel.training.common.StateTraining;
 import com.exadel.training.controller.model.Training.NotificationTrainingModel;
-import com.exadel.training.controller.model.Training.ShortTrainingInfo;
-import com.exadel.training.controller.model.Training.TrainingInfo;
 import com.exadel.training.controller.model.User.UserShort;
 import com.exadel.training.model.Training;
 import com.exadel.training.notification.mail.WrapperNotificationMail;
@@ -11,19 +9,14 @@ import com.exadel.training.notification.sms.WrapperNotificationSMS;
 import com.exadel.training.service.TrainingService;
 import com.twilio.sdk.TwilioRestException;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeFieldType;
 import org.joda.time.Hours;
-import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.datetime.joda.DateTimeParser;
-import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -89,8 +82,9 @@ public class ScheduledTasksService {
     private void notificateBySms(NotificationTrainingModel notificationTrainingModel, List<UserShort> listeners) throws TwilioRestException {
         for(UserShort listener: listeners) {
             String phone = listener.getNumberPhone();
-            if(phone != null && !phone.isEmpty())
+            if(phone != null && !phone.isEmpty()) {
                 wrapperNotificationSMS.sendSMS(phone, "text");
+            }
         }
         UserShort traininer = notificationTrainingModel.getTrainer();
         String phone = traininer.getNumberPhone();
