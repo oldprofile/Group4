@@ -15,16 +15,15 @@ import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.apache.commons.codec.binary.Base64;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.io.*;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -199,19 +198,54 @@ public class TrainingController {
     }
 
 
+    @RequestMapping(value = "/edit_training", method = RequestMethod.POST)
+    public @ResponseBody
+    ShortTrainingInfo editTraining(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest ) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException, org.json.simple.parser.ParseException, ParseException {
+        String header = httpServletRequest.getHeader("authorization");
+        String userLogin = cryptService.decrypt(header);
+
+        if(userService.checkUserByLogin(userLogin)) {
+            String data = httpServletRequest.getParameter("courseInfo");
+            JSONParser parser = new JSONParser();
+            JSONObject json = (JSONObject) parser.parse(data.trim());
+            TrainingForCreation trainingForCreation = new TrainingForCreation(json);
+            trainingForCreation.setUserLogin(userLogin);
+            Training training = trainingService.addTraining(trainingForCreation);
+            return new ShortTrainingInfo(training);
+        } else {
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return null;
+        }
+    }
+
     //////////////////////////TESTS
 
 
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     @ResponseBody
-    List<ShortTrainingInfo> trainingTest() throws ParseException, NoSuchFieldException {
+    List<ShortTrainingInfo> trainingTest() throws ParseException, NoSuchFieldException, IOException {
         List<Training> list = trainingService.getTrainingsByNearestDate();
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-        String date = "08-08-2015 23:10:00.000";
-        Date dateTime = sdf.parse(date);
-        return ShortTrainingInfo.parseList(list);
+        File file = new File("d:/Repositories/Group4/src/main/resources/imageStorage/number4.jpg");
+
+            FileInputStream imageInFile = new FileInputStream(file);
+            byte imageData[] = new byte[(int) file.length()];
+            imageInFile.read(imageData);
+
+            String imageDataString = Base64.encodeBase64String(imageData);
+
+            byte[] imageByteArray = Base64.decodeBase64(imageDataString);
+            FileOutputStream imageOutFile = new FileOutputStream(
+                    "d:/Repositories/Group4/src/main/resources/imageStorage/number44.jpg");
+
+            imageOutFile.write(imageByteArray);
+
+            imageInFile.close();
+            imageOutFile.close();
+
+
+            return ShortTrainingInfo.parseList(list);
     }
 
     @RequestMapping(value = "/test_category_name", method = RequestMethod.GET)
