@@ -30,4 +30,7 @@ public interface TrainingService {
     List<User> getUsersByTrainingName(String trainingName);
     List<User> getSpareUsersByTrainingName(String trainingName);
     Training addSpareUser(String trainingName, String userLogin);
+    Integer getTrainingNumber(String trainingName, Date date);
+    List<Date> getDatesByTrainingNameBeetwenDates(String trainingName, Date firstDate, Date secondDate);
+
 }

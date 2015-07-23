@@ -1,5 +1,8 @@
 package com.exadel.training.model;
 
+import com.exadel.training.common.LanguageTraining;
+import com.exadel.training.controller.model.Training.TrainingForCreation;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -60,6 +63,18 @@ public class Training {
     private  List<TrainingFeedback> feedbacks;
 
     public Training() {
+    }
+
+    public Training(TrainingForCreation trainingForCreation) throws NoSuchFieldException {
+        name = trainingForCreation.getName();
+        description = trainingForCreation.getDescription();
+        language = LanguageTraining.parseToInt(trainingForCreation.getLanguage());
+        isInternal = trainingForCreation.isInternal();
+        amount = trainingForCreation.getParticipantsNumber();
+        additional = trainingForCreation.getAdditional();
+        audience = trainingForCreation.getAudience();
+        pictureLink = trainingForCreation.getPictureLink();
+        parent = 0;
     }
 
     public long getId() {
