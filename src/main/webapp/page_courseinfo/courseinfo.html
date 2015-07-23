@@ -8,7 +8,7 @@
             </div>
           <div class="course-info-text-div">
                 <div class="course-info-text">
-                    <h1>{{course.name}} <span><a class="btn btn-default course-info-btn no-border" role="button"><span class="glyphicon glyphicon-edit course-info-btn"></span></a></span></h1>
+                    <h1>{{course.name}} <span><a href="#/editcourse/{{course.name}}" class="btn btn-default course-info-btn no-border" role="button" ><span class="glyphicon glyphicon-edit course-info-btn"></span></a></span></h1>
 
                     <h5>Start Date: {{course.dateTime[0] | date:"medium"}}</h5>
                     <h5 class="color-gray">{{course.lessonNumber}} Lessons</h5>
