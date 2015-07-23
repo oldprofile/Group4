@@ -3,6 +3,10 @@ form.form-course > * {
     margin-bottom: 15px !important;
 }
 
+#imgPlaceholder {
+    
+}
+
 .btn-file {
     position: relative;
     overflow: hidden;

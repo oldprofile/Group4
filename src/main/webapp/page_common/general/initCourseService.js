@@ -10,6 +10,9 @@ angular.module('myApp')
         console.log(scope.types);
         scope.languages = ['Russian', 'English'];
         
+        scope.temp = {};
+        scope.temp.tempDates = [];
+        
         scope.courseInfo = {};
         scope.courseInfo.dateTime = [];
         

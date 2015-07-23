@@ -1,16 +1,22 @@
 angular.module('myApp.createcourse')
-.controller('CreateCourseController', ['$scope', 'createcourse', 'initCourseService', function($scope, createcourse, initCourseService) {
+.controller('CreateCourseController', ['$scope', '$filter', 'createcourse', 'initCourseService', 'userService', function($scope, $filter, createcourse, initCourseService, userService) {
     $scope.isEdited = false;
+    $scope.isAdmin = userService.isAdmin();
+    console.log($scope.isAdmin);
+    $scope.header = 'Create';
     
     initCourseService($scope);
                                        
     /////Hardcode/////
-    $scope.courseInfo.dateTime=['08-08-2015 23:10:00', '04-09-2015 13:15:00', '28-01-2013 02:10:00'];
-    $scope.courseInfo.userLogin="1";
+    $scope.courseInfo.userLogin = userService.getUser().login;
     //////////////////
     
     $scope.saveData = function() {
-        console.log($scope.courseInfo);                //TEMP
+        $scope.courseInfo.dateTime = angular.copy($scope.temp.tempDates); //TEMP
+        for(var i = 0; i < $scope.courseInfo.dateTime.length; i++) {
+            $scope.courseInfo.dateTime[i] = $filter('date')($scope.courseInfo.dateTime[i], 'yyyy-MM-dd HH:mm');
+        }
+        console.log($scope.courseInfo);
         createcourse.createCourse($scope.courseInfo);
     }
     
