@@ -1,5 +1,7 @@
 package com.exadel.training.controller;
 
+import com.exadel.training.controller.model.User.UserShort;
+import com.exadel.training.service.TrainingFeedbackService;
 import com.exadel.training.tokenAuthentification.CryptService;
 import com.exadel.training.controller.model.Training.*;
 import com.exadel.training.model.Training;
@@ -8,6 +10,8 @@ import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
 import com.exadel.training.tokenAuthentification.impl.DESCryptServiceImpl;
 import com.exadel.training.tokenAuthentification.impl.DecoratorDESCryptServiceImpl;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +38,8 @@ public class TrainingController {
     TrainingService trainingService;
     @Autowired
     UserService userService;
+    @Autowired
+    TrainingFeedbackService feedbackService;
     CryptService cryptService;
 
     public TrainingController() {
@@ -76,12 +82,18 @@ public class TrainingController {
         String header = httpServletRequest.getHeader("authorization");
         String userLogin = cryptService.decrypt(header);
 
-        if(userService.checkUserByLogin(userLogin)) {
-            TrainingInfo trainingInfo = new TrainingInfo(trainingService.getTrainingByName(trainingName),
+        if (userService.checkUserByLogin(userLogin)) {
+            Training training = trainingService.getTrainingByName(trainingName);
+            TrainingInfo trainingInfo = new TrainingInfo(training,
                     trainingService.getDatesByTrainingName(trainingName));
-            if (trainingService.getTrainingByNameAndUserLogin(trainingName, userLogin) == null)
-                trainingInfo.setIsSubscriber(false);
-            else trainingInfo.setIsSubscriber(true);
+            if (trainingService.getTrainingByNameAndUserLogin(trainingName, userLogin) != null)
+                trainingInfo.setIsSubscriber(true);
+            if (userLogin.equals(training.getCoach().getName()))
+                trainingInfo.setIsCoach(true);
+            trainingInfo.setIsCoach(userLogin.equals(trainingInfo.getCoachName()));
+            trainingInfo.setFeedbackAvailability(!feedbackService.hasFeedback(userLogin, trainingName));
+            trainingInfo.setListeners(UserShort.parseUserShortList(trainingService.getUsersByTrainingName(trainingName)));
+            trainingInfo.setSpareUsers(UserShort.parseUserShortList(trainingService.getSpareUsersByTrainingName(trainingName)));
             return trainingInfo;
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -89,20 +101,19 @@ public class TrainingController {
         }
     }
 
-    @RequestMapping(value = "/create_training", method = RequestMethod.POST, consumes = "application/json")
-     public @ResponseBody
-     ShortTrainingInfo createTraining(@RequestBody TrainingForCreation trainingForCreation,
-                                      HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest ) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
+    @RequestMapping(value = "/create_training", method = RequestMethod.POST)
+    public @ResponseBody
+    ShortTrainingInfo createTraining(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest ) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException, org.json.simple.parser.ParseException, ParseException {
         String header = httpServletRequest.getHeader("authorization");
         String userLogin = cryptService.decrypt(header);
 
         if(userService.checkUserByLogin(userLogin)) {
-            Training training = null;
-            try {
-                training = trainingService.addTraining(trainingForCreation);
-            } catch (NoSuchFieldException | ParseException e) {
-                e.printStackTrace();
-            }
+            String data = httpServletRequest.getParameter("courseInfo");
+            JSONParser parser = new JSONParser();
+            JSONObject json = (JSONObject) parser.parse(data.trim());
+            TrainingForCreation trainingForCreation = new TrainingForCreation(json);
+            trainingForCreation.setUserLogin(userLogin);
+            Training training = trainingService.addTraining(trainingForCreation);
             return new ShortTrainingInfo(training);
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -241,11 +252,15 @@ public class TrainingController {
     TrainingInfo testPostTrainingInfo () throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
         String trainingName = "angular";
         String userLogin = "1";
-        TrainingInfo trainingInfo = new TrainingInfo(trainingService.getTrainingByName(trainingName),
+        Training training = trainingService.getTrainingByName(trainingName);
+        TrainingInfo trainingInfo = new TrainingInfo(training,
                 trainingService.getDatesByTrainingName(trainingName));
-        if (trainingService.getTrainingByNameAndUserLogin(trainingName, userLogin) == null)
-            trainingInfo.setIsSubscriber(false);
-        else trainingInfo.setIsSubscriber(true);
+        trainingInfo.setIsSubscriber(trainingService.getTrainingByNameAndUserLogin(trainingName, userLogin) != null);
+        trainingInfo.setIsCoach(userLogin.equals(training.getCoach().getLogin()));
+        trainingInfo.setIsCoach(userLogin.equals(trainingInfo.getCoachName()));
+        trainingInfo.setFeedbackAvailability(!feedbackService.hasFeedback(userLogin, trainingName));
+        trainingInfo.setListeners(UserShort.parseUserShortList(trainingService.getUsersByTrainingName(trainingName)));
+        trainingInfo.setSpareUsers(UserShort.parseUserShortList(trainingService.getSpareUsersByTrainingName(trainingName)));
         return trainingInfo;
     }
 
