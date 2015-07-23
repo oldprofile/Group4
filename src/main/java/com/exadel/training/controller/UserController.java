@@ -74,9 +74,16 @@ public class UserController {
         String header = httpServletRequest.getHeader("authorization");
         String mainLogin = cryptService.decrypt(header);
 
-        if(userService.checkUserByLogin(mainLogin)) {
+        if (userService.checkUserByLogin(mainLogin)) {
             httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
-            return UserShort.parseUserShort(userService.findUserByLogin(login));
+            UserShort us = UserShort.parseUserShort(userService.findUserByLogin(login));
+            if (us != EMPTY) {
+                httpServletResponse.setStatus((HttpServletResponse.SC_ACCEPTED));
+            } else {
+                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            }
+
+            return us;
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return new UserShort();
@@ -339,6 +346,7 @@ public class UserController {
 
         Boolean is = userService.checkSubscribeToTraining(1L,1L);
         Boolean i = userService.checkSubscribeToTraining("Front end","1");
+        UserShort us =  UserShort.parseUserShort(userService.findUserByLogin("1"));
 
 
         List<User> s1 = userService.searchUsersByName("a");
