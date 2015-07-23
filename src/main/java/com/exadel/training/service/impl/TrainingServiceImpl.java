@@ -173,4 +173,14 @@ public class TrainingServiceImpl implements TrainingService {
         trainingRepository.saveAndFlush(training);
         return training;
     }
+
+    @Override
+    public Integer getTrainingNumber(String trainingName, Date date) {
+        return trainingRepository.findTrainingNumber(trainingName, date);
+    }
+
+    @Override
+    public List<Date> getDatesByTrainingNameBeetwenDates(String trainingName, Date firstDate, Date secondDate) {
+        return trainingRepository.findDatesByTrainingNameBeetwenDates(trainingName, firstDate, secondDate);
+    }
 }
