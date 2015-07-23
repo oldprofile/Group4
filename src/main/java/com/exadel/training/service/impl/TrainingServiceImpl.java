@@ -38,7 +38,7 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Override
     public Training addTraining(TrainingForCreation trainingForCreation) throws NoSuchFieldException, ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         List<String> dates = trainingForCreation.getDateTimes();
         List<Date> dateTimes = new ArrayList<>();
         for(int i = 0; i < dates.size(); ++i){

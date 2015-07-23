@@ -3,6 +3,12 @@ package com.exadel.training.controller.model.Training;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,6 +23,7 @@ public class TrainingForCreation {
     private String description;
     private int idCategory;
     private int participantsNumber;
+    private String pictureLink;
     private String additional;
     private String audience;
     private String language;
@@ -27,14 +34,21 @@ public class TrainingForCreation {
     public TrainingForCreation() {
     }
 
-    public TrainingForCreation(JSONObject json) throws NoSuchFieldException {
-        isInternal = (Boolean)json.get("isInternal");
+    public TrainingForCreation(JSONObject json) throws NoSuchFieldException, IOException {
         JSONArray jsonDates = (JSONArray) json.get("dateTime");
         dateTimes = new ArrayList<>();
         for (Object jsonDate : jsonDates) {
             dateTimes.add((String) jsonDate);
         }
-        String str = (String)json.get("pictureLink");
+
+        byte[] data = (byte[]) json.get("pictureLink");
+        InputStream ian = new ByteArrayInputStream(data);
+        BufferedImage bImage = ImageIO.read(ian);
+        pictureLink = "/src/main/resources/imageStorage/" + name + ".png";
+        File outputFile = new File(pictureLink);
+        ImageIO.write(bImage, "png", outputFile);
+
+        isInternal = (Boolean)json.get("isInternal");
         audience = (String)json.get("audience");
         participantsNumber = Integer.parseInt(String.valueOf(json.get("participantsNumber")));
         additional = (String)json.get("additional");
