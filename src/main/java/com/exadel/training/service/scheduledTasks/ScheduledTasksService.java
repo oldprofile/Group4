@@ -97,7 +97,7 @@ public class ScheduledTasksService {
         List<UserShort> spareListeners = UserShort.parseUserShortList(training.getSpareUsers());
         for(UserShort spareListener: spareListeners) {
             String phone = spareListener.getNumberPhone();
-            if(phone != "")
+            if(phone != null && !phone.isEmpty())
                 wrapperNotificationSMS.sendSMS(phone, "text");
         }
     }

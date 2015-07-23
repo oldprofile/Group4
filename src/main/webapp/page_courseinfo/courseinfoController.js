@@ -35,13 +35,14 @@ angular.module('myApp.courseinfo')
     
     courseInfoService.getCourseInfo($routeParams.coursename).success(function(data){
         //$scope.isSubscriber = false;
+       console.log(JSON.stringify(data));
         $scope.courseName = $routeParams.coursename;
-        console.log(JSON.stringify(data));
+        
         data.courseImg = "assets/angular_bg1.png";
         data.promtText = courseInfoService.getPromtText(data);
         $scope.course = data;
        
-        $scope.isSubscriber = data.subscriber;
+        $scope.isSubscriber = data.isSubscriber;
         $scope.isContentLoaded = true;
       
         feedbacksService.getTrainingFeedbacks($scope.courseName)
