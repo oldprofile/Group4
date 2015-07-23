@@ -108,6 +108,8 @@ public class UserController {
                 } else {
                     allTrainingUserShort.setIsCoach(false);
                 }
+
+                allTrainingUserShort.setNumberOfTraining(trainingService.getTrainingNumber(training.getName(),training.getDateTime()));
                 allTrainingUserShorts.add(allTrainingUserShort);
             }
 
@@ -141,6 +143,8 @@ public class UserController {
                 if (training.getCoach().getId() == user.getId()) {
                     allTrainingUserShort.setIsCoach(true);
                 }
+
+                allTrainingUserShort.setNumberOfTraining(trainingService.getTrainingNumber(training.getName(),training.getDateTime()));
                 allTrainingUserShorts.add(allTrainingUserShort);
             }
 
@@ -174,6 +178,8 @@ public class UserController {
                 if (training.getCoach().getId() == user.getId()) {
                     allTrainingUserShort.setIsCoach(true);
                 }
+
+                allTrainingUserShort.setNumberOfTraining(trainingService.getTrainingNumber(training.getName(),training.getDateTime()));
                 allTrainingUserShorts.add(allTrainingUserShort);
             }
 
@@ -345,6 +351,7 @@ public class UserController {
             } else {
                 allTrainingUserShort.setIsCoach(false);
             }
+            allTrainingUserShort.setNumberOfTraining(trainingService.getTrainingNumber(training.getName(),training.getDateTime()));
             allTrainingUserShorts.add(allTrainingUserShort);
         }
 
