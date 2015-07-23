@@ -18,10 +18,10 @@ angular.module('createcourse.datepickerApp')
         };
         
         $scope.addDate = function() {
-            $scope.courseInfo.dateTime.push("");        
+            $scope.temp.tempDates.push("");        
         };
         
         $scope.deleteDate = function(index) {
-            $scope.courseInfo.dateTime.splice(index, 1);
+            $scope.temp.tempDates.splice(index, 1);
         };
 }]); 

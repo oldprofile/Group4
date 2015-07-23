@@ -7,6 +7,7 @@ angular.module('myApp.createcourse')
     
     courseInfoService.getCourseInfo($routeParams.coursename).success(function(data) {
         $scope.courseInfo = angular.copy(data);
+        $scope.temp.tempDates = angular.copy($scope.courseInfo.dateTime);
         console.log(data.dateTime.length);
         console.log($scope.courseInfo);
     });
