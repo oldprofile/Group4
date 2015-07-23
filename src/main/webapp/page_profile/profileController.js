@@ -1,17 +1,19 @@
 angular.module('myApp.browse')
 .controller('ProfileController',['$scope','userService','$routeParams','profileService',
                                  function($scope,userService,$routeParams,profileService){
+    var userlogin;                            
     if($routeParams.userLogin === undefined){
-        $scope.user = userService.getUser();
+        userlogin = userService.getUser().login;
     } else {
-        var userlogin = $routeParams.userLogin;
+        userlogin = $routeParams.userLogin;
+    }
         profileService.getUserInfo(userlogin).success(function(data){
-          alert(JSON.stringify(data));
+        alert(JSON.stringify(data));
         $scope.user = data;
         }).error(function(err,status){
           alert(status);
           alert("Can't get user " + userlogin);
         });                                                     
-    }
+    
     
 }]);

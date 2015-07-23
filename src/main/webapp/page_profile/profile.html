@@ -1,41 +1,11 @@
-<div>
-</div>
+
 
 <div class="row">
     <div class="col-xs-6">
-        <h3>{{user.username}}</h3>
-        <input type="button" class="btn btn-primary btn-lg" value="Leave feedback">
-        <input type="button" class="btn btn-primary btn-lg" value="Request feedback">
+        <h3>{{user.name}}</h3>
+        <h4>{{user.email}}</h3>
+        <input type="button" class="btn btn-primary" value="Leave feedback">
+        <input type="button" class="btn btn-primary" value="Request feedback">
     </div>
-    <div class="col-xs-6 table-responsive well scroll">
-        <table class="table table-striped">
-            <tr ng-repeat="feedback in feedbackList track by $index">
-                <td></td> <!--course.name-->
-                <td></td>
-                <td></td> <!--course.status-->
-                <td align="right">
-                    <a ng-href="">
-                        <input type="submit" class="btn btn-default btn-md" value="View feedback">
-                    </a>
-                </td> <!--button-->
-            </tr>
-        </table>
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-10 table-responsive well scroll">
-        <table class="table table-striped">
-            <!--
-            <tr ng-repeat="feedback in feedbackList track by $index">
-                <td></td>
-                <td></td>
-                <td></td>
-                <td align="right">
-                    <a ng-href="">
-                        <input type="submit" class="btn btn-default btn-md" value="View feedback">
-                    </a>
-                </td>-->
-        </table>
-    </div>
-    <div class="col-xs-2"></div>
+    
 </div>
