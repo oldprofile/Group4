@@ -62,6 +62,9 @@ public class User {
     @ManyToMany(mappedBy = "spareUsers")
     private  List<Training> spareTrainings;
 
+    @OneToMany(mappedBy = "user")
+    private List<News> newses;
+
     public User() {
     }
 
@@ -189,6 +192,15 @@ public class User {
     public void setSpareTrainings(List<Training> spareTrainings) {
         this.spareTrainings = spareTrainings;
     }
+
+    public List<News> getNewses() {
+        return newses;
+    }
+
+    public void setNewses(List<News> newses) {
+        this.newses = newses;
+    }
+
 
     @Override
     public boolean equals(Object o) {

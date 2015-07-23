@@ -76,6 +76,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<Training> selectAllTrainingSortedByDateTypeCoachTrue(String login, List<Integer> state) {
+        return userRepository.selectAllTrainingSortedByDateTypeCoachTrue(login, state);
+    }
+
+    @Override
     public List<User> searchUsersByName(String name) {
         return userRepository.searchUsersByName("'" + name + "*'");
     }

@@ -23,6 +23,7 @@ public interface UserService {
    List<User> findUsersByRole(RoleType type) throws NoSuchFieldException;
    List<Training> selectAllTraining(String login);
    List<Training> selectAllTrainingSortedByDate(String login, List<Integer> state);
+   List<Training> selectAllTrainingSortedByDateTypeCoachTrue(String login, List<Integer> state);
    List<User> searchUsersByName(String name);
 
    void deleteUserTrainingRelationShip(String login, String trainingName);
