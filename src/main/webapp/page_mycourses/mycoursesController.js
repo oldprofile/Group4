@@ -24,7 +24,4 @@ angular.module('myApp.mycourses')
         alert("err getting training");
     });  
     
-    
-    
-    
 }]);

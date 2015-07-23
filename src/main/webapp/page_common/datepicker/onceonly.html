@@ -3,11 +3,11 @@
     <div class="col-xs-12 inputs-container scroll" scroll="dateTime">
         
         <!--Datetimepicker-->
-        <div class="row" ng-repeat="date in courseInfo.dateTime track by $index">
+        <div class="row" ng-repeat="date in temp.tempDates track by $index">
             <div class="dropdown col-xs-10">
-                <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown">
+                <a class="dropdown-toggle" id="dropdown{{$index}}" role="button" data-toggle="dropdown">
                     <div class="input-group" id="inputDate">
-                        <input type="text" class="form-control" data-ng-model="date">
+                        <input type="text" class="form-control" ng-value="temp.tempDates[$index] | date: 'medium'">
                         <span class="input-group-addon">
                             <i class="glyphicon glyphicon-calendar"></i>
                         </span>
@@ -15,7 +15,7 @@
                 </a>
                 
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                    <datetimepicker data-ng-model="date" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"/>
+                    <datetimepicker ng-model="temp.tempDates[$index]" data-datetimepicker-config="{ dropdownSelector: '#dropdown{{$index}}' }"/>
                 </ul>
             </div>
             <div class="col-xs-2">
@@ -24,6 +24,7 @@
                 </button>
             </div>
         </div>
+      
         
         <div class="row">
             <div class="col-xs-3">

@@ -1,6 +1,5 @@
 angular.module('createcourse.datepickerApp')
-    .controller("DatepickerController",['$scope', function($scope, $location, $anchorScroll){
-        $scope.test = 1;   
+    .controller("DatepickerController",['$scope', function($scope, $location, $anchorScroll){  
         $scope.pages = [
             {
                 name: 'onceonly',
@@ -19,10 +18,10 @@ angular.module('createcourse.datepickerApp')
         };
         
         $scope.addDate = function() {
-            $scope.courseInfo.dateTime.push("");        
+            $scope.temp.tempDates.push("");        
         };
         
         $scope.deleteDate = function(index) {
-            $scope.courseInfo.dateTime.splice(index, 1);
+            $scope.temp.tempDates.splice(index, 1);
         };
 }]); 
