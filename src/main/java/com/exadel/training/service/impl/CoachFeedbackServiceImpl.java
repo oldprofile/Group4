@@ -7,6 +7,7 @@ import com.exadel.training.repository.impl.CoachFeedbackRepository;
 import com.exadel.training.service.CoachFeedbackService;
 import com.exadel.training.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 /**
  * Created by asd on 23.07.2015.
  */
+@Service
 public class CoachFeedbackServiceImpl implements CoachFeedbackService {
     @Autowired
     CoachFeedbackRepository coachFeedbackRepository;

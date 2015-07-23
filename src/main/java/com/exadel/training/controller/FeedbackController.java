@@ -30,8 +30,8 @@ public class FeedbackController {
     @Autowired
     UserService userService;
 
-    //@Autowired
-    //CoachFeedbackService coachFeedbackService;
+    @Autowired
+    CoachFeedbackService coachFeedbackService;
 
     @RequestMapping(value = "/user_feedback", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody List<UserFeedbackGETModel> getUserFeedbacks(@RequestBody String login)  {
@@ -51,7 +51,7 @@ public class FeedbackController {
         }
     }
 
-    /*@RequestMapping(value = "/coach_feedback", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/coach_feedback", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody List<CoachFeedbackGETModel> getCoachFeedbacks(@RequestBody String login)  {
         User user = userService.findUserByLogin(login);
         List<CoachFeedback> coachFeedbackList = coachFeedbackService.getCoachFeedbacksOrderByDate(user);
@@ -68,12 +68,6 @@ public class FeedbackController {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
-
-    @RequestMapping
-    public List<CoachFeedbackGETModel> getCoachfeedbacks () {
-        List<CoachFeedbackGETModel> coachFeedbackGETModels = CoachFeedbackGETModel.parseCoachFeedbackList(coachFeedbackService.getCoachFeedbacksOrderByDate(userService.getUserByID(1L)));
-        return coachFeedbackGETModels;
-    }*/
 
     @RequestMapping(value = "/training_feedback", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody List<TrainingFeedbackGETModel> getTrainingFeedbacks(@RequestBody String trainingName)  {
