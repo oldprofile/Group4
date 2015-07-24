@@ -3,7 +3,9 @@ package com.exadel.training.controller.model.Omission;
 import com.exadel.training.model.Omission;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by HP on 17.07.2015.
@@ -38,7 +40,7 @@ public class JournalOmissionByTraining {
     }
 
     public void setDate(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         this.date = sdf.format(date);
     }
 
@@ -49,5 +51,13 @@ public class JournalOmissionByTraining {
         journalOmissionByTraining.setIsOmission(omission.isOmission());
 
         return journalOmissionByTraining;
+    }
+
+    public static List<JournalOmissionByTraining> parseListOfOmissions (List <Omission> omissions) {
+        List<JournalOmissionByTraining> journalOmissionByTrainings = new ArrayList<JournalOmissionByTraining>();
+        for(Omission omission: omissions) {
+            journalOmissionByTrainings.add(JournalOmissionByTraining.parseJournalOmissionByTraining(omission));
+        }
+        return journalOmissionByTrainings;
     }
 }

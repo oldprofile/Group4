@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -55,7 +54,7 @@ public class FeedbackController {
     public @ResponseBody List<CoachFeedbackGETModel> getCoachFeedbacks(@RequestBody String login)  {
         User user = userService.findUserByLogin(login);
         List<CoachFeedback> coachFeedbackList = coachFeedbackService.getCoachFeedbacksOrderByDate(user);
-        List<CoachFeedbackGETModel> coachFeedbackModels = CoachFeedbackGETModel.parseCoachFeedbackList(coachFeedbackList);
+        List<CoachFeedbackGETModel> coachFeedbackModels = CoachFeedbackGETModel.parseCoachFeedbacks(coachFeedbackList);
         return coachFeedbackModels;
     }
 
@@ -73,7 +72,7 @@ public class FeedbackController {
     public @ResponseBody List<TrainingFeedbackGETModel> getTrainingFeedbacks(@RequestBody String trainingName)  {
         Training t = trainingService.getTrainingByName(trainingName);
         List<TrainingFeedback> trainingFeedbacks = trainingFeedbackService.getTrainingFeedbacksOrderByDate(t);
-        List<TrainingFeedbackGETModel> trainingFeedbackModels = TrainingFeedbackGETModel.parseTrainingFeedbackList(trainingFeedbacks);
+        List<TrainingFeedbackGETModel> trainingFeedbackModels = TrainingFeedbackGETModel.parseTrainingFeedbacks(trainingFeedbacks);
         return trainingFeedbackModels;
     }
 

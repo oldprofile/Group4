@@ -2,21 +2,16 @@ package com.exadel.training.service.scheduledTasks;
 
 import com.exadel.training.common.StateTraining;
 import com.exadel.training.controller.model.Training.NotificationTrainingModel;
-import com.exadel.training.controller.model.Training.ShortTrainingInfo;
-import com.exadel.training.controller.model.Training.TrainingInfo;
 import com.exadel.training.controller.model.User.UserShort;
 import com.exadel.training.model.Training;
 import com.exadel.training.notification.mail.WrapperNotificationMail;
 import com.exadel.training.notification.sms.WrapperNotificationSMS;
 import com.exadel.training.service.TrainingService;
 import com.twilio.sdk.TwilioRestException;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeFieldType;
 import org.joda.time.Hours;
-import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.datetime.joda.DateTimeParser;
-import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -35,32 +30,27 @@ import java.util.List;
 @EnableScheduling
 public class ScheduledTasksService {
 
-    private WrapperNotificationMail wrapperNotificationMail;
-    private WrapperNotificationSMS wrapperNotificationSMS;
+    private WrapperNotificationMail wrapperNotificationMail = new WrapperNotificationMail();
+    private WrapperNotificationSMS wrapperNotificationSMS = new WrapperNotificationSMS();
 
     @Autowired
     TrainingService trainingService;
 
     public ScheduledTasksService() {
-        this.wrapperNotificationMail = wrapperNotificationMail;
-        this.wrapperNotificationSMS = wrapperNotificationSMS;
     }
 
     private int getHoursBeforeTraining(NotificationTrainingModel notificationTrainingModel) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
         Date date = notificationTrainingModel.getDate();
-        int day = date.getDate();
-        int year = date.getYear() + 1900;
-        int month = date.getMonth()  + 1;
-        int hours = date.getHours();
-        int minutes = date.getMinutes();
-        DateTime d1 = new DateTime(year, month, day, hours, minutes);
-        int hoursBeetween = Hours.hoursBetween(DateTime.now(), d1).getHours();
+        DateTime dateTime = new DateTime(DateTime.parse(sdf.format(date)));
+        int hoursBeetween = Hours.hoursBetween(DateTime.now(), dateTime).getHours();
         return  hoursBeetween;
     }
 
     private boolean shouldBeCanceled(NotificationTrainingModel notificationTrainingModel, List<UserShort> listeners) {
-        if(listeners.size()/notificationTrainingModel.getCapacity() < 0.5)
+        if(listeners.size()/notificationTrainingModel.getCapacity() < 0.5) {
             return true;
+        }
         return false;
     }
 
@@ -89,13 +79,14 @@ public class ScheduledTasksService {
     private void notificateBySms(NotificationTrainingModel notificationTrainingModel, List<UserShort> listeners) throws TwilioRestException {
         for(UserShort listener: listeners) {
             String phone = listener.getNumberPhone();
-            if(phone != null && !phone.isEmpty())
+            if(!StringUtils.isBlank(phone))
                 wrapperNotificationSMS.sendSMS(phone, "text");
         }
         UserShort traininer = notificationTrainingModel.getTrainer();
         String phone = traininer.getNumberPhone();
-        if(phone != null && !phone.isEmpty())
+        if(!StringUtils.isBlank(phone)) {
             wrapperNotificationSMS.sendSMS(phone, "text");
+        }
     }
 
     private void race(NotificationTrainingModel notificationTrainingModel) throws TwilioRestException {
@@ -103,8 +94,9 @@ public class ScheduledTasksService {
         List<UserShort> spareListeners = UserShort.parseUserShortList(training.getSpareUsers());
         for(UserShort spareListener: spareListeners) {
             String phone = spareListener.getNumberPhone();
-            if(phone != null && !phone.isEmpty())
+            if(!StringUtils.isBlank(phone)) {
                 wrapperNotificationSMS.sendSMS(phone, "text");
+            }
         }
     }
 
@@ -118,28 +110,36 @@ public class ScheduledTasksService {
 
     @Scheduled(fixedDelay = 3600000)
     public void doSomething() throws ParseException, NoSuchFieldException, MessagingException, TwilioRestException {
-        List<Training> trainingList = trainingService.getValidTrainings();
-        List<NotificationTrainingModel> notificationTrainingModelList = NotificationTrainingModel.parseTrainingList(trainingList);
-        for(NotificationTrainingModel notificationTrainingModel: notificationTrainingModelList) {
-            int hoursBeetween = getHoursBeforeTraining(notificationTrainingModel);
-            List<UserShort> listeners = notificationTrainingModel.getListeners();
-            switch (hoursBeetween){
-                case 24:
-                    if(shouldBeCanceled(notificationTrainingModel, listeners)) {
-                        cancelTraining(notificationTrainingModel, listeners);
-                    } else {
-                        notificateByEmail(notificationTrainingModel, listeners);
+        List<Training> trainings = trainingService.getValidTrainings();
+        if (!trainings.isEmpty()) {
+            List<NotificationTrainingModel> notificationTrainingModels = NotificationTrainingModel.parseTrainingList(trainings);
+            for (NotificationTrainingModel notificationTrainingModel : notificationTrainingModels) {
+                int hoursBeetween = getHoursBeforeTraining(notificationTrainingModel);
+                List<UserShort> listeners = notificationTrainingModel.getListeners();
+                switch (hoursBeetween) {
+                    case 24: {
+                        if (shouldBeCanceled(notificationTrainingModel, listeners)) {
+                            cancelTraining(notificationTrainingModel, listeners);
+                        } else {
+                            notificateByEmail(notificationTrainingModel, listeners);
+                        }
+                        continue;
                     }
-                    continue;
-                case 3:
-                    if(emptyPlaces(notificationTrainingModel, listeners) > 0)
-                        race(notificationTrainingModel);
-                case 1:
-                    notificateBySms(notificationTrainingModel, listeners);
-                    continue;
-                default:
-                    hasPased(notificationTrainingModel);
-                    continue;
+                    case 3: {
+                        if (emptyPlaces(notificationTrainingModel, listeners) > 0) {
+                            race(notificationTrainingModel);
+                        }
+                        continue;
+                    }
+                    case 1: {
+                        notificateBySms(notificationTrainingModel, listeners);
+                        continue;
+                    }
+                    default: {
+                        hasPased(notificationTrainingModel);
+                        continue;
+                    }
+                }
             }
         }
     }
