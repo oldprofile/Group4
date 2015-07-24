@@ -75,6 +75,11 @@ public class OmissionController {
         java.sql.Date d1 = java.sql.Date.valueOf("2001-01-01");
         java.sql.Date d2 = java.sql.Date.valueOf("2003-03-03");
         String s = excelFileGenerator.generateForTraining(d1, d2, "Java");
+        excelFileGenerator.generateForTraining("Java");
+        excelFileGenerator.generateForUser(d1, d2, "1");
+        excelFileGenerator.generateForUser("1");
+        excelFileGenerator.generateForUserAndTraining(d1, d2, "1", "Java");
+        excelFileGenerator.generateForUserAndTraining("1", "Java");
         return  s;
     }
 
