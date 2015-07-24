@@ -69,8 +69,14 @@ public interface UserRepository extends JpaRepository<User,Long>{
     List<Training> selectAllTrainingSortedByDateTypeCoachFalse(String login, List<Integer> state);
 
     @Query("select distinct t from User as u inner join u.trainings as t where u.login = ?1 and t.dateTime >= ?2 and t.dateTime <= ?3 order by t.name asc")
-    List<Training> selectAllTrainingBetweenDatesAndSortedByDate(String login, Date from, Date to);
+    List<Training> selectAllTrainingBetweenDatesAndSortedByName(String login, Date from, Date to);
 
     @Query("select distinct t.dateTime from User as u inner  join u.trainings as t where u.login = ?1 and t.dateTime >= ?2 and t.dateTime <= ?3 order by t.dateTime asc")
     List<Date> selectAllDateOfTrainingsBetweenDates(String login, Date from, Date to);
+
+    @Query("select distinct t from User as u inner join u.trainings as t where u.login = ?1 order by t.name asc")
+    List<Training> selectAllTrainingAndSortedByName(String login);
+
+    @Query("select distinct t.dateTime from User as u inner  join u.trainings as t where u.login = ?1 order by t.dateTime asc")
+    List<Date> selectAllDateOfTrainings(String login);
 }
