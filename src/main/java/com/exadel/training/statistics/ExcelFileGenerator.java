@@ -43,8 +43,9 @@ public class ExcelFileGenerator {
     public String generateForTraining(Date dateFrom, Date dateTo, String trainingName) throws IOException {
         String fileName = trainingName + "_omissions_" + sdf.format(dateFrom) + "_" + sdf.format(dateTo) + ".xls";
 
-        List<Date> dates = trainingService.getDatesByTrainingName(trainingName);
         List<User> users = trainingService.getUsersByTrainingName(trainingName);
+        List<Omission> omissionList = omissionService.getOmisssionsByTraining(trainingName, dateFrom, dateTo);
+        List<Date> dates = trainingService.getDatesByTrainingNameBeetwenDates(trainingName, dateFrom, dateTo);
         List<UserLoginAndName> userLoginAndNames = UserLoginAndName.parseUserLoginAndName(users);
 
         HSSFWorkbook workbook = new HSSFWorkbook();
@@ -57,7 +58,7 @@ public class ExcelFileGenerator {
         }
 
         for(int rowCount = 1; rowCount < userLoginAndNames.size(); rowCount ++) {
-            List<Omission> omissions = omissionService.findByUserLogin(userLoginAndNames.get(rowCount).getLogin());
+            List<Omission> omissions = omissionService.getOmisssionsByUser(userLoginAndNames.get(rowCount).getLogin(), dateFrom, dateTo);
             List<JournalOmissionUserByTraining> journalOmissionUserByTrainings = JournalOmissionUserByTraining.parseListOfOmissions(omissions);
             HSSFRow row = sheet.createRow(rowCount);
             row.createCell(0).setCellValue(userLoginAndNames.get(rowCount).getName());
