@@ -1,8 +1,10 @@
 package com.exadel.training.statistics;
 
 import com.exadel.training.controller.model.Omission.JournalOmissionUserByTraining;
+import com.exadel.training.controller.model.Training.TrainingNameAndDate;
 import com.exadel.training.controller.model.User.UserLoginAndName;
 import com.exadel.training.model.Omission;
+import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
 import com.exadel.training.service.OmissionService;
 import com.exadel.training.service.TrainingService;
@@ -87,10 +89,10 @@ public class ExcelFileGenerator {
     public String generateForUser(Date dateFrom, Date dateTo, String userLogin) throws IOException {
         String fileName = userLogin + "_omissions_" + sdf.format(dateFrom) + "_" + sdf.format(dateTo) + ".xls";
 
-        // from user login get trainings between two dates sorted by name
-        //List<Training> trainings = userService.;
-        //List<Date> dates get dates of trainings of user between two dates sorted by dates
-        //List<TrainingNameAndDate> parse
+        // sorted by name
+        List<Training> trainings = userService.selectAllTrainingBetweenDatesAndSortedByDate(userLogin, dateFrom, dateTo);
+        List<Date> dates = userService.selectAllDateOfTrainingsBetweenDates(userLogin, dateFrom, dateTo);
+        List<TrainingNameAndDate> trainingNameAndDates = TrainingNameAndDate.parseTrainingList(trainings);
 
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet(userLogin + " omissions");
@@ -103,12 +105,12 @@ public class ExcelFileGenerator {
         }
 
         // training list
-        for(int usersIndex = 0; usersIndex < userLoginAndNames.size(); usersIndex++) {
-            int rowIndex = usersIndex + 1;
-            List<Omission> omissions = omissionService.getOmisssionsByTrainingAndUser(trainingName,userLoginAndNames.get(usersIndex).getLogin(), dateFrom, dateTo);
+        for(int trainingsIndex = 0; trainingsIndex < trainingNameAndDates.size(); trainingsIndex++) {
+            int rowIndex = trainingsIndex + 1;
+            List<Omission> omissions = omissionService.getOmisssionsByTrainingAndUser(trainingNameAndDates.get(trainingsIndex).getTrainingName(),userLogin, dateFrom, dateTo);
             List<JournalOmissionUserByTraining> journalOmissionUserByTrainings = JournalOmissionUserByTraining.parseListOfOmissions(omissions);
             HSSFRow row = sheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(userLoginAndNames.get(usersIndex).getName());
+            row.createCell(0).setCellValue(trainingNameAndDates.get(trainingsIndex).getTrainingName());
             for(int omissionsIndex = 0; omissionsIndex < journalOmissionUserByTrainings.size(); omissionsIndex++) {
                 int columnIndex = omissionsIndex + 1;
                 if(rowHead.getCell(columnIndex).getStringCellValue().compareTo(journalOmissionUserByTrainings.get(omissionsIndex).getDate()) == 0) {
@@ -122,8 +124,6 @@ public class ExcelFileGenerator {
         FileOutputStream fileOut = new FileOutputStream(filePath+fileName);
         workbook.write(fileOut);
         fileOut.close();
-        return filePath+fileName;
-
         return filePath+fileName;
     }
 
