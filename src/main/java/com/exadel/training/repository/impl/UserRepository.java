@@ -1,14 +1,15 @@
 package com.exadel.training.repository.impl;
 
+import com.exadel.training.model.Role;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,6 +23,9 @@ public interface UserRepository extends JpaRepository<User,Long>{
 
     @Query("select case when (count(u)>0) then true else false end from User as u inner join u.trainings as t where u.login = ?2 and t.name = ?1 ")
     Boolean checkSubscribeToTraining(String trainingName, String login);
+
+    @Query("select case when (count(u)>0) then true else false end from User as u inner join u.roles as r where u.login = ?1 and r.id = ?2")
+    Boolean whoIsUser(String login, long roleId);
 
     @Query(value = "select count(*) > 0 from users_trainings u where :trainingID = trainings and :userID = listeners",nativeQuery = true)
     int checkSubscribeToTraining(@Param("trainingID")Long trainingName,@Param("userID") Long user);
@@ -63,4 +67,10 @@ public interface UserRepository extends JpaRepository<User,Long>{
 
     @Query("select distinct t from User as u inner join u.trainings as t inner join t.coach as c where u.login = ?1 and t.state in (?2) and t.parent = 0 and c.id not in (u.id) order by t.dateTime asc")
     List<Training> selectAllTrainingSortedByDateTypeCoachFalse(String login, List<Integer> state);
+
+    @Query("select distinct t from User as u inner join u.trainings as t where u.login = ?1 and t.dateTime >= ?2 and t.dateTime <= ?3 order by t.dateTime asc")
+    List<Training> selectAllTrainingBetweenDatesAndSortedByDate(String login, Date from, Date to);
+
+    @Query("select distinct t.dateTime from User as u inner  join u.trainings as t where u.login = ?1 and t.dateTime >= ?2 and t.dateTime <= ?3 order by t.dateTime asc")
+    List<Date> selectAllDateOfTrainingsBetweenDates(String login, Date from, Date to);
 }
