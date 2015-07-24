@@ -91,7 +91,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/all_trainings_of_user", method = RequestMethod.GET)
-    public  @ResponseBody List<AllTrainingUserShort> getAllTrainingOfUser(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException {
+    public  @ResponseBody List<AllTrainingUserShort> getAllTrainingOfUser(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
 
         String header = httpServletRequest.getHeader("authorization");
         String login = cryptService.decrypt(header);
@@ -108,6 +108,8 @@ public class UserController {
                 } else {
                     allTrainingUserShort.setIsCoach(false);
                 }
+
+                allTrainingUserShort.setNumberOfTraining(trainingService.getTrainingNumber(training.getName(),training.getDateTime()));
                 allTrainingUserShorts.add(allTrainingUserShort);
             }
 
@@ -125,7 +127,7 @@ public class UserController {
 
     @RequestMapping(value = "/all_trainings_of_user_by_type_coach", method = RequestMethod.POST, consumes = "application/json")
     public  @ResponseBody List<AllTrainingUserShort> getAllTrainingOfUserByTypeCoachTrue (@RequestBody AllTrainingUserSortedAndState allTrainingUserSortedAndState,
-                                                                                          HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException {
+                                                                                          HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
 
         String header = httpServletRequest.getHeader("authorization");
         String login = cryptService.decrypt(header);
@@ -141,6 +143,8 @@ public class UserController {
                 if (training.getCoach().getId() == user.getId()) {
                     allTrainingUserShort.setIsCoach(true);
                 }
+
+                allTrainingUserShort.setNumberOfTraining(trainingService.getTrainingNumber(training.getName(),training.getDateTime()));
                 allTrainingUserShorts.add(allTrainingUserShort);
             }
 
@@ -158,7 +162,7 @@ public class UserController {
 
     @RequestMapping(value = "/all_trainings_of_user_by_type_student", method = RequestMethod.POST, consumes = "application/json")
     public  @ResponseBody List<AllTrainingUserShort> getAllTrainingOfUserByTypeCoachFalse (@RequestBody AllTrainingUserSortedAndState allTrainingUserSortedAndState,
-                                                                                           HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException {
+                                                                                           HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
 
         String header = httpServletRequest.getHeader("authorization");
         String login = cryptService.decrypt(header);
@@ -174,6 +178,8 @@ public class UserController {
                 if (training.getCoach().getId() == user.getId()) {
                     allTrainingUserShort.setIsCoach(true);
                 }
+
+                allTrainingUserShort.setNumberOfTraining(trainingService.getTrainingNumber(training.getName(),training.getDateTime()));
                 allTrainingUserShorts.add(allTrainingUserShort);
             }
 
@@ -255,7 +261,7 @@ public class UserController {
 
     @RequestMapping(value = "/all_trainings_sorted_by_date", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody List<AllTrainingUserShort> getAllTrainingSortedByDate(@RequestBody AllTrainingUserSortedAndState loginAndState,
-                                                                               HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException {
+                                                                               HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
 
         String header = httpServletRequest.getHeader("authorization");
         String login = cryptService.decrypt(header);
@@ -302,9 +308,32 @@ public class UserController {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
     }
+    @RequestMapping(value = "/find_coach_of_user/{login}", method = RequestMethod.GET)
+    public @ResponseBody List<UserShort> findCoachOfUser(@PathVariable("login") String login,
+                                                         HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException {
+
+        String header = httpServletRequest.getHeader("authorization");
+        String mainLogin = cryptService.decrypt(header);
+        List<UserShort> userShorts = new ArrayList<>();
+
+        if(userService.checkUserByLogin(mainLogin)) {
+
+            for (User user : userService.findAllCoachOfUser(login)) {
+                userShorts.add(UserShort.parseUserShort(user));
+            }
+
+            httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+        } else {
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
+
+        return userShorts;
+    }
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public @ResponseBody List<AllTrainingUserShort> t(HttpServletResponse httpServletResponse) {
+    public @ResponseBody List<AllTrainingUserShort> t(HttpServletResponse httpServletResponse) throws NoSuchFieldException {
+
+        List<User> coaches = userService.findAllCoachOfUser("1");
         List<Integer> l = new ArrayList<>();
         l.add(1);
         l.add(2);
@@ -322,6 +351,7 @@ public class UserController {
             } else {
                 allTrainingUserShort.setIsCoach(false);
             }
+            allTrainingUserShort.setNumberOfTraining(trainingService.getTrainingNumber(training.getName(),training.getDateTime()));
             allTrainingUserShorts.add(allTrainingUserShort);
         }
 
@@ -349,7 +379,7 @@ public class UserController {
         UserShort us =  UserShort.parseUserShort(userService.findUserByLogin("1"));
 
 
-        List<User> s1 = userService.searchUsersByName("a");
+        List<User> s1 = userService.searchUsersByName("a*");
         List<UserShort> s2 = new ArrayList<>();
         if(userService.checkUserByLogin("as")) {
             for (User user : s1) {

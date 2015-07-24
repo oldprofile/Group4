@@ -79,8 +79,9 @@ public class ScheduledTasksService {
     private void notificateBySms(NotificationTrainingModel notificationTrainingModel, List<UserShort> listeners) throws TwilioRestException {
         for(UserShort listener: listeners) {
             String phone = listener.getNumberPhone();
-            if(!StringUtils.isBlank(phone))
+            if(!StringUtils.isBlank(phone)){
                 wrapperNotificationSMS.sendSMS(phone, "text");
+            }
         }
         UserShort traininer = notificationTrainingModel.getTrainer();
         String phone = traininer.getNumberPhone();

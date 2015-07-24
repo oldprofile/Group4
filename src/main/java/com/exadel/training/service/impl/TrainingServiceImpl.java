@@ -36,39 +36,31 @@ public class TrainingServiceImpl implements TrainingService {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+    @Transactional
     @Override
     public Training addTraining(TrainingForCreation trainingForCreation) throws NoSuchFieldException, ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+
         List<String> dates = trainingForCreation.getDateTimes();
         List<Date> dateTimes = new ArrayList<>();
-        for(int i = 0; i < dates.size(); ++i){
-            dateTimes.add(sdf.parse(dates.get(i)));
-        }
-        Training mainTraining = new Training();
+        for (String date : dates)
+            dateTimes.add(sdf.parse(date));
+
+        Training mainTraining = new Training(trainingForCreation);
         mainTraining.setDateTime(dateTimes.get(dateTimes.size() - 1));
-        mainTraining.setName(trainingForCreation.getName());
-        mainTraining.setDescription(trainingForCreation.getDescription());
         User coach = userRepository.findUserByLogin(trainingForCreation.getUserLogin());
-        mainTraining.setState(StateTraining.parseToInt("Draft"));
-        mainTraining.setCoach(coach);
-        mainTraining.setLanguage(LanguageTraining.parseToInt(trainingForCreation.getLanguage()));
-        mainTraining.setIsInternal(trainingForCreation.isInternal());
         Category category = categoryRepository.findById(trainingForCreation.getIdCategory());
+        mainTraining.setState(StateTraining.parseToInt("Ahead"));
+        mainTraining.setCoach(coach);
         mainTraining.setCategory(category);
-        mainTraining.setAmount(trainingForCreation.getParticipantsNumber());
-        mainTraining.setParent(0);
         trainingRepository.saveAndFlush(mainTraining);
         for(int i = 0; i < dateTimes.size(); ++i) {
-            Training newTraining = new Training();
+            Training newTraining = new Training(trainingForCreation);
             newTraining.setDateTime(dateTimes.get(i));
-            newTraining.setName(trainingForCreation.getName());
-            newTraining.setDescription(trainingForCreation.getDescription());
             newTraining.setCoach(coach);
-            newTraining.setLanguage(LanguageTraining.parseToInt(trainingForCreation.getLanguage()));
-            newTraining.setIsInternal(trainingForCreation.isInternal());
             newTraining.setCategory(category);
-            newTraining.setAmount(trainingForCreation.getParticipantsNumber());
-            newTraining.setState(StateTraining.parseToInt("Draft"));
+            newTraining.setState(StateTraining.parseToInt("Ahead"));
             newTraining.setParent(mainTraining.getId());
             trainingRepository.saveAndFlush(newTraining);
         }
@@ -180,5 +172,15 @@ public class TrainingServiceImpl implements TrainingService {
         training.getSpareUsers().add(user);
         trainingRepository.saveAndFlush(training);
         return training;
+    }
+
+    @Override
+    public Integer getTrainingNumber(String trainingName, Date date) {
+        return trainingRepository.findTrainingNumber(trainingName, date);
+    }
+
+    @Override
+    public List<Date> getDatesByTrainingNameBeetwenDates(String trainingName, Date firstDate, Date secondDate) {
+        return trainingRepository.findDatesByTrainingNameBeetwenDates(trainingName, firstDate, secondDate);
     }
 }
