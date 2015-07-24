@@ -19,15 +19,11 @@ public class WrapperNotificationSMS {
     public static final String ACCOUNT_SID = "AC153d280ddafbd38701dcf24ba171b762";
     public static final String AUTH_TOKEN = "8a006dc2490b141eb7a5826db20856b0";
 
-    TwilioRestClient client;
-    Account account;
-
-    public WrapperNotificationSMS() {
-        this.client = new TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN);
-        this.account = client.getAccount();
-    }
+    public WrapperNotificationSMS() {}
 
     public void sendSMS(String phoneNumber, String text) throws TwilioRestException {
+        TwilioRestClient client = new TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN);
+        Account account = client.getAccount();
         MessageFactory messageFactory = account.getMessageFactory();
         List<NameValuePair> messageParams = new ArrayList<NameValuePair>();
         messageParams.add(new BasicNameValuePair("To", phoneNumber));

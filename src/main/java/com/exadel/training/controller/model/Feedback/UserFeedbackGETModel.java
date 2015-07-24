@@ -12,17 +12,18 @@ import java.util.List;
  * Created by asd on 17.07.2015.
  */
 public class UserFeedbackGETModel implements Serializable{
-    private String attendance;
 
-    private String attitude;
+    private boolean attendance;
 
-    private String commSkills;
+    private boolean attitude;
 
-    private String questions;
+    private boolean commSkills;
 
-    private String motivation;
+    private boolean questions;
 
-    private String focusOnResult;
+    private boolean motivation;
+
+    private boolean focusOnResult;
 
     private String other;
 
@@ -44,7 +45,7 @@ public class UserFeedbackGETModel implements Serializable{
     public UserFeedbackGETModel() {
     }
 
-    public UserFeedbackGETModel(String attendance, String attitude, String commSkills, String questions, String motivation, String focusOnResult, String other, String feedbackerLogin, String feedbackerName, String userLogin, Date date, String assessment, String level) {
+    public UserFeedbackGETModel(boolean attendance, boolean attitude, boolean commSkills, boolean questions, boolean motivation, boolean focusOnResult, String other, String feedbackerLogin, String feedbackerName, String userLogin, Date date, String assessment, String level) {
         this.attendance = attendance;
         this.attitude = attitude;
         this.commSkills = commSkills;
@@ -60,51 +61,51 @@ public class UserFeedbackGETModel implements Serializable{
         this.level = level;
     }
 
-    public String getAttendance() {
+    public boolean getAttendance() {
         return attendance;
     }
 
-    public void setAttendance(String attendance) {
+    public void setAttendance(boolean attendance) {
         this.attendance = attendance;
     }
 
-    public String getAttitude() {
+    public boolean getAttitude() {
         return attitude;
     }
 
-    public void setAttitude(String attitude) {
+    public void setAttitude(boolean attitude) {
         this.attitude = attitude;
     }
 
-    public String getCommSkills() {
+    public boolean getCommSkills() {
         return commSkills;
     }
 
-    public void setCommSkills(String commSkills) {
+    public void setCommSkills(boolean commSkills) {
         this.commSkills = commSkills;
     }
 
-    public String getQuestions() {
+    public boolean getQuestions() {
         return questions;
     }
 
-    public void setQuestions(String questions) {
+    public void setQuestions(boolean questions) {
         this.questions = questions;
     }
 
-    public String getMotivation() {
+    public boolean getMotivation() {
         return motivation;
     }
 
-    public void setMotivation(String motivation) {
+    public void setMotivation(boolean motivation) {
         this.motivation = motivation;
     }
 
-    public String getFocusOnResult() {
+    public boolean getFocusOnResult() {
         return focusOnResult;
     }
 
-    public void setFocusOnResult(String focusOnResult) {
+    public void setFocusOnResult(boolean focusOnResult) {
         this.focusOnResult = focusOnResult;
     }
 
