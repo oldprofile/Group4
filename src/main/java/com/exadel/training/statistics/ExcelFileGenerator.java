@@ -10,6 +10,8 @@ import com.exadel.training.service.UserService;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -21,22 +23,23 @@ import java.util.List;
  * Created by asd on 23.07.2015.
  */
 
+@Service
 public class ExcelFileGenerator {
 
+    @Autowired
     TrainingService trainingService;
 
+    @Autowired
     UserService userService;
 
+    @Autowired
     OmissionService omissionService;
 
     private String filePath = "C:/New/";
 
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-    public ExcelFileGenerator(TrainingService trainingService, UserService userService, OmissionService omissionService) {
-        this.trainingService = trainingService;
-        this.userService = userService;
-        this.omissionService = omissionService;
+    public ExcelFileGenerator() {
     }
 
     // for all users on this training
@@ -44,8 +47,8 @@ public class ExcelFileGenerator {
         String fileName = trainingName + "_omissions_" + sdf.format(dateFrom) + "_" + sdf.format(dateTo) + ".xls";
 
         List<User> users = trainingService.getUsersByTrainingName(trainingName);
-        List<Omission> omissionList = omissionService.getOmisssionsByTraining(trainingName, dateFrom, dateTo);
-        List<Date> dates = trainingService.getDatesByTrainingNameBeetwenDates(trainingName, dateFrom, dateTo);
+        List<Date> dates = trainingService.getDatesByTrainingNameBetweenDates(trainingName, dateFrom, dateTo);
+        //sort by names
         List<UserLoginAndName> userLoginAndNames = UserLoginAndName.parseUserLoginAndName(users);
 
         HSSFWorkbook workbook = new HSSFWorkbook();
@@ -53,19 +56,22 @@ public class ExcelFileGenerator {
         sheet.setDefaultColumnWidth(11);
         HSSFRow rowHead = sheet.createRow(0);
 
-        for(int columnCount = 1; columnCount < dates.size(); columnCount ++) {
-            rowHead.createCell(columnCount).setCellValue(sdf.format(dates.get(columnCount)));
+        for(int datesIndex = 0; datesIndex < dates.size(); datesIndex++) {
+            int columnIndex = datesIndex + 1;
+            rowHead.createCell(columnIndex).setCellValue(sdf.format(dates.get(datesIndex)));
         }
 
-        for(int rowCount = 1; rowCount < userLoginAndNames.size(); rowCount ++) {
-            List<Omission> omissions = omissionService.getOmisssionsByUser(userLoginAndNames.get(rowCount).getLogin(), dateFrom, dateTo);
+        for(int usersIndex = 0; usersIndex < userLoginAndNames.size(); usersIndex++) {
+            int rowIndex = usersIndex + 1;
+            List<Omission> omissions = omissionService.getOmisssionsByTrainingAndUser(trainingName,userLoginAndNames.get(usersIndex).getLogin(), dateFrom, dateTo);
             List<JournalOmissionUserByTraining> journalOmissionUserByTrainings = JournalOmissionUserByTraining.parseListOfOmissions(omissions);
-            HSSFRow row = sheet.createRow(rowCount);
-            row.createCell(0).setCellValue(userLoginAndNames.get(rowCount).getName());
-            for(int columnCount = 1; columnCount < journalOmissionUserByTrainings.size(); columnCount ++) {
-                if(rowHead.getCell(columnCount).getStringCellValue().compareTo(journalOmissionUserByTrainings.get(columnCount).getDate()) == 0) {
-                    if(journalOmissionUserByTrainings.get(columnCount).getIsOmission()) {
-                        row.createCell(columnCount).setCellValue("X");
+            HSSFRow row = sheet.createRow(rowIndex);
+            row.createCell(0).setCellValue(userLoginAndNames.get(usersIndex).getName());
+            for(int omissionsIndex = 0; omissionsIndex < journalOmissionUserByTrainings.size(); omissionsIndex++) {
+                int columnIndex = omissionsIndex + 1;
+                if(rowHead.getCell(columnIndex).getStringCellValue().compareTo(journalOmissionUserByTrainings.get(omissionsIndex).getDate()) == 0) {
+                    if(journalOmissionUserByTrainings.get(omissionsIndex).getIsOmission()) {
+                        row.createCell(columnIndex).setCellValue("X");
                     }
                 }
             }
@@ -78,16 +84,202 @@ public class ExcelFileGenerator {
     }
 
     // for user and all his trainings
-    public String generateForUser(Date dateFrom, Date dateTo, String userLogin) {
-        String fileName = ".xls";
+    public String generateForUser(Date dateFrom, Date dateTo, String userLogin) throws IOException {
+        String fileName = userLogin + "_omissions_" + sdf.format(dateFrom) + "_" + sdf.format(dateTo) + ".xls";
+
+        // from user login get trainings between two dates sorted by name
+        //List<Training> trainings = userService.;
+        //List<Date> dates get dates of trainings of user between two dates sorted by dates
+        //List<TrainingNameAndDate> parse
+
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet sheet = workbook.createSheet(userLogin + " omissions");
+        sheet.setDefaultColumnWidth(11);
+        HSSFRow rowHead = sheet.createRow(0);
+
+        for(int datesIndex = 0; datesIndex < dates.size(); datesIndex++) {
+            int columnIndex = datesIndex + 1;
+            rowHead.createCell(columnIndex).setCellValue(sdf.format(dates.get(datesIndex)));
+        }
+
+        // training list
+        for(int usersIndex = 0; usersIndex < userLoginAndNames.size(); usersIndex++) {
+            int rowIndex = usersIndex + 1;
+            List<Omission> omissions = omissionService.getOmisssionsByTrainingAndUser(trainingName,userLoginAndNames.get(usersIndex).getLogin(), dateFrom, dateTo);
+            List<JournalOmissionUserByTraining> journalOmissionUserByTrainings = JournalOmissionUserByTraining.parseListOfOmissions(omissions);
+            HSSFRow row = sheet.createRow(rowIndex);
+            row.createCell(0).setCellValue(userLoginAndNames.get(usersIndex).getName());
+            for(int omissionsIndex = 0; omissionsIndex < journalOmissionUserByTrainings.size(); omissionsIndex++) {
+                int columnIndex = omissionsIndex + 1;
+                if(rowHead.getCell(columnIndex).getStringCellValue().compareTo(journalOmissionUserByTrainings.get(omissionsIndex).getDate()) == 0) {
+                    if(journalOmissionUserByTrainings.get(omissionsIndex).getIsOmission()) {
+                        row.createCell(columnIndex).setCellValue("X");
+                    }
+                }
+            }
+        }
+
+        FileOutputStream fileOut = new FileOutputStream(filePath+fileName);
+        workbook.write(fileOut);
+        fileOut.close();
+        return filePath+fileName;
 
         return filePath+fileName;
     }
 
     // for user and training
-    public String generateForUserAndTraining(Date dateFrom, Date dateTo, String userLogin, String trainingName) {
-        String fileName = ".xls";
+    public String generateForUserAndTraining(Date dateFrom, Date dateTo, String userLogin, String trainingName) throws IOException {
+        String fileName = userLogin + "_omissions_on_" + trainingName + "_" + sdf.format(dateFrom) + "_" + sdf.format(dateTo) + ".xls";
 
+        List<Omission> omissions = omissionService.getOmisssionsByTrainingAndUser(trainingName, userLogin, dateFrom, dateTo);
+        List<Date> dates = trainingService.getDatesByTrainingNameBetweenDates(trainingName, dateFrom, dateTo);
+        List<JournalOmissionUserByTraining> journalOmissionUserByTrainings = JournalOmissionUserByTraining.parseListOfOmissions(omissions);
+
+
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet sheet = workbook.createSheet(userLogin + " omissions");
+        sheet.setDefaultColumnWidth(11);
+        HSSFRow rowHead = sheet.createRow(0);
+
+        for (int datesIndex = 0; datesIndex < dates.size(); datesIndex++) {
+            int columnIndex = datesIndex + 1;
+            rowHead.createCell(columnIndex).setCellValue(sdf.format(dates.get(datesIndex)));
+        }
+
+        HSSFRow row = sheet.createRow(1);
+        for (int omissionsIndex = 0; omissionsIndex < journalOmissionUserByTrainings.size(); omissionsIndex++) {
+            int columnIndex = omissionsIndex + 1;
+            if (rowHead.getCell(columnIndex).getStringCellValue().compareTo(journalOmissionUserByTrainings.get(omissionsIndex).getDate()) == 0) {
+                if (journalOmissionUserByTrainings.get(omissionsIndex).getIsOmission()) {
+                    row.createCell(columnIndex).setCellValue("X");
+                }
+            }
+        }
+
+        FileOutputStream fileOut = new FileOutputStream(filePath+fileName);
+        workbook.write(fileOut);
+        fileOut.close();
+        return filePath+fileName;
+    }
+
+    // for all users on this training
+    public String generateForTraining(String trainingName) throws IOException {
+        String fileName = trainingName + "_omissions" + ".xls";
+
+        List<User> users = trainingService.getUsersByTrainingName(trainingName);
+        List<Date> dates = trainingService.getDatesByTrainingName(trainingName);
+        //sorted by login
+        List<UserLoginAndName> userLoginAndNames = UserLoginAndName.parseUserLoginAndName(users);
+
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet sheet = workbook.createSheet(trainingName + " omissions");
+        sheet.setDefaultColumnWidth(11);
+        HSSFRow rowHead = sheet.createRow(0);
+
+        for(int datesIndex = 0; datesIndex < dates.size(); datesIndex++) {
+            int columnIndex = datesIndex + 1;
+            rowHead.createCell(columnIndex).setCellValue(sdf.format(dates.get(datesIndex)));
+        }
+
+        for(int usersIndex = 0; usersIndex < userLoginAndNames.size(); usersIndex++) {
+            int rowIndex = usersIndex + 1;
+            List<Omission> omissions = omissionService.findByTrainingNameAndUserLogin(trainingName,userLoginAndNames.get(usersIndex).getLogin());
+            List<JournalOmissionUserByTraining> journalOmissionUserByTrainings = JournalOmissionUserByTraining.parseListOfOmissions(omissions);
+            HSSFRow row = sheet.createRow(rowIndex);
+            row.createCell(0).setCellValue(userLoginAndNames.get(usersIndex).getName());
+            for(int omissionsIndex = 0; omissionsIndex < journalOmissionUserByTrainings.size(); omissionsIndex++) {
+                int columnIndex = omissionsIndex + 1;
+                if(rowHead.getCell(columnIndex).getStringCellValue().compareTo(journalOmissionUserByTrainings.get(omissionsIndex).getDate()) == 0) {
+                    if(journalOmissionUserByTrainings.get(omissionsIndex).getIsOmission()) {
+                        row.createCell(columnIndex).setCellValue("X");
+                    }
+                }
+            }
+        }
+
+        FileOutputStream fileOut = new FileOutputStream(filePath+fileName);
+        workbook.write(fileOut);
+        fileOut.close();
+        return filePath+fileName;
+    }
+
+    // for user and all his trainings
+    public String generateForUser(String userLogin) throws IOException {
+        String fileName = userLogin + "_omissions" + ".xls";
+
+        // from user login get trainings between sorted by dates
+        //List<Training> trainings = userService.;
+        //List<Date> dates get dates of trainings of user between sorted by dates
+        //List<TrainingNameAndDate> parse
+
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet sheet = workbook.createSheet(userLogin + " omissions");
+        sheet.setDefaultColumnWidth(11);
+        HSSFRow rowHead = sheet.createRow(0);
+
+        for(int datesIndex = 0; datesIndex < dates.size(); datesIndex++) {
+            int columnIndex = datesIndex + 1;
+            rowHead.createCell(columnIndex).setCellValue(sdf.format(dates.get(datesIndex)));
+        }
+
+        // training list
+        for(int usersIndex = 0; usersIndex < userLoginAndNames.size(); usersIndex++) {
+            int rowIndex = usersIndex + 1;
+            //sorted by date
+            List<Omission> omissions = omissionService.getOmisssionsByTrainingAndUser(trainingName,userLoginAndNames.get(usersIndex).getLogin(), dateFrom, dateTo);
+            List<JournalOmissionUserByTraining> journalOmissionUserByTrainings = JournalOmissionUserByTraining.parseListOfOmissions(omissions);
+            HSSFRow row = sheet.createRow(rowIndex);
+            row.createCell(0).setCellValue(userLoginAndNames.get(usersIndex).getName());
+            for(int omissionsIndex = 0; omissionsIndex < journalOmissionUserByTrainings.size(); omissionsIndex++) {
+                int columnIndex = omissionsIndex + 1;
+                if(rowHead.getCell(columnIndex).getStringCellValue().compareTo(journalOmissionUserByTrainings.get(omissionsIndex).getDate()) == 0) {
+                    if(journalOmissionUserByTrainings.get(omissionsIndex).getIsOmission()) {
+                        row.createCell(columnIndex).setCellValue("X");
+                    }
+                }
+            }
+        }
+
+        FileOutputStream fileOut = new FileOutputStream(filePath+fileName);
+        workbook.write(fileOut);
+        fileOut.close();
+        return filePath+fileName;
+
+        return filePath+fileName;
+    }
+
+    // for user and training
+    public String generateForUserAndTraining(String userLogin, String trainingName) throws IOException {
+        String fileName = userLogin + "_omissions_on_" + trainingName + ".xls";
+
+        List<Omission> omissions = omissionService.findByTrainingNameAndUserLogin(trainingName, userLogin);
+        List<Date> dates = trainingService.getDatesByTrainingName(trainingName);
+        List<JournalOmissionUserByTraining> journalOmissionUserByTrainings = JournalOmissionUserByTraining.parseListOfOmissions(omissions);
+
+
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        HSSFSheet sheet = workbook.createSheet(userLogin + " omissions");
+        sheet.setDefaultColumnWidth(11);
+        HSSFRow rowHead = sheet.createRow(0);
+
+        for (int datesIndex = 0; datesIndex < dates.size(); datesIndex++) {
+            int columnIndex = datesIndex + 1;
+            rowHead.createCell(columnIndex).setCellValue(sdf.format(dates.get(datesIndex)));
+        }
+
+        HSSFRow row = sheet.createRow(1);
+        for (int omissionsIndex = 0; omissionsIndex < journalOmissionUserByTrainings.size(); omissionsIndex++) {
+            int columnIndex = omissionsIndex + 1;
+            if (rowHead.getCell(columnIndex).getStringCellValue().compareTo(journalOmissionUserByTrainings.get(omissionsIndex).getDate()) == 0) {
+                if (journalOmissionUserByTrainings.get(omissionsIndex).getIsOmission()) {
+                    row.createCell(columnIndex).setCellValue("X");
+                }
+            }
+        }
+
+        FileOutputStream fileOut = new FileOutputStream(filePath+fileName);
+        workbook.write(fileOut);
+        fileOut.close();
         return filePath+fileName;
     }
 }
