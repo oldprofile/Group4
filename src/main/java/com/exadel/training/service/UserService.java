@@ -3,7 +3,9 @@ package com.exadel.training.service;
 import com.exadel.training.common.RoleType;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
+import org.springframework.data.jpa.repository.Query;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,6 +16,7 @@ public interface UserService {
     Boolean checkUserByLogin(String login);
     Boolean checkSubscribeToTraining(Long trainingID, Long userID);
     Boolean checkSubscribeToTraining(String trainingName, String login);
+    Boolean whoIsUser(String login, long roleId);
 
     User getUserByID(long id);
     User findUserByLoginAndPassword(String name, long password);
@@ -24,6 +27,10 @@ public interface UserService {
     List<Training> selectAllTrainingSortedByDate(String login, List<Integer> state);
     List<Training> selectAllTrainingSortedByDateTypeCoachTrue(String login, List<Integer> state);
     List<Training> selectAllTrainingSortedByDateTypeCoachFalse(String login, List<Integer> state);
+    List<Training> selectAllTrainingBetweenDatesAndSortedByDate(String login, Date from, Date to);
+    List<Date> selectAllDateOfTrainingsBetweenDates(String login, Date from, Date to);
+    List<Training> selectAllTrainingAndSortedByName(String login);
+    List<Date> selectAllDateOfTrainings(String login);
 
     List<User> searchUsersByName(String name);
     List<User> findUsersByRole(RoleType type) throws NoSuchFieldException;

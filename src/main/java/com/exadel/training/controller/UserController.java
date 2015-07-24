@@ -19,6 +19,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -333,8 +334,15 @@ public class UserController {
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public @ResponseBody List<AllTrainingUserShort> t(HttpServletResponse httpServletResponse) throws NoSuchFieldException {
 
+        Date d1 = Date.valueOf("2001-01-01");
+        Date d2 = Date.valueOf("2005-01-01");
+        List<Training> a = userService.selectAllTrainingBetweenDatesAndSortedByDate("1",d1,d2);
         List<User> coaches = userService.findAllCoachOfUser("1");
+
+        List<java.util.Date> t1 = userService.selectAllDateOfTrainingsBetweenDates("1",d1,d2);
         List<Integer> l = new ArrayList<>();
+
+        Boolean r = userService.whoIsUser("1",1L);
         l.add(1);
         l.add(2);
         l.add(3);
