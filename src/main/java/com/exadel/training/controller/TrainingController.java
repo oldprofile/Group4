@@ -23,7 +23,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -226,26 +228,13 @@ public class TrainingController {
     @ResponseBody
     List<ShortTrainingInfo> trainingTest() throws ParseException, NoSuchFieldException, IOException {
         List<Training> list = trainingService.getTrainingsByNearestDate();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date date1 = sdf.parse("1996-01-01 23:11");
+        Date date2 = sdf.parse("2020-02-03 05:19");
 
-        File file = new File("d:/Repositories/Group4/src/main/resources/imageStorage/number4.jpg");
+        List<Date> dates = trainingService.getDatesByTrainingNameBetweenDates("angular", date1, date2 );
 
-            FileInputStream imageInFile = new FileInputStream(file);
-            byte imageData[] = new byte[(int) file.length()];
-            imageInFile.read(imageData);
-
-            String imageDataString = Base64.encodeBase64String(imageData);
-
-            byte[] imageByteArray = Base64.decodeBase64(imageDataString);
-            FileOutputStream imageOutFile = new FileOutputStream(
-                    "d:/Repositories/Group4/src/main/resources/imageStorage/number44.jpg");
-
-            imageOutFile.write(imageByteArray);
-
-            imageInFile.close();
-            imageOutFile.close();
-
-
-            return ShortTrainingInfo.parseList(list);
+        return ShortTrainingInfo.parseList(list);
     }
 
     @RequestMapping(value = "/test_category_name", method = RequestMethod.GET)
