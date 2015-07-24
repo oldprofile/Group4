@@ -1,7 +1,6 @@
 package com.exadel.training.service.impl;
 
 import com.exadel.training.controller.model.Feedback.UserFeedbackADDModel;
-import com.exadel.training.controller.model.Feedback.UserFeedbackGETModel;
 import com.exadel.training.model.User;
 import com.exadel.training.model.UserFeedback;
 import com.exadel.training.repository.impl.UserFeedbackRepository;

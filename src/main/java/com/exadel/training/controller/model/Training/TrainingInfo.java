@@ -24,6 +24,7 @@ public class TrainingInfo {
     private int lessonNumber;
     private int idCategory;
     private int participantsNumber;
+    private double rating;
     private String language;
     private boolean isInternal;
     private boolean isRepeating;
@@ -54,6 +55,7 @@ public class TrainingInfo {
         place = training.getPlace();
         idCategory = training.getCategory().getId();
         participantsNumber = training.getAmount();
+        rating = training.getRating();
         language = LanguageTraining.parseToString(training.getLanguage());
         isInternal = training.isInternal();
         isRepeating = training.getParent() != 0;
@@ -235,5 +237,13 @@ public class TrainingInfo {
 
     public void setIsCoach(boolean isCoach) {
         this.isCoach = isCoach;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 }

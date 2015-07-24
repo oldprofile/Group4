@@ -41,6 +41,8 @@ public class Training {
 
     private long parent;
 
+    private double rating;
+
     @ManyToOne(cascade = CascadeType.ALL)
     private User coach;
 
@@ -227,5 +229,13 @@ public class Training {
 
     public void setFeedbacks(List<TrainingFeedback> feedbacks) {
         this.feedbacks = feedbacks;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 }

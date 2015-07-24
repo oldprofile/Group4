@@ -193,11 +193,11 @@ public class CoachFeedbackGETModel implements Serializable {
         return coachFeedbackGETModel;
     }
 
-    public static List<CoachFeedbackGETModel> parseCoachFeedbackList(List<CoachFeedback> coachFeedbackList) {
-        List<CoachFeedbackGETModel> coachFeedbackGETModelList = new ArrayList<CoachFeedbackGETModel>();
-        for(CoachFeedback coachFeedback: coachFeedbackList) {
-            coachFeedbackGETModelList.add(CoachFeedbackGETModel.parseCoachFeedback(coachFeedback));
+    public static List<CoachFeedbackGETModel> parseCoachFeedbacks(List<CoachFeedback> coachFeedbacks) {
+        List<CoachFeedbackGETModel> coachFeedbackGETModels = new ArrayList<CoachFeedbackGETModel>();
+        for(CoachFeedback coachFeedback: coachFeedbacks) {
+            coachFeedbackGETModels.add(CoachFeedbackGETModel.parseCoachFeedback(coachFeedback));
         }
-        return coachFeedbackGETModelList;
+        return coachFeedbackGETModels;
     }
 }
