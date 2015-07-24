@@ -49,9 +49,8 @@ public class ExcelFileGenerator {
     public String generateForTraining(Date dateFrom, Date dateTo, String trainingName) throws IOException {
         String fileName = trainingName + "_omissions_" + sdf.format(dateFrom) + "_" + sdf.format(dateTo) + ".xls";
 
-        List<User> users = trainingService.getUsersByTrainingName(trainingName);
+        List<User> users = trainingService.getListenersByTrainingNameSortByName(trainingName);
         List<Date> dates = trainingService.getDatesByTrainingNameBetweenDates(trainingName, dateFrom, dateTo);
-        //sort by names
         List<UserLoginAndName> userLoginAndNames = UserLoginAndName.parseUserLoginAndName(users);
 
         HSSFWorkbook workbook = new HSSFWorkbook();
@@ -134,7 +133,6 @@ public class ExcelFileGenerator {
         List<Date> dates = trainingService.getDatesByTrainingNameBetweenDates(trainingName, dateFrom, dateTo);
         List<JournalOmissionUserByTraining> journalOmissionUserByTrainings = JournalOmissionUserByTraining.parseListOfOmissions(omissions);
 
-
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet(userLogin + " omissions");
         sheet.setDefaultColumnWidth(11);
@@ -165,9 +163,8 @@ public class ExcelFileGenerator {
     public String generateForTraining(String trainingName) throws IOException {
         String fileName = trainingName + "_omissions" + ".xls";
 
-        List<User> users = trainingService.getUsersByTrainingName(trainingName);
+        List<User> users = trainingService.getListenersByTrainingNameSortByName(trainingName);
         List<Date> dates = trainingService.getDatesByTrainingName(trainingName);
-        //sorted by name
         List<UserLoginAndName> userLoginAndNames = UserLoginAndName.parseUserLoginAndName(users);
 
         HSSFWorkbook workbook = new HSSFWorkbook();
@@ -250,7 +247,6 @@ public class ExcelFileGenerator {
         List<Omission> omissions = omissionService.findByTrainingNameAndUserLogin(trainingName, userLogin);
         List<Date> dates = trainingService.getDatesByTrainingName(trainingName);
         List<JournalOmissionUserByTraining> journalOmissionUserByTrainings = JournalOmissionUserByTraining.parseListOfOmissions(omissions);
-
 
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet(userLogin + " omissions");
