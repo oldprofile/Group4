@@ -31,7 +31,7 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
     Training findByTrainingNameAndUserLogin(String trainingName, String userLogin);
 
 
-    @Query("select tr from Training as tr where tr.state in (2,3)")
+    @Query("select tr from Training as tr where tr.state in (2,3) and tr.parent = 0")
     List<Training> findValidTrainings();
 
     //@Query("select  tr from Training as tr where tr.name = ?1 and tr.state in (2,3) and tr.dateTime = (select min(tr.dateTime) from tr where tr.name = ?1 and tr.state in (2,3))")
@@ -63,4 +63,7 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
 
     @Query("select tr.spareUsers from Training as tr where tr.name = ?1 and tr.parent = 0")
     List<User> findSpareUsersByTrainingName(String trainingName);
+
+    @Query("select tr.dateTime from Training as tr where tr.name = ?1 and tr.dateTime >= ?2 and tr.dateTime <= ?3 order by tr.dateTime asc")
+    List<Date> findDatesByTrainingNameBetweenDates(String trainingName, Date firstDate, Date secondDate);
 }

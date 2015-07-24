@@ -1,3 +1,11 @@
 <div ng-controller="NewsController">
-    <p>news</p>
+    <div class="timetable">
+        <h5 class="space-16">What's happening in our little world?</h5>
+        <table class="table">
+            <tr ng-repeat="news in newsList track by $index">
+                <td>{{news}}</td>
+            </tr>
+        </table>
+        </div>
 </div>
+

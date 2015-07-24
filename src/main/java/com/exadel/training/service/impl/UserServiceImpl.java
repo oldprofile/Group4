@@ -62,7 +62,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findUsersByRole(RoleType type) throws NoSuchFieldException {
-       return userRepository.findUsersByRole(RoleType.parseRoleTypeToLong(type));
+        return userRepository.findUsersByRole(RoleType.parseRoleTypeToLong(type));
+    }
+
+    @Override
+    public List<User> findAllCoachOfUser(String login) {
+        return userRepository.findAllCoachOfUser(login);
     }
 
     @Override
@@ -78,6 +83,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Training> selectAllTrainingSortedByDateTypeCoachTrue(String login, List<Integer> state) {
         return userRepository.selectAllTrainingSortedByDateTypeCoachTrue(login, state);
+    }
+
+    @Override
+    public List<Training> selectAllTrainingSortedByDateTypeCoachFalse(String login, List<Integer> state) {
+        return userRepository.selectAllTrainingSortedByDateTypeCoachFalse(login, state);
     }
 
     @Override

@@ -7,7 +7,7 @@ angular.module('myApp.mycourses')
     $scope.mycourses = [];
     $scope.isContentLoaded = false;
     
-    mycourses.success(function(data) {
+    mycourses.getAllActualUserCourses().success(function(data) {
         alert("mycourses success")
         console.log("Getting courses: " + JSON.stringify(data));
         if(data.length === 0){

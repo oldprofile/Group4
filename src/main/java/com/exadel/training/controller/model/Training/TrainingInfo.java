@@ -2,12 +2,8 @@ package com.exadel.training.controller.model.Training;
 
 import com.exadel.training.common.LanguageTraining;
 import com.exadel.training.common.StateTraining;
-import com.exadel.training.model.Omission;
 import com.exadel.training.model.Training;
-import com.exadel.training.model.User;
 import com.exadel.training.controller.model.User.UserShort;
-import com.exadel.training.repository.impl.TrainingRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,6 +24,7 @@ public class TrainingInfo {
     private int lessonNumber;
     private int idCategory;
     private int participantsNumber;
+    private double rating;
     private String language;
     private boolean isInternal;
     private boolean isRepeating;
@@ -49,14 +46,16 @@ public class TrainingInfo {
     public TrainingInfo(Training training, List<Date> dateTimes/*, List<User> listeners, List<User> spareUsers*/) throws NoSuchFieldException {
         name = training.getName();
         this.dateTimes = new ArrayList<>();
-        for(int i = 0; i < dateTimes.size(); ++i)
+        for(int i = 1; i < dateTimes.size(); ++i)
             this.dateTimes.add(sdf.format(dateTimes.get(i)));
+        lessonNumber = dateTimes.size() - 1;
         coachName = training.getCoach().getName();
         pictureLink = training.getPictureLink();
         description = training.getDescription();
         place = training.getPlace();
         idCategory = training.getCategory().getId();
         participantsNumber = training.getAmount();
+        rating = training.getRating();
         language = LanguageTraining.parseToString(training.getLanguage());
         isInternal = training.isInternal();
         isRepeating = training.getParent() != 0;
@@ -238,5 +237,13 @@ public class TrainingInfo {
 
     public void setIsCoach(boolean isCoach) {
         this.isCoach = isCoach;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 }

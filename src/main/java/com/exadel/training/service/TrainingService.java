@@ -20,7 +20,7 @@ public interface TrainingService {
     List<Training> getAllTrainings();
     List<Training> getValidTrainingsByCategoryId(int id);
     List<Training> getValidTrainings();
-    Training editTraining(Training training);
+    Training editTraining(TrainingForCreation trainingForCreation);
     Training approveTraining(String trainingName) throws NoSuchFieldException;
     List<Training> getTrainingsByNearestDate();
     Training deleteTrainingsByName(String trainingName);
@@ -30,4 +30,7 @@ public interface TrainingService {
     List<User> getUsersByTrainingName(String trainingName);
     List<User> getSpareUsersByTrainingName(String trainingName);
     Training addSpareUser(String trainingName, String userLogin);
+    Integer getTrainingNumber(String trainingName, Date date);
+    List<Date> getDatesByTrainingNameBetweenDates(String trainingName, Date firstDate, Date secondDate);
+
 }
