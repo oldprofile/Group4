@@ -46,18 +46,21 @@ public class TrainingServiceImpl implements TrainingService {
         List<Date> dateTimes = new ArrayList<>();
         for (String date : dates)
             dateTimes.add(sdf.parse(date));
-
-        Training mainTraining = new Training(trainingForCreation);
-        mainTraining.setDateTime(dateTimes.get(dateTimes.size() - 1));
         User coach = userRepository.findUserByLogin(trainingForCreation.getUserLogin());
         Category category = categoryRepository.findById(trainingForCreation.getIdCategory());
+
+        Training mainTraining = new Training();
+        mainTraining.fillTraining(trainingForCreation);
+        mainTraining.setDateTime(dateTimes.get(0));
         mainTraining.setState(StateTraining.parseToInt("Ahead"));
         mainTraining.setCoach(coach);
         mainTraining.setCategory(category);
         trainingRepository.saveAndFlush(mainTraining);
-        for(int i = 0; i < dateTimes.size(); ++i) {
-            Training newTraining = new Training(trainingForCreation);
-            newTraining.setDateTime(dateTimes.get(i));
+
+        for (Date dateTime : dateTimes) {
+            Training newTraining = new Training();
+            newTraining.fillTraining(trainingForCreation);
+            newTraining.setDateTime(dateTime);
             newTraining.setCoach(coach);
             newTraining.setCategory(category);
             newTraining.setState(StateTraining.parseToInt("Ahead"));
@@ -104,31 +107,28 @@ public class TrainingServiceImpl implements TrainingService {
 
 
     @Override
-    public Training editTraining(TrainingForCreation trainingForCreation) {
+    public Training editTraining(TrainingForCreation trainingForCreation) throws ParseException, NoSuchFieldException {
         List<String> dates = trainingForCreation.getDateTimes();
         List<Date> dateTimes = new ArrayList<>();
-        /*for (String date : dates)
+        for (String date : dates)
             dateTimes.add(sdf.parse(date));
-
-        List<Training> trainings = trainingRepository.findTrainingsByName(trainingForCreation.getName());
-        mainTraining.setDateTime(dateTimes.get(dateTimes.size() - 1));
-        User coach = userRepository.findUserByLogin(trainingForCreation.getUserLogin());
         Category category = categoryRepository.findById(trainingForCreation.getIdCategory());
-        mainTraining.setState(StateTraining.parseToInt("Ahead"));
-        mainTraining.setCoach(coach);
+
+        Training mainTraining = trainingRepository.findByName(trainingForCreation.getName());
+        mainTraining.fillTraining(trainingForCreation);
         mainTraining.setCategory(category);
-        trainingRepository.saveAndFlush(mainTraining);
-        for(int i = 0; i < dateTimes.size(); ++i) {
-            Training newTraining = new Training(trainingForCreation);
-            newTraining.setDateTime(dateTimes.get(i));
-            newTraining.setCoach(coach);
-            newTraining.setCategory(category);
-            newTraining.setState(StateTraining.parseToInt("Ahead"));
-            newTraining.setParent(mainTraining.getId());
-            trainingRepository.saveAndFlush(newTraining);
+        mainTraining.setState(StateTraining.parseToInt("Ahead"));
+        List<Training> trainings = trainingRepository.findTrainingsByNameExceptParent(trainingForCreation.getName());
+        for(int i = 0; i < trainings.size(); ++i) {
+            Training training = trainings.get(i);
+            if (training.getParent() != 0) {
+                training.fillTraining(trainingForCreation);
+                training.setDateTime(dateTimes.get(i));
+                training.setCategory(category);
+                training.setState(StateTraining.parseToInt("Ahead"));
+            }
         }
-        return mainTraining;*/
-        return null;
+        return mainTraining;
     }
 
     @Override
@@ -204,4 +204,11 @@ public class TrainingServiceImpl implements TrainingService {
     public List<Date> getDatesByTrainingNameBetweenDates(String trainingName, Date firstDate, Date secondDate) {
         return trainingRepository.findDatesByTrainingNameBetweenDates(trainingName, firstDate, secondDate);
     }
+
+    @Override
+    public List<User> getListenersByTrainingNameSortByName(String trainingName) {
+        return trainingRepository.findListenersByTrainingNameSortByName(trainingName);
+    }
+
+
 }
