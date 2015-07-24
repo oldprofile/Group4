@@ -1,5 +1,6 @@
 package com.exadel.training.controller;
 
+import com.exadel.training.controller.model.News.NewsPage;
 import com.exadel.training.model.News;
 import com.exadel.training.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,10 +25,14 @@ public class NewsController {
     private NewsService userNewsService;
 
     @RequestMapping(value = "/pages/{pageNumber}", method = RequestMethod.GET)
-    public @ResponseBody Page<News> getNewsPage(@PathVariable("pageNumber") String pageNumber) {
+    public @ResponseBody List<NewsPage> getNewsPage(@PathVariable("pageNumber") String pageNumber) {
         Page<News> page = userNewsService.getNewsPage(Integer.parseInt(pageNumber));
         List<News> newsList = page.getContent();
+        List<NewsPage> newses = new ArrayList<>();
+        for(News news : newsList) {
+            newses.add(NewsPage.parseNewsPage(news));
+        }
 
-        return  page;
+        return  newses;
     }
 }
