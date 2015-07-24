@@ -2,9 +2,8 @@ angular.module('myApp.admin')
 .controller('ApproveController', ['$scope', 'approveService', function($scope, approveService) {
     $scope.toApproveList=[];
     
-    approveService.success(function(data) {
-        $scope.toApproveList = data;
+    approveService.getApproveList().then(function(results) {
+        $scope.toApproveList = results;
         console.log($scope.toApproveList);
     });
-    
 }]);

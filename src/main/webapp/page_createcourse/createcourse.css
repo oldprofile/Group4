@@ -4,7 +4,18 @@ form.form-course > * {
 }
 
 #imgPlaceholder {
-    
+    overflow: auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    max-height: 300px;
+}
+
+img[preloadable].empty {
+    width:0; height:0;
+}
+
+img[preloadable]{
+    width:auto; height:auto;
 }
 
 .btn-file {

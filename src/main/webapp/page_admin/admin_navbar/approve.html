@@ -1,4 +1,4 @@
-<div ng-controller="ApproveController">
+<!--<div ng-controller="ApproveController">
     <div class="row">
         <div class="col-xs-12 table-responsive scroll">
             <table class="table table-striped">
@@ -15,4 +15,32 @@
             </table>
         </div>
     </div>
+</div -->
+
+<div ng-controller="ApproveController">
+    <div class="timetable">
+        <h5 class="space-16">Courses that need your attention</h5>
+        <table class="table">
+            <thead>
+              <tr>
+                  <th>Name</th>
+                  <th>Coach</th>
+                  <th>Status</th>
+                  <th></th>
+              </tr>
+            </thead>
+            <tr ng-repeat="course in toApproveList track by $index">
+                <td>{{course.trainingName}}</td>
+                <td>{{course.trainingCoach}}</td>
+                <td>{{course.state}}</td>
+                <td>
+                    <a ng-href="#/editcourse/{{course.trainingName}}">
+                        <input type="submit" class="btn btn-default btn-md" value="Go to course page">
+                    </a>
+                </td>
+            </tr>
+        </table>
+        </table>
+        </div>
 </div>
+
