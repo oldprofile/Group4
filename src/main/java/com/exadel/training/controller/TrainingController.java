@@ -122,10 +122,9 @@ public class TrainingController {
         }
     }
 
-    @RequestMapping(value = "/approve_training/{trainingName}", method = RequestMethod.POST)
+    /*@RequestMapping(value = "/approve_training", method = RequestMethod.POST)
     public @ResponseBody
-    ShortTrainingInfo approveTraining(@PathVariable("trainingName") String trainingName,
-                                      HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
+    ShortTrainingInfo approveTraining(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
         String header = httpServletRequest.getHeader("authorization");
         String userLogin = cryptService.decrypt(header);
 
@@ -141,7 +140,7 @@ public class TrainingController {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
         }
-    }
+    }*/
 
     @RequestMapping(value = "/list_by_category/{categoryId}", method = RequestMethod.GET)
     public @ResponseBody
@@ -227,14 +226,11 @@ public class TrainingController {
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     @ResponseBody
     List<ShortTrainingInfo> trainingTest() throws ParseException, NoSuchFieldException, IOException {
-        List<Training> list = trainingService.getTrainingsByNearestDate();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        Date date1 = sdf.parse("1996-01-01 23:11");
-        Date date2 = sdf.parse("2020-02-03 05:19");
 
-        List<Date> dates = trainingService.getDatesByTrainingNameBetweenDates("angular", date1, date2 );
 
-        return ShortTrainingInfo.parseList(list);
+        List<User> list =trainingService.getListenersByTrainingNameSortByName("angular");
+
+        return ShortTrainingInfo.parseList(null);
     }
 
     @RequestMapping(value = "/test_category_name", method = RequestMethod.GET)
