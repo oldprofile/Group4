@@ -4,6 +4,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.io.*;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,8 +46,10 @@ public class TrainingForCreation {
         String fileType = fileData.substring(typeBegin, typeEnd);
         String pictureString = fileData.substring(fileBegin);
         byte[] data = Base64.decodeBase64(pictureString);
-        String fileLink = System.getProperty("user.dir") + filePath + fileName +  "." + fileType;
-        FileOutputStream imageOutFile = new FileOutputStream(fileLink);
+        fileName = fileName.replace(" ", "-");
+        String fileLink = filePath + fileName +  "." + fileType;
+        FileOutputStream imageOutFile = new FileOutputStream(System.getProperty("user.dir") + "\\src\\main\\webapp" + fileLink);
+        fileLink = fileLink.replace("\\", "/");
         imageOutFile.write(data);
         imageOutFile.close();
         return fileLink;
@@ -67,7 +70,7 @@ public class TrainingForCreation {
         language = (String)json.get("language");
         idCategory = Integer.parseInt(String.valueOf(json.get("idCategory")));
         String pictureData = (String)json.get("pictureLink");
-        pictureLink = createFile(pictureData, "\\src\\main\\resources\\imageStorage\\", name);
+        pictureLink = createFile(pictureData, "\\image_storage\\", name);
     }
 
     public String getName() {
