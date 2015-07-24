@@ -78,15 +78,13 @@ public class TrainingServiceImpl implements TrainingService {
         if(trainings.size() == 1)
             return trainings.get(0);
         else {
-            Training training = trainingRepository.findNearestTrainingsByName(name).get(0);
-            return training;
+            return trainingRepository.findNearestTrainingsByName(name).get(0);
         }
     }
 
     @Override
     public Training getTrainingByNameAndUserLogin(String trainingName, String userLogin) {
-        Training newTraining = trainingRepository.findByTrainingNameAndUserLogin(trainingName, userLogin);
-        return newTraining;
+        return trainingRepository.findByTrainingNameAndUserLogin(trainingName, userLogin);
     }
 
     @Override
@@ -106,16 +104,39 @@ public class TrainingServiceImpl implements TrainingService {
 
 
     @Override
-    public Training editTraining(Training training) {
-        return trainingRepository.saveAndFlush(training);
+    public Training editTraining(TrainingForCreation trainingForCreation) {
+        List<String> dates = trainingForCreation.getDateTimes();
+        List<Date> dateTimes = new ArrayList<>();
+        /*for (String date : dates)
+            dateTimes.add(sdf.parse(date));
+
+        List<Training> trainings = trainingRepository.findTrainingsByName(trainingForCreation.getName());
+        mainTraining.setDateTime(dateTimes.get(dateTimes.size() - 1));
+        User coach = userRepository.findUserByLogin(trainingForCreation.getUserLogin());
+        Category category = categoryRepository.findById(trainingForCreation.getIdCategory());
+        mainTraining.setState(StateTraining.parseToInt("Ahead"));
+        mainTraining.setCoach(coach);
+        mainTraining.setCategory(category);
+        trainingRepository.saveAndFlush(mainTraining);
+        for(int i = 0; i < dateTimes.size(); ++i) {
+            Training newTraining = new Training(trainingForCreation);
+            newTraining.setDateTime(dateTimes.get(i));
+            newTraining.setCoach(coach);
+            newTraining.setCategory(category);
+            newTraining.setState(StateTraining.parseToInt("Ahead"));
+            newTraining.setParent(mainTraining.getId());
+            trainingRepository.saveAndFlush(newTraining);
+        }
+        return mainTraining;*/
+        return null;
     }
 
     @Override
     public Training approveTraining(String trainingName) throws NoSuchFieldException {
         List<Training> trainings = trainingRepository.findTrainingsByName(trainingName);
-        for(int i = 0; i < trainings.size(); ++i) {
-            trainings.get(i).setState(StateTraining.parseToInt("Ahead"));
-            trainingRepository.saveAndFlush(trainings.get(i));
+        for (Training training : trainings) {
+            training.setState(StateTraining.parseToInt("Ahead"));
+            trainingRepository.saveAndFlush(training);
         }
         return trainings.get(0);
     }
@@ -180,7 +201,7 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
-    public List<Date> getDatesByTrainingNameBeetwenDates(String trainingName, Date firstDate, Date secondDate) {
-        return trainingRepository.findDatesByTrainingNameBeetwenDates(trainingName, firstDate, secondDate);
+    public List<Date> getDatesByTrainingNameBetweenDates(String trainingName, Date firstDate, Date secondDate) {
+        return trainingRepository.findDatesByTrainingNameBetweenDates(trainingName, firstDate, secondDate);
     }
 }

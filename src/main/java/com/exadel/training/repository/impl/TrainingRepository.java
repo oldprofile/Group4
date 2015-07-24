@@ -64,6 +64,6 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
     @Query("select tr.spareUsers from Training as tr where tr.name = ?1 and tr.parent = 0")
     List<User> findSpareUsersByTrainingName(String trainingName);
 
-    @Query("select tr.dateTime from Training as tr where tr.name = ?1 and tr.dateTime >= ?1 and tr.dateTime <= ?2 order by tr.dateTime asc")
-    List<Date> findDatesByTrainingNameBeetwenDates(String trainingName, Date firstDate, Date secondDate);
+    @Query("select tr.dateTime from Training as tr where tr.name = ?1 and tr.dateTime >= ?2 and tr.dateTime <= ?3 order by tr.dateTime asc")
+    List<Date> findDatesByTrainingNameBetweenDates(String trainingName, Date firstDate, Date secondDate);
 }
