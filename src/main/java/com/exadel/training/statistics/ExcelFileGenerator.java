@@ -206,9 +206,7 @@ public class ExcelFileGenerator {
     public String generateForUser(String userLogin) throws IOException {
         String fileName = userLogin + "_omissions" + ".xls";
 
-        // sorted by name
-        List<Training> trainings = userService.selectAllTraining(userLogin);
-        // sorted by dates
+        List<Training> trainings = userService.selectAllTrainingAndSortedByName(userLogin);
         List<Date> dates = userService.selectAllDateOfTrainings(userLogin);
         List<TrainingNameAndDate> trainingNameAndDates = TrainingNameAndDate.parseTrainingList(trainings);
 
@@ -241,7 +239,6 @@ public class ExcelFileGenerator {
         FileOutputStream fileOut = new FileOutputStream(filePath+fileName);
         workbook.write(fileOut);
         fileOut.close();
-        return filePath+fileName;
 
         return filePath+fileName;
     }
