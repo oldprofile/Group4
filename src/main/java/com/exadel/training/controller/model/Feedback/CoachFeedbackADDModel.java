@@ -10,6 +10,7 @@ import java.util.List;
  * Created by asd on 23.07.2015.
  */
 public class CoachFeedbackADDModel implements Serializable {
+
     private boolean howEnounceMaterial;
 
     private boolean explainHardness;
@@ -166,11 +167,11 @@ public class CoachFeedbackADDModel implements Serializable {
         return coachFeedbackADDModel;
     }
 
-    public static List<CoachFeedbackADDModel> parseCoachFeedbackList(List<CoachFeedback> coachFeedbackList) {
-        List<CoachFeedbackADDModel> coachFeedbackADDModelList = new ArrayList<CoachFeedbackADDModel>();
-        for(CoachFeedback coachFeedback: coachFeedbackList) {
-            coachFeedbackADDModelList.add(CoachFeedbackADDModel.parseCoachFeedback(coachFeedback));
+    public static List<CoachFeedbackADDModel> parseCoachFeedbackList(List<CoachFeedback> coachFeedbacks) {
+        List<CoachFeedbackADDModel> coachFeedbackADDModels = new ArrayList<CoachFeedbackADDModel>();
+        for(CoachFeedback coachFeedback: coachFeedbacks) {
+            coachFeedbackADDModels.add(CoachFeedbackADDModel.parseCoachFeedback(coachFeedback));
         }
-        return coachFeedbackADDModelList;
+        return coachFeedbackADDModels;
     }
 }

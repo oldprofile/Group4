@@ -57,7 +57,7 @@ public class UserShort {
         us.setName(user.getName());
         us.setLogin(user.getLogin());
         us.setEmail(user.getEmail());
-
+        us.setNumberPhone(user.getNumberPhone());
         return us;
     }
     public static List<UserShort> parseUserShortList(List<User> userList) {

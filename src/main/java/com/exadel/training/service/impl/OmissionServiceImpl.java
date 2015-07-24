@@ -6,6 +6,7 @@ import com.exadel.training.service.OmissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,8 +29,8 @@ public class OmissionServiceImpl implements OmissionService{
     }
 
     @Override
-    public List<Omission> findByUserLogin(String userlogin) {
-        return omissionRepository.findByUserLogin(userlogin);
+    public List<Omission> findByUserLogin(String userLogin) {
+        return omissionRepository.findByUserLogin(userLogin);
     }
 
     @Override
@@ -41,4 +42,20 @@ public class OmissionServiceImpl implements OmissionService{
     public List<Omission> findByUserLoginAndType(String login, Boolean type) {
         return omissionRepository.findByUserLoginAndType(login, type);
     }
+
+
+    @Override
+    public List<Omission> getOmisssionsByTraining(String trainingName, Date dateFrom, Date dateTo) {
+        return omissionRepository.findByTrainingNameSortedByDate(trainingName, dateFrom, dateTo);
+    }
+
+    @Override
+    public List<Omission> getOmisssionsByUser(String userLogin, Date dateFrom, Date dateTo) {
+        return omissionRepository.findByUserLoginSortedByDate(userLogin, dateFrom, dateTo);
+    }
+
+    @Override
+    public List<Omission> getOmisssionsByTrainingAndUser(String trainingName, String userLogin, Date dateFrom, Date dateTo) {
+        return omissionRepository.findByTrainingNameAndUserLoginSortedByDate(userLogin, trainingName, dateFrom, dateTo);
+   }
 }
