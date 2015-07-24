@@ -1,23 +1,39 @@
 package com.exadel.training.controller.model.News;
 
 import com.exadel.training.model.News;
-import org.springframework.data.domain.Page;
 
 /**
  * Created by HP on 23.07.2015.
  */
 public class NewsPage {
 
-    private Page<News> userNewses;
+    private String name;
+    private String desciption;
 
     public NewsPage(){
     }
 
-    public Page<News> getUserNewses() {
-        return userNewses;
+    public String getName() {
+        return name;
     }
 
-    public void setUserNewses(Page<News> userNewses) {
-        this.userNewses = userNewses;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDesciption() {
+        return desciption;
+    }
+
+    public void setDesciption(String desciption) {
+        this.desciption = desciption;
+    }
+
+    public static NewsPage parseNewsPage(News news) {
+        NewsPage newsPage = new NewsPage();
+         newsPage.setName(news.getUser().getName());
+         newsPage.setDesciption(news.getAction());
+
+        return newsPage;
     }
 }
