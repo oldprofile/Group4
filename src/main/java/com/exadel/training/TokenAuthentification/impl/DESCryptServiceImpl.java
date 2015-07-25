@@ -3,28 +3,23 @@ package com.exadel.training.tokenAuthentification.impl;
 import com.exadel.training.tokenAuthentification.CryptService;
 
 import javax.crypto.*;
+import javax.inject.Singleton;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
 
 /**
  * Created by HP on 18.07.2015.
  */
+@Singleton
 public class DESCryptServiceImpl implements CryptService{
 
    private Cipher ecipher;
    private Cipher dcipher;
-   private static SecretKey key;
+   private  SecretKey key;
 
-   static {
-       try {
-           key = KeyGenerator.getInstance("DES").generateKey();
-       } catch (NoSuchAlgorithmException e) {
-           e.printStackTrace();
-       }
-   }
 
     public DESCryptServiceImpl() throws Exception {
+        key = KeyGenerator.getInstance("DES").generateKey();
         ecipher = Cipher.getInstance("DES");
         dcipher = Cipher.getInstance("DES");
         ecipher.init(Cipher.ENCRYPT_MODE, key);

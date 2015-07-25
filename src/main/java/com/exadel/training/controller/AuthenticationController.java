@@ -1,14 +1,13 @@
 package com.exadel.training.controller;
 
-import com.exadel.training.tokenAuthentification.CryptService;
-import com.exadel.training.tokenAuthentification.impl.DESCryptServiceImpl;
-import com.exadel.training.tokenAuthentification.impl.DecoratorDESCryptServiceImpl;
 import com.exadel.training.controller.model.Authentication;
 import com.exadel.training.model.User;
 import com.exadel.training.service.RoleService;
 import com.exadel.training.service.UserService;
+import com.exadel.training.tokenAuthentification.CryptService;
 import com.twilio.sdk.TwilioRestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 import javax.crypto.BadPaddingException;
@@ -30,16 +29,10 @@ public class AuthenticationController {
     private UserService userService;
     @Autowired
     private RoleService roleService;
-
+    @Autowired
+    @Qualifier("DecoratorDESCryptServiceImpl")
     private CryptService cryptService;
 
-    public AuthenticationController() {
-        try {
-            cryptService = new DecoratorDESCryptServiceImpl(new DESCryptServiceImpl());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     @RequestMapping(value = "/log_password", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody Authentication save(@RequestBody Authentication project, HttpServletResponse httpServletResponse) {

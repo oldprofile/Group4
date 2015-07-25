@@ -14,7 +14,7 @@ public class DecoratorDESCryptServiceImpl implements CryptService {
 
     private CryptService cryptService;
 
-    public DecoratorDESCryptServiceImpl(CryptService cryptService) {
+    public  DecoratorDESCryptServiceImpl(CryptService cryptService) {
         this.cryptService = cryptService;
     }
 
