@@ -44,8 +44,9 @@ public class TrainingServiceImpl implements TrainingService {
 
         List<String> dates = trainingForCreation.getDateTimes();
         List<Date> dateTimes = new ArrayList<>();
-        for (String date : dates)
+        for (String date : dates) {
             dateTimes.add(sdf.parse(date));
+        }
         User coach = userRepository.findUserByLogin(trainingForCreation.getUserLogin());
         Category category = categoryRepository.findById(trainingForCreation.getIdCategory());
 
@@ -57,10 +58,11 @@ public class TrainingServiceImpl implements TrainingService {
         mainTraining.setCategory(category);
         trainingRepository.saveAndFlush(mainTraining);
 
-        for (Date dateTime : dateTimes) {
+        for (int i = 0; i < dateTimes.size(); ++i) {
             Training newTraining = new Training();
             newTraining.fillTraining(trainingForCreation);
-            newTraining.setDateTime(dateTime);
+            newTraining.setDateTime(dateTimes.get(i));
+            newTraining.setPlace(trainingForCreation.getPlaces().get(i));
             newTraining.setCoach(coach);
             newTraining.setCategory(category);
             newTraining.setState(StateTraining.parseToInt("Ahead"));

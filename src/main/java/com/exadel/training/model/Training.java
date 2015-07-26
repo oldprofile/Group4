@@ -27,6 +27,7 @@ public class Training {
 
     private String pictureLink;
 
+    @Column(length = 3000)
     private String description;
 
     private String place;
