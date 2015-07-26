@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,6 +38,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean checkSubscribeToTraining(String trainingName, String login) {
         return userRepository.checkSubscribeToTraining(trainingName,login);
+    }
+
+    @Override
+    public Boolean whoIsUser(String login, long roleId) {
+        return userRepository.whoIsUser(login, roleId);
     }
 
     @Override
@@ -88,6 +94,26 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Training> selectAllTrainingSortedByDateTypeCoachFalse(String login, List<Integer> state) {
         return userRepository.selectAllTrainingSortedByDateTypeCoachFalse(login, state);
+    }
+
+    @Override
+    public List<Training> selectAllTrainingBetweenDatesAndSortedByDate(String login, Date from, Date to) {
+        return userRepository.selectAllTrainingBetweenDatesAndSortedByName(login, from, to);
+    }
+
+    @Override
+    public List<Date> selectAllDateOfTrainingsBetweenDates(String login, Date from, Date to) {
+        return userRepository.selectAllDateOfTrainingsBetweenDates(login, from, to);
+    }
+
+    @Override
+    public List<Training> selectAllTrainingAndSortedByName(String login) {
+        return userRepository.selectAllTrainingAndSortedByName(login);
+    }
+
+    @Override
+    public List<Date> selectAllDateOfTrainings(String login) {
+        return userRepository.selectAllDateOfTrainings(login);
     }
 
     @Override

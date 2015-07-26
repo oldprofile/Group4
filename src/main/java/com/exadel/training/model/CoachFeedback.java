@@ -36,6 +36,8 @@ public class CoachFeedback {
 
     private boolean styleOfTeaching;
 
+    private String other;
+
     @ManyToOne(cascade = CascadeType.ALL)
     private User feedbacker;
 
@@ -48,7 +50,7 @@ public class CoachFeedback {
     public CoachFeedback() {
     }
 
-    public CoachFeedback(boolean howEnounceMaterial, boolean explainHardness, boolean highlightMain, boolean interesting, boolean askingQuestions, boolean explainHowToUseNew, boolean creativity, boolean kindness, boolean patience, boolean erudition, boolean styleOfTeaching, User feedbacker, User coach) {
+    public CoachFeedback(boolean howEnounceMaterial, boolean explainHardness, boolean highlightMain, boolean interesting, boolean askingQuestions, boolean explainHowToUseNew, boolean creativity, boolean kindness, boolean patience, boolean erudition, boolean styleOfTeaching, String other, User feedbacker, User coach) {
         this.howEnounceMaterial = howEnounceMaterial;
         this.explainHardness = explainHardness;
         this.highlightMain = highlightMain;
@@ -62,6 +64,7 @@ public class CoachFeedback {
         this.styleOfTeaching = styleOfTeaching;
         this.feedbacker = feedbacker;
         this.coach = coach;
+        this.other = other;
         this.date = new Date();
     }
 
@@ -175,5 +178,13 @@ public class CoachFeedback {
 
     public void setCoach(User coach) {
         this.coach = coach;
+    }
+
+    public String getOther() {
+        return other;
+    }
+
+    public void setOther(String other) {
+        this.other = other;
     }
 }
