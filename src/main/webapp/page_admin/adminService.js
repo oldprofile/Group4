@@ -8,8 +8,8 @@ angular.module('myApp.admin')
             });     
     };
     
-    adminService.getNews = function() {
-        return $http.get('http://localhost:8080/training_controller/trainings_for_approve')
+    adminService.getNews = function(pageNumber) {
+        return $http.get('http://localhost:8080/news_controller/pages/' + pageNumber)
         .then(function(results) {
             return results.data;
         });

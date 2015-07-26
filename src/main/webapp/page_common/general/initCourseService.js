@@ -12,13 +12,14 @@ angular.module('myApp')
         
         scope.temp = {};
         scope.temp.tempDates = [];
+        scope.temp.place = "";
+        scope.temp.pictureHolder = "";  //pictureLink or pictureData
         
         scope.isAdmin = userService.isAdmin();
         
         scope.courseInfo = {};
         scope.courseInfo.dateTime = [];
-        scope.courseInfo.place="";
-        
+        scope.courseInfo.places = [];
         scope.courseInfo.userLogin = userService.getUser().login;
         
         getCategories.success(function(data) {

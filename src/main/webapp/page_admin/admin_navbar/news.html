@@ -1,11 +1,5 @@
 <div ng-controller="NewsController">
-    <div class="timetable">
-        <h5 class="space-16">What's happening in our little world?</h5>
-        <table class="table">
-            <tr ng-repeat="news in newsList track by $index">
-                <td>{{news}}</td>
-            </tr>
-        </table>
-        </div>
+    <pagination total-items="bigTotalItems" ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm" boundary-links="true">
+    </pagination>
 </div>
 
