@@ -35,6 +35,8 @@ public class CoachFeedbackGETModel implements Serializable {
 
     private boolean styleOfTeaching;
 
+    private String other;
+
     private String coachLogin;
 
     private String date;
@@ -48,7 +50,7 @@ public class CoachFeedbackGETModel implements Serializable {
     public CoachFeedbackGETModel() {
     }
 
-    public CoachFeedbackGETModel(boolean howEnounceMaterial, boolean explainHardness, boolean highlightMain, boolean interesting, boolean askingQuestions, boolean explainHowToUseNew, boolean creativity, boolean kindness, boolean patience, boolean erudition, boolean styleOfTeaching, String coachLogin, Date date, String feedbackerName, String feedbackerLogin) {
+    public CoachFeedbackGETModel(boolean howEnounceMaterial, boolean explainHardness, boolean highlightMain, boolean interesting, boolean askingQuestions, boolean explainHowToUseNew, boolean creativity, boolean kindness, boolean patience, boolean erudition, boolean styleOfTeaching, String other, String coachLogin, Date date, String feedbackerName, String feedbackerLogin) {
         this.howEnounceMaterial = howEnounceMaterial;
         this.explainHardness = explainHardness;
         this.highlightMain = highlightMain;
@@ -60,6 +62,7 @@ public class CoachFeedbackGETModel implements Serializable {
         this.patience = patience;
         this.erudition = erudition;
         this.styleOfTeaching = styleOfTeaching;
+        this.other = other;
         this.coachLogin = coachLogin;
         this.date = sdf.format(date);
         this.feedbackerName = feedbackerName;
@@ -186,10 +189,18 @@ public class CoachFeedbackGETModel implements Serializable {
         this.feedbackerLogin = feedbackerLogin;
     }
 
+    public String getOther() {
+        return other;
+    }
+
+    public void setOther(String other) {
+        this.other = other;
+    }
+
     public static CoachFeedbackGETModel parseCoachFeedback(CoachFeedback coachFeedback) {
         CoachFeedbackGETModel coachFeedbackGETModel = new CoachFeedbackGETModel(coachFeedback.isHowEnounceMaterial(), coachFeedback.isExplainHardness(), coachFeedback.isHighlightMain(),
                 coachFeedback.isInteresting(), coachFeedback.isAskingQuestions(), coachFeedback.isExplainHowToUseNew(), coachFeedback.isCreativity(), coachFeedback.isKindness(), coachFeedback.isPatience(),
-                coachFeedback.isErudition(), coachFeedback.isStyleOfTeaching(), coachFeedback.getCoach().getName(), coachFeedback.getDate(), coachFeedback.getFeedbacker().getName(), coachFeedback.getFeedbacker().getLogin());
+                coachFeedback.isErudition(), coachFeedback.isStyleOfTeaching(), coachFeedback.getOther(), coachFeedback.getCoach().getName(), coachFeedback.getDate(), coachFeedback.getFeedbacker().getName(), coachFeedback.getFeedbacker().getLogin());
         return coachFeedbackGETModel;
     }
 
