@@ -211,7 +211,7 @@ public class TrainingController {
             JSONObject json = (JSONObject) parser.parse(data.trim());
             TrainingForCreation trainingForCreation = new TrainingForCreation(json);
             trainingForCreation.setUserLogin(userLogin);
-            Training training = trainingService.addTraining(trainingForCreation);
+            Training training = trainingService.editTraining(trainingForCreation);
             return new ShortTrainingInfo(training);
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
