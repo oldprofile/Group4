@@ -79,7 +79,6 @@ public class Training {
         audience = trainingForCreation.getAudience();
         pictureLink = trainingForCreation.getPictureLink();
         additional = trainingForCreation.getAdditional();
-        parent = 0;
     }
 
     public long getId() {

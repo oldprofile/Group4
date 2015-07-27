@@ -1,6 +1,9 @@
 package com.exadel.training.notification.mail;
 
 
+import org.springframework.stereotype.*;
+import org.springframework.stereotype.Service;
+
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -9,6 +12,7 @@ import java.util.Properties;
 /**
  * Created by HP on 16.07.2015.
  */
+@Service
 public class WrapperNotificationMail {
 
     private final String username = "mrartem6695@gmail.com";
