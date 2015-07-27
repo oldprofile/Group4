@@ -49,15 +49,17 @@ public class TrainingServiceImpl implements TrainingService {
         }
         User coach = userRepository.findUserByLogin(trainingForCreation.getUserLogin());
         Category category = categoryRepository.findById(trainingForCreation.getIdCategory());
+        int state;
+        String place;
+        if (userRepository.whoIsUser(trainingForCreation.getUserLogin(), 1)) {
+            state = StateTraining.parseToInt("Ahead");
+            place = trainingForCreation.getPlaces().get(0);
+        } else {
+            state = StateTraining.parseToInt("Draft");
+            place = null;
+        }
 
-        Training mainTraining = new Training();
-        mainTraining.fillTraining(trainingForCreation);
-        mainTraining.setDateTime(dateTimes.get(0));
-        mainTraining.setState(StateTraining.parseToInt("Ahead"));
-        mainTraining.setCoach(coach);
-        mainTraining.setCategory(category);
-        trainingRepository.saveAndFlush(mainTraining);
-
+        Training mainTraining = null;
         for (int i = 0; i < dateTimes.size(); ++i) {
             Training newTraining = new Training();
             newTraining.fillTraining(trainingForCreation);
@@ -65,8 +67,14 @@ public class TrainingServiceImpl implements TrainingService {
             newTraining.setPlace(trainingForCreation.getPlaces().get(i));
             newTraining.setCoach(coach);
             newTraining.setCategory(category);
-            newTraining.setState(StateTraining.parseToInt("Ahead"));
-            newTraining.setParent(mainTraining.getId());
+            newTraining.setPlace(place);
+            newTraining.setState(state);
+            if (i == 0) {
+                mainTraining = newTraining;
+                newTraining.setParent(0);
+            } else {
+                newTraining.setParent(mainTraining.getId());
+            }
             trainingRepository.saveAndFlush(newTraining);
         }
         return mainTraining;
@@ -116,21 +124,25 @@ public class TrainingServiceImpl implements TrainingService {
             dateTimes.add(sdf.parse(date));
         Category category = categoryRepository.findById(trainingForCreation.getIdCategory());
 
-        Training mainTraining = trainingRepository.findByName(trainingForCreation.getName());
-        mainTraining.fillTraining(trainingForCreation);
-        mainTraining.setCategory(category);
-        mainTraining.setState(StateTraining.parseToInt("Ahead"));
-        List<Training> trainings = trainingRepository.findTrainingsByNameExceptParent(trainingForCreation.getName());
+        int state;
+        String place = null;
+        if (userRepository.whoIsUser(trainingForCreation.getUserLogin(), 1)) {
+            state = StateTraining.parseToInt("Ahead");
+            place = trainingForCreation.getPlaces().get(0);
+        } else {
+            state = StateTraining.parseToInt("Edited");
+        }
+        List<Training> trainings = trainingRepository.findTrainingsByName(trainingForCreation.getName());
         for(int i = 0; i < trainings.size(); ++i) {
             Training training = trainings.get(i);
-            if (training.getParent() != 0) {
-                training.fillTraining(trainingForCreation);
-                training.setDateTime(dateTimes.get(i));
-                training.setCategory(category);
-                training.setState(StateTraining.parseToInt("Ahead"));
-            }
+            training.fillTraining(trainingForCreation);
+            training.setDateTime(dateTimes.get(i));
+            training.setCategory(category);
+            training.setState(state);
+            if(place != null)
+                training.setPlace(place);
         }
-        return mainTraining;
+        return trainings.get(0);
     }
 
     @Override
@@ -152,13 +164,6 @@ public class TrainingServiceImpl implements TrainingService {
     @Transactional
     public Training deleteTrainingsByName(String trainingName) {
         List<Training> trainings = trainingRepository.findTrainingsByName(trainingName);
-        /*for(Training training: trainings){
-            training.setCategory(null);
-            training.setFeedbacks(null);
-            training.setCoach(null);
-            trainingRepository.saveAndFlush(training);
-            trainingRepository.delete(training);
-        }*/
         trainingRepository.deleteTrainingsByName(trainingName);
         return trainings.get(0);
     }
@@ -210,6 +215,11 @@ public class TrainingServiceImpl implements TrainingService {
     @Override
     public List<User> getListenersByTrainingNameSortByName(String trainingName) {
         return trainingRepository.findListenersByTrainingNameSortByName(trainingName);
+    }
+
+    @Override
+    public List<String> getPlacesByTrainingName(String trainingName) {
+        return trainingRepository.findPlacesByTrainingName(trainingName);
     }
 
 

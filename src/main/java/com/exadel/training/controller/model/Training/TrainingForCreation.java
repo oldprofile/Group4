@@ -22,7 +22,6 @@ public class TrainingForCreation {
     private int participantsNumber;
     private String pictureData;
     private String pictureLink;
-    private String additional;
     private String audience;
     private String language;
     private boolean isInternal;
@@ -72,7 +71,6 @@ public class TrainingForCreation {
         isInternal = (Boolean)json.get("isInternal");
         audience = (String)json.get("audience");
         participantsNumber = Integer.parseInt(String.valueOf(json.get("participantsNumber")));
-        additional = (String)json.get("additional");
         name = (String)json.get("name");
         description = (String)json.get("description");
         language = (String)json.get("language");
@@ -122,14 +120,6 @@ public class TrainingForCreation {
 
     public void setParticipantsNumber(int participantsNumber) {
         this.participantsNumber = participantsNumber;
-    }
-
-    public String getAdditional() {
-        return additional;
-    }
-
-    public void setAdditional(String additional) {
-        this.additional = additional;
     }
 
     public String getAudience() {

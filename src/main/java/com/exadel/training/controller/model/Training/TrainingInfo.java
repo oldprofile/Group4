@@ -20,7 +20,7 @@ public class TrainingInfo {
     private String coachName;
     private String pictureLink;
     private String description;
-    private String place;
+    private List<String> places;
     private int lessonNumber;
     private int idCategory;
     private int participantsNumber;
@@ -43,16 +43,17 @@ public class TrainingInfo {
     public TrainingInfo() {
     }
 
-    public TrainingInfo(Training training, List<Date> dateTimes/*, List<User> listeners, List<User> spareUsers*/) throws NoSuchFieldException {
+    public TrainingInfo(Training training, List<Date> dateTimes, List<String> places) throws NoSuchFieldException {
         name = training.getName();
         this.dateTimes = new ArrayList<>();
-        for(int i = 1; i < dateTimes.size(); ++i)
+        for(int i = 1; i < dateTimes.size(); ++i) {
             this.dateTimes.add(sdf.format(dateTimes.get(i)));
-        lessonNumber = dateTimes.size() - 1;
+            this.places.add(places.get(i));
+        }
+        lessonNumber = dateTimes.size();
         coachName = training.getCoach().getName();
         pictureLink = training.getPictureLink();
         description = training.getDescription();
-        place = training.getPlace();
         idCategory = training.getCategory().getId();
         participantsNumber = training.getAmount();
         rating = training.getRating();
@@ -102,12 +103,12 @@ public class TrainingInfo {
         this.description = description;
     }
 
-    public String getPlace() {
-        return place;
+    public List<String> getPlaces() {
+        return places;
     }
 
-    public void setPlace(String place) {
-        this.place = place;
+    public void setPlaces(List<String> places) {
+        this.places = places;
     }
 
     public int getIdCategory() {

@@ -76,7 +76,6 @@ public class Training {
         language = LanguageTraining.parseToInt(trainingForCreation.getLanguage());
         isInternal = trainingForCreation.isInternal();
         amount = trainingForCreation.getParticipantsNumber();
-        additional = trainingForCreation.getAdditional();
         audience = trainingForCreation.getAudience();
         pictureLink = trainingForCreation.getPictureLink();
         parent = 0;
