@@ -2,6 +2,7 @@ package com.exadel.training.repository.impl;
 
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -74,5 +75,6 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
     @Query("select tr.dateTime from Training as tr where tr.name = ?1 and tr.dateTime >= ?2 and tr.dateTime <= ?3 order by tr.dateTime asc")
     List<Date> findDatesByTrainingNameBetweenDates(String trainingName, Date firstDate, Date secondDate);
 
-
+    @Query("select tr.place from Training as tr where tr.name= ?1 order by tr.dateTime asc")
+    List<String> findPlacesByTrainingName(String trainingName);
 }

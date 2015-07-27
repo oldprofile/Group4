@@ -26,21 +26,6 @@ angular.module('myApp.profile')
     }).error(function(err){
       return err;});
   }
-    
-    profileService.getCoachFeedbacks = function(data){
-    return $http.post('/feedbacks/coach_feedback',data).success(function(data){
-      return data;
-    }).error(function(err){
-      return err;});
-  };
-  
-  profileService.getStudentFeedbacks = function(data){
-    return $http.post('/feedbacks/user_feedback',data).success(function(data){
-      return data;
-    }).error(function(err){
-      return err;});
-    
-}
      
     
   return profileService
