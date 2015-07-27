@@ -6,11 +6,9 @@ import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
 import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
-import com.exadel.training.tokenAuthentification.CryptService;
 import com.exadel.training.tokenAuthentification.SessionToken;
 import com.twilio.sdk.TwilioRestException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,9 +33,6 @@ public class UserController {
     private UserService userService;
     @Autowired
     private TrainingService trainingService;
-    @Autowired
-    @Qualifier("decoratorDESCryptServiceImpl")
-    private CryptService cryptService;
     @Autowired
     private SessionToken sessionToken;
     //  @Autowired
@@ -309,7 +304,7 @@ public class UserController {
                                                          HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException {
 
         String header = httpServletRequest.getHeader("authorization");
-        String mainLogin = cryptService.decrypt(header);
+        String mainLogin = httpServletRequest.getHeader("login");
         List<UserShort> userShorts = new ArrayList<>();
 
         if(userService.checkUserByLogin(mainLogin)) {
