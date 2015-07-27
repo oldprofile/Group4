@@ -60,7 +60,7 @@ angular.module('myApp.courseinfo')
   
     
     $scope.leaveFeedback = function(){
-
+      
       var feedbackModalInstance = $modal.open({
       animation: true,
       templateUrl: 'page_courseinfo/feedback.html',

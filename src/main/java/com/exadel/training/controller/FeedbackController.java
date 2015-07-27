@@ -2,7 +2,10 @@ package com.exadel.training.controller;
 
 import com.exadel.training.controller.model.Feedback.*;
 import com.exadel.training.model.*;
+import com.exadel.training.notification.mail.WrapperNotificationMail;
+import com.exadel.training.notification.sms.WrapperNotificationSMS;
 import com.exadel.training.service.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +34,12 @@ public class FeedbackController {
 
     @Autowired
     CoachFeedbackService coachFeedbackService;
+
+    @Autowired
+    WrapperNotificationMail wrapperNotificationMail;
+
+    @Autowired
+    WrapperNotificationSMS wrapperNotificationSMS;
 
     @RequestMapping(value = "/user_feedback", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody List<UserFeedbackGETModel> getUserFeedbacks(@RequestBody String login)  {
@@ -89,5 +98,16 @@ public class FeedbackController {
         }
         else
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+    }
+
+    @RequestMapping(value = "/request_user_feedback", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody void addTrainingFeedback(@RequestBody String userLogin, String trainingName, HttpServletResponse response) {
+        User coach = trainingService.getTrainingByName(trainingName).getCoach();
+        try {
+                wrapperNotificationMail.sendMessage(coach.getEmail(), "text", "topic");
+                response.setStatus(HttpServletResponse.SC_OK);
+            } catch (Exception e) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            }
     }
 }
