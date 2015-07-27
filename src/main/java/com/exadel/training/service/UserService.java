@@ -3,7 +3,6 @@ package com.exadel.training.service;
 import com.exadel.training.common.RoleType;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.Date;
 import java.util.List;
@@ -39,4 +38,5 @@ public interface UserService {
     void deleteUserTrainingRelationShip(String login, String trainingName);
     void insertUserTrainingRelationShip(String login, String trainingName);
     void saveUser(User user);
+    void insertNumberOfTelephone(String login, String number);
 }

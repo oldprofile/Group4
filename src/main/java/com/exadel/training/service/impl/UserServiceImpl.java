@@ -19,9 +19,9 @@ import java.util.List;
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
+
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private TrainingRepository trainingRepository;
 
@@ -143,5 +143,12 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void saveUser(User user) {
         userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void insertNumberOfTelephone(String login, String number) {
+        User user = userRepository.findUserByLogin(login);
+        user.setNumberPhone(number);
     }
 }

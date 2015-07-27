@@ -381,6 +381,7 @@ public class UserController {
 
 
         //   List<User> users = userService.searchUsersByName("art");
+        userService.insertNumberOfTelephone("1","+375291396905");
 
         Boolean is = userService.checkSubscribeToTraining(1L,1L);
         Boolean i = userService.checkSubscribeToTraining("Front end","1");
