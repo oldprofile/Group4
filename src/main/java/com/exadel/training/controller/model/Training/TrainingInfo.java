@@ -46,7 +46,8 @@ public class TrainingInfo {
     public TrainingInfo(Training training, List<Date> dateTimes, List<String> places) throws NoSuchFieldException {
         name = training.getName();
         this.dateTimes = new ArrayList<>();
-        for(int i = 1; i < dateTimes.size(); ++i) {
+        this.places = new ArrayList<>();
+        for(int i = 0; i < dateTimes.size(); ++i) {
             this.dateTimes.add(sdf.format(dateTimes.get(i)));
             this.places.add(places.get(i));
         }

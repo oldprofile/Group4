@@ -78,6 +78,7 @@ public class Training {
         amount = trainingForCreation.getParticipantsNumber();
         audience = trainingForCreation.getAudience();
         pictureLink = trainingForCreation.getPictureLink();
+        additional = trainingForCreation.getAdditional();
         parent = 0;
     }
 

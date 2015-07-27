@@ -27,6 +27,7 @@ public class TrainingForCreation {
     private boolean isInternal;
     private List<String> places;
     private List<String> dateTimes;
+    private String additional;
 
     public TrainingForCreation() {
     }
@@ -70,6 +71,7 @@ public class TrainingForCreation {
         }
         isInternal = (Boolean)json.get("isInternal");
         audience = (String)json.get("audience");
+        additional = (String)json.get("additional");
         participantsNumber = Integer.parseInt(String.valueOf(json.get("participantsNumber")));
         name = (String)json.get("name");
         description = (String)json.get("description");
@@ -168,5 +170,21 @@ public class TrainingForCreation {
 
     public void setPlaces(List<String> places) {
         this.places = places;
+    }
+
+    public String getPictureData() {
+        return pictureData;
+    }
+
+    public void setPictureData(String pictureData) {
+        this.pictureData = pictureData;
+    }
+
+    public String getAdditional() {
+        return additional;
+    }
+
+    public void setAdditional(String additional) {
+        this.additional = additional;
     }
 }
