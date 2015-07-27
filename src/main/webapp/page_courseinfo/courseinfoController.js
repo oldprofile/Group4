@@ -6,10 +6,6 @@ angular.module('myApp.courseinfo')
     $scope.isContentLoaded = false;
     $scope.course = {};
     
-    
-    
-  
-    
     var courseInfoData1 = {
         login: userService.getUser().login,
         nameTraining: $routeParams.coursename
@@ -83,7 +79,6 @@ angular.module('myApp.courseinfo')
     }
     
     $scope.viewFeedback = function(feedback){
-      ;
       var feedbackModalInstance = $modal.open({
       animation: true,
       templateUrl: 'page_courseinfo/feedback.html',
@@ -95,7 +90,7 @@ angular.module('myApp.courseinfo')
         },
       }
     });
-    
+      
     feedbackModalInstance.result.then(function (feedback) {
       //
     }, function () {
@@ -104,6 +99,26 @@ angular.module('myApp.courseinfo')
     
     }
     
+    $scope.editDatePlace = function(course, index) {
+      var dateModalInstance = $modal.open({
+        animation: true,
+        templateUrl: "",
+        controller: "",
+        size: "lg",
+        resolve: {
+          course: function() {
+            return course;
+          },
+          index : function() {
+            return index;
+          }
+        },
+      });
+      
+      dateModalInstance.result.then(function () {
+      }, function() {
+      });
+    };  
 }])
 
 
@@ -145,4 +160,8 @@ angular.module('myApp.courseinfo')
   $scope.cancel = function () {
     $modalInstance.dismiss('cancel');
   };
+}])
+
+.controller('EditDateModalInstanceController',  ['$scope', '$modalInstance', 'course', 'index', function($scope, $modalInstance, course, index) {
+  
 }]);
