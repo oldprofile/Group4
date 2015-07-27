@@ -6,6 +6,7 @@ import com.twilio.sdk.resource.factory.MessageFactory;
 import com.twilio.sdk.resource.instance.Account;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 /**
  * Created by HP on 16.07.2015.
  */
-
+@Service
 public class WrapperNotificationSMS {
     // Account Sid and Token
     public static final String ACCOUNT_SID = "AC153d280ddafbd38701dcf24ba171b762";
