@@ -86,7 +86,7 @@ public class TrainingController {
         if (userService.checkUserByLogin(userLogin)) {
             Training training = trainingService.getTrainingByName(trainingName);
             TrainingInfo trainingInfo = new TrainingInfo(training,
-                    trainingService.getDatesByTrainingName(trainingName));
+                    trainingService.getDatesByTrainingName(trainingName), trainingService.getPlacesByTrainingName(trainingName));
             if (trainingService.getTrainingByNameAndUserLogin(trainingName, userLogin) != null)
                 trainingInfo.setIsSubscriber(true);
             if (userLogin.equals(training.getCoach().getName()))
@@ -246,7 +246,6 @@ public class TrainingController {
         TrainingForCreation trainingForCreation = new TrainingForCreation();
         trainingForCreation.setName("training");
         trainingForCreation.setLanguage("English");
-        trainingForCreation.setAdditional("");
         trainingForCreation.setAudience("");
         ArrayList<String> list = new ArrayList<>();
         list.add("1-1-2015 23:23:23");
@@ -273,7 +272,7 @@ public class TrainingController {
         String userLogin = "1";
         Training training = trainingService.getTrainingByName(trainingName);
         TrainingInfo trainingInfo = new TrainingInfo(training,
-                trainingService.getDatesByTrainingName(trainingName));
+                trainingService.getDatesByTrainingName(trainingName), trainingService.getPlacesByTrainingName(trainingName));
         trainingInfo.setIsSubscriber(trainingService.getTrainingByNameAndUserLogin(trainingName, userLogin) != null);
         trainingInfo.setIsCoach(userLogin.equals(training.getCoach().getLogin()));
         trainingInfo.setIsCoach(userLogin.equals(trainingInfo.getCoachName()));

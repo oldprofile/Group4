@@ -20,12 +20,14 @@ public class TrainingForCreation {
     private String description;
     private int idCategory;
     private int participantsNumber;
+    private String pictureData;
     private String pictureLink;
-    private String additional;
     private String audience;
     private String language;
     private boolean isInternal;
+    private List<String> places;
     private List<String> dateTimes;
+    private String additional;
 
     public TrainingForCreation() {
     }
@@ -61,16 +63,25 @@ public class TrainingForCreation {
         for (Object jsonDate : jsonDates) {
             dateTimes.add((String) jsonDate);
         }
+
+        JSONArray jsonPlaces = (JSONArray) json.get("places");
+        places = new ArrayList<>();
+        for (Object jsonPlace : jsonPlaces) {
+            places.add((String) jsonPlace);
+        }
         isInternal = (Boolean)json.get("isInternal");
         audience = (String)json.get("audience");
-        participantsNumber = Integer.parseInt(String.valueOf(json.get("participantsNumber")));
         additional = (String)json.get("additional");
+        participantsNumber = Integer.parseInt(String.valueOf(json.get("participantsNumber")));
         name = (String)json.get("name");
         description = (String)json.get("description");
         language = (String)json.get("language");
         idCategory = Integer.parseInt(String.valueOf(json.get("idCategory")));
-        String pictureData = (String)json.get("pictureLink");
-        pictureLink = createFile(pictureData, "\\image_storage\\", name);
+        pictureData = (String)json.get("pictureData");
+        if (pictureData == null)
+            pictureLink = (String)json.get("pictureLink");
+        else
+            pictureLink = createFile(pictureData, "\\image_storage\\", name);
     }
 
     public String getName() {
@@ -113,14 +124,6 @@ public class TrainingForCreation {
         this.participantsNumber = participantsNumber;
     }
 
-    public String getAdditional() {
-        return additional;
-    }
-
-    public void setAdditional(String additional) {
-        this.additional = additional;
-    }
-
     public String getAudience() {
         return audience;
     }
@@ -159,5 +162,29 @@ public class TrainingForCreation {
 
     public void setPictureLink(String pictureLink) {
         this.pictureLink = pictureLink;
+    }
+
+    public List<String> getPlaces() {
+        return places;
+    }
+
+    public void setPlaces(List<String> places) {
+        this.places = places;
+    }
+
+    public String getPictureData() {
+        return pictureData;
+    }
+
+    public void setPictureData(String pictureData) {
+        this.pictureData = pictureData;
+    }
+
+    public String getAdditional() {
+        return additional;
+    }
+
+    public void setAdditional(String additional) {
+        this.additional = additional;
     }
 }

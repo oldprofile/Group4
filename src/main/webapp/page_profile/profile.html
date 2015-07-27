@@ -1,11 +1,95 @@
 
+<div ng-class="{ 'waiting-for-angular': !isContentLoaded }">
+  <div ng-show="isContentLoaded" class="row">
+    <div class="col-xs-12">
+      <h3>{{user.name}}</h3>
+      <h4>{{user.email}}</h3>
+      <input type="button" class="btn btn-primary btn-sm" value="Leave Student feedback" ng-click="leaveStudentFeedback()">
+      <input type="button" class="btn btn-primary btn-sm" value="Leave Coach feedback" ng-click="leaveCoachFeedback()">
+      <input type="button" class="btn btn-primary btn-sm" value="Request feedback" ng-click="RequestFeedback()">
 
-<div class="row">
-    <div class="col-xs-6">
-        <h3>{{user.name}}</h3>
-        <h4>{{user.email}}</h3>
-        <input type="button" class="btn btn-primary" value="Leave feedback">
-        <input type="button" class="btn btn-primary" value="Request feedback">
-    </div>
-    
+
+    </div> 
+      <div class="col-xs-12">
+      <h4>Feedbacks</h4>
+        <h5>Student Feedbacks</h5>
+          <table class="table">
+            <thead>
+              <tr>
+                  <th>#</th>
+                  <th>From</th>
+                  <th>When</th>
+                  <th>View</th>
+              </tr>
+            </thead>
+            <tr ng-repeat="f in studentFeedbacks">
+              <td>{{$index + 1}}</td>
+              <td>{{ f.feedbackerName}}</td>
+              <td>{{ f.date | date:"mediumDate" }}</td>
+              <td> <a ng-click="leaveStudentFeedback(f)">show me</a></td>
+            </tr>
+          </table>
+
+
+        <h5>Coach Feedbacks</h5>
+        <table class="table">
+            <thead>
+              <tr>
+                  <th>#</th>
+                  <th>From</th>
+                  <th>When</th>
+                  <th>View</th>
+              </tr>
+            </thead>
+            <tr ng-repeat="f in coachFeedbacks">
+              <td>{{$index + 1}}</td>
+              <td>{{ f.feedbackerName}}</td>
+              <td>{{ f.date | date:"mediumDate" }}</td>
+              <td> <a ng-click="leaveCoachFeedback(f)">show me</a></td>
+            </tr>
+          </table>  
+      </div>
+
+
+    <div class="col-xs-12">
+      <h4>Archive</h4>
+        <h5>Student Archive</h5>
+          <table class="table">
+            <thead>
+              <tr>
+                  <th>#</th>
+                  <th>Course</th>
+                  <th>State</th>
+                  <th>Start Date</th>
+              </tr>
+            </thead>
+            <tr ng-repeat="f in studentArchive">
+              <td>{{$index + 1}}</td>
+              <td>{{ f.trainingName}}</td>
+              <td>{{f.state}}</td>
+              <td>{{ f.dateTraining | date:"mediumDate" }}</td>
+            </tr>
+          </table>
+
+
+        <h5>Coach Archive</h5>
+        <table class="table">
+            <thead>
+              <tr>
+                  <th>#</th>
+                  <th>Course</th>
+                  <th>State</th>
+                  <th>Start Date</th>
+              </tr>
+            </thead>
+            <tr ng-repeat="f in coachArchive">
+              <td>{{$index + 1}}</td>
+              <td>{{ f.trainingName}}</td>
+              <td>{{f.state}}</td>
+              <td>{{ f.dateTraining | date:"mediumDate" }}</td>
+            </tr>
+          </table>  
+      </div>
+
+  </div>
 </div>

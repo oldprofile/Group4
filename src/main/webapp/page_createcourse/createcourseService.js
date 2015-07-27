@@ -3,7 +3,7 @@ angular.module('myApp.createcourse')
     
     var createcourse = {};
     
-    createcourse.createCourse = function(courseData){
+    createcourse.createCourse = function(courseData) {
         var fd = new FormData();
         fd.append('courseInfo', JSON.stringify(courseData));
         
@@ -12,16 +12,38 @@ angular.module('myApp.createcourse')
                 'Content-Type' : undefined
             },
             transformRequest : angular.identity
-        })
-            .success(function(data) {
+        }).then(function(results) {
             alert('Course created successfully!');
             $location.path("/mycourses");
-            return data;
-        })
-            .error(function(err) {
-              return err;
-            }) 
+            return results.data;
+        });
     }
     return createcourse;
 }
 ]);
+
+angular.module('myApp.createcourse')
+.factory('editcourse',['$http', '$location', function($http, $location) {
+    
+    var editcourse = {};
+    
+    editcourse.editCourse = function(courseData){
+        var fd = new FormData();
+        fd.append('courseInfo', JSON.stringify(courseData));
+        
+        return $http.post('/training_controller/edit_training', fd, {
+            headers : {
+                'Content-Type' : undefined
+            },
+            transformRequest : angular.identity
+        })
+            .then(function(results) {
+            alert('Course edited successfully!');
+            $location.path("/mycourses");
+            return results.data;
+        });
+    }
+    return editcourse;
+}
+]);
+

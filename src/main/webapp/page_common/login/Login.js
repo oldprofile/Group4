@@ -18,7 +18,7 @@
             password: $scope.password,
         }
         
-        alert(JSON.stringify(loginData));
+        
         loginService.postLoginCred(loginData).success(function(data){
         }).error(function(error){
             alert("login error from server");
