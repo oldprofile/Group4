@@ -13,6 +13,7 @@ import com.exadel.training.tokenAuthentification.CryptService;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,7 +42,9 @@ public class TrainingController {
     UserService userService;
     @Autowired
     TrainingFeedbackService feedbackService;
-    CryptService cryptService;
+    @Autowired
+    @Qualifier("decoratorDESCryptServiceImpl")
+    private CryptService cryptService;
 
    /* public TrainingController() {
         try {

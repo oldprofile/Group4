@@ -61,9 +61,10 @@ public class AuthenticationController {
     @RequestMapping(value = "/logout", method = RequestMethod.POST,  consumes = "application/json")
     public void logout(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException {
         String header = httpServletRequest.getHeader("authorization");
-        String login = cryptService.decrypt(header);
+        String login = httpServletRequest.getHeader("login");
 
-        if(userService.checkUserByLogin(login)) {
+        if(sessionToken.containsToken(header)) {
+            sessionToken.deleteToken(login, header);
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
