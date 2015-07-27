@@ -6,7 +6,7 @@ angular.module('myApp.browse')
     $scope.coachFeedbacks = [];    
     
     $scope.coachArchive = [];
-    $scope.studentArchvive = [];   
+    $scope.studentArchive = [];   
                                    
     if($routeParams.userLogin === undefined){
         userlogin = userService.getUser().login;
@@ -15,32 +15,39 @@ angular.module('myApp.browse')
     }
                                    
                                    
-                                   
+       var gettingUserProfileData = function(rights){
+        //rights access goes here
+
+             var data = $scope.user;
+
+          feedbacksService.getStudentFeedbacks(data.login).success(function(studentFeedbacks){
+            console.log("studentFeedbacks:" + JSON.stringify(studentFeedbacks));
+            $scope.studentFeedbacks = studentFeedbacks;
+          });
+
+          feedbacksService.getCoachFeedbacks(data.login).success(function(coachFeedbacks){
+            console.log("coachFeedbacks:" + JSON.stringify(coachFeedbacks));
+            $scope.coachFeedbacks = coachFeedbacks;
+          });
+
+          profileService.getUsersStudentArchive({login:data.login,state:[2,3,5,6]}).success(function(studentArchive){
+            console.log("studentArhcive:" + JSON.stringify(studentArchive));
+            $scope.studentArchive = studentArchive;
+          });
+
+          profileService.getUsersCoachArchive({login:data.login,state:[2,3,5,6]}).success(function(coachArchive){
+            console.log("coachArchive:" + JSON.stringify(coachArchive));
+            $scope.coachArchive = coachArchive;
+          });
+         
+       
+       }                            
                                    
     profileService.getUserInfo(userlogin).success(function(data){
       alert("User" + JSON.stringify(data));
       $scope.user = data;
       $scope.isContentLoaded = true;
-      
-      feedbacksService.getStudentFeedbacks(data.login).success(function(studentFeedbacks){
-        console.log("studentFeedbacks:" + JSON.stringify(studentFeedbacks));
-        $scope.studentFeedbacks = studentFeedbacks;
-      });
-      
-      feedbacksService.getCoachFeedbacks(data.login).success(function(coachFeedbacks){
-        console.log("coachFeedbacks:" + JSON.stringify(coachFeedbacks));
-        $scope.coachFeedbacks = coachFeedbacks;
-      });
-      
-      profileService.getUsersStudentArchive({login:data.login,state:[2,3,5,6]}).success(function(studentArchive){
-        console.log("studentArhcive:" + JSON.stringify(studentArchive));
-        $scope.studentArchvive = studentArchive;
-      });
-      
-      profileService.getUsersCoachArchive({login:data.login,state:[2,3,5,6]}).success(function(coachArchive){
-        console.log("coachArchive:" + JSON.stringify(coachArchive));
-        $scope.coachArchive = coachArchive;
-      });
+      gettingUserProfileData();
 
 
     }).error(function(err,status){
@@ -69,7 +76,9 @@ angular.module('myApp.browse')
     
     feedbackModalInstance.result.then(function (feedback) {
       alert("Creating User Feedback" + JSON.stringify(feedback))   
-      feedbacksService.createUserFeedback(feedback);
+      feedbacksService.createUserFeedback(feedback).success(function(){
+        gettingUserProfileData();
+      });
       
     }, function () {
       //cancel feedback
@@ -96,7 +105,9 @@ angular.module('myApp.browse')
     
     feedbackModalInstance.result.then(function (feedback) {
       alert("Creating Coach Feedback" + JSON.stringify(feedback))   
-      feedbacksService.createCoachFeedback(feedback);
+      feedbacksService.createCoachFeedback(feedback).success(function(){
+        gettingUserProfileData();
+      });
       
     }, function () {
       //cancel feedback
@@ -174,7 +185,7 @@ angular.module('myApp.browse')
 
 
 
-      //other: "",
+      other: "",
     
     };
     
@@ -187,7 +198,7 @@ angular.module('myApp.browse')
   
   
   $scope.ok = function () {
-    $scope.feedback.userLogin = user.login;
+    $scope.feedback.coachLogin = user.login;
     $scope.feedback.feedbackerLogin = userService.getUser().login; 
     $modalInstance.close($scope.feedback);
   };

@@ -12,7 +12,7 @@ angular.module("feedbacks.myApp",[])
     
     getTrainingFeedbacks : function(trainingName){
       return $http.post("feedbacks/training_feedback",trainingName).success(function(data){
-        alert("Feedbacks: " + JSON.stringify(data));
+        console.log("Feedbacks: " + JSON.stringify(data));
     return data
   }).error(function(err){
     return err;

@@ -8,8 +8,8 @@ angular.module('myApp.mycourses')
     $scope.isContentLoaded = false;
     
     mycourses.getAllActualUserCourses().success(function(data) {
-      debugger
-        alert("mycourses success")
+      
+        
         console.log("Getting courses: " + JSON.stringify(data));
         if(data.length === 0){
             $scope.isNoCourses = true;
