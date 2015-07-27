@@ -19,7 +19,10 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
     //Training findTrainingName( String name);
 
     @Query(value = "select tr from Training tr where tr.name = ?1")
-    List<Training> findTrainingsByName( String name);
+    List<Training> findTrainingsByName(String name);
+
+    @Query(value = "select tr from Training tr where tr.name = ?1 and tr.parent = 0")
+    Training findTrainingByName(String name);
 
     @Query("select tr from Training tr where tr.name = ?1 and tr.parent not in(0)")
     List<Training> findTrainingsByNameExceptParent(String name);
@@ -50,6 +53,10 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
     @Modifying
     @Query(value = "delete from trainings where name = ?1", nativeQuery = true)
     void deleteTrainingsByName(String trainingName);
+
+    @Modifying
+    @Query(value = "delete from trainings where id = ?1", nativeQuery = true)
+    void deleteTrainingsById(long trainingId);
 
     @Query("select tr from Training as tr where tr.name like ?1")
     List<Training> searchTrainingsByName(String trainingName);

@@ -30,8 +30,11 @@ import java.util.List;
 @EnableScheduling
 public class ScheduledTasksService {
 
-    private WrapperNotificationMail wrapperNotificationMail = new WrapperNotificationMail();
-    private WrapperNotificationSMS wrapperNotificationSMS = new WrapperNotificationSMS();
+    @Autowired
+    WrapperNotificationMail wrapperNotificationMail;
+
+    @Autowired
+    WrapperNotificationSMS wrapperNotificationSMS;
 
     @Autowired
     TrainingService trainingService;

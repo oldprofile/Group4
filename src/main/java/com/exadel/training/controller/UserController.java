@@ -7,10 +7,10 @@ import com.exadel.training.model.User;
 import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
 import com.exadel.training.tokenAuthentification.CryptService;
-import com.exadel.training.tokenAuthentification.impl.DESCryptServiceImpl;
-import com.exadel.training.tokenAuthentification.impl.DecoratorDESCryptServiceImpl;
+import com.exadel.training.tokenAuthentification.SessionToken;
 import com.twilio.sdk.TwilioRestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,17 +35,13 @@ public class UserController {
     private UserService userService;
     @Autowired
     private TrainingService trainingService;
+    @Autowired
+    @Qualifier("decoratorDESCryptServiceImpl")
     private CryptService cryptService;
+    @Autowired
+    private SessionToken sessionToken;
     //  @Autowired
     //  private Session session;
-
-    public UserController() {
-        try {
-            cryptService = new DecoratorDESCryptServiceImpl(new DESCryptServiceImpl());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     @RequestMapping(value = "/find_by_role/{type}", method = RequestMethod.GET)
     public @ResponseBody List<UserShort> findByRole(@PathVariable("type") int type,
@@ -265,10 +261,10 @@ public class UserController {
                                                                                HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
 
         String header = httpServletRequest.getHeader("authorization");
-        String login = cryptService.decrypt(header);
+        String login = httpServletRequest.getHeader("login");
         List<AllTrainingUserShort> allTrainingUserShorts = new ArrayList<>();
 
-        if(userService.checkUserByLogin(login)) {
+        if(sessionToken.containsToken(header)) {
             List<Training> trainings = userService.selectAllTrainingSortedByDate(loginAndState.getLogin(), loginAndState.getState());
             User user = userService.findUserByLogin(loginAndState.getLogin());
 

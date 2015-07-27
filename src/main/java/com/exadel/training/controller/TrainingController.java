@@ -1,31 +1,31 @@
 package com.exadel.training.controller;
 
+import com.exadel.training.controller.model.Training.ShortTrainingInfo;
+import com.exadel.training.controller.model.Training.TrainingForCreation;
+import com.exadel.training.controller.model.Training.TrainingInfo;
 import com.exadel.training.controller.model.User.UserShort;
-import com.exadel.training.service.TrainingFeedbackService;
-import com.exadel.training.tokenAuthentification.CryptService;
-import com.exadel.training.controller.model.Training.*;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
+import com.exadel.training.service.TrainingFeedbackService;
 import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
-import com.exadel.training.tokenAuthentification.impl.DESCryptServiceImpl;
-import com.exadel.training.tokenAuthentification.impl.DecoratorDESCryptServiceImpl;
+import com.exadel.training.tokenAuthentification.CryptService;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.apache.commons.codec.binary.Base64;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,13 +43,13 @@ public class TrainingController {
     TrainingFeedbackService feedbackService;
     CryptService cryptService;
 
-    public TrainingController() {
+   /* public TrainingController() {
         try {
             cryptService = new DecoratorDESCryptServiceImpl(new DESCryptServiceImpl());
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
@@ -211,7 +211,7 @@ public class TrainingController {
             JSONObject json = (JSONObject) parser.parse(data.trim());
             TrainingForCreation trainingForCreation = new TrainingForCreation(json);
             trainingForCreation.setUserLogin(userLogin);
-            Training training = trainingService.addTraining(trainingForCreation);
+            Training training = trainingService.editTraining(trainingForCreation);
             return new ShortTrainingInfo(training);
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
