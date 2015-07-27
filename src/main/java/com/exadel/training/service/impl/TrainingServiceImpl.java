@@ -208,6 +208,12 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
+    public List<Training> getTrainingsByCoach(String coachLogin) {
+        User coach = userRepository.findUserByLogin(coachLogin);
+        return trainingRepository.findTrainingsByCoach(coach);
+    }
+
+    @Override
     public List<User> getUsersByTrainingName(String trainingName) {
         return trainingRepository.findListenersByTrainingName(trainingName);
     }

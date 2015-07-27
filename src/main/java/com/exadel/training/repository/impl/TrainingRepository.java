@@ -84,4 +84,7 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
 
     @Query("select tr.place from Training as tr where tr.name= ?1 order by tr.dateTime asc")
     List<String> findPlacesByTrainingName(String trainingName);
+
+    @Query("select tr from Training as tr where tr.coach = ?1 and tr.parent = 0 order by tr.dateTime asc")
+    List<Training> findTrainingsByCoach(User coach);
 }
