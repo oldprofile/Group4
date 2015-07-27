@@ -1,16 +1,18 @@
 package com.exadel.training.tokenAuthentification.impl;
 
 import com.exadel.training.tokenAuthentification.CryptService;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Repository;
 
 import javax.crypto.*;
-import javax.inject.Singleton;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 /**
  * Created by HP on 18.07.2015.
  */
-@Singleton
+@Scope(value = "prototype")
+@Repository
 public class DESCryptServiceImpl implements CryptService{
 
    private Cipher ecipher;
