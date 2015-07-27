@@ -20,6 +20,7 @@ angular.module('myApp')
         scope.courseInfo = {};
         scope.courseInfo.dateTime = [];
         scope.courseInfo.places = [];
+        scope.courseInfo.additional = "";
         scope.courseInfo.userLogin = userService.getUser().login;
         
         getCategories.success(function(data) {

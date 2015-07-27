@@ -14,7 +14,7 @@ angular.module('myApp.createcourse')
             $scope.courseInfo.places.push($scope.temp.place);
         }
         console.log($scope.courseInfo);
-        //createcourse.createCourse($scope.courseInfo); //! ? some then() with alert...?
+        createcourse.createCourse($scope.courseInfo); //! ? some then() with alert...?
     };
     
 }]);

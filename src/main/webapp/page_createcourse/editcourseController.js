@@ -9,7 +9,7 @@ angular.module('myApp.createcourse')
         $scope.courseInfo = angular.copy(data);
         $scope.temp.tempDates = angular.copy($scope.courseInfo.dateTime);
         
-        $scope.temp.place = ($scope.courseInfo.placces.length != 0) ? $scope.courseInfo.places[0] : "";
+        $scope.temp.place = (($scope.courseInfo.places != null) ? $scope.courseInfo.places[0] : "");
         
         $scope.temp.pictureHolder = $scope.courseInfo.pictureLink;
         console.log($scope.courseInfo);
@@ -22,12 +22,16 @@ angular.module('myApp.createcourse')
         }
         
         //checking, if replacing all places is needed
-        if($scope.temp.place != $scope.courseInfo.places[0]) {
-           for(var i = 0; i < $scope.courseInfo.dateTime.length; i++) {
-            $scope.courseInfo.places[i] = $scope.temp.place;
-           }
+        if($scope.courseInfo.places == null) {
+            $scope.courseInfo.places = [$scope.temp.place];
+        } else {
+            if($scope.temp.place != $scope.courseInfo.places[0]) {
+               for(var i = 0; i < $scope.courseInfo.dateTime.length; i++) {
+                $scope.courseInfo.places[i] = $scope.temp.place;
+               }
+            }
         }
         console.log($scope.courseInfo);
-        //editcourse.editCourse($scope.courseInfo); //! ? some then()...?
+        editcourse.editCourse($scope.courseInfo); //! ? some then()...?
     };
 }]);
