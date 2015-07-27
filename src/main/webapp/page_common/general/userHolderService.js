@@ -36,7 +36,7 @@ angular.module('myApp').factory('userService',['$http',function ($http) {
       currentUser.login = login;    
       currentUser.username = username;
       currentUser.password = password;
-      alert(JSON.stringify(role_));
+      
       var nrole = role_.reduce(function(max,cur){
         if(max.id < cur.id){
           return max;
@@ -53,8 +53,9 @@ angular.module('myApp').factory('userService',['$http',function ($http) {
       
      
       
-      alert("token: " + token);    
-      $http.defaults.headers.common.Authorization = token;  
+       
+      $http.defaults.headers.common.Authorization = token;
+      $http.defaults.headers.common.Login = login;  
         
       this.isLogged = true;
         

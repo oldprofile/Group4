@@ -2,6 +2,8 @@ package com.exadel.training.model;
 
 import com.exadel.training.common.LanguageTraining;
 import com.exadel.training.controller.model.Training.TrainingForCreation;
+import com.exadel.training.repository.impl.TrainingRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -25,6 +27,7 @@ public class Training {
 
     private String pictureLink;
 
+    @Column(length = 3000)
     private String description;
 
     private String place;
@@ -67,16 +70,15 @@ public class Training {
     public Training() {
     }
 
-    public Training(TrainingForCreation trainingForCreation) throws NoSuchFieldException {
+    public void fillTraining(TrainingForCreation trainingForCreation) throws NoSuchFieldException {
         name = trainingForCreation.getName();
         description = trainingForCreation.getDescription();
         language = LanguageTraining.parseToInt(trainingForCreation.getLanguage());
         isInternal = trainingForCreation.isInternal();
         amount = trainingForCreation.getParticipantsNumber();
-        additional = trainingForCreation.getAdditional();
         audience = trainingForCreation.getAudience();
         pictureLink = trainingForCreation.getPictureLink();
-        parent = 0;
+        additional = trainingForCreation.getAdditional();
     }
 
     public long getId() {

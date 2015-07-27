@@ -11,8 +11,13 @@ import java.util.List;
  * Created by Клим on 13.07.2015.
  */
 public interface OmissionRepository extends JpaRepository<Omission, Long> {
+    @Query(" select o from Omission as o where o.training.name = ?1 order by o.training.dateTime asc ")
     List<Omission> findByTrainingName(String name);
+
+    @Query(" select o from Omission as o where o.training.name = ?1 and o.user.login = ?2 order by o.training.dateTime asc ")
     List<Omission> findByTrainingNameAndUserLogin(String trainingName, String userLogin);
+
+    @Query(" select o from Omission as o where o.user.login = ?1 order by o.training.dateTime asc ")
     List<Omission> findByUserLogin(String userLogin);
 
     @Query(" select o from Omission as o where o.training.name = ?1 and o.user.login = ?2 and o.isOmission = ?3 ")

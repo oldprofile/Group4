@@ -7,10 +7,10 @@ import com.exadel.training.model.User;
 import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
 import com.exadel.training.tokenAuthentification.CryptService;
-import com.exadel.training.tokenAuthentification.impl.DESCryptServiceImpl;
-import com.exadel.training.tokenAuthentification.impl.DecoratorDESCryptServiceImpl;
+import com.exadel.training.tokenAuthentification.SessionToken;
 import com.twilio.sdk.TwilioRestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,27 +35,23 @@ public class UserController {
     private UserService userService;
     @Autowired
     private TrainingService trainingService;
+    @Autowired
+    @Qualifier("decoratorDESCryptServiceImpl")
     private CryptService cryptService;
+    @Autowired
+    private SessionToken sessionToken;
     //  @Autowired
     //  private Session session;
-
-    public UserController() {
-        try {
-            cryptService = new DecoratorDESCryptServiceImpl(new DESCryptServiceImpl());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     @RequestMapping(value = "/find_by_role/{type}", method = RequestMethod.GET)
     public @ResponseBody List<UserShort> findByRole(@PathVariable("type") int type,
                                                     HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws NoSuchFieldException, BadPaddingException, IOException, IllegalBlockSizeException {
 
         String header = httpServletRequest.getHeader("authorization");
-        String login = cryptService.decrypt(header);
+        String login = httpServletRequest.getHeader("login");
         List<UserShort> userShortList = new ArrayList<UserShort>();
 
-        if(userService.checkUserByLogin(login)) {
+        if(sessionToken.containsToken(header)) {
             List<User> userList = userService.findUsersByRole(RoleType.parseIntToRoleType(type));
 
             for (int i = 0; i < userList.size(); i++) {
@@ -73,9 +69,9 @@ public class UserController {
     public @ResponseBody UserShort userInfo(@PathVariable("login") String login, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException {
 
         String header = httpServletRequest.getHeader("authorization");
-        String mainLogin = cryptService.decrypt(header);
+        String mainLogin = httpServletRequest.getHeader("login");
 
-        if (userService.checkUserByLogin(mainLogin)) {
+        if (sessionToken.containsToken(header)) {
             httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
             UserShort us = UserShort.parseUserShort(userService.findUserByLogin(login));
             if (us != EMPTY) {
@@ -95,10 +91,10 @@ public class UserController {
     public  @ResponseBody List<AllTrainingUserShort> getAllTrainingOfUser(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
 
         String header = httpServletRequest.getHeader("authorization");
-        String login = cryptService.decrypt(header);
+        String login = httpServletRequest.getHeader("login");
         List<AllTrainingUserShort> allTrainingUserShorts = new ArrayList<AllTrainingUserShort>();
 
-        if(userService.checkUserByLogin(login)) {
+        if(sessionToken.containsToken(header)) {
             List<Training> trainings = userService.selectAllTraining(login);
             User user = userService.findUserByLogin(login);
 
@@ -131,10 +127,10 @@ public class UserController {
                                                                                           HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
 
         String header = httpServletRequest.getHeader("authorization");
-        String login = cryptService.decrypt(header);
+        String login = httpServletRequest.getHeader("login");
         List<AllTrainingUserShort> allTrainingUserShorts = new ArrayList<AllTrainingUserShort>();
 
-        if(userService.checkUserByLogin(login)) {
+        if(sessionToken.containsToken(header)) {
 
             List<Training> trainings = userService.selectAllTrainingSortedByDateTypeCoachTrue(allTrainingUserSortedAndState.getLogin(),allTrainingUserSortedAndState.getState());
             User user = userService.findUserByLogin(login);
@@ -166,10 +162,10 @@ public class UserController {
                                                                                            HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
 
         String header = httpServletRequest.getHeader("authorization");
-        String login = cryptService.decrypt(header);
+        String login = httpServletRequest.getHeader("login");
         List<AllTrainingUserShort> allTrainingUserShorts = new ArrayList<AllTrainingUserShort>();
 
-        if(userService.checkUserByLogin(login)) {
+        if(sessionToken.containsToken(header)) {
 
             List<Training> trainings = userService.selectAllTrainingSortedByDateTypeCoachFalse(allTrainingUserSortedAndState.getLogin(),allTrainingUserSortedAndState.getState());
             User user = userService.findUserByLogin("1");
@@ -201,9 +197,9 @@ public class UserController {
     public @ResponseBody UserShort findUserByLogin( HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException {
 
         String header = httpServletRequest.getHeader("authorization");
-        String login = cryptService.decrypt(header);
+        String login = httpServletRequest.getHeader("login");
 
-        if(userService.checkUserByLogin(login)) {
+        if(sessionToken.containsToken(header)) {
             User user = userService.findUserByLogin(login);
 
             if (user == EMPTY) {
@@ -225,9 +221,9 @@ public class UserController {
                               HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws TwilioRestException, BadPaddingException, IOException, IllegalBlockSizeException {
 
         String header = httpServletRequest.getHeader("authorization");
-        String login = cryptService.decrypt(header);
+        String login = httpServletRequest.getHeader("login");
 
-        if(userService.checkUserByLogin(login)) {
+        if(sessionToken.containsToken(header)) {
             userService.deleteUserTrainingRelationShip(userLeaveAndJoinTraining.getLogin(), userLeaveAndJoinTraining.getNameTraining());
             httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
         } else {
@@ -240,9 +236,9 @@ public class UserController {
                              HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException {
 
         String header = httpServletRequest.getHeader("authorization");
-        String login = cryptService.decrypt(header);
+        String login = httpServletRequest.getHeader("login");
 
-        if(userService.checkUserByLogin(login)) {
+        if(sessionToken.containsToken(header)) {
             try {
                 Training training = trainingService.getTrainingByName(userLeaveAndJoinTraining.getNameTraining());
                 if(training.getListeners().size() < training.getAmount()) {
@@ -265,14 +261,13 @@ public class UserController {
                                                                                HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
 
         String header = httpServletRequest.getHeader("authorization");
-        String login = cryptService.decrypt(header);
+        String login = httpServletRequest.getHeader("login");
         List<AllTrainingUserShort> allTrainingUserShorts = new ArrayList<>();
 
-        if(userService.checkUserByLogin(login)) {
+        if(sessionToken.containsToken(header)) {
             List<Training> trainings = userService.selectAllTrainingSortedByDate(loginAndState.getLogin(), loginAndState.getState());
             User user = userService.findUserByLogin(loginAndState.getLogin());
 
-            if (userService.checkUserByLogin(login))
                 for (Training training : trainings) {
                     AllTrainingUserShort allTrainingUserShort = AllTrainingUserShort.parseAllTrainingUserShort(training);
                     if (training.getCoach().getId() == user.getId()) {

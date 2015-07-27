@@ -35,6 +35,9 @@ public class OmissionController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    ExcelFileGenerator excelFileGenerator;
+
     @RequestMapping(value = "/find_omission_by_training", method = RequestMethod.GET)
     @ResponseBody List<JournalOmissionByTraining> findByTrainingName() {
         List<Omission> omissions = omissionService.getOmissionsByTrainingName("Front end");
@@ -71,8 +74,12 @@ public class OmissionController {
     @ResponseBody String findOmissionByTrainingAndUserLoginAndType() throws IOException {
         java.sql.Date d1 = java.sql.Date.valueOf("2001-01-01");
         java.sql.Date d2 = java.sql.Date.valueOf("2003-03-03");
-        ExcelFileGenerator excelFileGenerator = new ExcelFileGenerator(trainingService, userService, omissionService);
-        String s = excelFileGenerator.generateForTraining(d1, d2, "Front End");
+        String s = excelFileGenerator.generateForTraining(d1, d2, "Java");
+        excelFileGenerator.generateForTraining("Java");
+        excelFileGenerator.generateForUser(d1, d2, "1");
+        excelFileGenerator.generateForUser("1");
+        excelFileGenerator.generateForUserAndTraining(d1, d2, "1", "Java");
+        excelFileGenerator.generateForUserAndTraining("1", "Java");
         return  s;
     }
 

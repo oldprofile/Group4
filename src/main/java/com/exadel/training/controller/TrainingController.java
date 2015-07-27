@@ -1,31 +1,32 @@
 package com.exadel.training.controller;
 
+import com.exadel.training.controller.model.Training.ShortTrainingInfo;
+import com.exadel.training.controller.model.Training.TrainingForCreation;
+import com.exadel.training.controller.model.Training.TrainingInfo;
 import com.exadel.training.controller.model.User.UserShort;
-import com.exadel.training.service.TrainingFeedbackService;
-import com.exadel.training.tokenAuthentification.CryptService;
-import com.exadel.training.controller.model.Training.*;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
+import com.exadel.training.service.TrainingFeedbackService;
 import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
-import com.exadel.training.tokenAuthentification.impl.DESCryptServiceImpl;
-import com.exadel.training.tokenAuthentification.impl.DecoratorDESCryptServiceImpl;
+import com.exadel.training.tokenAuthentification.CryptService;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.apache.commons.codec.binary.Base64;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,15 +42,17 @@ public class TrainingController {
     UserService userService;
     @Autowired
     TrainingFeedbackService feedbackService;
-    CryptService cryptService;
+    @Autowired
+    @Qualifier("decoratorDESCryptServiceImpl")
+    private CryptService cryptService;
 
-    public TrainingController() {
+   /* public TrainingController() {
         try {
             cryptService = new DecoratorDESCryptServiceImpl(new DESCryptServiceImpl());
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
@@ -86,7 +89,7 @@ public class TrainingController {
         if (userService.checkUserByLogin(userLogin)) {
             Training training = trainingService.getTrainingByName(trainingName);
             TrainingInfo trainingInfo = new TrainingInfo(training,
-                    trainingService.getDatesByTrainingName(trainingName));
+                    trainingService.getDatesByTrainingName(trainingName), trainingService.getPlacesByTrainingName(trainingName));
             if (trainingService.getTrainingByNameAndUserLogin(trainingName, userLogin) != null)
                 trainingInfo.setIsSubscriber(true);
             if (userLogin.equals(training.getCoach().getName()))
@@ -112,30 +115,14 @@ public class TrainingController {
             String data = httpServletRequest.getParameter("courseInfo");
             JSONParser parser = new JSONParser();
             JSONObject json = (JSONObject) parser.parse(data.trim());
+            String name = (String)json.get("name");
+            if(trainingService.getTrainingByName(name) != null) {
+                httpServletResponse.setStatus(HttpServletResponse.SC_CONFLICT);
+                return null;
+            }
             TrainingForCreation trainingForCreation = new TrainingForCreation(json);
             trainingForCreation.setUserLogin(userLogin);
             Training training = trainingService.addTraining(trainingForCreation);
-            return new ShortTrainingInfo(training);
-        } else {
-            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return null;
-        }
-    }
-
-    @RequestMapping(value = "/approve_training/{trainingName}", method = RequestMethod.POST)
-    public @ResponseBody
-    ShortTrainingInfo approveTraining(@PathVariable("trainingName") String trainingName,
-                                      HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
-        String header = httpServletRequest.getHeader("authorization");
-        String userLogin = cryptService.decrypt(header);
-
-        if(userService.checkUserByLogin(userLogin)) {
-            Training training = null;
-            try {
-                training = trainingService.approveTraining(trainingName);
-            } catch (NoSuchFieldException e) {
-                e.printStackTrace();
-            }
             return new ShortTrainingInfo(training);
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -212,7 +199,7 @@ public class TrainingController {
             JSONObject json = (JSONObject) parser.parse(data.trim());
             TrainingForCreation trainingForCreation = new TrainingForCreation(json);
             trainingForCreation.setUserLogin(userLogin);
-            Training training = trainingService.addTraining(trainingForCreation);
+            Training training = trainingService.editTraining(trainingForCreation);
             return new ShortTrainingInfo(training);
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -227,14 +214,11 @@ public class TrainingController {
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     @ResponseBody
     List<ShortTrainingInfo> trainingTest() throws ParseException, NoSuchFieldException, IOException {
-        List<Training> list = trainingService.getTrainingsByNearestDate();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        Date date1 = sdf.parse("1996-01-01 23:11");
-        Date date2 = sdf.parse("2020-02-03 05:19");
 
-        List<Date> dates = trainingService.getDatesByTrainingNameBetweenDates("angular", date1, date2 );
 
-        return ShortTrainingInfo.parseList(list);
+        List<User> list =trainingService.getListenersByTrainingNameSortByName("angular");
+
+        return ShortTrainingInfo.parseList(null);
     }
 
     @RequestMapping(value = "/test_category_name", method = RequestMethod.GET)
@@ -250,7 +234,6 @@ public class TrainingController {
         TrainingForCreation trainingForCreation = new TrainingForCreation();
         trainingForCreation.setName("training");
         trainingForCreation.setLanguage("English");
-        trainingForCreation.setAdditional("");
         trainingForCreation.setAudience("");
         ArrayList<String> list = new ArrayList<>();
         list.add("1-1-2015 23:23:23");
@@ -277,7 +260,7 @@ public class TrainingController {
         String userLogin = "1";
         Training training = trainingService.getTrainingByName(trainingName);
         TrainingInfo trainingInfo = new TrainingInfo(training,
-                trainingService.getDatesByTrainingName(trainingName));
+                trainingService.getDatesByTrainingName(trainingName), trainingService.getPlacesByTrainingName(trainingName));
         trainingInfo.setIsSubscriber(trainingService.getTrainingByNameAndUserLogin(trainingName, userLogin) != null);
         trainingInfo.setIsCoach(userLogin.equals(training.getCoach().getLogin()));
         trainingInfo.setIsCoach(userLogin.equals(trainingInfo.getCoachName()));
@@ -285,5 +268,13 @@ public class TrainingController {
         trainingInfo.setListeners(UserShort.parseUserShortList(trainingService.getUsersByTrainingName(trainingName)));
         trainingInfo.setSpareUsers(UserShort.parseUserShortList(trainingService.getSpareUsersByTrainingName(trainingName)));
         return trainingInfo;
+    }
+
+    @RequestMapping(value = "/test_trainings_coach", method = RequestMethod.GET/*consumes = "application/json"*/)
+    public @ResponseBody
+    List<ShortTrainingInfo> testTrainingByCoach () throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
+        String userLogin = "1";
+        List<Training> list = trainingService.getTrainingsByCoach(userLogin);
+        return ShortTrainingInfo.parseList(list);
     }
 }

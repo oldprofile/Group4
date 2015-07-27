@@ -35,4 +35,10 @@ public class NewsController {
 
         return  newses;
     }
+
+    @RequestMapping(value = "/count_of_pages", method = RequestMethod.GET)
+    public @ResponseBody Integer getCountOfPages() {
+        return userNewsService.getCountOFPages();
+
+    }
 }

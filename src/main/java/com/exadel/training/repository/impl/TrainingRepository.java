@@ -2,6 +2,7 @@ package com.exadel.training.repository.impl;
 
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -18,10 +19,17 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
     //Training findTrainingName( String name);
 
     @Query(value = "select tr from Training tr where tr.name = ?1")
-    List<Training> findTrainingsByName( String name);
+    List<Training> findTrainingsByName(String name);
+
+    @Query(value = "select tr from Training tr where tr.name = ?1 and tr.parent = 0")
+    Training findTrainingByName(String name);
+
+    @Query("select tr from Training tr where tr.name = ?1 and tr.parent not in(0)")
+    List<Training> findTrainingsByNameExceptParent(String name);
 
     Training findById(long id);
 
+    @Query("select tr from Training tr where tr.name = ?1 and tr.parent = 0")
     Training findByName(String name);
 
     @Query(value =  "select tr from Training tr where tr.category.id = ?1 and tr.state in (2,3)")
@@ -46,6 +54,10 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
     @Query(value = "delete from trainings where name = ?1", nativeQuery = true)
     void deleteTrainingsByName(String trainingName);
 
+    @Modifying
+    @Query(value = "delete from trainings where id = ?1", nativeQuery = true)
+    void deleteTrainingsById(long trainingId);
+
     @Query("select tr from Training as tr where tr.name like ?1")
     List<Training> searchTrainingsByName(String trainingName);
 
@@ -61,9 +73,18 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
     @Query("select tr.listeners from Training as tr where tr.name = ?1 and tr.parent = 0")
     List<User> findListenersByTrainingName(String trainingName);
 
+    @Query("select trus from Training as tr  inner join tr.listeners as trus where tr.name = ?1 order by trus.name asc")
+    List<User> findListenersByTrainingNameSortByName(String trainingName);
+
     @Query("select tr.spareUsers from Training as tr where tr.name = ?1 and tr.parent = 0")
     List<User> findSpareUsersByTrainingName(String trainingName);
 
     @Query("select tr.dateTime from Training as tr where tr.name = ?1 and tr.dateTime >= ?2 and tr.dateTime <= ?3 order by tr.dateTime asc")
     List<Date> findDatesByTrainingNameBetweenDates(String trainingName, Date firstDate, Date secondDate);
+
+    @Query("select tr.place from Training as tr where tr.name= ?1 order by tr.dateTime asc")
+    List<String> findPlacesByTrainingName(String trainingName);
+
+    @Query("select tr from Training as tr where tr.coach = ?1 and tr.parent = 0 order by tr.dateTime asc")
+    List<Training> findTrainingsByCoach(User coach);
 }
