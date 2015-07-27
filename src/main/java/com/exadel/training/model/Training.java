@@ -27,6 +27,7 @@ public class Training {
 
     private String pictureLink;
 
+    @Column(length = 3000)
     private String description;
 
     private String place;
@@ -75,9 +76,9 @@ public class Training {
         language = LanguageTraining.parseToInt(trainingForCreation.getLanguage());
         isInternal = trainingForCreation.isInternal();
         amount = trainingForCreation.getParticipantsNumber();
-        additional = trainingForCreation.getAdditional();
         audience = trainingForCreation.getAudience();
         pictureLink = trainingForCreation.getPictureLink();
+        additional = trainingForCreation.getAdditional();
         parent = 0;
     }
 

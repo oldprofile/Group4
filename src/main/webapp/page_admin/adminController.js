@@ -1,5 +1,5 @@
 angular.module('myApp.admin')
-.controller('AdminController', ['$scope', function($scope) {
+.controller('AdminController', ['$scope', 'adminService', function($scope, adminService) {
     $scope.pages = [
         {
             name: 'approve',

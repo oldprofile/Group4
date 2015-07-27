@@ -33,5 +33,6 @@ public interface TrainingService {
     Integer getTrainingNumber(String trainingName, Date date);
     List<Date> getDatesByTrainingNameBetweenDates(String trainingName, Date firstDate, Date secondDate);
     List<User> getListenersByTrainingNameSortByName(String trainingName);
+    List<String> getPlacesByTrainingName(String trainingName);
 
 }
