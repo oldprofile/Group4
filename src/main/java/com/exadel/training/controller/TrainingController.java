@@ -115,6 +115,11 @@ public class TrainingController {
             String data = httpServletRequest.getParameter("courseInfo");
             JSONParser parser = new JSONParser();
             JSONObject json = (JSONObject) parser.parse(data.trim());
+            String name = (String)json.get("name");
+            if(trainingService.getTrainingByName(name) != null) {
+                httpServletResponse.setStatus(HttpServletResponse.SC_CONFLICT);
+                return null;
+            }
             TrainingForCreation trainingForCreation = new TrainingForCreation(json);
             trainingForCreation.setUserLogin(userLogin);
             Training training = trainingService.addTraining(trainingForCreation);
