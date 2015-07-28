@@ -4,6 +4,7 @@ import com.exadel.training.common.RoleType;
 import com.exadel.training.controller.model.User.*;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
+import com.exadel.training.notification.Notification;
 import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
 import com.exadel.training.tokenAuthentification.CryptService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -40,8 +42,9 @@ public class UserController {
     private CryptService cryptService;
     @Autowired
     private SessionToken sessionToken;
-    //  @Autowired
-    //  private Session session;
+    @Autowired
+    @Qualifier("wrapperNotificationMail")
+    private Notification notificationMail;
 
     @RequestMapping(value = "/find_by_role/{type}", method = RequestMethod.GET)
     public @ResponseBody List<UserShort> findByRole(@PathVariable("type") int type,
@@ -241,15 +244,20 @@ public class UserController {
         if(sessionToken.containsToken(header)) {
             try {
                 Training training = trainingService.getTrainingByName(userLeaveAndJoinTraining.getNameTraining());
+                User user = userService.findUserByLogin(login);
                 if(training.getListeners().size() < training.getAmount()) {
                     userService.insertUserTrainingRelationShip(userLeaveAndJoinTraining.getLogin(), userLeaveAndJoinTraining.getNameTraining());
+                    notificationMail.send(user.getEmail(), user.getName() + ",you have subscribed to " + training.getName());
                     httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
                 } else {
-                    httpServletResponse.setStatus(HttpServletResponse.SC_CONTINUE);
                     trainingService.addSpareUser(training.getName(),login);
+                    notificationMail.send(user.getEmail(), user.getName() + ",you are in reserve " + training.getName());
+                    httpServletResponse.setStatus(HttpServletResponse.SC_CONTINUE);
                 }
             } catch (NullPointerException e) {
                 httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            } catch (TwilioRestException | MessagingException e) {
+                httpServletResponse.setStatus(HttpServletResponse.SC_CONFLICT);
             }
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);

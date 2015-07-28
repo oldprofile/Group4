@@ -1,5 +1,6 @@
 package com.exadel.training.notification.sms;
 
+import com.exadel.training.notification.Notification;
 import com.twilio.sdk.TwilioRestClient;
 import com.twilio.sdk.TwilioRestException;
 import com.twilio.sdk.resource.factory.MessageFactory;
@@ -15,14 +16,14 @@ import java.util.List;
  * Created by HP on 16.07.2015.
  */
 @Service
-public class WrapperNotificationSMS {
+public class WrapperNotificationSMS implements Notification{
     // Account Sid and Token
     public static final String ACCOUNT_SID = "AC153d280ddafbd38701dcf24ba171b762";
     public static final String AUTH_TOKEN = "8a006dc2490b141eb7a5826db20856b0";
 
     public WrapperNotificationSMS() {}
 
-    public void sendSMS(String phoneNumber, String text) throws TwilioRestException {
+    public void send(String phoneNumber, String text) throws TwilioRestException {
         TwilioRestClient client = new TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN);
         Account account = client.getAccount();
         MessageFactory messageFactory = account.getMessageFactory();
