@@ -2,6 +2,7 @@ package com.exadel.training.service.impl;
 
 import com.exadel.training.common.LanguageTraining;
 import com.exadel.training.common.StateTraining;
+import com.exadel.training.controller.model.Training.LessonData;
 import com.exadel.training.controller.model.Training.TrainingForCreation;
 import com.exadel.training.model.Category;
 import com.exadel.training.model.Training;
@@ -147,10 +148,6 @@ public class TrainingServiceImpl implements TrainingService {
         mainTraining.fillTraining(trainingForCreation);
         mainTraining.setCategory(category);
         mainTraining.setState(state);
-        if (dateTimes.size() != 0)
-            mainTraining.setDateTime(dateTimes.get(0));
-        if(place != null)
-            mainTraining.setPlace(place);
 
         List<Training> trainings = trainingRepository.findTrainingsByName(trainingForCreation.getName());
         for(int i = 0; i < dateTimes.size(); ++i) {
@@ -173,7 +170,7 @@ public class TrainingServiceImpl implements TrainingService {
         for(int i = dateTimes.size(); i < trainings.size(); ++i) {
             trainingRepository.deleteTrainingsById(trainings.get(i).getId());
         }
-        return mainTraining;
+        return updateParentTraining(trainingForCreation.getName());
     }
 
     @Override
@@ -238,6 +235,28 @@ public class TrainingServiceImpl implements TrainingService {
         trainingRepository.saveAndFlush(training);
         return training;
     }
+
+    @Override
+    public Training changeLessonDate(LessonData lessonData) throws ParseException {
+        List<Training> trainings = trainingRepository.findTrainingsWithParentByName(lessonData.getTrainingName());
+        Training training = trainings.get(lessonData.getLessonNumber());
+        training.setDateTime(sdf.parse(lessonData.getNewDate()));
+        training.setPlace(lessonData.getNewPlace());
+        updateParentTraining(training.getName());
+        return training;
+    }
+
+    private Training updateParentTraining(String trainingName) {
+        List<Training> trainings = trainingRepository.findTrainingsWithParentByName(trainingName);
+        Training parent = trainings.get(0);
+        if(trainings.size() > 1) {
+            Training firstLesson = trainings.get(1);
+            parent.setDateTime(firstLesson.getDateTime());
+            parent.setPlace(firstLesson.getPlace());
+        }
+        return parent;
+    }
+
 
     @Override
     public Integer getTrainingNumber(String trainingName, Date date) {

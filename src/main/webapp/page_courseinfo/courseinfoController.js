@@ -162,7 +162,7 @@ angular.module('myApp.courseinfo')
   };
 }])
 
-.controller('EditDateModalInstanceController',  ['$scope', '$modalInstance', '$filter', 'courseinfo', 'index', function($scope, $modalInstance, $filter, courseinfo, index) {
+.controller('EditDateModalInstanceController',  ['$scope', '$modalInstance', '$filter', 'courseinfo', 'courseInfoService', 'index', function($scope, $modalInstance, $filter, courseinfo, courseInfoService, index) {
   $scope.courseinfo = courseinfo;
   $scope.index = index;
  

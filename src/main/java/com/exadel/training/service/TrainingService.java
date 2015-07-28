@@ -1,6 +1,7 @@
 package com.exadel.training.service;
 
 
+import com.exadel.training.controller.model.Training.LessonData;
 import com.exadel.training.controller.model.Training.TrainingForCreation;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
@@ -22,6 +23,7 @@ public interface TrainingService {
     Training approveTraining(String trainingName) throws NoSuchFieldException;
     Training deleteTrainingsByName(String trainingName);
     Training addSpareUser(String trainingName, String userLogin);
+    Training changeLessonDate(LessonData lessonData) throws ParseException;
 
     List<Training> getAllTrainings();
     List<Training> getTrainingsByName(String trainingName);
@@ -43,5 +45,4 @@ public interface TrainingService {
 
     Integer getTrainingNumber(String trainingName, Date date);
     Long getParentTrainingId(String trainingName);
-
 }
