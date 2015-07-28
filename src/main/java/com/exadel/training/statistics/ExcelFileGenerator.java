@@ -1,7 +1,7 @@
 package com.exadel.training.statistics;
 
 import com.exadel.training.controller.model.Omission.JournalOmissionUserByTraining;
-import com.exadel.training.controller.model.Training.TrainingNameAndDate;
+import com.exadel.training.controller.model.Training.TrainingName;
 import com.exadel.training.controller.model.User.UserLoginAndName;
 import com.exadel.training.model.Omission;
 import com.exadel.training.model.Training;
@@ -13,7 +13,6 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.stereotype.Service;
 
 import java.io.FileOutputStream;
@@ -94,7 +93,7 @@ public class ExcelFileGenerator {
         // ONLY TRAININGS
         List<Training> trainings = userService.selectAllTrainingBetweenDatesAndSortedByDate(userLogin, dateFrom, dateTo);
         List<Date> dates = userService.selectAllDateOfTrainingsBetweenDates(userLogin, dateFrom, dateTo);
-        List<TrainingNameAndDate> trainingNameAndDates = TrainingNameAndDate.parseTrainingList(trainings);
+        List<TrainingName> trainingNameAndDates = TrainingName.parseTrainingList(trainings);
 
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet(userLogin + " omissions");
@@ -207,7 +206,7 @@ public class ExcelFileGenerator {
         //ONLY TRAININGS
         List<Training> trainings = userService.selectAllTrainingAndSortedByName(userLogin);
         List<Date> dates = userService.selectAllDateOfTrainings(userLogin);
-        List<TrainingNameAndDate> trainingNameAndDates = TrainingNameAndDate.parseTrainingList(trainings);
+        List<TrainingName> trainingNameAndDates = TrainingName.parseTrainingList(trainings);
 
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet(userLogin + " omissions");
@@ -311,7 +310,7 @@ public class ExcelFileGenerator {
 
         //TRAININGS ONLY
         List<Training> trainings = userService.selectAllTrainingBetweenDatesAndSortedByDate(userLogin, dateFrom, dateTo);
-        List<TrainingNameAndDate> trainingNameAndDates = TrainingNameAndDate.parseTrainingList(trainings);
+        List<TrainingName> trainingNameAndDates = TrainingName.parseTrainingList(trainings);
 
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet(userLogin + " omissions");
@@ -395,7 +394,7 @@ public class ExcelFileGenerator {
 
         // TRAININGS ONLY
         List<Training> trainings = userService.selectAllTrainingAndSortedByName(userLogin);
-        List<TrainingNameAndDate> trainingNameAndDates = TrainingNameAndDate.parseTrainingList(trainings);
+        List<TrainingName> trainingNameAndDates = TrainingName.parseTrainingList(trainings);
 
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet(userLogin + " omissions");
@@ -485,7 +484,7 @@ public class ExcelFileGenerator {
 
         //TRAININGS ONLY
         List<Training> trainings = userService.selectAllTrainingBetweenDatesAndSortedByDate(userLogin, dateFrom, dateTo);
-        List<TrainingNameAndDate> trainingNameAndDates = TrainingNameAndDate.parseTrainingList(trainings);
+        List<TrainingName> trainingNameAndDates = TrainingName.parseTrainingList(trainings);
 
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet(userLogin + " omissions");
@@ -580,7 +579,7 @@ public class ExcelFileGenerator {
 
         // ONLY TRAININGS
         List<Training> trainings = userService.selectAllTrainingAndSortedByName(userLogin);
-        List<TrainingNameAndDate> trainingNameAndDates = TrainingNameAndDate.parseTrainingList(trainings);
+        List<TrainingName> trainingNameAndDates = TrainingName.parseTrainingList(trainings);
 
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet(userLogin + " omissions");
