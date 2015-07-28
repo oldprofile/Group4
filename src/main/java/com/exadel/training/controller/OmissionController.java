@@ -1,10 +1,7 @@
 package com.exadel.training.controller;
 
-import com.exadel.training.controller.model.Omission.JournalOmissionByTraining;
-import com.exadel.training.controller.model.Omission.JournalOmissionByUserLogin;
-import com.exadel.training.controller.model.Omission.JournalOmissionUserByTraining;
+import com.exadel.training.controller.model.Omission.JournalOmissionModel;
 import com.exadel.training.model.Omission;
-import com.exadel.training.model.User;
 import com.exadel.training.service.OmissionService;
 import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
@@ -17,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,38 +33,6 @@ public class OmissionController {
 
     @Autowired
     ExcelFileGenerator excelFileGenerator;
-
-    @RequestMapping(value = "/find_omission_by_training", method = RequestMethod.GET)
-    @ResponseBody List<JournalOmissionByTraining> findByTrainingName() {
-        List<Omission> omissions = omissionService.getOmissionsByTrainingName("Front end");
-        List<JournalOmissionByTraining> journalOmissionByTrainings = new ArrayList<>();
-        for(Omission omission : omissions) {
-         journalOmissionByTrainings.add(JournalOmissionByTraining.parseJournalOmissionByTraining(omission));
-        }
-        return journalOmissionByTrainings;
-    }
-
-    @RequestMapping(value = "/find_omission_by_training_and_user_login", method = RequestMethod.GET)
-    @ResponseBody List<JournalOmissionUserByTraining> findOmissionByTrainingAndUserLogin() {
-        List<Omission> omissions = omissionService.findByTrainingNameAndUserLogin("Front end","1");
-        List<JournalOmissionUserByTraining> journalOmissionUserByTrainings = new ArrayList<>();
-        for(Omission omission : omissions) {
-            journalOmissionUserByTrainings.add(JournalOmissionUserByTraining.parseJournalOmissionUserByTraining(omission));
-        }
-        return  journalOmissionUserByTrainings;
-    }
-
-    @RequestMapping(value = "/find_omission_by_user_login", method = RequestMethod.GET)
-    @ResponseBody List<JournalOmissionByUserLogin> findOmissionByUserLogin() {
-        List<Omission> omissions = omissionService.findByUserLogin("1");
-        List<JournalOmissionByUserLogin> journalOmissionByUserLogins = new ArrayList<>();
-
-        for(Omission omission : omissions) {
-            journalOmissionByUserLogins.add(JournalOmissionByUserLogin.parseJournalOmissionByUserLogin(omission));
-        }
-
-        return  journalOmissionByUserLogins;
-    }
 
     @RequestMapping(value = "/find_omission_by_user_login_and_type", method = RequestMethod.GET)
     @ResponseBody String findOmissionByTrainingAndUserLoginAndType() throws IOException {
@@ -97,6 +61,4 @@ public class OmissionController {
 
         return  s;
     }
-
-
 }

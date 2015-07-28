@@ -1,6 +1,6 @@
 package com.exadel.training.statistics;
 
-import com.exadel.training.controller.model.Omission.JournalOmissionUserByTraining;
+import com.exadel.training.controller.model.Omission.JournalOmissionModel;
 import com.exadel.training.controller.model.Training.TrainingName;
 import com.exadel.training.controller.model.User.UserLoginAndName;
 import com.exadel.training.model.Omission;
@@ -67,13 +67,13 @@ public class ExcelFileGenerator {
         for(int usersIndex = 0; usersIndex < userLoginAndNames.size(); usersIndex++) {
             int rowIndex = usersIndex + 1;
             List<Omission> omissions = omissionService.getOmisssionsByTrainingAndUser(trainingName,userLoginAndNames.get(usersIndex).getLogin(), dateFrom, dateTo);
-            List<JournalOmissionUserByTraining> journalOmissionUserByTrainings = JournalOmissionUserByTraining.parseListOfOmissions(omissions);
+            List<JournalOmissionModel> journalOmissionModels = JournalOmissionModel.parseListOfOmissions(omissions);
             HSSFRow row = sheet.createRow(rowIndex);
             row.createCell(0).setCellValue(userLoginAndNames.get(usersIndex).getName());
-            for(int omissionsIndex = 0; omissionsIndex < journalOmissionUserByTrainings.size(); omissionsIndex++) {
+            for(int omissionsIndex = 0; omissionsIndex < journalOmissionModels.size(); omissionsIndex++) {
                 int columnIndex = omissionsIndex + 1;
-                if(rowHead.getCell(columnIndex).getStringCellValue().compareTo(journalOmissionUserByTrainings.get(omissionsIndex).getDate()) == 0) {
-                    if(journalOmissionUserByTrainings.get(omissionsIndex).getIsOmission()) {
+                if(rowHead.getCell(columnIndex).getStringCellValue().compareTo(journalOmissionModels.get(omissionsIndex).getDate()) == 0) {
+                    if(journalOmissionModels.get(omissionsIndex).getIsOmission()) {
                         row.createCell(columnIndex).setCellValue("X");
                     }
                 }
@@ -108,13 +108,13 @@ public class ExcelFileGenerator {
         for(int trainingsIndex = 0; trainingsIndex < trainingNameAndDates.size(); trainingsIndex++) {
             int rowIndex = trainingsIndex + 1;
             List<Omission> omissions = omissionService.getOmisssionsByTrainingAndUser(trainingNameAndDates.get(trainingsIndex).getTrainingName(),userLogin, dateFrom, dateTo);
-            List<JournalOmissionUserByTraining> journalOmissionUserByTrainings = JournalOmissionUserByTraining.parseListOfOmissions(omissions);
+            List<JournalOmissionModel> journalOmissionModels = JournalOmissionModel.parseListOfOmissions(omissions);
             HSSFRow row = sheet.createRow(rowIndex);
             row.createCell(0).setCellValue(trainingNameAndDates.get(trainingsIndex).getTrainingName());
-            for(int omissionsIndex = 0; omissionsIndex < journalOmissionUserByTrainings.size(); omissionsIndex++) {
+            for(int omissionsIndex = 0; omissionsIndex < journalOmissionModels.size(); omissionsIndex++) {
                 int columnIndex = omissionsIndex + 1;
-                if(rowHead.getCell(columnIndex).getStringCellValue().compareTo(journalOmissionUserByTrainings.get(omissionsIndex).getDate()) == 0) {
-                    if(journalOmissionUserByTrainings.get(omissionsIndex).getIsOmission()) {
+                if(rowHead.getCell(columnIndex).getStringCellValue().compareTo(journalOmissionModels.get(omissionsIndex).getDate()) == 0) {
+                    if(journalOmissionModels.get(omissionsIndex).getIsOmission()) {
                         row.createCell(columnIndex).setCellValue("X");
                     }
                 }
@@ -133,7 +133,7 @@ public class ExcelFileGenerator {
 
         List<Omission> omissions = omissionService.getOmisssionsByTrainingAndUser(trainingName, userLogin, dateFrom, dateTo);
         List<Date> dates = trainingService.getDatesByTrainingNameBetweenDates(trainingName, dateFrom, dateTo);
-        List<JournalOmissionUserByTraining> journalOmissionUserByTrainings = JournalOmissionUserByTraining.parseListOfOmissions(omissions);
+        List<JournalOmissionModel> journalOmissionModels = JournalOmissionModel.parseListOfOmissions(omissions);
 
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet(userLogin + " omissions");
@@ -145,9 +145,9 @@ public class ExcelFileGenerator {
         }
 
         HSSFRow row = sheet.createRow(1);
-        for (int omissionsIndex = 0; omissionsIndex < journalOmissionUserByTrainings.size(); omissionsIndex++) {
-            if (rowHead.getCell(omissionsIndex).getStringCellValue().compareTo(journalOmissionUserByTrainings.get(omissionsIndex).getDate()) == 0) {
-                if (journalOmissionUserByTrainings.get(omissionsIndex).getIsOmission()) {
+        for (int omissionsIndex = 0; omissionsIndex < journalOmissionModels.size(); omissionsIndex++) {
+            if (rowHead.getCell(omissionsIndex).getStringCellValue().compareTo(journalOmissionModels.get(omissionsIndex).getDate()) == 0) {
+                if (journalOmissionModels.get(omissionsIndex).getIsOmission()) {
                     row.createCell(omissionsIndex).setCellValue("X");
                 }
             }
@@ -180,13 +180,13 @@ public class ExcelFileGenerator {
         for(int usersIndex = 0; usersIndex < userLoginAndNames.size(); usersIndex++) {
             int rowIndex = usersIndex + 1;
             List<Omission> omissions = omissionService.findByTrainingNameAndUserLogin(trainingName,userLoginAndNames.get(usersIndex).getLogin());
-            List<JournalOmissionUserByTraining> journalOmissionUserByTrainings = JournalOmissionUserByTraining.parseListOfOmissions(omissions);
+            List<JournalOmissionModel> journalOmissionModels = JournalOmissionModel.parseListOfOmissions(omissions);
             HSSFRow row = sheet.createRow(rowIndex);
             row.createCell(0).setCellValue(userLoginAndNames.get(usersIndex).getName());
-            for(int omissionsIndex = 0; omissionsIndex < journalOmissionUserByTrainings.size(); omissionsIndex++) {
+            for(int omissionsIndex = 0; omissionsIndex < journalOmissionModels.size(); omissionsIndex++) {
                 int columnIndex = omissionsIndex + 1;
-                if(rowHead.getCell(columnIndex).getStringCellValue().compareTo(journalOmissionUserByTrainings.get(omissionsIndex).getDate()) == 0) {
-                    if(journalOmissionUserByTrainings.get(omissionsIndex).getIsOmission()) {
+                if(rowHead.getCell(columnIndex).getStringCellValue().compareTo(journalOmissionModels.get(omissionsIndex).getDate()) == 0) {
+                    if(journalOmissionModels.get(omissionsIndex).getIsOmission()) {
                         row.createCell(columnIndex).setCellValue("X");
                     }
                 }
@@ -221,13 +221,13 @@ public class ExcelFileGenerator {
         for(int trainingsIndex = 0; trainingsIndex < trainingNameAndDates.size(); trainingsIndex++) {
             int rowIndex = trainingsIndex + 1;
             List<Omission> omissions = omissionService.findByTrainingNameAndUserLogin(trainingNameAndDates.get(trainingsIndex).getTrainingName(),userLogin);
-            List<JournalOmissionUserByTraining> journalOmissionUserByTrainings = JournalOmissionUserByTraining.parseListOfOmissions(omissions);
+            List<JournalOmissionModel> journalOmissionModels = JournalOmissionModel.parseListOfOmissions(omissions);
             HSSFRow row = sheet.createRow(rowIndex);
             row.createCell(0).setCellValue(trainingNameAndDates.get(trainingsIndex).getTrainingName());
-            for(int omissionsIndex = 0; omissionsIndex < journalOmissionUserByTrainings.size(); omissionsIndex++) {
+            for(int omissionsIndex = 0; omissionsIndex < journalOmissionModels.size(); omissionsIndex++) {
                 int columnIndex = omissionsIndex + 1;
-                if(rowHead.getCell(columnIndex).getStringCellValue().compareTo(journalOmissionUserByTrainings.get(omissionsIndex).getDate()) == 0) {
-                    if(journalOmissionUserByTrainings.get(omissionsIndex).getIsOmission()) {
+                if(rowHead.getCell(columnIndex).getStringCellValue().compareTo(journalOmissionModels.get(omissionsIndex).getDate()) == 0) {
+                    if(journalOmissionModels.get(omissionsIndex).getIsOmission()) {
                         row.createCell(columnIndex).setCellValue("X");
                     }
                 }
@@ -247,7 +247,7 @@ public class ExcelFileGenerator {
 
         List<Omission> omissions = omissionService.findByTrainingNameAndUserLogin(trainingName, userLogin);
         List<Date> dates = trainingService.getDatesByTrainingName(trainingName);
-        List<JournalOmissionUserByTraining> journalOmissionUserByTrainings = JournalOmissionUserByTraining.parseListOfOmissions(omissions);
+        List<JournalOmissionModel> journalOmissionModels = JournalOmissionModel.parseListOfOmissions(omissions);
 
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet(userLogin + " omissions");
@@ -259,10 +259,10 @@ public class ExcelFileGenerator {
         }
 
         HSSFRow row = sheet.createRow(1);
-        for (int omissionsIndex = 0; omissionsIndex < journalOmissionUserByTrainings.size(); omissionsIndex++) {
+        for (int omissionsIndex = 0; omissionsIndex < journalOmissionModels.size(); omissionsIndex++) {
            // int columnIndex = omissionsIndex + 1;
-            if (rowHead.getCell(omissionsIndex).getStringCellValue().compareTo(journalOmissionUserByTrainings.get(omissionsIndex).getDate()) == 0) {
-                if (journalOmissionUserByTrainings.get(omissionsIndex).getIsOmission()) {
+            if (rowHead.getCell(omissionsIndex).getStringCellValue().compareTo(journalOmissionModels.get(omissionsIndex).getDate()) == 0) {
+                if (journalOmissionModels.get(omissionsIndex).getIsOmission()) {
                     row.createCell(omissionsIndex).setCellValue("X");
                 }
             }
@@ -288,13 +288,13 @@ public class ExcelFileGenerator {
 
         for(int usersIndex = 0; usersIndex < userLoginAndNames.size(); usersIndex++) {
             List<Omission> omissions = omissionService.getOmisssionsByTrainingAndUser(trainingName,userLoginAndNames.get(usersIndex).getLogin(), dateFrom, dateTo);
-            List<JournalOmissionUserByTraining> journalOmissionUserByTrainings = JournalOmissionUserByTraining.parseListOfOmissions(omissions);
+            List<JournalOmissionModel> journalOmissionModels = JournalOmissionModel.parseListOfOmissions(omissions);
             HSSFRow row = sheet.createRow(usersIndex);
             row.createCell(0).setCellValue(userLoginAndNames.get(usersIndex).getName());
-            for(int omissionsIndex = 0; omissionsIndex < journalOmissionUserByTrainings.size(); omissionsIndex++) {
+            for(int omissionsIndex = 0; omissionsIndex < journalOmissionModels.size(); omissionsIndex++) {
                 int columnIndex = omissionsIndex + 1;
-                if(journalOmissionUserByTrainings.get(omissionsIndex).getIsOmission()) {
-                    row.createCell(columnIndex).setCellValue(journalOmissionUserByTrainings.get(omissionsIndex).getDate());
+                if(journalOmissionModels.get(omissionsIndex).getIsOmission()) {
+                    row.createCell(columnIndex).setCellValue(journalOmissionModels.get(omissionsIndex).getDate());
                 }
             }
         }
@@ -318,13 +318,13 @@ public class ExcelFileGenerator {
 
         for(int trainingsIndex = 0; trainingsIndex < trainingNameAndDates.size(); trainingsIndex++) {
             List<Omission> omissions = omissionService.getOmisssionsByTrainingAndUser(trainingNameAndDates.get(trainingsIndex).getTrainingName(),userLogin, dateFrom, dateTo);
-            List<JournalOmissionUserByTraining> journalOmissionUserByTrainings = JournalOmissionUserByTraining.parseListOfOmissions(omissions);
+            List<JournalOmissionModel> journalOmissionModels = JournalOmissionModel.parseListOfOmissions(omissions);
             HSSFRow row = sheet.createRow(trainingsIndex);
             row.createCell(0).setCellValue(trainingNameAndDates.get(trainingsIndex).getTrainingName());
-            for(int omissionsIndex = 0; omissionsIndex < journalOmissionUserByTrainings.size(); omissionsIndex++) {
+            for(int omissionsIndex = 0; omissionsIndex < journalOmissionModels.size(); omissionsIndex++) {
                 int columnIndex = omissionsIndex + 1;
-                if(journalOmissionUserByTrainings.get(omissionsIndex).getIsOmission()) {
-                    row.createCell(columnIndex).setCellValue(journalOmissionUserByTrainings.get(omissionsIndex).getDate());
+                if(journalOmissionModels.get(omissionsIndex).getIsOmission()) {
+                    row.createCell(columnIndex).setCellValue(journalOmissionModels.get(omissionsIndex).getDate());
                 }
             }
         }
@@ -340,16 +340,16 @@ public class ExcelFileGenerator {
         String fileName = userLogin + "_omission_dates_on_" + trainingName + "_" + sdf.format(dateFrom) + "_" + sdf.format(dateTo) + ".xls";
 
         List<Omission> omissions = omissionService.getOmisssionsByTrainingAndUser(trainingName, userLogin, dateFrom, dateTo);
-        List<JournalOmissionUserByTraining> journalOmissionUserByTrainings = JournalOmissionUserByTraining.parseListOfOmissions(omissions);
+        List<JournalOmissionModel> journalOmissionModels = JournalOmissionModel.parseListOfOmissions(omissions);
 
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet(userLogin + " omissions");
         sheet.setDefaultColumnWidth(11);
         HSSFRow rowHead = sheet.createRow(0);
 
-        for (int omissionsIndex = 0; omissionsIndex < journalOmissionUserByTrainings.size(); omissionsIndex++) {
-            if (journalOmissionUserByTrainings.get(omissionsIndex).getIsOmission()) {
-                rowHead.createCell(omissionsIndex).setCellValue(journalOmissionUserByTrainings.get(omissionsIndex).getDate());
+        for (int omissionsIndex = 0; omissionsIndex < journalOmissionModels.size(); omissionsIndex++) {
+            if (journalOmissionModels.get(omissionsIndex).getIsOmission()) {
+                rowHead.createCell(omissionsIndex).setCellValue(journalOmissionModels.get(omissionsIndex).getDate());
             }
         }
 
@@ -371,12 +371,12 @@ public class ExcelFileGenerator {
 
         for(int usersIndex = 0; usersIndex < userLoginAndNames.size(); usersIndex++) {
             List<Omission> omissions = omissionService.findByTrainingNameAndUserLogin(trainingName,userLoginAndNames.get(usersIndex).getLogin());
-            List<JournalOmissionUserByTraining> journalOmissionUserByTrainings = JournalOmissionUserByTraining.parseListOfOmissions(omissions);
+            List<JournalOmissionModel> journalOmissionModels = JournalOmissionModel.parseListOfOmissions(omissions);
             HSSFRow row = sheet.createRow(usersIndex);
             row.createCell(0).setCellValue(userLoginAndNames.get(usersIndex).getName());
-            for(int omissionsIndex = 0; omissionsIndex < journalOmissionUserByTrainings.size(); omissionsIndex++) {
+            for(int omissionsIndex = 0; omissionsIndex < journalOmissionModels.size(); omissionsIndex++) {
                 int columnIndex = omissionsIndex + 1;
-                if(journalOmissionUserByTrainings.get(omissionsIndex).getIsOmission()) {
+                if(journalOmissionModels.get(omissionsIndex).getIsOmission()) {
                     row.createCell(columnIndex).setCellValue("X");
                 }
             }
@@ -402,13 +402,13 @@ public class ExcelFileGenerator {
 
         for(int trainingsIndex = 0; trainingsIndex < trainingNameAndDates.size(); trainingsIndex++) {
             List<Omission> omissions = omissionService.findByTrainingNameAndUserLogin(trainingNameAndDates.get(trainingsIndex).getTrainingName(),userLogin);
-            List<JournalOmissionUserByTraining> journalOmissionUserByTrainings = JournalOmissionUserByTraining.parseListOfOmissions(omissions);
+            List<JournalOmissionModel> journalOmissionModels = JournalOmissionModel.parseListOfOmissions(omissions);
             HSSFRow row = sheet.createRow(trainingsIndex);
             row.createCell(0).setCellValue(trainingNameAndDates.get(trainingsIndex).getTrainingName());
-            for(int omissionsIndex = 0; omissionsIndex < journalOmissionUserByTrainings.size(); omissionsIndex++) {
+            for(int omissionsIndex = 0; omissionsIndex < journalOmissionModels.size(); omissionsIndex++) {
                 int columnIndex = omissionsIndex + 1;
-                if(journalOmissionUserByTrainings.get(omissionsIndex).getIsOmission()) {
-                    row.createCell(columnIndex).setCellValue(journalOmissionUserByTrainings.get(omissionsIndex).getDate());
+                if(journalOmissionModels.get(omissionsIndex).getIsOmission()) {
+                    row.createCell(columnIndex).setCellValue(journalOmissionModels.get(omissionsIndex).getDate());
                 }
             }
         }
@@ -425,16 +425,16 @@ public class ExcelFileGenerator {
         String fileName = userLogin + "_omission_dates_on_" + trainingName + ".xls";
 
         List<Omission> omissions = omissionService.findByTrainingNameAndUserLogin(trainingName, userLogin);
-        List<JournalOmissionUserByTraining> journalOmissionUserByTrainings = JournalOmissionUserByTraining.parseListOfOmissions(omissions);
+        List<JournalOmissionModel> journalOmissionModels = JournalOmissionModel.parseListOfOmissions(omissions);
 
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet(userLogin + " omissions");
         sheet.setDefaultColumnWidth(11);
 
         HSSFRow row = sheet.createRow(0);
-        for (int omissionsIndex = 0; omissionsIndex < journalOmissionUserByTrainings.size(); omissionsIndex++) {
-            if (journalOmissionUserByTrainings.get(omissionsIndex).getIsOmission()) {
-                row.createCell(omissionsIndex).setCellValue(journalOmissionUserByTrainings.get(omissionsIndex).getDate());
+        for (int omissionsIndex = 0; omissionsIndex < journalOmissionModels.size(); omissionsIndex++) {
+            if (journalOmissionModels.get(omissionsIndex).getIsOmission()) {
+                row.createCell(omissionsIndex).setCellValue(journalOmissionModels.get(omissionsIndex).getDate());
             }
         }
 
@@ -461,13 +461,13 @@ public class ExcelFileGenerator {
 
         for(int usersIndex = 0; usersIndex < userLoginAndNames.size(); usersIndex++) {
             List<Omission> omissions = omissionService.getOmisssionsByTrainingAndUser(trainingName,userLoginAndNames.get(usersIndex).getLogin(), dateFrom, dateTo);
-            List<JournalOmissionUserByTraining> journalOmissionUserByTrainings = JournalOmissionUserByTraining.parseListOfOmissions(omissions);
+            List<JournalOmissionModel> journalOmissionModels = JournalOmissionModel.parseListOfOmissions(omissions);
 
             HSSFRow row = sheet.createRow(usersIndex);
             row.createCell(0).setCellValue(userLoginAndNames.get(usersIndex).getName());
             int omissionCount = 0;
-            for(int omissionsIndex = 0; omissionsIndex < journalOmissionUserByTrainings.size(); omissionsIndex++) {
-                if(dates.contains(journalOmissionUserByTrainings.get(omissionsIndex).getDate()) && journalOmissionUserByTrainings.get(omissionsIndex).getIsOmission()) {                    }
+            for(int omissionsIndex = 0; omissionsIndex < journalOmissionModels.size(); omissionsIndex++) {
+                if(dates.contains(journalOmissionModels.get(omissionsIndex).getDate()) && journalOmissionModels.get(omissionsIndex).getIsOmission()) {                    }
                     omissionCount++;
             }
             row.createCell(1).setCellValue(Integer.valueOf(omissionCount).toString() + "/" + Integer.valueOf(amountOfTrainings));
@@ -492,14 +492,14 @@ public class ExcelFileGenerator {
 
         for(int trainingsIndex = 0; trainingsIndex < trainingNameAndDates.size(); trainingsIndex++) {
             List<Omission> omissions = omissionService.getOmisssionsByTrainingAndUser(trainingNameAndDates.get(trainingsIndex).getTrainingName(),userLogin, dateFrom, dateTo);
-            List<JournalOmissionUserByTraining> journalOmissionUserByTrainings = JournalOmissionUserByTraining.parseListOfOmissions(omissions);
+            List<JournalOmissionModel> journalOmissionModels = JournalOmissionModel.parseListOfOmissions(omissions);
             List<Date> dates = trainingService.getDatesByTrainingNameBetweenDates(trainingNameAndDates.get(trainingsIndex).getTrainingName(), dateFrom, dateTo);
             int amountOfTrainings = dates.size();
             HSSFRow row = sheet.createRow(trainingsIndex);
             row.createCell(0).setCellValue(trainingNameAndDates.get(trainingsIndex).getTrainingName());
             int omissionAmount = 0;
-            for(int omissionsIndex = 0; omissionsIndex < journalOmissionUserByTrainings.size(); omissionsIndex++) {
-                if(dates.contains(journalOmissionUserByTrainings.get(omissionsIndex).getDate()) && journalOmissionUserByTrainings.get(omissionsIndex).getIsOmission()) {
+            for(int omissionsIndex = 0; omissionsIndex < journalOmissionModels.size(); omissionsIndex++) {
+                if(dates.contains(journalOmissionModels.get(omissionsIndex).getDate()) && journalOmissionModels.get(omissionsIndex).getIsOmission()) {
                         omissionAmount++;
                 }
             }
@@ -518,7 +518,7 @@ public class ExcelFileGenerator {
 
         List<Omission> omissions = omissionService.getOmisssionsByTrainingAndUser(trainingName, userLogin, dateFrom, dateTo);
         List<Date> dates = trainingService.getDatesByTrainingNameBetweenDates(trainingName, dateFrom, dateTo);
-        List<JournalOmissionUserByTraining> journalOmissionUserByTrainings = JournalOmissionUserByTraining.parseListOfOmissions(omissions);
+        List<JournalOmissionModel> journalOmissionModels = JournalOmissionModel.parseListOfOmissions(omissions);
         int amountOfTrainings = dates.size();
 
         HSSFWorkbook workbook = new HSSFWorkbook();
@@ -528,8 +528,8 @@ public class ExcelFileGenerator {
         HSSFRow row = sheet.createRow(0);
         row.createCell(0).setCellValue(trainingName);
         int omissionAmount = 0;
-        for(int omissionsIndex = 0; omissionsIndex < journalOmissionUserByTrainings.size(); omissionsIndex++) {
-            if(dates.contains(journalOmissionUserByTrainings.get(omissionsIndex).getDate()) && journalOmissionUserByTrainings.get(omissionsIndex).getIsOmission()) {
+        for(int omissionsIndex = 0; omissionsIndex < journalOmissionModels.size(); omissionsIndex++) {
+            if(dates.contains(journalOmissionModels.get(omissionsIndex).getDate()) && journalOmissionModels.get(omissionsIndex).getIsOmission()) {
                 omissionAmount++;
             }
         }
@@ -555,13 +555,13 @@ public class ExcelFileGenerator {
 
         for(int usersIndex = 0; usersIndex < userLoginAndNames.size(); usersIndex++) {
             List<Omission> omissions = omissionService.findByTrainingNameAndUserLogin(trainingName,userLoginAndNames.get(usersIndex).getLogin());
-            List<JournalOmissionUserByTraining> journalOmissionUserByTrainings = JournalOmissionUserByTraining.parseListOfOmissions(omissions);
+            List<JournalOmissionModel> journalOmissionModels = JournalOmissionModel.parseListOfOmissions(omissions);
 
             HSSFRow row = sheet.createRow(usersIndex);
             row.createCell(0).setCellValue(userLoginAndNames.get(usersIndex).getName());
             int omissionCount = 0;
-            for(int omissionsIndex = 0; omissionsIndex < journalOmissionUserByTrainings.size(); omissionsIndex++) {
-                if(dates.contains(journalOmissionUserByTrainings.get(omissionsIndex).getDate()) && journalOmissionUserByTrainings.get(omissionsIndex).getIsOmission()) {                    }
+            for(int omissionsIndex = 0; omissionsIndex < journalOmissionModels.size(); omissionsIndex++) {
+                if(dates.contains(journalOmissionModels.get(omissionsIndex).getDate()) && journalOmissionModels.get(omissionsIndex).getIsOmission()) {                    }
                 omissionCount++;
             }
             row.createCell(1).setCellValue(Integer.valueOf(omissionCount).toString() + "/" + Integer.valueOf(amountOfTrainings));
@@ -587,14 +587,14 @@ public class ExcelFileGenerator {
 
         for(int trainingsIndex = 0; trainingsIndex < trainingNameAndDates.size(); trainingsIndex++) {
             List<Omission> omissions = omissionService.findByTrainingNameAndUserLogin(trainingNameAndDates.get(trainingsIndex).getTrainingName(),userLogin);
-            List<JournalOmissionUserByTraining> journalOmissionUserByTrainings = JournalOmissionUserByTraining.parseListOfOmissions(omissions);
+            List<JournalOmissionModel> journalOmissionModels = JournalOmissionModel.parseListOfOmissions(omissions);
             List<Date> dates = trainingService.getDatesByTrainingName(trainingNameAndDates.get(trainingsIndex).getTrainingName());
             int amountOfTrainings = dates.size();
             HSSFRow row = sheet.createRow(trainingsIndex);
             row.createCell(0).setCellValue(trainingNameAndDates.get(trainingsIndex).getTrainingName());
             int omissionCount = 0;
-            for(int omissionsIndex = 0; omissionsIndex < journalOmissionUserByTrainings.size(); omissionsIndex++) {
-                if(dates.contains(journalOmissionUserByTrainings.get(omissionsIndex).getDate()) && journalOmissionUserByTrainings.get(omissionsIndex).getIsOmission()) {                    }
+            for(int omissionsIndex = 0; omissionsIndex < journalOmissionModels.size(); omissionsIndex++) {
+                if(dates.contains(journalOmissionModels.get(omissionsIndex).getDate()) && journalOmissionModels.get(omissionsIndex).getIsOmission()) {                    }
                 omissionCount++;
             }
             row.createCell(1).setCellValue(Integer.valueOf(omissionCount).toString() + "/" + Integer.valueOf(amountOfTrainings));
@@ -613,7 +613,7 @@ public class ExcelFileGenerator {
 
         List<Omission> omissions = omissionService.findByTrainingNameAndUserLogin(trainingName, userLogin);
         List<Date> dates = trainingService.getDatesByTrainingName(trainingName);
-        List<JournalOmissionUserByTraining> journalOmissionUserByTrainings = JournalOmissionUserByTraining.parseListOfOmissions(omissions);
+        List<JournalOmissionModel> journalOmissionModels = JournalOmissionModel.parseListOfOmissions(omissions);
         int amountOfTrainings = dates.size();
 
         HSSFWorkbook workbook = new HSSFWorkbook();
@@ -623,8 +623,8 @@ public class ExcelFileGenerator {
         HSSFRow row = sheet.createRow(0);
         row.createCell(0).setCellValue(trainingName);
         int omissionCount = 0;
-        for(int omissionsIndex = 0; omissionsIndex < journalOmissionUserByTrainings.size(); omissionsIndex++) {
-            if(dates.contains(journalOmissionUserByTrainings.get(omissionsIndex).getDate()) && journalOmissionUserByTrainings.get(omissionsIndex).getIsOmission()) {                    }
+        for(int omissionsIndex = 0; omissionsIndex < journalOmissionModels.size(); omissionsIndex++) {
+            if(dates.contains(journalOmissionModels.get(omissionsIndex).getDate()) && journalOmissionModels.get(omissionsIndex).getIsOmission()) {                    }
             omissionCount++;
         }
         row.createCell(1).setCellValue(Integer.valueOf(omissionCount).toString() + "/" + Integer.valueOf(amountOfTrainings));

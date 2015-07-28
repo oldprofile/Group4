@@ -1,8 +1,12 @@
 package com.exadel.training.service.impl;
 
+import com.exadel.training.controller.model.Omission.OmissionADDModel;
 import com.exadel.training.model.Omission;
+import com.exadel.training.model.Training;
 import com.exadel.training.repository.impl.OmissionRepository;
 import com.exadel.training.service.OmissionService;
+import com.exadel.training.service.TrainingService;
+import com.exadel.training.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +21,17 @@ public class OmissionServiceImpl implements OmissionService{
 
     @Autowired
     OmissionRepository omissionRepository;
+
+    @Autowired
+    TrainingService trainingService;
+
+    @Autowired
+    UserService userService;
+
+    public void addOmission(OmissionADDModel omissionADDModel) {
+        //Training training = trainingService.
+        Omission omission = new Omission();
+    }
 
     @Override
     public List<Omission> getOmissionsByTrainingName(String trainingName) {
