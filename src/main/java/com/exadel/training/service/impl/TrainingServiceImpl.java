@@ -61,6 +61,8 @@ public class TrainingServiceImpl implements TrainingService {
 
         Training mainTraining = new Training();
         mainTraining.fillTraining(trainingForCreation);
+        mainTraining.setDateTime(dateTimes.get(0));
+        mainTraining.setPlace(place);
         mainTraining.setCoach(coach);
         mainTraining.setCategory(category);
         mainTraining.setState(state);
@@ -80,7 +82,7 @@ public class TrainingServiceImpl implements TrainingService {
             trainings.add(newTraining);
             trainingRepository.saveAndFlush(newTraining);
         }
-        return trainings.get(0);
+        return mainTraining;
     }
 
     @Override
@@ -132,7 +134,10 @@ public class TrainingServiceImpl implements TrainingService {
         int state;
         String place = null;
         if (userRepository.whoIsUser(trainingForCreation.getUserLogin(), 1)) {
-            state = StateTraining.parseToInt("Ahead");
+            if(dateTimes.size() == 0)
+                state = StateTraining.parseToInt("Canceled");
+            else
+                state = StateTraining.parseToInt("Ahead");
             place = trainingForCreation.getPlaces().get(0);
         } else {
             state = StateTraining.parseToInt("Edited");
@@ -142,6 +147,10 @@ public class TrainingServiceImpl implements TrainingService {
         mainTraining.fillTraining(trainingForCreation);
         mainTraining.setCategory(category);
         mainTraining.setState(state);
+        if (dateTimes.size() != 0)
+            mainTraining.setDateTime(dateTimes.get(0));
+        if(place != null)
+            mainTraining.setPlace(place);
 
         List<Training> trainings = trainingRepository.findTrainingsByName(trainingForCreation.getName());
         for(int i = 0; i < dateTimes.size(); ++i) {
@@ -164,7 +173,7 @@ public class TrainingServiceImpl implements TrainingService {
         for(int i = dateTimes.size(); i < trainings.size(); ++i) {
             trainingRepository.deleteTrainingsById(trainings.get(i).getId());
         }
-        return trainings.get(0);
+        return mainTraining;
     }
 
     @Override

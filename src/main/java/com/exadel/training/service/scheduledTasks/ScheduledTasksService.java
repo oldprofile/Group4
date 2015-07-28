@@ -112,7 +112,7 @@ public class ScheduledTasksService {
         }
     }
 
-    @Scheduled(fixedDelay = 3600000)
+    //@Scheduled(fixedDelay = 3600000)
     public void doSomething() throws ParseException, NoSuchFieldException, MessagingException, TwilioRestException {
         List<Training> trainings = trainingService.getValidTrainings();
         if (!trainings.isEmpty()) {
