@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Training> selectAllTrainingBetweenDatesAndSortedByDate(String login, Date from, Date to) {
+    public List<Training> selectAllTrainingBetweenDatesAndSortedByName(String login, Date from, Date to) {
         return userRepository.selectAllTrainingBetweenDatesAndSortedByName(login, from, to);
     }
 
