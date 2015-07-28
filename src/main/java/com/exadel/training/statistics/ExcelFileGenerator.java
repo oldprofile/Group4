@@ -450,7 +450,7 @@ public class ExcelFileGenerator {
     }*/
 
     public String generateForTrainingDates(Date dateFrom, Date dateTo, String trainingName) throws IOException {
-        String fileName = trainingName + "_omission_dates_" + sdf.format(dateFrom) + "_" + sdf.format(dateTo) + ".xls";
+        String fileName = trainingName + "_omission_dates_" + sdf.format(dateFrom) + "_" + sdf.format(dateTo) + ".xlsx";
 
         List<User> users = trainingService.getListenersByTrainingNameSortByName(trainingName);
         List<UserLoginAndName> userLoginAndNames = UserLoginAndName.parseUserLoginAndName(users);
@@ -479,7 +479,7 @@ public class ExcelFileGenerator {
     }
 
     public String generateForUserDates(Date dateFrom, Date dateTo, String userLogin) throws IOException {
-        String fileName = userLogin + "_omission_dates_" + sdf.format(dateFrom) + "_" + sdf.format(dateTo) + ".xls";
+        String fileName = userLogin + "_omission_dates_" + sdf.format(dateFrom) + "_" + sdf.format(dateTo) + ".xlsx";
 
         //TRAININGS ONLY
         List<Training> trainings = userService.selectAllTrainingBetweenDatesAndSortedByDate(userLogin, dateFrom, dateTo);
@@ -510,7 +510,7 @@ public class ExcelFileGenerator {
 
     // for user and training
     public String generateForUserAndTrainingDates(Date dateFrom, Date dateTo, String userLogin, String trainingName) throws IOException {
-        String fileName = userLogin + "_omission_dates_on_" + trainingName + "_" + sdf.format(dateFrom) + "_" + sdf.format(dateTo) + ".xls";
+        String fileName = userLogin + "_omission_dates_on_" + trainingName + "_" + sdf.format(dateFrom) + "_" + sdf.format(dateTo) + ".xlsx";
 
         List<Omission> omissions = omissionService.getOmisssionsByTrainingAndUser(trainingName, userLogin, dateFrom, dateTo);
         List<JournalOmissionModel> journalOmissionModels = JournalOmissionModel.parseListOfOmissions(omissions);
@@ -532,7 +532,7 @@ public class ExcelFileGenerator {
         return filePath+fileName;
     }
     // for all users on this training
-    public String generateForTrainingDates(String trainingName) throws IOException {
+    /*public String generateForTrainingDates(String trainingName) throws IOException {
         String fileName = trainingName + "_omission_dates" + ".xls";
 
         List<User> users = trainingService.getListenersByTrainingNameSortByName(trainingName);
@@ -615,12 +615,12 @@ public class ExcelFileGenerator {
         workbook.write(fileOut);
         fileOut.close();
         return filePath+fileName;
-    }
+    }*/
 
     // AMOUNT OF OMISSIONS
 
     public String generateForTrainingAmount(Date dateFrom, Date dateTo, String trainingName) throws IOException {
-        String fileName = trainingName + "_omission_amount_" + sdf.format(dateFrom) + "_" + sdf.format(dateTo) + ".xls";
+        String fileName = trainingName + "_omission_amount_" + sdf.format(dateFrom) + "_" + sdf.format(dateTo) + ".xlsx";
 
         // ONLY PARENT
         List<User> users = trainingService.getListenersByTrainingNameSortByName(trainingName);
@@ -653,7 +653,7 @@ public class ExcelFileGenerator {
     }
 
     public String generateForUserAmount(Date dateFrom, Date dateTo, String userLogin) throws IOException {
-        String fileName = userLogin + "_omission_amount_" + sdf.format(dateFrom) + "_" + sdf.format(dateTo) + ".xls";
+        String fileName = userLogin + "_omission_amount_" + sdf.format(dateFrom) + "_" + sdf.format(dateTo) + ".xlsx";
 
         //TRAININGS ONLY
         List<Training> trainings = userService.selectAllTrainingBetweenDatesAndSortedByDate(userLogin, dateFrom, dateTo);
@@ -687,7 +687,7 @@ public class ExcelFileGenerator {
 
     // for user and training
     public String generateForUserAndTrainingAmount(Date dateFrom, Date dateTo, String userLogin, String trainingName) throws IOException {
-        String fileName = userLogin + "_omission_amount_on_" + trainingName + "_" + sdf.format(dateFrom) + "_" + sdf.format(dateTo) + ".xls";
+        String fileName = userLogin + "_omission_amount_on_" + trainingName + "_" + sdf.format(dateFrom) + "_" + sdf.format(dateTo) + ".xlsx";
 
         List<Omission> omissions = omissionService.getOmisssionsByTrainingAndUser(trainingName, userLogin, dateFrom, dateTo);
         List<Date> dates = trainingService.getDatesByTrainingNameBetweenDates(trainingName, dateFrom, dateTo);
@@ -714,7 +714,7 @@ public class ExcelFileGenerator {
         return filePath+fileName;
     }
     // for all users on this training
-    public String generateForTrainingAmount(String trainingName) throws IOException {
+    /*public String generateForTrainingAmount(String trainingName) throws IOException {
         String fileName = trainingName + "_omission_amount" + ".xls";
 
         List<User> users = trainingService.getListenersByTrainingNameSortByName(trainingName);
@@ -806,5 +806,5 @@ public class ExcelFileGenerator {
         workbook.write(fileOut);
         fileOut.close();
         return filePath+fileName;
-    }
+    }*/
 }
