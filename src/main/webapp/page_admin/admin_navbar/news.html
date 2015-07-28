@@ -1,5 +1,12 @@
 <div ng-controller="NewsController">
-    <pagination total-items="bigTotalItems" ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm" boundary-links="true">
+    <pagination total-items="bigTotalItems" ng-model="bigCurrentPage" max-size="10" class="pagination-sm" boundary-links="true">
     </pagination>
 </div>
 
+<div ng-controller="SomeController">
+  <ul>
+      <li ng-repeat="data in MyData.collection track by $index">
+        {{ data }}
+      </li>
+    </ul>
+</div>

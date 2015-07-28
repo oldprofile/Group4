@@ -49,18 +49,18 @@
     </div>
     
     <!--Starts on-->
-    <div class="form-group form-group-md row repeating-row">
+    <div class="row">
         <label class="col-xs-3 control-label" for="repeats">Starts on:</label>
         
         <div class="dropdown col-xs-9">
-            <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown">
+            <a class="dropdown-toggle" id="dropdownRepeat" role="button" data-toggle="dropdown">
                 <div class="input-group">
-                    <input type="text" class="form-control" data-ng-model="startDate">
+                    <input type="text" class="form-control" ng-value="temp.startDate | date: 'medium'">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                 </div>
             </a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                <datetimepicker data-ng-model="startDate" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"/>
+                <datetimepicker ng-model="temp.startDate" data-datetimepicker-config="{ dropdownSelector: '#dropdownRepeat' }"/>
             </ul>
         </div>
     </div>
@@ -72,12 +72,12 @@
         <div class="dropdown col-xs-9">
             <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown">
                 <div class="input-group">
-                    <input type="text" class="form-control" data-ng-model="endDate">
+                    <input type="text" class="form-control" data-ng-model="temp.endDate">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                 </div>
             </a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                <datetimepicker data-ng-model="endDate" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"/>
+                <datetimepicker data-ng-model="temp.endDate" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"/>
             </ul>
         </div>
     </div>
