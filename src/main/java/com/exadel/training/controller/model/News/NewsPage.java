@@ -1,5 +1,6 @@
 package com.exadel.training.controller.model.News;
 
+import com.exadel.training.controller.model.User.AllTrainingUserShort;
 import com.exadel.training.model.News;
 
 /**
@@ -7,8 +8,13 @@ import com.exadel.training.model.News;
  */
 public class NewsPage {
 
+    private static final Object EMPTY = null;
+
     private String name;
     private String desciption;
+    private AllTrainingUserShort training;
+    private Boolean isRead;
+
 
     public NewsPage(){
     }
@@ -29,10 +35,31 @@ public class NewsPage {
         this.desciption = desciption;
     }
 
-    public static NewsPage parseNewsPage(News news) {
+    public AllTrainingUserShort getTraining() {
+        return training;
+    }
+
+    public void setTraining(AllTrainingUserShort training) {
+        this.training = training;
+    }
+
+    public Boolean getIsRead() {
+        return isRead;
+    }
+
+    public void setIsRead(Boolean isRead) {
+        this.isRead = isRead;
+    }
+
+
+    public static NewsPage parseNewsPage(News news) throws NoSuchFieldException {
         NewsPage newsPage = new NewsPage();
          newsPage.setName(news.getUser().getName());
          newsPage.setDesciption(news.getAction());
+        if(news.getTraining() != EMPTY) {
+         newsPage.setTraining(AllTrainingUserShort.parseAllTrainingUserShort(news.getTraining()));
+        }
+        newsPage.setIsRead(news.isRead());
 
         return newsPage;
     }

@@ -18,7 +18,7 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
     //@Query(value = "select tr from Training tr where tr.name = ?1 and tr.parent = 0")
     //Training findTrainingName( String name);
 
-    @Query(value = "select tr from Training tr where tr.name = ?1")
+    @Query(value = "select tr from Training tr where tr.name = ?1 and tr.parent not in(0)")
     List<Training> findTrainingsByName(String name);
 
     @Query(value = "select tr from Training tr where tr.name = ?1 and tr.parent = 0")
@@ -61,7 +61,7 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
     @Query("select tr from Training as tr where tr.name like ?1")
     List<Training> searchTrainingsByName(String trainingName);
 
-    @Query("select tr.dateTime from Training as tr where tr.name = ?1 order by tr.dateTime asc")
+    @Query("select tr.dateTime from Training as tr where tr.name = ?1 and tr.parent not in(0) order by tr.dateTime asc")
     List<Date> findDatesByTrainingsName(String trainingName);
 
     @Query("select tr from Training as tr where tr.state in (1,4) and tr.parent = 0")
@@ -73,15 +73,21 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
     @Query("select tr.listeners from Training as tr where tr.name = ?1 and tr.parent = 0")
     List<User> findListenersByTrainingName(String trainingName);
 
-    @Query("select trus from Training as tr  inner join tr.listeners as trus where tr.name = ?1 order by trus.name asc")
+    @Query("select trus from Training as tr  inner join tr.listeners as trus where tr.name = ?1 and tr.parent = 0 order by trus.name asc")
     List<User> findListenersByTrainingNameSortByName(String trainingName);
 
     @Query("select tr.spareUsers from Training as tr where tr.name = ?1 and tr.parent = 0")
     List<User> findSpareUsersByTrainingName(String trainingName);
 
-    @Query("select tr.dateTime from Training as tr where tr.name = ?1 and tr.dateTime >= ?2 and tr.dateTime <= ?3 order by tr.dateTime asc")
+    @Query("select tr.dateTime from Training as tr where tr.name = ?1 and tr.parent not in(0) and tr.dateTime >= ?2 and tr.dateTime <= ?3 order by tr.dateTime asc")
     List<Date> findDatesByTrainingNameBetweenDates(String trainingName, Date firstDate, Date secondDate);
 
     @Query("select tr.place from Training as tr where tr.name= ?1 order by tr.dateTime asc")
     List<String> findPlacesByTrainingName(String trainingName);
+
+    @Query("select tr from Training as tr where tr.coach = ?1 and tr.parent = 0 order by tr.dateTime asc")
+    List<Training> findTrainingsByCoach(User coach);
+
+    @Query("select tr.id from Training as tr where tr.name = ?1 and tr.parent = 0")
+    Long findParentTrainingIdByName(String trainingName);
 }
