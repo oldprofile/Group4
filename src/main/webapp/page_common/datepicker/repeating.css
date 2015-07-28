@@ -5,6 +5,5 @@ div.repeating-container {
 }
 
 div.repeating-row {
-  overflow: auto;
   margin: 10px;
 }

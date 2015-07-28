@@ -1,7 +1,7 @@
-angular.module('myApp', ['ngWebSocket'])
-  .factory('MyData', function($websocket) {
+angular.module('myApp.notifications', ['ngWebSocket'])
+.factory('MyData', ['$websocket', function($websocket) {
       // Open a WebSocket connection
-      var dataStream = $websocket('wss://website.com/data');
+      var dataStream = $websocket('ws://localhost:8080/demo/actions');
 
       var collection = [];
 
@@ -17,6 +17,7 @@ angular.module('myApp', ['ngWebSocket'])
       };
 
       return methods;
-    }).controller('SomeController', function ($scope, MyData) {
+    }]).controller('SomeController', ['$scope', 'MyData', function ($scope, MyData) {
       $scope.MyData = MyData;
-    });
+    }]);
+  

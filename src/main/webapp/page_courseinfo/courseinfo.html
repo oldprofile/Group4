@@ -39,8 +39,8 @@
                     <tr ng-repeat="lesson in course.dateTime">
                       <td>{{$index + 1}}</td>
                       <td>{{ lesson | date:"medium" }}</td>
-                      <td>{{ course.place }}</td>
-                      <td><a ng-click="editDatePlace(course, $index)">edit</a></td>>
+                      <td>{{ course.places[$index] }}</td>
+                      <td><a ng-click="editDatePlace($index)">edit</a></td>>
                     </tr>
                   </table>
 

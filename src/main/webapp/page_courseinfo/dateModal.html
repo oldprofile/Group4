@@ -5,27 +5,26 @@
 </div>
 <div class="modal-body">
   <form name="lessonForm" style="overflow:auto;">
-    
-    <div class="repeating-row">
-        <label class="col-xs-3 control-label" for="repeats">Edit date:</label>
+    <div class="row">
+        <label class="col-xs-3 control-label" for="dropdown2">Edit date:</label>
         
         <div class="dropdown col-xs-9">
-            <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown">
+            <a class="dropdown-toggle" id="dropdown{{index}}" role="button" data-toggle="dropdown">
                 <div class="input-group">
-                    <input type="text" class="form-control" data-ng-value="course.dateTime[index] | date: 'medium'">
+                    <input type="text" class="form-control" ng-value="courseinfo.dateTime[index] | date: 'medium'">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                 </div>
             </a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                <datetimepicker data-ng-model="course.dateTime[index]" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"/>
+                <datetimepicker ng-model="courseinfo.dateTime[index]" data-datetimepicker-config="{ dropdownSelector: '#dropdown{{index}}' }"/>
             </ul>
         </div>
     </div>
     
-    <div class="repeating-row">
+    <div class="row">
       <label for="place" class="col-xs-3 control-label">Place: </label>
       <div class="col-xs-9">
-          <input class="form-control" name="place" id="place" type="text" placeholder="Place" ng-model="course.places[0]" required>
+          <input class="form-control" name="place" id="place" type="text" placeholder="Place" ng-model="courseinfo.places[0]" required>
       </div>
     </div>
     
