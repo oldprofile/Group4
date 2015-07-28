@@ -1,11 +1,13 @@
 package com.exadel.training.notification.sms;
 
+import com.exadel.training.notification.Notification;
 import com.twilio.sdk.TwilioRestClient;
 import com.twilio.sdk.TwilioRestException;
 import com.twilio.sdk.resource.factory.MessageFactory;
 import com.twilio.sdk.resource.instance.Account;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,20 +15,17 @@ import java.util.List;
 /**
  * Created by HP on 16.07.2015.
  */
-public class WrapperNotificationSMS {
+@Service
+public class WrapperNotificationSMS implements Notification{
     // Account Sid and Token
     public static final String ACCOUNT_SID = "AC153d280ddafbd38701dcf24ba171b762";
     public static final String AUTH_TOKEN = "8a006dc2490b141eb7a5826db20856b0";
 
-    TwilioRestClient client;
-    Account account;
+    public WrapperNotificationSMS() {}
 
-    public WrapperNotificationSMS() {
-        this.client = new TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN);
-        this.account = client.getAccount();
-    }
-
-    public void sendSMS(String phoneNumber, String text) throws TwilioRestException {
+    public void send(String phoneNumber, String text) throws TwilioRestException {
+        TwilioRestClient client = new TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN);
+        Account account = client.getAccount();
         MessageFactory messageFactory = account.getMessageFactory();
         List<NameValuePair> messageParams = new ArrayList<NameValuePair>();
         messageParams.add(new BasicNameValuePair("To", phoneNumber));

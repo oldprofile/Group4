@@ -1,5 +1,10 @@
 package com.exadel.training.model;
 
+import com.exadel.training.common.LanguageTraining;
+import com.exadel.training.controller.model.Training.TrainingForCreation;
+import com.exadel.training.repository.impl.TrainingRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -22,6 +27,7 @@ public class Training {
 
     private String pictureLink;
 
+    @Column(length = 3000)
     private String description;
 
     private String place;
@@ -37,6 +43,8 @@ public class Training {
     private boolean isInternal;
 
     private long parent;
+
+    private double rating;
 
     @ManyToOne(cascade = CascadeType.ALL)
     private User coach;
@@ -60,6 +68,17 @@ public class Training {
     private  List<TrainingFeedback> feedbacks;
 
     public Training() {
+    }
+
+    public void fillTraining(TrainingForCreation trainingForCreation) throws NoSuchFieldException {
+        name = trainingForCreation.getName();
+        description = trainingForCreation.getDescription();
+        language = LanguageTraining.parseToInt(trainingForCreation.getLanguage());
+        isInternal = trainingForCreation.isInternal();
+        amount = trainingForCreation.getParticipantsNumber();
+        audience = trainingForCreation.getAudience();
+        pictureLink = trainingForCreation.getPictureLink();
+        additional = trainingForCreation.getAdditional();
     }
 
     public long getId() {
@@ -212,5 +231,13 @@ public class Training {
 
     public void setFeedbacks(List<TrainingFeedback> feedbacks) {
         this.feedbacks = feedbacks;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 }

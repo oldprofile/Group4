@@ -10,6 +10,7 @@ import java.util.List;
  * Created by asd on 14.07.2015.
  */
 public class TrainingFeedbackADDModel implements Serializable {
+
     private boolean clear;
 
     private boolean interesting;
@@ -110,11 +111,11 @@ public class TrainingFeedbackADDModel implements Serializable {
         return trainingFeedbackADDModel;
     }
 
-    public static List<TrainingFeedbackADDModel> parseTrainingFeedbackList(List<TrainingFeedback> trainingFeedbackList) {
-        List<TrainingFeedbackADDModel> trainingFeedbackADDModelList = new ArrayList<TrainingFeedbackADDModel>();
-        for(TrainingFeedback trainingFeedback: trainingFeedbackList) {
-            trainingFeedbackADDModelList.add(TrainingFeedbackADDModel.parseTrainingFeedback(trainingFeedback));
+    public static List<TrainingFeedbackADDModel> parseTrainingFeedbacks (List<TrainingFeedback> trainingFeedbacks) {
+        List<TrainingFeedbackADDModel> trainingFeedbackADDModels = new ArrayList<TrainingFeedbackADDModel>();
+        for(TrainingFeedback trainingFeedback: trainingFeedbacks) {
+            trainingFeedbackADDModels.add(TrainingFeedbackADDModel.parseTrainingFeedback(trainingFeedback));
         }
-        return trainingFeedbackADDModelList;
+        return trainingFeedbackADDModels;
     }
 }

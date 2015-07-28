@@ -1,5 +1,5 @@
 .well {
-    height: 300px;
+    min-height: 400px;
 }
 
 .scroll::-webkit-scrollbar-track {

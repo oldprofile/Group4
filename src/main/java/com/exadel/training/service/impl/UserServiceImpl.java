@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,9 +19,9 @@ import java.util.List;
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
+
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private TrainingRepository trainingRepository;
 
@@ -37,6 +38,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean checkSubscribeToTraining(String trainingName, String login) {
         return userRepository.checkSubscribeToTraining(trainingName,login);
+    }
+
+    @Override
+    public Boolean whoIsUser(String login, long roleId) {
+        return userRepository.whoIsUser(login, roleId);
     }
 
     @Override
@@ -62,7 +68,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findUsersByRole(RoleType type) throws NoSuchFieldException {
-       return userRepository.findUsersByRole(RoleType.parseRoleTypeToLong(type));
+        return userRepository.findUsersByRole(RoleType.parseRoleTypeToLong(type));
+    }
+
+    @Override
+    public List<User> findAllCoachOfUser(String login) {
+        return userRepository.findAllCoachOfUser(login);
     }
 
     @Override
@@ -73,6 +84,36 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Training> selectAllTrainingSortedByDate(String login, List<Integer> state) {
         return userRepository.selectAllTrainingSortedByDate(login, state);
+    }
+
+    @Override
+    public List<Training> selectAllTrainingSortedByDateTypeCoachTrue(String login, List<Integer> state) {
+        return userRepository.selectAllTrainingSortedByDateTypeCoachTrue(login, state);
+    }
+
+    @Override
+    public List<Training> selectAllTrainingSortedByDateTypeCoachFalse(String login, List<Integer> state) {
+        return userRepository.selectAllTrainingSortedByDateTypeCoachFalse(login, state);
+    }
+
+    @Override
+    public List<Training> selectAllTrainingBetweenDatesAndSortedByName(String login, Date from, Date to) {
+        return userRepository.selectAllTrainingBetweenDatesAndSortedByName(login, from, to);
+    }
+
+    @Override
+    public List<Date> selectAllDateOfTrainingsBetweenDates(String login, Date from, Date to) {
+        return userRepository.selectAllDateOfTrainingsBetweenDates(login, from, to);
+    }
+
+    @Override
+    public List<Training> selectAllTrainingAndSortedByName(String login) {
+        return userRepository.selectAllTrainingAndSortedByName(login);
+    }
+
+    @Override
+    public List<Date> selectAllDateOfTrainings(String login) {
+        return userRepository.selectAllDateOfTrainings(login);
     }
 
     @Override
@@ -92,8 +133,14 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void insertUserTrainingRelationShip(String login, String trainingName) {
         long userID = userRepository.findUserByLogin(login).getId();
-        Training training = trainingRepository.findByName(trainingName);
-        if(training.getListeners().size() < training.getAmount()) {
+        Training parentTraining = trainingRepository.findTrainingByName(trainingName);
+        List<Training> trainings = trainingRepository.findTrainingsByName(trainingName);
+
+        if(parentTraining.getListeners().size() < parentTraining.getAmount()) {
+            userRepository.insertUserTrainingRelationShip(parentTraining.getId(), userID);
+        }
+
+        for(Training training : trainings) {
             userRepository.insertUserTrainingRelationShip(training.getId(), userID);
         }
     }
@@ -102,5 +149,12 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void saveUser(User user) {
         userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void insertNumberOfTelephone(String login, String number) {
+        User user = userRepository.findUserByLogin(login);
+        user.setNumberPhone(number);
     }
 }

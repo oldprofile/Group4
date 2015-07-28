@@ -1,9 +1,7 @@
 package com.exadel.training.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by asd on 09.07.2015.
@@ -15,17 +13,17 @@ public class UserFeedback{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    private String attendance;
+    private boolean attendance;
 
-    private String attitude;
+    private boolean attitude;
 
-    private String commSkills;
+    private boolean commSkills;
 
-    private String questions;
+    private boolean questions;
 
-    private String motivation;
+    private boolean motivation;
 
-    private String focusOnResult;
+    private boolean focusOnResult;
 
     private String other;
 
@@ -47,7 +45,7 @@ public class UserFeedback{
         this.date = new Date();
     }
 
-    public UserFeedback(String attendance, String attitude, String commSkills, String questions, String motivation, String focusOnResult, String other, User feedbacker, User user) {
+    public UserFeedback(boolean attendance, boolean attitude, boolean commSkills, boolean questions, boolean motivation, boolean focusOnResult, String other, User feedbacker, User user) {
         this.attendance = attendance;
         this.attitude = attitude;
         this.commSkills = commSkills;
@@ -60,70 +58,55 @@ public class UserFeedback{
         this.user = user;
     }
 
-    public UserFeedback(String attendance, String attitude, String commSkills, String questions, String motivation, String focusOnResult, String other, Date date, User feedbacker, User user, int assessment, int level) {
-        this.attendance = attendance;
-        this.attitude = attitude;
-        this.commSkills = commSkills;
-        this.questions = questions;
-        this.motivation = motivation;
-        this.focusOnResult = focusOnResult;
-        this.other = other;
-        this.date = date;
-        this.feedbacker = feedbacker;
-        this.user = user;
-        this.assessment = assessment;
-        this.level = level;
-    }
-
     public long getId() {
         return id;
     }
 
-    public String getAttendance() {
+    public boolean getAttendance() {
         return attendance;
     }
 
-    public void setAttendance(String attendance) {
+    public void setAttendance(boolean attendance) {
         this.attendance = attendance;
     }
 
-    public String getCommSkills() {
+    public boolean getCommSkills() {
         return commSkills;
     }
 
-    public void setCommSkills(String commSkills) {
+    public void setCommSkills(boolean commSkills) {
         this.commSkills = commSkills;
     }
 
-    public String getAttitude() {
+    public boolean getAttitude() {
         return attitude;
     }
 
-    public void setAttitude(String attitude) {
+    public void setAttitude(boolean attitude) {
         this.attitude = attitude;
     }
 
-    public String getQuestions() {
+    public boolean getQuestions() {
         return questions;
     }
 
-    public void setQuestions(String questions) {
+    public void setQuestions(boolean questions) {
         this.questions = questions;
     }
 
-    public String getMotivation() {
+    public boolean getMotivation() {
         return motivation;
     }
 
-    public void setMotivation(String motivation) {
+    public void setMotivation(boolean motivation) {
         this.motivation = motivation;
     }
 
-    public String getFocusOnResult() {
+    public boolean getFocusOnResult() {
         return focusOnResult;
     }
 
-    public void setFocusOnResult(String focusOnResult) {
+    public void setFocusOnResult(boolean focusOnResult) {
         this.focusOnResult = focusOnResult;
     }
 

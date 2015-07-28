@@ -1,7 +1,15 @@
 package com.exadel.training.controller.model.Training;
 
-import java.util.Date;
+import org.apache.commons.lang3.SystemUtils;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import java.io.*;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.codec.binary.Base64;
 
 /**
  * Created by Клим on 14.07.2015.
@@ -13,13 +21,71 @@ public class TrainingForCreation {
     private String description;
     private int idCategory;
     private int participantsNumber;
-    private String additional;
+    private String pictureData;
+    private String pictureLink;
     private String audience;
     private String language;
     private boolean isInternal;
+    private List<String> places;
     private List<String> dateTimes;
+    private String additional;
 
     public TrainingForCreation() {
+    }
+
+    public static String createFile(String fileData, String filePath ,String fileName) throws IOException {
+        int typeBegin = 11;
+        int typeEnd = 15;
+        int fileBegin;
+        int i;
+        for ( i = 0; fileData.charAt(i) != ','; ++i){
+            if (fileData.charAt(i) == '/')
+                typeBegin = i + 1;
+            else
+            if (fileData.charAt(i) == ';')
+                typeEnd = i;
+        }
+        fileBegin = i + 1;
+        String fileType = fileData.substring(typeBegin, typeEnd);
+        String pictureString = fileData.substring(fileBegin);
+        byte[] data = Base64.decodeBase64(pictureString);
+        fileName = fileName.replace(" ", "-");
+        String fileLink = filePath + fileName +  "." + fileType;
+        String destination = System.getProperty("user.dir") + "\\src\\main\\webapp" + fileLink;
+        if(!SystemUtils.IS_OS_WINDOWS)
+            destination = destination.replace("\\", "/");
+        FileOutputStream imageOutFile = new FileOutputStream(destination);
+        fileLink = fileLink.replace("\\", "/");
+        imageOutFile.write(data);
+        imageOutFile.close();
+        return fileLink;
+    }
+
+    public TrainingForCreation(JSONObject json) throws NoSuchFieldException, IOException {
+        JSONArray jsonDates = (JSONArray) json.get("dateTime");
+        dateTimes = new ArrayList<>();
+        for (Object jsonDate : jsonDates) {
+            dateTimes.add((String) jsonDate);
+        }
+
+        JSONArray jsonPlaces = (JSONArray) json.get("places");
+        places = new ArrayList<>();
+        for (Object jsonPlace : jsonPlaces) {
+            places.add((String) jsonPlace);
+        }
+        isInternal = (Boolean)json.get("isInternal");
+        audience = (String)json.get("audience");
+        additional = (String)json.get("additional");
+        participantsNumber = Integer.parseInt(String.valueOf(json.get("participantsNumber")));
+        name = (String)json.get("name");
+        description = (String)json.get("description");
+        language = (String)json.get("language");
+        idCategory = Integer.parseInt(String.valueOf(json.get("idCategory")));
+        pictureData = (String)json.get("pictureData");
+        if (pictureData == null)
+            pictureLink = (String)json.get("pictureLink");
+        else
+            pictureLink = createFile(pictureData, "\\image_storage\\", name);
     }
 
     public String getName() {
@@ -62,14 +128,6 @@ public class TrainingForCreation {
         this.participantsNumber = participantsNumber;
     }
 
-    public String getAdditional() {
-        return additional;
-    }
-
-    public void setAdditional(String additional) {
-        this.additional = additional;
-    }
-
     public String getAudience() {
         return audience;
     }
@@ -100,5 +158,37 @@ public class TrainingForCreation {
 
     public void setDateTimes(List<String> dateTimes) {
         this.dateTimes = dateTimes;
+    }
+
+    public String getPictureLink() {
+        return pictureLink;
+    }
+
+    public void setPictureLink(String pictureLink) {
+        this.pictureLink = pictureLink;
+    }
+
+    public List<String> getPlaces() {
+        return places;
+    }
+
+    public void setPlaces(List<String> places) {
+        this.places = places;
+    }
+
+    public String getPictureData() {
+        return pictureData;
+    }
+
+    public void setPictureData(String pictureData) {
+        this.pictureData = pictureData;
+    }
+
+    public String getAdditional() {
+        return additional;
+    }
+
+    public void setAdditional(String additional) {
+        this.additional = additional;
     }
 }

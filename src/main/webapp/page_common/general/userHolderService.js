@@ -1,7 +1,7 @@
 'use strict'
 
 
-angular.module('myApp').factory('userService', ['$http',function ($http) {
+angular.module('myApp').factory('userService',['$http',function ($http) {
   
   var role = {
    admin: {
@@ -30,16 +30,35 @@ angular.module('myApp').factory('userService', ['$http',function ($http) {
   }
 
   var userApi = {
+    isLogged: false,  
+      
     setUser: function (login,username, password, role_, token) {
       currentUser.login = login;    
       currentUser.username = username;
       currentUser.password = password;
       
-      currentUser.role = role.admin;
+      var nrole = role_.reduce(function(max,cur){
+        if(max.id < cur.id){
+          return max;
+        } else {
+          return cur;
+        }
+      });
+      
+      for (var r in role){
+        if(role[r].id === nrole.id){  
+          currentUser.role =  role[r];
+        }
+      }
+      
+     
+      
+       
+      $http.defaults.headers.common.Authorization = token;
+      $http.defaults.headers.common.Login = login;  
         
+      this.isLogged = true;
         
-      alert("token: " + token);    
-      $http.defaults.headers.common.Authorization = token;    
         
     },
     getUser: function () {
@@ -47,7 +66,23 @@ angular.module('myApp').factory('userService', ['$http',function ($http) {
     },
     clearUser: function () {
       currentUser = {};
-    }
+    },
+    
+    isAdmin: function(){
+      return (currentUser.role === role.admin);
+    },
+      
+    logout: function(){
+      return $http.post("/authentication/logout",{}).success(function(data){
+          this.clearUser();
+          this.isLogged = false;
+          
+          return data;
+    }).error(function(err){
+          return err;
+      })
+        
+    }  
   };
   return userApi;
 }]);

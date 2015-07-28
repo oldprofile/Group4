@@ -1,18 +1,41 @@
 <div>
     
     <dos-head-tool ng-model="dosFilter"></dos-head-tool>
-    {{dosFilter.filterString}}
     <div ng-show="isNoCourses">
         <h2>No Courses, browse them</h2>
     </div>    
-     <div deckgrid source="mycourses" cardTemplate="page_mycourses/mycoursescardtemplate.html" class="deckgrid-my-courses"></div>   
+
+    <div class="card-layout-mycourses" ng-class="{ 'waiting-for-angular': !isContentLoaded }">
+        <div ng-repeat="c in mycourses | filter: dosFilter.filterObject">
+          
+            <div class="col-md-6 col-sm-12 col-xs-12 card">
+              <div class="card-bg">
+                  <div class="col-xs-7 card-image">
+                    <img ng-src="assets/angular_bg1.png">
+                  </div>
+                  <div class="col-xs-5">
+                    <h1>{{c.trainingName}}</h1>
+
+                    <h2>Lesson #1</h2>
+                    <h3>{{c.dateTraining | date:"dd.MM, hh.mm" }} | {{c.trainingPlace}}</h3>
+                    <a ng-href="#/courseinfo/{{c.trainingName}}">more</a>
+                  </div>  
+
+                  
+                </div>
+            </div>
+            
+            
+          </div>
+        
+    </div>    
+
+    
 
 
 
 
 
-
-
-    <a href="#/createcourse">Create course!</a>
+    
     
 </div>

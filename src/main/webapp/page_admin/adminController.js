@@ -1,14 +1,23 @@
 angular.module('myApp.admin')
-.controller('AdminController', ['$scope', 'getToApproveList', function($scope, getToApproveList) {
-    $scope.toApproveList=[];
+.controller('AdminController', ['$scope', 'adminService', function($scope, adminService) {
+    $scope.pages = [
+        {
+            name: 'approve',
+            url: 'page_admin/admin_navbar/approve.html'
+        },
+        {
+            name: 'statistics',
+            url: 'page_admin/admin_navbar/statistics.html'
+        },
+        {
+            name: 'news',
+            url: 'page_admin/admin_navbar/news.html'
+        }
+    ];
     
+    $scope.page = $scope.pages[0];
     
-    getToApproveList.success(function(data) {
-        $scope.toApproveList = data;
-        console.log($scope.toApproveList);
-    });
+    $scope.setPage = function(index) {
+        $scope.page = $scope.pages[index];
+    };
 }]);
-
-/*
-{name: 'Java', status: 'needs approval'}, {name: 'Angular', status: 'was edited'}, {name: 'Java', status: 'needs approval'}, {name: 'Angular', status: 'was edited'}, {name: 'Java', status: 'needs approval'}, {name: 'Angular', status: 'was edited'}, {name: 'Java', status: 'needs approval'}, {name: 'Angular', status: 'was edited'}, {name: 'Java', status: 'needs approval'}, {name: 'Angular', status: 'was edited'}
-*/

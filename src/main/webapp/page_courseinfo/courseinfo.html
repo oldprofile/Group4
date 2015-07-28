@@ -1,18 +1,96 @@
-<div>
-        <div>
-            <h3>{{course.name}}</h3>
-            <p>Date: {{course.dateTime | date:medium}}</p>
-            <p>{{course.description}}</p>
-            <p>unit: {{course.place}}</p>
-            <p>yoyoyo</p>
-            <p>people: {{course.amount}}</p>
-            <b>{{isSubscriber ? "You Are In!" : ""}}</b>
+<div ng-class="{ 'waiting-for-angular': !isContentLoaded }" class="course-info-content">
+  <div ng-show="isContentLoaded" class="row course-info-content">
+    <div class="col-xs-12 course-info-row">
+      <div>
+        <img style="width:100%;" ng-src="{{course.courseImg}}"></img>
+    </div>
+    <div class="course-info-text-div">
+      <div class="course-info-text">
+        <h1>{{course.name}}
+          <span>
+            <a href="#/editcourse/{{course.name}}" class="btn btn-default course-info-btn no-border" role="button" 
+               <span class="glyphicon glyphicon-edit course-info-btn"></span>
+            </a>
+        </span>
+      </h1>
+    <h5>Start Date: {{course.dateTime[0] | date:"medium"}}</h5>
+                    <h5 class="color-gray">{{course.lessonNumber}} Lessons</h5>
+                    <h5 class="space-16">Coach: {{course.coachName}}</h5>
+                    <p class="space-16">{{course.description}}</p>
+                    <p class="space-16 info-small color-gray">Reqs: {{course.audience}}</p>
+                    <p class="space-16 semi-bold">{{course.promtText}}</p>
+                </div>    
 
-        </div>
 
-        <div>
-            <button class="btn btn-default" role="button" ng-click="subscribe()">{{isSubscriber ? "Leave" : "Subscribe" }}</button>
-            <a ng-href="#/editcourse/{{course.name}}" class="btn btn-default" role="button">Edit</a>
-            <button class="btn btn-default" role="button" >Leave Feedback</button>
-        </div>
+                <div>
+                    <button class="btn btn-default course-info-btn" role="button" ng-click="subscribe()">{{isSubscriber ? "Leave" : "Subscribe" }}</button>
+
+                    <button class="btn btn-default course-info-btn" role="button" ng-click="leaveFeedback()">Leave Feedback</button>
+                </div>
+
+                <div class="timetable">
+                  <h5 class="space-16">Timetable</h5>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                          <th>Lesson</th>
+                          <th>When</th>
+                          <th>Where</th>
+                          <th>Edit date & place</th>
+                        <th>Omissions</th>
+                      </tr>
+                    </thead>
+                    <tr ng-repeat="lesson in course.dateTime">
+                      <td>{{$index + 1}}</td>
+                      <td>{{ lesson | date:"medium" }}</td>
+                      <td>{{ course.places[$index] }}</td>
+                      <td><a href="" ng-click="editDatePlace($index)">edit</a></td>
+                      <td><a href="" ng-click="manageOmissions($index)">edit</a></td>
+                    </tr>
+                  </table>
+
+                </div>
+
+                <div class="participants">
+                  <h5 class="space-16">Participants</h5>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                          <th>#</th>
+                          <th>Name</th>
+                          <th>E-Mail</th>
+                      </tr>
+                    </thead>
+                    <tr ng-repeat="p in course.listeners">
+                      <td>{{$index + 1}}</td>
+                      <td>{{ p.name}}</td>
+                      <td>somecoolemail@email.com{{ p.email }}</td>
+                    </tr>
+                  </table>
+
+                </div>
+
+              <div class="feedbacks">
+                  <h5 class="space-16">Feedbacks</h5>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                          <th>#</th>
+                          <th>From</th>
+                          <th>When</th>
+                          <th>View</th>
+                      </tr>
+                    </thead>
+                    <tr ng-repeat="f in course.feedbacks">
+                      <td>{{$index + 1}}</td>
+                      <td>{{ f.feedbackerName}}</td>
+                      <td>{{ f.date | date:"mediumDate" }}</td>
+                      <td> <a href="" ng-click="viewFeedback(f)">show me</a></td>
+                    </tr>
+                  </table>
+
+                </div>
+            </div>
+          </div>
+      </div>
      </div>

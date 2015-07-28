@@ -11,6 +11,7 @@ var app = angular.module('myApp', [
     'myApp.mycourses',
     'myApp.browse',
     'myApp.createcourse',
+  'myApp.notifications',
     'myApp.profile',
     'myApp.admin',
     'myApp.version',
@@ -39,7 +40,8 @@ app.directive('authClass', ['$location','userService',function($location,userSer
       restrict: 'C',
       link: function(scope, elem, attrs) {
           //hide content before auth
-        scope.isLogged = false;  
+        
+        scope.isLogged = userService.isLogged; 
         
           if(scope.isLogged == false){
               scope.prevPath = $location.path();

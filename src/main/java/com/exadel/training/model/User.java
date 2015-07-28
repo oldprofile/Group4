@@ -44,6 +44,9 @@ public class User {
     @JsonIgnore
     private List<UserFeedback> feedbacksOnUser;
 
+    @OneToMany(mappedBy = "coach")
+    private List<CoachFeedback> feedbacksOnCoach;
+
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Training> trainings;
 
@@ -59,8 +62,14 @@ public class User {
     @OneToMany(mappedBy = "feedbacker")
     private List<TrainingFeedback> trainingFeedback;
 
+    @OneToMany(mappedBy = "feedbacker")
+    private List<CoachFeedback> coachFeedback;
+
     @ManyToMany(mappedBy = "spareUsers")
     private  List<Training> spareTrainings;
+
+    @OneToMany(mappedBy = "user")
+    private List<News> newses;
 
     public User() {
     }
@@ -170,6 +179,22 @@ public class User {
         return trainingFeedback;
     }
 
+    public List<CoachFeedback> getFeedbacksOnCoach() {
+        return feedbacksOnCoach;
+    }
+
+    public void setFeedbacksOnCoach(List<CoachFeedback> feedbacksOnCoach) {
+        this.feedbacksOnCoach = feedbacksOnCoach;
+    }
+
+    public List<CoachFeedback> getCoachFeedback() {
+        return coachFeedback;
+    }
+
+    public void setCoachFeedback(List<CoachFeedback> coachFeedback) {
+        this.coachFeedback = coachFeedback;
+    }
+
     public void setTrainingFeedback(List<TrainingFeedback> trainingFeedback) {
         this.trainingFeedback = trainingFeedback;
     }
@@ -189,6 +214,15 @@ public class User {
     public void setSpareTrainings(List<Training> spareTrainings) {
         this.spareTrainings = spareTrainings;
     }
+
+    public List<News> getNewses() {
+        return newses;
+    }
+
+    public void setNewses(List<News> newses) {
+        this.newses = newses;
+    }
+
 
     @Override
     public boolean equals(Object o) {

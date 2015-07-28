@@ -4,6 +4,7 @@ import com.exadel.training.common.RoleType;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -11,21 +12,31 @@ import java.util.List;
  */
 public interface UserService {
 
-   Boolean checkUserByLogin(String login);
-   Boolean checkSubscribeToTraining(Long trainingID, Long userID);
-   Boolean checkSubscribeToTraining(String trainingName, String login);
+    Boolean checkUserByLogin(String login);
+    Boolean checkSubscribeToTraining(Long trainingID, Long userID);
+    Boolean checkSubscribeToTraining(String trainingName, String login);
+    Boolean whoIsUser(String login, long roleId);
 
-   User getUserByID(long id);
-   User findUserByLoginAndPassword(String name, long password);
-   User findUserByLogin(String Login);
-   Training findMyTraining(String login, String trainingName);
+    User getUserByID(long id);
+    User findUserByLoginAndPassword(String name, long password);
+    User findUserByLogin(String Login);
+    Training findMyTraining(String login, String trainingName);
 
-   List<User> findUsersByRole(RoleType type) throws NoSuchFieldException;
-   List<Training> selectAllTraining(String login);
-   List<Training> selectAllTrainingSortedByDate(String login, List<Integer> state);
-   List<User> searchUsersByName(String name);
+    List<Training> selectAllTraining(String login);
+    List<Training> selectAllTrainingSortedByDate(String login, List<Integer> state);
+    List<Training> selectAllTrainingSortedByDateTypeCoachTrue(String login, List<Integer> state);
+    List<Training> selectAllTrainingSortedByDateTypeCoachFalse(String login, List<Integer> state);
+    List<Training> selectAllTrainingBetweenDatesAndSortedByName(String login, Date from, Date to);
+    List<Date> selectAllDateOfTrainingsBetweenDates(String login, Date from, Date to);
+    List<Training> selectAllTrainingAndSortedByName(String login);
+    List<Date> selectAllDateOfTrainings(String login);
 
-   void deleteUserTrainingRelationShip(String login, String trainingName);
-   void insertUserTrainingRelationShip(String login, String trainingName);
-   void saveUser(User user);
+    List<User> searchUsersByName(String name);
+    List<User> findUsersByRole(RoleType type) throws NoSuchFieldException;
+    List<User> findAllCoachOfUser(String login);
+
+    void deleteUserTrainingRelationShip(String login, String trainingName);
+    void insertUserTrainingRelationShip(String login, String trainingName);
+    void saveUser(User user);
+    void insertNumberOfTelephone(String login, String number);
 }

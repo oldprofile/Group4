@@ -1,17 +1,20 @@
 angular.module('myApp.createcourse')
-.controller('CreateCourseController', ['$scope', 'createcourse', 'initCourseService', function($scope, createcourse, initCourseService) {
+.controller('CreateCourseController', ['$scope', '$filter', 'createcourse', 'initCourseService', function($scope, $filter, createcourse, initCourseService) {
     $scope.isEdited = false;
+    $scope.header = 'Create';
     
     initCourseService($scope);
-                                       
-    /////Hardcode/////
-    $scope.courseInfo.dateTime=['08-08-2015 23:10:00', '04-09-2015 13:15:00', '28-01-2013 02:10:00'];
-    $scope.courseInfo.userLogin="1";
-    //////////////////
+    
+    $scope.courseInfo.pictureLink = "";
     
     $scope.saveData = function() {
-        console.log($scope.courseInfo);                //TEMP
-        createcourse.createCourse($scope.courseInfo);
-    }
+        $scope.courseInfo.dateTime = angular.copy($scope.temp.tempDates); //TEMP
+        for(var i = 0; i < $scope.courseInfo.dateTime.length; i++) {
+            $scope.courseInfo.dateTime[i] = $filter('date')($scope.courseInfo.dateTime[i], 'yyyy-MM-dd HH:mm');
+            $scope.courseInfo.places.push($scope.temp.place);
+        }
+        console.log($scope.courseInfo);
+        createcourse.createCourse($scope.courseInfo); //! ? some then() with alert...?
+    };
     
 }]);

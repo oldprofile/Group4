@@ -115,6 +115,10 @@ src/main/resources/application.properties
 ### FRONTEND ###
 node_modules/
 bower_components/
+src/main/resources/bower.json
+imageStorage/
+image_storage/
+
 tmp
 .DS_Store
 >>>>>>> 844490a4fceaccb4538d1293665444de29aeea47
