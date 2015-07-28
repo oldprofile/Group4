@@ -13,9 +13,9 @@
           <th>Present/no?</th>
         </tr>
       </thead>
-      <tr ng-repeat="person in listen track by $index">
-        <td>{{course.trainingName}}</td>
-        <td>{{course.trainingCoach}}</td>
+      <tr ng-repeat="person in course.listeners track by $index">
+        <td>{{person.name}}</td>
+        <td><input type = "checkbox" ng-model="lessons[$index].wasPresent"></td>
       </tr>
     </table>
   </div>
