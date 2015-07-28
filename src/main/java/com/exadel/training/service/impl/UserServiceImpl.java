@@ -133,8 +133,14 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void insertUserTrainingRelationShip(String login, String trainingName) {
         long userID = userRepository.findUserByLogin(login).getId();
-        Training training = trainingRepository.findByName(trainingName);
-        if(training.getListeners().size() < training.getAmount()) {
+        Training parentTraining = trainingRepository.findTrainingByName(trainingName);
+        List<Training> trainings = trainingRepository.findTrainingsByName(trainingName);
+
+        if(parentTraining.getListeners().size() < parentTraining.getAmount()) {
+            userRepository.insertUserTrainingRelationShip(parentTraining.getId(), userID);
+        }
+
+        for(Training training : trainings) {
             userRepository.insertUserTrainingRelationShip(training.getId(), userID);
         }
     }
