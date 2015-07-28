@@ -45,7 +45,7 @@ public class NewsController {
         return userNewsService.getCountOFPages();
 
     }
-    @MessageMapping(value = "/notification")
+    @MessageMapping(value = "/notification1")
     @SendTo(value = "/notification")
     public @ResponseBody String notification() {
 
