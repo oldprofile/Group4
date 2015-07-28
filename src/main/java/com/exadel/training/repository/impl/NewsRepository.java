@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
  * Created by HP on 23.07.2015.
  */
 public interface NewsRepository extends JpaRepository<News, Long> {
+
     @Query("select count(n) from News as n")
     int getCountOfPages();
 }

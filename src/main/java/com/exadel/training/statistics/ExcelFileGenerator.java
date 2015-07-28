@@ -13,13 +13,12 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.stereotype.Service;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -89,7 +88,7 @@ public class ExcelFileGenerator {
     public String generateForUser(Date dateFrom, Date dateTo, String userLogin) throws IOException {
         String fileName = userLogin + "_omissions_" + sdf.format(dateFrom) + "_" + sdf.format(dateTo) + ".xls";
 
-        List<Training> trainings = userService.selectAllTrainingBetweenDatesAndSortedByDate(userLogin, dateFrom, dateTo);
+        List<Training> trainings = userService.selectAllTrainingBetweenDatesAndSortedByName(userLogin, dateFrom, dateTo);
         List<Date> dates = userService.selectAllDateOfTrainingsBetweenDates(userLogin, dateFrom, dateTo);
         List<TrainingNameAndDate> trainingNameAndDates = TrainingNameAndDate.parseTrainingList(trainings);
 
