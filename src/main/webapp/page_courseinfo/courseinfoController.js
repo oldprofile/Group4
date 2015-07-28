@@ -102,8 +102,8 @@ angular.module('myApp.courseinfo')
     $scope.editDatePlace = function(course, index) {
       var dateModalInstance = $modal.open({
         animation: true,
-        templateUrl: "",
-        controller: "",
+        templateUrl: "page_courseinfo/dateModal.html",
+        controller: "EditDateModalInstanceController",
         size: "lg",
         resolve: {
           course: function() {
@@ -115,7 +115,7 @@ angular.module('myApp.courseinfo')
         },
       });
       
-      dateModalInstance.result.then(function () {
+      dateModalInstance.result.then(function (data) {
       }, function() {
       });
     };  
@@ -162,6 +162,20 @@ angular.module('myApp.courseinfo')
   };
 }])
 
-.controller('EditDateModalInstanceController',  ['$scope', '$modalInstance', 'course', 'index', function($scope, $modalInstance, course, index) {
+.controller('EditDateModalInstanceController',  ['$scope', '$modalInstance', '$filter', 'course', 'index', function($scope, $modalInstance, $filter, course, index) {
+  $scope.course = course;
+  $scope.index = index;
   
+  $scope.temp = {};
+  $scope.temp.tempDates = [];
+  
+  $scope.course.dateTime[$scope.index] = $filter('date')($scope.course.dateTime[$scope.index], 'yyyy-MM-dd HH:mm');
+  
+  $scope.ok = function () {
+    $modalInstance.close($scope.course, $scope.index);
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
 }]);
