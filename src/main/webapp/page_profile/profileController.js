@@ -114,6 +114,31 @@ angular.module('myApp.browse')
     });
     
     };
+  
+    $scope.settings = function(){
+    
+      var settingsModalInstance = $modal.open({
+      animation: true,
+      templateUrl: 'page_profile/Settings.html',
+      controller: 'SettingsController',
+      size: "sm",
+      resolve: {
+        user : function () {
+          return $scope.user;
+        }
+      }
+    });
+    
+    settingsModalInstance.result.then(function (data) {
+         
+      //sending new settings
+      profileService.saveSettings(data);
+      
+    }, function () {
+      //cancel feedback
+    });
+    
+    };
     
     
 }])
@@ -201,6 +226,35 @@ angular.module('myApp.browse')
     $scope.feedback.coachLogin = user.login;
     $scope.feedback.feedbackerLogin = userService.getUser().login; 
     $modalInstance.close($scope.feedback);
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
+}])
+
+
+.controller('SettingsController',['$scope', '$modalInstance','user','userService',function($scope,$modalInstance,user,userService){
+  $scope.user = user;
+  $scope.isPhoneOn = true;
+  $scope.phoneNumberPattern = /^((8|\+7|\+375)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/;
+  if(user.numberPhone === null || user.numberPhone === ""){
+    $scope.isPhoneOn = false;
+  } else{
+    $scope.isPhoneOn = true;
+    $scope.phoneNumber = user.numberPhone;
+  }
+  
+  
+    
+    
+    
+  
+  $scope.ok = function () {
+    var data = {};
+    data.numberPhone = $scope.phoneNumber;
+    alert("saving " + JSON.stringify(data));
+    $modalInstance.close(data);
   };
 
   $scope.cancel = function () {
