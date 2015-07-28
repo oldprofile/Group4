@@ -207,6 +207,20 @@ public class TrainingController {
         }
     }
 
+    @RequestMapping(value = "/latest_trainings", method = RequestMethod.GET)
+    public @ResponseBody
+    List<ShortTrainingInfo> getNearestTrainings(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
+        String header = httpServletRequest.getHeader("authorization");
+        String userLogin = cryptService.decrypt(header);
+        if(userService.checkUserByLogin(userLogin)) {
+            List<Training> trainings = trainingService.getTrainingsByNearestDate();
+            return ShortTrainingInfo.parseList(trainings);
+        } else {
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return null;
+        }
+    }
+
     //////////////////////////TESTS
 
 
@@ -216,7 +230,7 @@ public class TrainingController {
     List<ShortTrainingInfo> trainingTest() throws ParseException, NoSuchFieldException, IOException {
 
 
-        List<User> list =trainingService.getListenersByTrainingNameSortByName("angular");
+        List<User> list = trainingService.getListenersByTrainingNameSortByName("angular");
 
         return ShortTrainingInfo.parseList(null);
     }
