@@ -39,11 +39,11 @@ public class OmissionController {
         java.sql.Date d1 = java.sql.Date.valueOf("2015-07-24");
         java.sql.Date d2 = java.sql.Date.valueOf("2015-07-29");
         String s = excelFileGenerator.generateForTrainingFull(d1, d2, "English");
-        excelFileGenerator.generateForTrainingFull("English");
+        //excelFileGenerator.generateForTrainingFull("English");
         excelFileGenerator.generateForUserFull(d1, d2, "1");
-        excelFileGenerator.generateForUserFull("1");
+        //excelFileGenerator.generateForUserFull("1");
         excelFileGenerator.generateForUserAndTrainingFull(d1, d2, "1", "English");
-        excelFileGenerator.generateForUserAndTrainingFull("1", "English");
+        /*excelFileGenerator.generateForUserAndTrainingFull("1", "English");
 
         excelFileGenerator.generateForTrainingDates(d1, d2, "English");
         excelFileGenerator.generateForTrainingDates("English");
@@ -57,7 +57,7 @@ public class OmissionController {
         excelFileGenerator.generateForUserAmount(d1, d2, "1");
         excelFileGenerator.generateForUserAmount("1");
         excelFileGenerator.generateForUserAndTrainingAmount(d1, d2, "1", "English");
-        excelFileGenerator.generateForUserAndTrainingAmount("1", "English");
+        excelFileGenerator.generateForUserAndTrainingAmount("1", "English");*/
 
         return  s;
     }
