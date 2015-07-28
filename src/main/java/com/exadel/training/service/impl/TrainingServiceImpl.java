@@ -101,6 +101,11 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
+    public List<Training> getTrainingsByName(String trainingName) {
+        return  trainingRepository.findTrainingsByName(trainingName);
+    }
+
+    @Override
     public List<Training> getValidTrainingsByCategoryId(int id) {
         return trainingRepository.findValidTrainingsByCategoryId(id);
     }

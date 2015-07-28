@@ -22,6 +22,7 @@ public interface TrainingService {
     Training deleteTrainingsByName(String trainingName);
     Training addSpareUser(String trainingName, String userLogin);
     List<Training> getAllTrainings();
+    List<Training> getTrainingsByName(String trainingName);
     List<Training> getValidTrainingsByCategoryId(int id);
     List<Training> getValidTrainings();
     List<Training> getTrainingsByNearestDate();
