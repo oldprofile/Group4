@@ -227,8 +227,12 @@ public class UserController {
         String login = httpServletRequest.getHeader("login");
 
         if(sessionToken.containsToken(header)) {
-            userService.deleteUserTrainingRelationShip(userLeaveAndJoinTraining.getLogin(), userLeaveAndJoinTraining.getNameTraining());
-            httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+            if(userService.checkSubscribeToTraining(userLeaveAndJoinTraining.getNameTraining(),userLeaveAndJoinTraining.getLogin())) {
+                userService.deleteUserTrainingRelationShip(userLeaveAndJoinTraining.getLogin(), userLeaveAndJoinTraining.getNameTraining());
+                httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+            } else {
+                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+            }
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
@@ -245,14 +249,16 @@ public class UserController {
             try {
                 Training training = trainingService.getTrainingByName(userLeaveAndJoinTraining.getNameTraining());
                 User user = userService.findUserByLogin(login);
-                if(training.getListeners().size() < training.getAmount()) {
-                    userService.insertUserTrainingRelationShip(userLeaveAndJoinTraining.getLogin(), userLeaveAndJoinTraining.getNameTraining());
-                    notificationMail.send(user.getEmail(), user.getName() + ",you have subscribed to " + training.getName());
-                    httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
-                } else {
-                    trainingService.addSpareUser(training.getName(),login);
-                    notificationMail.send(user.getEmail(), user.getName() + ",you are in reserve " + training.getName());
-                    httpServletResponse.setStatus(HttpServletResponse.SC_CONTINUE);
+                if(!userService.checkSubscribeToTraining(training.getId(), user.getId())) {
+                    if (training.getListeners().size() < training.getAmount()) {
+                        userService.insertUserTrainingRelationShip(userLeaveAndJoinTraining.getLogin(), userLeaveAndJoinTraining.getNameTraining());
+                        notificationMail.send(user.getEmail(), user.getName() + ",you have subscribed to " + training.getName());
+                        httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+                    } else {
+                        trainingService.addSpareUser(training.getName(), login);
+                        notificationMail.send(user.getEmail(), user.getName() + ",you are in reserve " + training.getName());
+                        httpServletResponse.setStatus(HttpServletResponse.SC_CONTINUE);
+                    }
                 }
             } catch (NullPointerException e) {
                 httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
