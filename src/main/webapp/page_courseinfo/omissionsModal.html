@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h3 class="modal-title">Edit date & place</h3>
+  <h3 class="modal-title">Omissions</h3>
   <h5 class="modal-title">{{course.name}}</h5>
   <h5 class="modal-title">Coach: {{course.coachName}}</h5> 
 </div>
@@ -15,7 +15,7 @@
       </thead>
       <tr ng-repeat="person in course.listeners track by $index">
         <td>{{person.name}}</td>
-        <td><input type = "checkbox" ng-model="lessons[$index].wasPresent"></td>
+        <td><input type = "checkbox" ng-model="omissionData[$index].wasPresent"></td>
       </tr>
     </table>
   </div>

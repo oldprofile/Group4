@@ -203,16 +203,23 @@ angular.module('myApp.courseinfo')
 .controller('OmissionsModalInstanceController',  ['$scope', '$modalInstance', 'courseinfo', 'index', function($scope, $modalInstance, courseinfo, index) {
   $scope.courseinfo = courseinfo;
   $scope.index = index;
+  
   $scope.omissionData = [];
   for(var i = 0; i < courseinfo.listeners.length; i++) {
+    var info = {
+      trainingName: courseinfo.name,
+      date: courseinfo.dateTime[index],
+      login: courseinfo.listeners[index].login,
+      wasPresent: false,
+    };
+    $scope.omissionData.push(info);
   }
  
-  $scope.ok = function () {};
+  $scope.ok = function () {
     $modalInstance.close($scope.course, $scope.index);
   };
-
+  
   $scope.cancel = function () {
     $modalInstance.dismiss('cancel');
   };
-}])
-;
+}]);
