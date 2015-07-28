@@ -345,7 +345,7 @@ public class UserController {
 
         Date d1 = Date.valueOf("2001-01-01");
         Date d2 = Date.valueOf("2005-01-01");
-        List<Training> a = userService.selectAllTrainingBetweenDatesAndSortedByDate("1",d1,d2);
+        List<Training> a = userService.selectAllTrainingBetweenDatesAndSortedByName("1",d1,d2);
         List<User> coaches = userService.findAllCoachOfUser("1");
 
         List<java.util.Date> t1 = userService.selectAllDateOfTrainingsBetweenDates("1",d1,d2);
