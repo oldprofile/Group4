@@ -101,6 +101,11 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
+    public List<Training> getTrainingsByName(String trainingName) {
+        return  trainingRepository.findTrainingsByName(trainingName);
+    }
+
+    @Override
     public List<Training> getValidTrainingsByCategoryId(int id) {
         return trainingRepository.findValidTrainingsByCategoryId(id);
     }
@@ -205,6 +210,12 @@ public class TrainingServiceImpl implements TrainingService {
     @Override
     public List<Training> getTrainingForApprove() {
         return trainingRepository.findDraftAndEditedTrainings();
+    }
+
+    @Override
+    public List<Training> getTrainingsByCoach(String coachLogin) {
+        User coach = userRepository.findUserByLogin(coachLogin);
+        return trainingRepository.findTrainingsByCoach(coach);
     }
 
     @Override

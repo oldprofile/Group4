@@ -17,22 +17,24 @@ public interface TrainingService {
     Training getTrainingByID(long id);
     Training getTrainingByName(String name);
     Training getTrainingByNameAndUserLogin(String trainingName, String userLogin);
-    List<Training> getAllTrainings();
-    List<Training> getValidTrainingsByCategoryId(int id);
-    List<Training> getValidTrainings();
     Training editTraining(TrainingForCreation trainingForCreation) throws ParseException, NoSuchFieldException;
     Training approveTraining(String trainingName) throws NoSuchFieldException;
-    List<Training> getTrainingsByNearestDate();
     Training deleteTrainingsByName(String trainingName);
+    Training addSpareUser(String trainingName, String userLogin);
+    List<Training> getAllTrainings();
+    List<Training> getTrainingsByName(String trainingName);
+    List<Training> getValidTrainingsByCategoryId(int id);
+    List<Training> getValidTrainings();
+    List<Training> getTrainingsByNearestDate();
     List<Training> searchTrainingsByName(String trainingName);
-    List<Date> getDatesByTrainingName(String trainingName);
     List<Training> getTrainingForApprove();
+    List<Training> getTrainingsByCoach(String coachLogin);
     List<User> getUsersByTrainingName(String trainingName);
     List<User> getSpareUsersByTrainingName(String trainingName);
-    Training addSpareUser(String trainingName, String userLogin);
-    Integer getTrainingNumber(String trainingName, Date date);
-    List<Date> getDatesByTrainingNameBetweenDates(String trainingName, Date firstDate, Date secondDate);
     List<User> getListenersByTrainingNameSortByName(String trainingName);
+    List<Date> getDatesByTrainingName(String trainingName);
+    List<Date> getDatesByTrainingNameBetweenDates(String trainingName, Date firstDate, Date secondDate);
     List<String> getPlacesByTrainingName(String trainingName);
+    Integer getTrainingNumber(String trainingName, Date date);
 
 }
