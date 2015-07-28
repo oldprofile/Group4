@@ -2,6 +2,7 @@ package com.exadel.training.service.impl;
 
 import com.exadel.training.common.LanguageTraining;
 import com.exadel.training.common.StateTraining;
+import com.exadel.training.controller.model.Training.LessonData;
 import com.exadel.training.controller.model.Training.TrainingForCreation;
 import com.exadel.training.model.Category;
 import com.exadel.training.model.Training;
@@ -61,6 +62,8 @@ public class TrainingServiceImpl implements TrainingService {
 
         Training mainTraining = new Training();
         mainTraining.fillTraining(trainingForCreation);
+        mainTraining.setDateTime(dateTimes.get(0));
+        mainTraining.setPlace(place);
         mainTraining.setCoach(coach);
         mainTraining.setCategory(category);
         mainTraining.setState(state);
@@ -80,7 +83,7 @@ public class TrainingServiceImpl implements TrainingService {
             trainings.add(newTraining);
             trainingRepository.saveAndFlush(newTraining);
         }
-        return trainings.get(0);
+        return mainTraining;
     }
 
     @Override
@@ -132,7 +135,10 @@ public class TrainingServiceImpl implements TrainingService {
         int state;
         String place = null;
         if (userRepository.whoIsUser(trainingForCreation.getUserLogin(), 1)) {
-            state = StateTraining.parseToInt("Ahead");
+            if(dateTimes.size() == 0)
+                state = StateTraining.parseToInt("Canceled");
+            else
+                state = StateTraining.parseToInt("Ahead");
             place = trainingForCreation.getPlaces().get(0);
         } else {
             state = StateTraining.parseToInt("Edited");
@@ -164,7 +170,7 @@ public class TrainingServiceImpl implements TrainingService {
         for(int i = dateTimes.size(); i < trainings.size(); ++i) {
             trainingRepository.deleteTrainingsById(trainings.get(i).getId());
         }
-        return trainings.get(0);
+        return updateParentTraining(trainingForCreation.getName());
     }
 
     @Override
@@ -229,6 +235,28 @@ public class TrainingServiceImpl implements TrainingService {
         trainingRepository.saveAndFlush(training);
         return training;
     }
+
+    @Override
+    public Training changeLessonDate(LessonData lessonData) throws ParseException {
+        List<Training> trainings = trainingRepository.findTrainingsWithParentByName(lessonData.getTrainingName());
+        Training training = trainings.get(lessonData.getLessonNumber());
+        training.setDateTime(sdf.parse(lessonData.getNewDate()));
+        training.setPlace(lessonData.getNewPlace());
+        updateParentTraining(training.getName());
+        return training;
+    }
+
+    private Training updateParentTraining(String trainingName) {
+        List<Training> trainings = trainingRepository.findTrainingsWithParentByName(trainingName);
+        Training parent = trainings.get(0);
+        if(trainings.size() > 1) {
+            Training firstLesson = trainings.get(1);
+            parent.setDateTime(firstLesson.getDateTime());
+            parent.setPlace(firstLesson.getPlace());
+        }
+        return parent;
+    }
+
 
     @Override
     public Integer getTrainingNumber(String trainingName, Date date) {
