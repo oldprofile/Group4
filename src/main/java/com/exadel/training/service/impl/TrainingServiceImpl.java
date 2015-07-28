@@ -59,14 +59,7 @@ public class TrainingServiceImpl implements TrainingService {
             place = null;
         }
 
-        Training mainTraining = new Training();
-        mainTraining.fillTraining(trainingForCreation);
-        mainTraining.setCoach(coach);
-        mainTraining.setCategory(category);
-        mainTraining.setState(state);
-        mainTraining.setParent(0);
-        trainingRepository.saveAndFlush(mainTraining);
-        List<Training> trainings = new ArrayList<>(dates.size());
+        Training mainTraining = null;
         for (int i = 0; i < dateTimes.size(); ++i) {
             Training newTraining = new Training();
             newTraining.fillTraining(trainingForCreation);
@@ -76,11 +69,15 @@ public class TrainingServiceImpl implements TrainingService {
             newTraining.setCategory(category);
             newTraining.setPlace(place);
             newTraining.setState(state);
-            newTraining.setParent(mainTraining.getId());
-            trainings.add(newTraining);
+            if (i == 0) {
+                mainTraining = newTraining;
+                newTraining.setParent(0);
+            } else {
+                newTraining.setParent(mainTraining.getId());
+            }
             trainingRepository.saveAndFlush(newTraining);
         }
-        return trainings.get(0);
+        return mainTraining;
     }
 
     @Override
@@ -137,12 +134,6 @@ public class TrainingServiceImpl implements TrainingService {
         } else {
             state = StateTraining.parseToInt("Edited");
         }
-
-        Training mainTraining = trainingRepository.findByName(trainingForCreation.getName());
-        mainTraining.fillTraining(trainingForCreation);
-        mainTraining.setCategory(category);
-        mainTraining.setState(state);
-
         List<Training> trainings = trainingRepository.findTrainingsByName(trainingForCreation.getName());
         for(int i = 0; i < dateTimes.size(); ++i) {
             Training training;
@@ -151,7 +142,7 @@ public class TrainingServiceImpl implements TrainingService {
             else {
                 training = new Training();
                 training.setCoach(coach);
-                training.setParent(mainTraining.getId());
+                training.setParent(trainings.get(0).getId());
             }
             training.fillTraining(trainingForCreation);
             training.setDateTime(dateTimes.get(i));
@@ -233,11 +224,6 @@ public class TrainingServiceImpl implements TrainingService {
     @Override
     public Integer getTrainingNumber(String trainingName, Date date) {
         return trainingRepository.findTrainingNumber(trainingName, date);
-    }
-
-    @Override
-    public Long getParentTrainingId(String trainingName) {
-        return trainingRepository.findParentTrainingIdByName(trainingName);
     }
 
     @Override
