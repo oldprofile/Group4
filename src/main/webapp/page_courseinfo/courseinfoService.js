@@ -48,7 +48,23 @@ angular.module('myApp.courseinfo')
             }
           }
        return promtText;
-     }
+     };
+  
+  courseInfoService.editLesson = function(lessonNumber, courseName, newDate, newPlace) {
+    var lessonData = {
+      trainingName: courseName,
+      lessonNumber: lessonNumber,
+      newDate: newDate,
+      newPlace: newPlace
+    };
+    return $http.post('/training_controller/change_date', lessonData).then(function(result) {
+      console.log("Lesson edited successfully");
+      return result.data;
+    }, function(err) {
+      console.log("Edit lesson error: " + err.statusCode);
+      return err;
+    });
+  };
     
-  return courseInfoService
+  return courseInfoService;
 }]);

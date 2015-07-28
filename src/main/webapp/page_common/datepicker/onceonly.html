@@ -6,7 +6,7 @@
         <div class="row" ng-repeat="date in temp.tempDates track by $index">
             <div class="dropdown col-xs-10">
                 <a class="dropdown-toggle" id="dropdown{{$index}}" role="button" data-toggle="dropdown">
-                    <div class="input-group" id="inputDate">
+                    <div class="input-group">
                         <input type="text" class="form-control" ng-value="temp.tempDates[$index] | date: 'medium'">
                         <span class="input-group-addon">
                             <i class="glyphicon glyphicon-calendar"></i>

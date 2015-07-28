@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Training> selectAllTrainingBetweenDatesAndSortedByDate(String login, Date from, Date to) {
+    public List<Training> selectAllTrainingBetweenDatesAndSortedByName(String login, Date from, Date to) {
         return userRepository.selectAllTrainingBetweenDatesAndSortedByName(login, from, to);
     }
 
@@ -133,8 +133,14 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void insertUserTrainingRelationShip(String login, String trainingName) {
         long userID = userRepository.findUserByLogin(login).getId();
-        Training training = trainingRepository.findByName(trainingName);
-        if(training.getListeners().size() < training.getAmount()) {
+        Training parentTraining = trainingRepository.findTrainingByName(trainingName);
+        List<Training> trainings = trainingRepository.findTrainingsByName(trainingName);
+
+        if(parentTraining.getListeners().size() < parentTraining.getAmount()) {
+            userRepository.insertUserTrainingRelationShip(parentTraining.getId(), userID);
+        }
+
+        for(Training training : trainings) {
             userRepository.insertUserTrainingRelationShip(training.getId(), userID);
         }
     }
@@ -143,5 +149,12 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void saveUser(User user) {
         userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void insertNumberOfTelephone(String login, String number) {
+        User user = userRepository.findUserByLogin(login);
+        user.setNumberPhone(number);
     }
 }

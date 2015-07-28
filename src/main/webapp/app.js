@@ -11,6 +11,7 @@ var app = angular.module('myApp', [
     'myApp.mycourses',
     'myApp.browse',
     'myApp.createcourse',
+  'myApp.notifications',
     'myApp.profile',
     'myApp.admin',
     'myApp.version',

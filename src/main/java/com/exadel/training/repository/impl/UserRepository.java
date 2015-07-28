@@ -28,7 +28,7 @@ public interface UserRepository extends JpaRepository<User,Long>{
     Boolean whoIsUser(String login, long roleId);
 
     @Query(value = "select count(*) > 0 from users_trainings u where :trainingID = trainings and :userID = listeners",nativeQuery = true)
-    int checkSubscribeToTraining(@Param("trainingID")Long trainingName,@Param("userID") Long user);
+    int checkSubscribeToTraining(@Param("trainingID")Long trainingID,@Param("userID") Long userID);
 
     //  @Query("select u from User u where u.login = ?1 AND u.password = ?2")
     User findUserByLoginAndPassword(String login,long password);
@@ -68,15 +68,15 @@ public interface UserRepository extends JpaRepository<User,Long>{
     @Query("select distinct t from User as u inner join u.trainings as t inner join t.coach as c where u.login = ?1 and t.state in (?2) and t.parent = 0 and c.id not in (u.id) order by t.dateTime asc")
     List<Training> selectAllTrainingSortedByDateTypeCoachFalse(String login, List<Integer> state);
 
-    @Query("select distinct t from User as u inner join u.trainings as t where u.login = ?1 and t.dateTime >= ?2 and t.dateTime <= ?3 order by t.name asc")
+    @Query("select distinct t from User as u inner join u.trainings as t where u.login = ?1 and t.dateTime >= ?2 and t.dateTime <= ?3 and t.parent = 0 order by t.name asc")
     List<Training> selectAllTrainingBetweenDatesAndSortedByName(String login, Date from, Date to);
 
-    @Query("select distinct t.dateTime from User as u inner  join u.trainings as t where u.login = ?1 and t.dateTime >= ?2 and t.dateTime <= ?3 order by t.dateTime asc")
+    @Query("select distinct t.dateTime from User as u inner  join u.trainings as t where u.login = ?1 and t.dateTime >= ?2 and t.dateTime <= ?3 and t.parent not in (0) order by t.dateTime asc")
     List<Date> selectAllDateOfTrainingsBetweenDates(String login, Date from, Date to);
 
-    @Query("select distinct t from User as u inner join u.trainings as t where u.login = ?1 order by t.name asc")
+    @Query("select distinct t from User as u inner join u.trainings as t where u.login = ?1 and t.id = 0 order by t.name asc")
     List<Training> selectAllTrainingAndSortedByName(String login);
 
-    @Query("select distinct t.dateTime from User as u inner  join u.trainings as t where u.login = ?1 order by t.dateTime asc")
+    @Query("select distinct t.dateTime from User as u inner  join u.trainings as t where u.login = ?1 and t.id not in (0) order by t.dateTime asc")
     List<Date> selectAllDateOfTrainings(String login);
 }

@@ -4,6 +4,7 @@ import com.exadel.training.common.RoleType;
 import com.exadel.training.controller.model.User.*;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
+import com.exadel.training.notification.Notification;
 import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
 import com.exadel.training.tokenAuthentification.CryptService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -40,8 +42,9 @@ public class UserController {
     private CryptService cryptService;
     @Autowired
     private SessionToken sessionToken;
-    //  @Autowired
-    //  private Session session;
+    @Autowired
+    @Qualifier("wrapperNotificationMail")
+    private Notification notificationMail;
 
     @RequestMapping(value = "/find_by_role/{type}", method = RequestMethod.GET)
     public @ResponseBody List<UserShort> findByRole(@PathVariable("type") int type,
@@ -224,8 +227,12 @@ public class UserController {
         String login = httpServletRequest.getHeader("login");
 
         if(sessionToken.containsToken(header)) {
-            userService.deleteUserTrainingRelationShip(userLeaveAndJoinTraining.getLogin(), userLeaveAndJoinTraining.getNameTraining());
-            httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+            if(userService.checkSubscribeToTraining(userLeaveAndJoinTraining.getNameTraining(),userLeaveAndJoinTraining.getLogin())) {
+                userService.deleteUserTrainingRelationShip(userLeaveAndJoinTraining.getLogin(), userLeaveAndJoinTraining.getNameTraining());
+                httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+            } else {
+                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+            }
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
@@ -241,15 +248,22 @@ public class UserController {
         if(sessionToken.containsToken(header)) {
             try {
                 Training training = trainingService.getTrainingByName(userLeaveAndJoinTraining.getNameTraining());
-                if(training.getListeners().size() < training.getAmount()) {
-                    userService.insertUserTrainingRelationShip(userLeaveAndJoinTraining.getLogin(), userLeaveAndJoinTraining.getNameTraining());
-                    httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
-                } else {
-                    httpServletResponse.setStatus(HttpServletResponse.SC_CONTINUE);
-                    trainingService.addSpareUser(training.getName(),login);
+                User user = userService.findUserByLogin(login);
+                if(!userService.checkSubscribeToTraining(training.getId(), user.getId())) {
+                    if (training.getListeners().size() < training.getAmount()) {
+                        userService.insertUserTrainingRelationShip(userLeaveAndJoinTraining.getLogin(), userLeaveAndJoinTraining.getNameTraining());
+                        notificationMail.send(user.getEmail(), user.getName() + ",you have subscribed to " + training.getName());
+                        httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+                    } else {
+                        trainingService.addSpareUser(training.getName(), login);
+                        notificationMail.send(user.getEmail(), user.getName() + ",you are in reserve " + training.getName());
+                        httpServletResponse.setStatus(HttpServletResponse.SC_CONTINUE);
+                    }
                 }
             } catch (NullPointerException e) {
                 httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            } catch (TwilioRestException | MessagingException e) {
+                httpServletResponse.setStatus(HttpServletResponse.SC_CONFLICT);
             }
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -331,7 +345,7 @@ public class UserController {
 
         Date d1 = Date.valueOf("2001-01-01");
         Date d2 = Date.valueOf("2005-01-01");
-        List<Training> a = userService.selectAllTrainingBetweenDatesAndSortedByDate("1",d1,d2);
+        List<Training> a = userService.selectAllTrainingBetweenDatesAndSortedByName("1",d1,d2);
         List<User> coaches = userService.findAllCoachOfUser("1");
 
         List<java.util.Date> t1 = userService.selectAllDateOfTrainingsBetweenDates("1",d1,d2);
@@ -376,6 +390,7 @@ public class UserController {
 
 
         //   List<User> users = userService.searchUsersByName("art");
+        userService.insertNumberOfTelephone("1","+375291396905");
 
         Boolean is = userService.checkSubscribeToTraining(1L,1L);
         Boolean i = userService.checkSubscribeToTraining("Front end","1");
