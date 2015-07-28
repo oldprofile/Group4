@@ -6,10 +6,6 @@ angular.module('myApp.courseinfo')
     $scope.isContentLoaded = false;
     $scope.course = {};
     
-    
-    
-  
-    
     var courseInfoData1 = {
         login: userService.getUser().login,
         nameTraining: $routeParams.coursename
@@ -83,7 +79,6 @@ angular.module('myApp.courseinfo')
     }
     
     $scope.viewFeedback = function(feedback){
-      ;
       var feedbackModalInstance = $modal.open({
       animation: true,
       templateUrl: 'page_courseinfo/feedback.html',
@@ -95,7 +90,7 @@ angular.module('myApp.courseinfo')
         },
       }
     });
-    
+      
     feedbackModalInstance.result.then(function (feedback) {
       //
     }, function () {
@@ -104,6 +99,26 @@ angular.module('myApp.courseinfo')
     
     }
     
+    $scope.editDatePlace = function(index) {
+      var dateModalInstance = $modal.open({
+        animation: true,
+        templateUrl: "page_courseinfo/dateModal.html",
+        controller: "EditDateModalInstanceController",
+        size: "lg",
+        resolve: {
+          courseinfo: function() {
+            return $scope.course;
+          },
+          index : function() {
+            return index;
+          }
+        },
+      });
+      
+      dateModalInstance.result.then(function (data) {
+      }, function() {
+      });
+    };  
 }])
 
 
@@ -140,6 +155,23 @@ angular.module('myApp.courseinfo')
   $scope.ok = function () {
     
     $modalInstance.close($scope.feedback);
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
+}])
+
+.controller('EditDateModalInstanceController',  ['$scope', '$modalInstance', '$filter', 'courseinfo', 'index', function($scope, $modalInstance, $filter, courseinfo, index) {
+  $scope.courseinfo = courseinfo;
+  $scope.index = index;
+ 
+  $scope.ok = function () {
+    $scope.courseinfo.dateTime[$scope.index] = $filter('date')($scope.courseinfo.dateTime[$scope.index], 'yyyy-MM-dd HH:mm');
+    courseInfoService.editLesson($scope.index + 1, $scope.courseinfo.dateTime[$scope.index],  $scope.courseinfo.places[$scope.index]).then(function(data) {
+      return data;
+    });
+    $modalInstance.close($scope.course, $scope.index);
   };
 
   $scope.cancel = function () {
