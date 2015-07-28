@@ -50,8 +50,9 @@ angular.module('myApp.courseinfo')
        return promtText;
      };
   
-  courseInfoService.editLesson = function(lessonNumber, newDate, newPlace) {
+  courseInfoService.editLesson = function(lessonNumber, courseName, newDate, newPlace) {
     var lessonData = {
+      trainingName: courseName,
       lessonNumber: lessonNumber,
       newDate: newDate,
       newPlace: newPlace
