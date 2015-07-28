@@ -118,7 +118,28 @@ angular.module('myApp.courseinfo')
       dateModalInstance.result.then(function (data) {
       }, function() {
       });
-    };  
+    };
+  
+  $scope.manageOmissions = function(index) {
+    var omissionsModalInstance = $modal.open({
+      animation: true,
+      templateUrl: "page_courseinfo/omissionsModal.html",
+      controller: "OmissionsModalInstanceController",
+      size: "lg",
+      resolve: {
+        courseinfo: function() {
+          return $scope.course;
+        },
+        index : function() {
+          return index;
+        }
+      },
+    });
+    
+    omissionsModalInstance.result.then(function (data) {
+    }, function() {
+      });
+  }
 }])
 
 
@@ -162,13 +183,13 @@ angular.module('myApp.courseinfo')
   };
 }])
 
-.controller('EditDateModalInstanceController',  ['$scope', '$modalInstance', '$filter', 'courseinfo', 'index', function($scope, $modalInstance, $filter, courseinfo, index) {
+.controller('EditDateModalInstanceController',  ['$scope', '$modalInstance', '$filter', 'courseInfoService', 'courseinfo', 'index', function($scope, $modalInstance, $filter, courseInfoService, courseinfo, index) {
   $scope.courseinfo = courseinfo;
   $scope.index = index;
  
   $scope.ok = function () {
     $scope.courseinfo.dateTime[$scope.index] = $filter('date')($scope.courseinfo.dateTime[$scope.index], 'yyyy-MM-dd HH:mm');
-    courseInfoService.editLesson($scope.index + 1, $scope.courseinfo.dateTime[$scope.index],  $scope.courseinfo.places[$scope.index]).then(function(data) {
+    courseInfoService.editLesson($scope.index + 1, $scope.courseinfo.name, $scope.courseinfo.dateTime[$scope.index],  $scope.courseinfo.places[$scope.index]).then(function(data) {
       return data;
     });
     $modalInstance.close($scope.course, $scope.index);
@@ -177,4 +198,18 @@ angular.module('myApp.courseinfo')
   $scope.cancel = function () {
     $modalInstance.dismiss('cancel');
   };
-}]);
+}])
+
+.controller('OmissionsModalInstanceController',  ['$scope', '$modalInstance', 'courseinfo', 'index', function($scope, $modalInstance, courseinfo, index) {
+  $scope.courseinfo = courseinfo;
+  $scope.index = index;
+ 
+  $scope.ok = function () {};
+    $modalInstance.close($scope.course, $scope.index);
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
+}])
+;

@@ -1,16 +1,19 @@
-
-
-    <div ng-class="{ 'waiting-for-angular': !isContentLoaded }" class="course-info-content">
-        <div ng-show="isContentLoaded" class="row course-info-content">
-          <div class="col-xs-12 course-info-row">
-            <div>
-              <img style="width:100%;" ng-src="{{course.courseImg}}"></img>
-            </div>
-          <div class="course-info-text-div">
-                <div class="course-info-text">
-                    <h1>{{course.name}} <span><a href="#/editcourse/{{course.name}}" class="btn btn-default course-info-btn no-border" role="button" ><span class="glyphicon glyphicon-edit course-info-btn"></span></a></span></h1>
-
-                    <h5>Start Date: {{course.dateTime[0] | date:"medium"}}</h5>
+<div ng-class="{ 'waiting-for-angular': !isContentLoaded }" class="course-info-content">
+  <div ng-show="isContentLoaded" class="row course-info-content">
+    <div class="col-xs-12 course-info-row">
+      <div>
+        <img style="width:100%;" ng-src="{{course.courseImg}}"></img>
+    </div>
+    <div class="course-info-text-div">
+      <div class="course-info-text">
+        <h1>{{course.name}}
+          <span>
+            <a href="#/editcourse/{{course.name}}" class="btn btn-default course-info-btn no-border" role="button" 
+               <span class="glyphicon glyphicon-edit course-info-btn"></span>
+            </a>
+        </span>
+      </h1>
+    <h5>Start Date: {{course.dateTime[0] | date:"medium"}}</h5>
                     <h5 class="color-gray">{{course.lessonNumber}} Lessons</h5>
                     <h5 class="space-16">Coach: {{course.coachName}}</h5>
                     <p class="space-16">{{course.description}}</p>
@@ -34,13 +37,15 @@
                           <th>When</th>
                           <th>Where</th>
                           <th>Edit date & place</th>
+                        <th>Omissions</th>
                       </tr>
                     </thead>
                     <tr ng-repeat="lesson in course.dateTime">
                       <td>{{$index + 1}}</td>
                       <td>{{ lesson | date:"medium" }}</td>
                       <td>{{ course.places[$index] }}</td>
-                      <td><a ng-click="editDatePlace($index)">edit</a></td>>
+                      <td><a href="" ng-click="editDatePlace($index)">edit</a></td>
+                      <td><a href="" ng-click="manageOmissions($index)">edit</a></td>
                     </tr>
                   </table>
 
@@ -80,7 +85,7 @@
                       <td>{{$index + 1}}</td>
                       <td>{{ f.feedbackerName}}</td>
                       <td>{{ f.date | date:"mediumDate" }}</td>
-                      <td> <a ng-click="viewFeedback(f)">show me</a></td>
+                      <td> <a href="" ng-click="viewFeedback(f)">show me</a></td>
                     </tr>
                   </table>
 

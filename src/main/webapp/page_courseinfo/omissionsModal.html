@@ -1,0 +1,26 @@
+<div class="modal-header">
+  <h3 class="modal-title">Edit date & place</h3>
+  <h5 class="modal-title">{{course.name}}</h5>
+  <h5 class="modal-title">Coach: {{course.coachName}}</h5> 
+</div>
+<div class="modal-body">
+  <div class="timetable">
+    <h5 class="space-16">Omissions</h5>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Present/no?</th>
+        </tr>
+      </thead>
+      <tr ng-repeat="person in listen track by $index">
+        <td>{{course.trainingName}}</td>
+        <td>{{course.trainingCoach}}</td>
+      </tr>
+    </table>
+  </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default modal-btn" ng-click="ok()">OK</button>
+    <button class="btn btn-default modal-btn" ng-click="cancel()">Cancel</button>
+</div>
