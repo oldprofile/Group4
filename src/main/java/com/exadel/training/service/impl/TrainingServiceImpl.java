@@ -119,22 +119,6 @@ public class TrainingServiceImpl implements TrainingService {
     @Override
     @Transactional
     public Training editTraining(TrainingForCreation trainingForCreation) throws ParseException, NoSuchFieldException {
-        /*List<String> dates = trainingForCreation.getDateTimes();
-        List<Date> dateTimes = new ArrayList<>();
-        for (String date : dates)
-            dateTimes.add(sdf.parse(date));
-        Category category = categoryRepository.findById(trainingForCreation.getIdCategory());
-
-        List<Training> list = trainingRepository.findTrainingsByName(trainingForCreation.getName());
-        for(Training training: list) {
-            trainingRepository.delete(training);
-        }
-        addTraining(trainingForCreation);
-        List<Training> trainings = trainingRepository.findTrainingsByName(trainingForCreation.getName());
-        for(Training training: trainings) {
-            training.setState(StateTraining.parseToInt("Edited"));
-        }
-        return trainings.get(0);*/
         List<String> dates = trainingForCreation.getDateTimes();
         List<Date> dateTimes = new ArrayList<>();
         for (String date : dates)
