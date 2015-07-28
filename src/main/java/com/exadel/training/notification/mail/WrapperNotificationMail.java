@@ -1,7 +1,6 @@
 package com.exadel.training.notification.mail;
 
 
-import org.springframework.stereotype.*;
 import org.springframework.stereotype.Service;
 
 import javax.mail.*;
@@ -35,12 +34,12 @@ public class WrapperNotificationMail {
                     }
                 });
     }
-    public void sendMessage(String to, String text, String topic) throws MessagingException {
+    public void sendMessage(String to, String text) throws MessagingException {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(username));
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(to));
-            message.setSubject(topic);
+            message.setSubject("Exadel");
             message.setText(text);
 
             Transport.send(message);
