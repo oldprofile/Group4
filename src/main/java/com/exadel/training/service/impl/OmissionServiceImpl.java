@@ -28,8 +28,10 @@ public class OmissionServiceImpl implements OmissionService{
     @Autowired
     UserService userService;
 
+    @Override
     public void addOmission(OmissionADDModel omissionADDModel) {
-        //Training training = trainingService.
+        // get training by name and date
+        //Training training =
         Omission omission = new Omission();
     }
 

@@ -219,7 +219,7 @@ public class ExcelFileGenerator {
     }*/
 
     public String generateForUserFull(Date dateFrom, Date dateTo, String userLogin) throws IOException {
-        String fileName = userLogin + "_omissions.xls";
+        String fileName = userLogin + "_omissions.xlsx";
 
         List<Training> trainings = userService.selectAllTrainingBetweenDatesAndSortedByDate(userLogin, dateFrom, dateTo);
         List<Date> dates = userService.selectAllDateOfTrainingsBetweenDates(userLogin, dateFrom, dateTo);
@@ -301,7 +301,7 @@ public class ExcelFileGenerator {
 
     // for user and training
     public String generateForUserAndTrainingFull(Date dateFrom, Date dateTo, String userLogin, String trainingName) throws IOException {
-        String fileName = userLogin + "_omissions_on_" + trainingName + "_" + sdf.format(dateFrom) + "_" + sdf.format(dateTo) + ".xls";
+        String fileName = userLogin + "_omissions_on_" + trainingName + "_" + sdf.format(dateFrom) + "_" + sdf.format(dateTo) + ".xlsx";
 
         List<Omission> omissions = omissionService.getOmisssionsByTrainingAndUser(trainingName, userLogin, dateFrom, dateTo);
         List<Date> dates = trainingService.getDatesByTrainingNameBetweenDates(trainingName, dateFrom, dateTo);
