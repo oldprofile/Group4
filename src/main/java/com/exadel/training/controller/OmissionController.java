@@ -72,15 +72,31 @@ public class OmissionController {
 
     @RequestMapping(value = "/find_omission_by_user_login_and_type", method = RequestMethod.GET)
     @ResponseBody String findOmissionByTrainingAndUserLoginAndType() throws IOException {
-        java.sql.Date d1 = java.sql.Date.valueOf("2001-01-01");
-        java.sql.Date d2 = java.sql.Date.valueOf("2003-03-03");
-        String s = excelFileGenerator.generateForTraining(d1, d2, "Java");
-        excelFileGenerator.generateForTraining("Java");
-        excelFileGenerator.generateForUser(d1, d2, "1");
-        excelFileGenerator.generateForUser("1");
-        excelFileGenerator.generateForUserAndTraining(d1, d2, "1", "Java");
-        excelFileGenerator.generateForUserAndTraining("1", "Java");
+        java.sql.Date d1 = java.sql.Date.valueOf("2015-07-24");
+        java.sql.Date d2 = java.sql.Date.valueOf("2015-07-29");
+        String s = excelFileGenerator.generateForTrainingFull(d1, d2, "English");
+        excelFileGenerator.generateForTrainingFull("English");
+        excelFileGenerator.generateForUserFull(d1, d2, "1");
+        excelFileGenerator.generateForUserFull("1");
+        excelFileGenerator.generateForUserAndTrainingFull(d1, d2, "1", "English");
+        excelFileGenerator.generateForUserAndTrainingFull("1", "English");
+
+        excelFileGenerator.generateForTrainingDates(d1, d2, "English");
+        excelFileGenerator.generateForTrainingDates("English");
+        excelFileGenerator.generateForUserDates(d1, d2, "1");
+        excelFileGenerator.generateForUserDates("1");
+        excelFileGenerator.generateForUserAndTrainingDates(d1, d2, "1", "English");
+        excelFileGenerator.generateForUserAndTrainingDates("1", "English");
+
+        excelFileGenerator.generateForTrainingAmount(d1, d2, "English");
+        excelFileGenerator.generateForTrainingAmount("English");
+        excelFileGenerator.generateForUserAmount(d1, d2, "1");
+        excelFileGenerator.generateForUserAmount("1");
+        excelFileGenerator.generateForUserAndTrainingAmount(d1, d2, "1", "English");
+        excelFileGenerator.generateForUserAndTrainingAmount("1", "English");
+
         return  s;
     }
+
 
 }
