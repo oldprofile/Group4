@@ -3,20 +3,35 @@
     <div ng-class="{ 'waiting-for-angular': !isContentLoaded }" class="course-info-content">
         <div ng-show="isContentLoaded" class="row course-info-content">
           <div class="col-xs-12 course-info-row">
-            <div>
-              <img style="width:100%;" ng-src="{{course.courseImg}}"></img>
-            </div>
+            
+          
           <div class="course-info-text-div">
-                <div class="course-info-text">
-                    <h1>{{course.name}} <span><a href="#/editcourse/{{course.name}}" class="btn btn-default course-info-btn no-border" role="button" ><span class="glyphicon glyphicon-edit course-info-btn"></span></a></span></h1>
+            
+              <div class="row">
+                <div class="course-info-text col-xs-12 col-sm-5">
+                    <h1>{{course.name}} </h1>
 
-                    <h5>Start Date: {{course.dateTime[0] | date:"medium"}}</h5>
+                    <h5>Start Date: {{course.dateTime[0] | date:"dd MM"}}</h5>
                     <h5 class="color-gray">{{course.lessonNumber}} Lessons</h5>
                     <h5 class="space-16">Coach: {{course.coachName}}</h5>
+<!--
                     <p class="space-16">{{course.description}}</p>
                     <p class="space-16 info-small color-gray">Reqs: {{course.audience}}</p>
                     <p class="space-16 semi-bold">{{course.promtText}}</p>
-                </div>    
+-->
+                </div>  
+            
+                <div class="col-xs-12 col-sm-7 img-cont">
+                  <div class="edit-btn"><span><a href="#/editcourse/{{course.name}}" class="btn btn-default course-info-btn no-border" role="button" ><span class="glyphicon glyphicon-edit course-info-btn"></span>Edit Course</a></span></div>
+                  <img style="width:100%;" ng-src="{{course.pictureLink}}"></img>
+                </div>
+            </div>
+              <div class="course-info-text">
+                <p class="space-16">{{course.description}}</p>
+                    <p class="space-16 info-small color-gray">Reqs: {{course.audience}}</p>
+                    <p class="space-16 semi-bold">{{course.promtText}}</p>
+            
+              </div>
 
 
                 <div>
@@ -85,5 +100,9 @@
                 </div>
             </div>
           </div>
+          
+          
+      
+      
       </div>
      </div>
