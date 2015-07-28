@@ -5,6 +5,7 @@ import com.exadel.training.controller.model.User.*;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
 import com.exadel.training.notification.Notification;
+import com.exadel.training.notification.news.NotificationNews;
 import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
 import com.exadel.training.tokenAuthentification.CryptService;
@@ -33,6 +34,7 @@ import java.util.List;
 public class UserController {
 
     private static final Object EMPTY = null;
+
     @Autowired
     private UserService userService;
     @Autowired
@@ -45,6 +47,9 @@ public class UserController {
     @Autowired
     @Qualifier("wrapperNotificationMail")
     private Notification notificationMail;
+    @Autowired
+    private NotificationNews notificationNews;
+
 
     @RequestMapping(value = "/find_by_role/{type}", method = RequestMethod.GET)
     public @ResponseBody List<UserShort> findByRole(@PathVariable("type") int type,
@@ -225,10 +230,13 @@ public class UserController {
 
         String header = httpServletRequest.getHeader("authorization");
         String login = httpServletRequest.getHeader("login");
+        String trainingName =  userLeaveAndJoinTraining.getNameTraining();
+        String userLogin = userLeaveAndJoinTraining.getLogin();
 
         if(sessionToken.containsToken(header)) {
-            if(userService.checkSubscribeToTraining(userLeaveAndJoinTraining.getNameTraining(),userLeaveAndJoinTraining.getLogin())) {
-                userService.deleteUserTrainingRelationShip(userLeaveAndJoinTraining.getLogin(), userLeaveAndJoinTraining.getNameTraining());
+            if(userService.checkSubscribeToTraining(trainingName, userLogin)) {
+                userService.deleteUserTrainingRelationShip(userLogin, trainingName);
+                notificationNews.sendNews(userLogin + "has left " + trainingName, userService.findUserByLogin(userLogin), trainingService.getTrainingByName(trainingName));
                 httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
             } else {
                 httpServletResponse.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
@@ -244,19 +252,22 @@ public class UserController {
 
         String header = httpServletRequest.getHeader("authorization");
         String login = httpServletRequest.getHeader("login");
+        String userLogin = userLeaveAndJoinTraining.getLogin();
+        String trainingName = userLeaveAndJoinTraining.getNameTraining();
 
         if(sessionToken.containsToken(header)) {
             try {
-                Training training = trainingService.getTrainingByName(userLeaveAndJoinTraining.getNameTraining());
+                Training training = trainingService.getTrainingByName(trainingName);
                 User user = userService.findUserByLogin(login);
                 if(!userService.checkSubscribeToTraining(training.getId(), user.getId())) {
                     if (training.getListeners().size() < training.getAmount()) {
-                        userService.insertUserTrainingRelationShip(userLeaveAndJoinTraining.getLogin(), userLeaveAndJoinTraining.getNameTraining());
-                        notificationMail.send(user.getEmail(), user.getName() + ",you have subscribed to " + training.getName());
+                        userService.insertUserTrainingRelationShip(userLogin, trainingName);
+                        notificationNews.sendNews(userLogin + ",you have subscribed to " + trainingName,user,training);
+                        notificationMail.send(user.getEmail(), userLogin + ",you have subscribed to " + trainingName);
                         httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
                     } else {
-                        trainingService.addSpareUser(training.getName(), login);
-                        notificationMail.send(user.getEmail(), user.getName() + ",you are in reserve " + training.getName());
+                        trainingService.addSpareUser(trainingName, login);
+                        notificationMail.send(user.getEmail(), userLogin + ",you are in reserve " + trainingName);
                         httpServletResponse.setStatus(HttpServletResponse.SC_CONTINUE);
                     }
                 }
@@ -345,7 +356,7 @@ public class UserController {
 
         Date d1 = Date.valueOf("2001-01-01");
         Date d2 = Date.valueOf("2005-01-01");
-        List<Training> a = userService.selectAllTrainingBetweenDatesAndSortedByName("1",d1,d2);
+        List<Training> a = userService.selectAllTrainingBetweenDatesAndSortedByName("1", d1, d2);
         List<User> coaches = userService.findAllCoachOfUser("1");
 
         List<java.util.Date> t1 = userService.selectAllDateOfTrainingsBetweenDates("1",d1,d2);
