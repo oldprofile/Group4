@@ -13,6 +13,7 @@ import java.util.List;
  * Created by Клим on 10.07.2015.
  */
 public interface TrainingService {
+
     Training addTraining(TrainingForCreation trainingForCreation) throws NoSuchFieldException, ParseException;
     Training getTrainingByID(long id);
     Training getTrainingByName(String name);
@@ -21,6 +22,7 @@ public interface TrainingService {
     Training approveTraining(String trainingName) throws NoSuchFieldException;
     Training deleteTrainingsByName(String trainingName);
     Training addSpareUser(String trainingName, String userLogin);
+
     List<Training> getAllTrainings();
     List<Training> getTrainingsByName(String trainingName);
     List<Training> getValidTrainingsByCategoryId(int id);
@@ -29,12 +31,17 @@ public interface TrainingService {
     List<Training> searchTrainingsByName(String trainingName);
     List<Training> getTrainingForApprove();
     List<Training> getTrainingsByCoach(String coachLogin);
+
     List<User> getUsersByTrainingName(String trainingName);
     List<User> getSpareUsersByTrainingName(String trainingName);
     List<User> getListenersByTrainingNameSortByName(String trainingName);
+
     List<Date> getDatesByTrainingName(String trainingName);
     List<Date> getDatesByTrainingNameBetweenDates(String trainingName, Date firstDate, Date secondDate);
+
     List<String> getPlacesByTrainingName(String trainingName);
+
     Integer getTrainingNumber(String trainingName, Date date);
+    Long getParentTrainingId(String trainingName);
 
 }

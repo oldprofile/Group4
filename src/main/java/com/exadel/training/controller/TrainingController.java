@@ -230,7 +230,7 @@ public class TrainingController {
     List<ShortTrainingInfo> trainingTest() throws ParseException, NoSuchFieldException, IOException {
 
 
-        List<User> list =trainingService.getListenersByTrainingNameSortByName("angular");
+        List<User> list = trainingService.getListenersByTrainingNameSortByName("angular");
 
         return ShortTrainingInfo.parseList(null);
     }
