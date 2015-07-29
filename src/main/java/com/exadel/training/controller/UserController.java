@@ -30,6 +30,7 @@ import java.util.List;
  * Created by HP on 13.07.2015.
  */
 @Controller
+@ResponseBody
 @RequestMapping("/user_controller")
 public class UserController {
 
@@ -96,7 +97,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/all_trainings_of_user", method = RequestMethod.GET)
-    public  @ResponseBody List<AllTrainingUserShort> getAllTrainingOfUser(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
+    public @ResponseBody List<AllTrainingUserShort> getAllTrainingOfUser(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
 
         String header = httpServletRequest.getHeader("authorization");
         String login = httpServletRequest.getHeader("login");
@@ -322,7 +323,7 @@ public class UserController {
         return  allTrainingUserShorts;
     }
 
-    @RequestMapping(value = "/find_my_training", method = RequestMethod.POST,  consumes = "application/json")
+    @RequestMapping(value = "/find_my_training", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody void findMyTraining(@RequestBody UserLoginAndTraining userLoginAndTraining,
                                              HttpServletResponse response, HttpServletRequest httpServletRequest) {
 
@@ -413,15 +414,7 @@ public class UserController {
         Boolean i = userService.checkSubscribeToTraining("Front end","1");
         UserShort us =  UserShort.parseUserShort(userService.findUserByLogin("1"));
 
+        return null;
 
-        List<User> s1 = userService.searchUsersByName("a*");
-        List<UserShort> s2 = new ArrayList<>();
-        if(userService.checkUserByLogin("as")) {
-            for (User user : s1) {
-                s2.add(UserShort.parseUserShort(user));
-            }
-        }
-
-        return s2;
     }
 }

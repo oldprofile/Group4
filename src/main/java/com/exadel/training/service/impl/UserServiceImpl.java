@@ -125,11 +125,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> searchUsersByName(String name) {
-        return userRepository.searchUsersByName("'" + name + "*'");
-    }
-
-    @Override
     @Transactional
     public void deleteUserTrainingRelationShip(String login, String trainingName) {
         long userID = userRepository.findUserByLogin(login).getId();

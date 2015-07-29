@@ -12,5 +12,5 @@ public interface NewsService {
 
     Page<News> getNewsPage(Integer page);
 
-    int getCountOFPages();
+    int getCountOFNews();
 }
