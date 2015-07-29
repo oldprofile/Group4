@@ -204,7 +204,7 @@ angular.module('myApp.courseinfo')
       };
     }])
 
-    .controller('OmissionsModalInstanceController',  ['$scope', '$modalInstance', 'courseinfo', 'index', function($scope, $modalInstance, courseinfo, index) {
+    .controller('OmissionsModalInstanceController',  ['$scope', '$modalInstance', 'courseInfoService', 'courseinfo', 'index', function($scope, $modalInstance, courseInfoService, courseinfo, index) {
       $scope.courseinfo = courseinfo;
       $scope.index = index;
       
@@ -214,20 +214,21 @@ angular.module('myApp.courseinfo')
         var info = {
           trainingName: courseinfo.name,
           date: courseinfo.dateTime[index],
-          login: courseinfo.listeners[index].login,
-          wasPresent: false,
+          userLogin: courseinfo.listeners[index].login,
+          isOmission: false,
         };
         $scope.omissionData.push(info);
       }
       
       $scope.selectAll = function() {
         for(var i = 0; i < courseinfo.listeners.length; i++) {
-          $scope.omissionData[i].wasPresent = true;
+          $scope.omissionData[i].isOmission = true;
         }
       };
       
       $scope.ok = function () {
         console.log($scope.omissionData);
+        courseInfoService.addOmissions($scope.omissionData);
         $modalInstance.close($scope.course, $scope.index);
       };
       

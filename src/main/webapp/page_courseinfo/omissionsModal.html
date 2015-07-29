@@ -12,12 +12,12 @@
       <thead>
         <tr>
           <th>Name</th>
-          <th>Present/no?</th>
+          <th>Absent?</th>
         </tr>
       </thead>
       <tr ng-repeat="person in courseinfo.listeners track by $index">
         <td>{{person.name}}</td>
-        <td><input type = "checkbox" ng-model="omissionData[$index].wasPresent"></td>
+        <td><input type = "checkbox" ng-model="omissionData[$index].isOmission"></td>
       </tr>
     </table>
   </div>

@@ -75,6 +75,16 @@ angular.module('myApp.courseinfo')
       return err;
     });
   };
+  
+  courseInfoService.addOmissions = function(omissionData) {
+     return $http.post('/omission_controller/add_omissions', omissionData).then(function(result) {
+      console.log("Omissions added successfully");
+      return result.data;
+    }, function(err) {
+      console.log("Omissions adding error: " + err.statusCode);
+      return err;
+    });
+  };
     
   return courseInfoService;
 }]);
