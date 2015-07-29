@@ -102,6 +102,11 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
+    public Training getTrainingByNameAndDate(String trainingName, Date trainingDate) {
+        return trainingRepository.findTrainingByNameAndDate(trainingName, trainingDate);
+    }
+
+    @Override
     public List<Training> getAllTrainings() {
         return trainingRepository.findAll();
     }
