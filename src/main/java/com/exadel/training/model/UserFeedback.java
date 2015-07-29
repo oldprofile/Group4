@@ -34,8 +34,7 @@ public class UserFeedback{
 
     @ManyToOne(cascade = CascadeType.ALL)
     private User user;
-
-    // for english
+    
     private int assessment;
 
     private int level;

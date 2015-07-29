@@ -1,6 +1,5 @@
 package com.exadel.training.service.impl;
 
-import com.exadel.training.common.LanguageTraining;
 import com.exadel.training.common.StateTraining;
 import com.exadel.training.controller.model.Training.LessonData;
 import com.exadel.training.controller.model.Training.TrainingForCreation;
@@ -20,7 +19,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 /**
  * Created by Клим on 10.07.2015.
@@ -202,11 +200,6 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
-    public List<Training> searchTrainingsByName(String trainingName) {
-        return trainingRepository.searchTrainingsByName("%" + trainingName + "%");
-    }
-
-    @Override
     public List<Date> getDatesByTrainingName(String trainingName) {
         return trainingRepository.findDatesByTrainingsName(trainingName);
     }
@@ -220,6 +213,11 @@ public class TrainingServiceImpl implements TrainingService {
     public List<Training> getTrainingsByCoach(String coachLogin) {
         User coach = userRepository.findUserByLogin(coachLogin);
         return trainingRepository.findTrainingsByCoach(coach);
+    }
+
+    @Override
+    public List<Training> getTrainingsByHighestRating() {
+        return trainingRepository.findTrainingsByHighestRating();
     }
 
     @Override
@@ -266,6 +264,11 @@ public class TrainingServiceImpl implements TrainingService {
     @Override
     public Integer getTrainingNumber(String trainingName, Date date) {
         return trainingRepository.findTrainingNumber(trainingName, date);
+    }
+
+    @Override
+    public Integer getValidTrainingsNumberByCategory(Category category) {
+        return trainingRepository.findValidTrainingsNumberByCategory(category);
     }
 
     @Override

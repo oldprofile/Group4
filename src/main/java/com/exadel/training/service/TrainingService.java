@@ -3,6 +3,7 @@ package com.exadel.training.service;
 
 import com.exadel.training.controller.model.Training.LessonData;
 import com.exadel.training.controller.model.Training.TrainingForCreation;
+import com.exadel.training.model.Category;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
 
@@ -31,9 +32,9 @@ public interface TrainingService {
     List<Training> getValidTrainingsByCategoryId(int id);
     List<Training> getValidTrainings();
     List<Training> getTrainingsByNearestDate();
-    List<Training> searchTrainingsByName(String trainingName);
     List<Training> getTrainingForApprove();
     List<Training> getTrainingsByCoach(String coachLogin);
+    List<Training> getTrainingsByHighestRating();
 
     List<User> getUsersByTrainingName(String trainingName);
     List<User> getSpareUsersByTrainingName(String trainingName);
@@ -45,5 +46,8 @@ public interface TrainingService {
     List<String> getPlacesByTrainingName(String trainingName);
 
     Integer getTrainingNumber(String trainingName, Date date);
+    Integer getValidTrainingsNumberByCategory(Category category);
     Long getParentTrainingId(String trainingName);
+
+
 }

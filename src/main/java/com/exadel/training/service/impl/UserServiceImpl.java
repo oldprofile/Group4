@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -98,7 +99,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Training> selectAllTrainingBetweenDatesAndSortedByName(String login, Date from, Date to) {
-        return userRepository.selectAllTrainingBetweenDatesAndSortedByName(login, from, to);
+        List<Long> trainingsParentID = userRepository.selectAllTrainingBetweenDatesAndSortedByName(login, from, to);
+        List<Training> parents = new ArrayList<>();
+
+        for(Long id : trainingsParentID ) {
+            parents.add(trainingRepository.findById(id));
+        }
+
+        return parents;
     }
 
     @Override
@@ -114,11 +122,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Date> selectAllDateOfTrainings(String login) {
         return userRepository.selectAllDateOfTrainings(login);
-    }
-
-    @Override
-    public List<User> searchUsersByName(String name) {
-        return userRepository.searchUsersByName("'" + name + "*'");
     }
 
     @Override
