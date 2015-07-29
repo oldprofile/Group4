@@ -27,8 +27,9 @@ public interface UserService {
     List<Training> selectAllTrainingSortedByDateTypeCoachTrue(String login, List<Integer> state);
     List<Training> selectAllTrainingSortedByDateTypeCoachFalse(String login, List<Integer> state);
     List<Training> selectAllTrainingBetweenDatesAndSortedByName(String login, Date from, Date to);
-    List<Date> selectAllDateOfTrainingsBetweenDates(String login, Date from, Date to);
     List<Training> selectAllTrainingAndSortedByName(String login);
+
+    List<Date> selectAllDateOfTrainingsBetweenDates(String login, Date from, Date to);
     List<Date> selectAllDateOfTrainings(String login);
 
     List<User> searchUsersByName(String name);
