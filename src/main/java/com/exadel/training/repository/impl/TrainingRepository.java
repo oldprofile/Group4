@@ -66,6 +66,7 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
 
     @Query("select tr from Training as tr where tr.state in (2,3) and tr.parent = 0 order by tr.rating desc")
     List<Training> findTrainingsByHighestRating();
+
     @Modifying
     @Query(value = "delete from trainings where name = ?1", nativeQuery = true)
     void deleteTrainingsByName(String trainingName);

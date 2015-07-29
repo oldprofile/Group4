@@ -247,4 +247,5 @@ public class Training {
     public void setRating(double rating) {
         this.rating = rating;
     }
+
 }
