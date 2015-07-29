@@ -64,11 +64,11 @@ public class ScheduledTasksService {
     private void cancelTraining(NotificationTrainingModel notificationTrainingModel, List<UserShort> listeners) throws MessagingException, NoSuchFieldException {
         Training training = trainingService.getTrainingByName(notificationTrainingModel.getName());
         training.setState(StateTraining.parseToInt("Canceled"));
-            for (UserShort listener : listeners) {
-                wrapperNotificationMail.send(listener.getEmail(), "canceled");
-            }
-            UserShort traininer = notificationTrainingModel.getTrainer();
-            wrapperNotificationMail.send(traininer.getEmail(), "canceled");
+        for (UserShort listener : listeners) {
+            wrapperNotificationMail.send(listener.getEmail(), "canceled");
+        }
+        UserShort traininer = notificationTrainingModel.getTrainer();
+        wrapperNotificationMail.send(traininer.getEmail(), "canceled");
     }
 
     private void notificateByEmail(NotificationTrainingModel notificationTrainingModel, List<UserShort> listeners) throws MessagingException {

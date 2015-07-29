@@ -1,5 +1,6 @@
 package com.exadel.training.controller;
 
+import com.exadel.training.controller.model.Training.LessonData;
 import com.exadel.training.controller.model.Training.ShortTrainingInfo;
 import com.exadel.training.controller.model.Training.TrainingForCreation;
 import com.exadel.training.controller.model.Training.TrainingInfo;
@@ -15,10 +16,7 @@ import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -215,6 +213,20 @@ public class TrainingController {
         if(userService.checkUserByLogin(userLogin)) {
             List<Training> trainings = trainingService.getTrainingsByNearestDate();
             return ShortTrainingInfo.parseList(trainings);
+        } else {
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return null;
+        }
+    }
+
+    @RequestMapping(value = "/change_date", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody
+    ShortTrainingInfo getNearestTrainings(@RequestBody LessonData lessonData, HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException, ParseException {
+        String header = httpServletRequest.getHeader("authorization");
+        String userLogin = cryptService.decrypt(header);
+        if(userService.whoIsUser(userLogin, 1)) {
+            Training training = trainingService.changeLessonDate(lessonData);
+            return new ShortTrainingInfo(training);
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
