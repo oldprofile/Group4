@@ -1,11 +1,17 @@
 package com.exadel.training.service.impl;
 
+import com.exadel.training.controller.model.Omission.OmissionADDModel;
 import com.exadel.training.model.Omission;
+import com.exadel.training.model.Training;
+import com.exadel.training.model.User;
 import com.exadel.training.repository.impl.OmissionRepository;
 import com.exadel.training.service.OmissionService;
+import com.exadel.training.service.TrainingService;
+import com.exadel.training.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +23,21 @@ public class OmissionServiceImpl implements OmissionService{
 
     @Autowired
     OmissionRepository omissionRepository;
+
+    @Autowired
+    TrainingService trainingService;
+
+    @Autowired
+    UserService userService;
+
+    @Override
+    @Transactional
+    public void addOmission(OmissionADDModel omissionADDModel) {
+        Training training = trainingService.getTrainingByNameAndDate(omissionADDModel.getTrainingName(), java.sql.Date.valueOf(omissionADDModel.getDate()));
+        User user = userService.findUserByLogin(omissionADDModel.getUserLogin());
+        Omission omission = new Omission(training, user, omissionADDModel.isOmission());
+        omissionRepository.save(omission);
+    }
 
     @Override
     public List<Omission> getOmissionsByTrainingName(String trainingName) {
