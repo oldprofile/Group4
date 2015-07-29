@@ -28,8 +28,7 @@ public class UserFeedbackADDModel implements Serializable{
     private String feedbackerLogin;
 
     private String userLogin;
-
-    // for english
+    
     private String assessment;
 
     private String level;
