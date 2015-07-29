@@ -1,6 +1,5 @@
 package com.exadel.training.service.impl;
 
-import com.exadel.training.common.LanguageTraining;
 import com.exadel.training.common.StateTraining;
 import com.exadel.training.controller.model.Training.LessonData;
 import com.exadel.training.controller.model.Training.TrainingForCreation;
@@ -20,7 +19,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 /**
  * Created by Клим on 10.07.2015.
@@ -199,11 +197,6 @@ public class TrainingServiceImpl implements TrainingService {
         List<Training> trainings = trainingRepository.findTrainingsByName(trainingName);
         trainingRepository.deleteTrainingsByName(trainingName);
         return trainings.get(0);
-    }
-
-    @Override
-    public List<Training> searchTrainingsByName(String trainingName) {
-        return trainingRepository.searchTrainingsByName("%" + trainingName + "%");
     }
 
     @Override

@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -160,7 +159,7 @@ public class TrainingController {
         String header = httpServletRequest.getHeader("authorization");
         String userLogin = cryptService.decrypt(header);
         if(userService.checkUserByLogin(userLogin)) {
-            List<Training> trainings = trainingService.searchTrainingsByName(trainingName);
+            List<Training> trainings = trainingService.getTrainingsByName(trainingName);
             return ShortTrainingInfo.parseList(trainings);
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
