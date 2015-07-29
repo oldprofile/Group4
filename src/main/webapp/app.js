@@ -5,7 +5,6 @@ var app = angular.module('myApp', [
     'ngRoute',
     'ui.bootstrap',
     'http-auth-interceptor',
-    'akoenig.deckgrid',
     'myApp.view1',
     'myApp.view2',
     'myApp.mycourses',
