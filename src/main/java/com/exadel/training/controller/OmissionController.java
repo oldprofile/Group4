@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Клим on 13.07.2015.
@@ -51,6 +52,17 @@ public class OmissionController {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
+
+    /*@RequestMapping(value = "/get_ommisions", method = RequestMethod.POST, consumes = "application/json")
+    @ResponseBody Map<> addOmmisions(@RequestBody List<OmissionADDModel> omissionADDModels, HttpServletResponse response) {
+        try {
+            for (OmissionADDModel omissionADDModel : omissionADDModels) {
+                omissionService.addOmission(omissionADDModel);
+            }
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
+    }*/
 
     @RequestMapping(value = "/statistics", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody String generateStatistics(@RequestBody StatisticsRequestModel statisticsRequestModel, HttpServletResponse response) throws IOException {
