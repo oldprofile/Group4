@@ -358,7 +358,7 @@ public class ExcelFileGenerator {
         headers.getCell(1).setCellStyle(headersStyle);
 
         XSSFRow row = sheet.createRow(4);
-        row.getCell(4).setCellValue(trainingName);
+        row.createCell(0).setCellValue(trainingName);
         for (int omissionsIndex = 0; omissionsIndex < journalOmissionModels.size(); omissionsIndex++) {
             int columnIndex = omissionsIndex + 1;
             if (datesRow.getCell(columnIndex).getStringCellValue().compareTo(journalOmissionModels.get(omissionsIndex).getDate()) == 0) {
@@ -482,7 +482,7 @@ public class ExcelFileGenerator {
         String fileName = userLogin + "_omission_dates_" + sdf.format(dateFrom) + "_" + sdf.format(dateTo) + ".xlsx";
 
         //TRAININGS ONLY
-        List<Training> trainings = userService.selectAllTrainingBetweenDatesAndSortedByDate(userLogin, dateFrom, dateTo);
+        List<Training> trainings = userService.selectAllTrainingBetweenDatesAndSortedByName(userLogin, dateFrom, dateTo);
         List<TrainingName> trainingNameAndDates = TrainingName.parseTrainingList(trainings);
 
         HSSFWorkbook workbook = new HSSFWorkbook();
@@ -656,7 +656,7 @@ public class ExcelFileGenerator {
         String fileName = userLogin + "_omission_amount_" + sdf.format(dateFrom) + "_" + sdf.format(dateTo) + ".xlsx";
 
         //TRAININGS ONLY
-        List<Training> trainings = userService.selectAllTrainingBetweenDatesAndSortedByDate(userLogin, dateFrom, dateTo);
+        List<Training> trainings = userService.selectAllTrainingBetweenDatesAndSortedByName(userLogin, dateFrom, dateTo);
         List<TrainingName> trainingNameAndDates = TrainingName.parseTrainingList(trainings);
 
         HSSFWorkbook workbook = new HSSFWorkbook();

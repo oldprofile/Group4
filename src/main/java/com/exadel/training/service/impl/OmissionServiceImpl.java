@@ -31,7 +31,7 @@ public class OmissionServiceImpl implements OmissionService{
     @Override
     public void addOmission(OmissionADDModel omissionADDModel) {
         // get training by name and date
-        //Training training =
+        Training training = trainingService.
         Omission omission = new Omission();
     }
 
