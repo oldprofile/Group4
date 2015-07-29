@@ -4,6 +4,7 @@ import com.exadel.training.common.LanguageTraining;
 import com.exadel.training.common.StateTraining;
 import com.exadel.training.model.Training;
 import com.exadel.training.controller.model.User.UserShort;
+import com.exadel.training.model.TrainingFeedback;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -57,6 +58,7 @@ public class TrainingInfo {
         description = training.getDescription();
         idCategory = training.getCategory().getId();
         participantsNumber = training.getAmount();
+        training.generateRating();
         rating = training.getRating();
         language = LanguageTraining.parseToString(training.getLanguage());
         isInternal = training.isInternal();
@@ -79,7 +81,6 @@ public class TrainingInfo {
         }
         return dates;
     }
-
 
     public String getName() {
         return name;
