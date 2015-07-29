@@ -1,9 +1,6 @@
 package com.exadel.training.controller;
 
-import com.exadel.training.controller.model.Training.LessonData;
-import com.exadel.training.controller.model.Training.ShortTrainingInfo;
-import com.exadel.training.controller.model.Training.TrainingForCreation;
-import com.exadel.training.controller.model.Training.TrainingInfo;
+import com.exadel.training.controller.model.Training.*;
 import com.exadel.training.controller.model.User.UserShort;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
@@ -162,7 +159,7 @@ public class TrainingController {
         String header = httpServletRequest.getHeader("authorization");
         String userLogin = cryptService.decrypt(header);
         if(userService.checkUserByLogin(userLogin)) {
-            List<Training> trainings = trainingService.searchTrainingsByName(trainingName);
+            List<Training> trainings = trainingService.getTrainingsByName(trainingName);
             return ShortTrainingInfo.parseList(trainings);
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -219,9 +216,23 @@ public class TrainingController {
         }
     }
 
+    @RequestMapping(value = "/featured_trainings", method = RequestMethod.GET)
+    public @ResponseBody
+    List<ShortTrainingInfo> getFeaturedTrainings(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
+        String header = httpServletRequest.getHeader("authorization");
+        String userLogin = cryptService.decrypt(header);
+        if(userService.checkUserByLogin(userLogin)) {
+            List<Training> trainings = trainingService.getTrainingsByHighestRating();
+            return ShortTrainingInfo.parseList(trainings);
+        } else {
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return null;
+        }
+    }
+
     @RequestMapping(value = "/change_date", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody
-    ShortTrainingInfo getNearestTrainings(@RequestBody LessonData lessonData, HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException, ParseException {
+    ShortTrainingInfo changeDate(@RequestBody LessonData lessonData, HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException, ParseException {
         String header = httpServletRequest.getHeader("authorization");
         String userLogin = cryptService.decrypt(header);
         if(userService.whoIsUser(userLogin, 1)) {
@@ -233,6 +244,15 @@ public class TrainingController {
         }
     }
 
+    @RequestMapping(value = "/training_controller/date_info/{trainingName}", method = RequestMethod.GET)
+    @ResponseBody
+    LessonsArray getLessonsDates(@PathVariable("trainingName") String trainingName) throws ParseException, NoSuchFieldException, IOException {
+        LessonsArray lessons = new LessonsArray();
+        lessons.setDateTimes(TrainingInfo.parseDates(trainingService.getDatesByTrainingName(trainingName)));
+        lessons.setPlaces(trainingService.getPlacesByTrainingName(trainingName));
+        return lessons;
+    }
+
     //////////////////////////TESTS
 
 
@@ -240,9 +260,11 @@ public class TrainingController {
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     @ResponseBody
     List<ShortTrainingInfo> trainingTest() throws ParseException, NoSuchFieldException, IOException {
+        String trainingName = "Dark Knight";
 
-
-        List<User> list = trainingService.getListenersByTrainingNameSortByName("angular");
+        LessonsArray lessons = new LessonsArray();
+        lessons.setDateTimes(TrainingInfo.parseDates(trainingService.getDatesByTrainingName(trainingName)));
+        lessons.setPlaces(trainingService.getPlacesByTrainingName(trainingName));
 
         return ShortTrainingInfo.parseList(null);
     }

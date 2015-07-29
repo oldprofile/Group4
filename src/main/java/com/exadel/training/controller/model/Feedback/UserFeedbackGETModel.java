@@ -35,12 +35,11 @@ public class UserFeedbackGETModel implements Serializable{
 
     private String date;
 
-    // for english
     private String assessment;
 
     private String level;
 
-    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+    private static SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
 
     public UserFeedbackGETModel() {
     }
@@ -56,7 +55,7 @@ public class UserFeedbackGETModel implements Serializable{
         this.feedbackerLogin = feedbackerLogin;
         this.feedbackerName = feedbackerName;
         this.userLogin = userLogin;
-        this.date = sdf.format(date);
+        this.date = SDF.format(date);
         this.assessment = assessment;
         this.level = level;
     }

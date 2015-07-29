@@ -81,26 +81,17 @@ public class ScheduledTasksService {
 
     private void notificateBySms(NotificationTrainingModel notificationTrainingModel, List<UserShort> listeners) throws TwilioRestException {
         for(UserShort listener: listeners) {
-            String phone = listener.getNumberPhone();
-            if(!StringUtils.isBlank(phone)){
-                wrapperNotificationSMS.send(phone, "text");
-            }
+                wrapperNotificationSMS.send(listener.getNumberPhone(), "text");
         }
         UserShort traininer = notificationTrainingModel.getTrainer();
-        String phone = traininer.getNumberPhone();
-        if(!StringUtils.isBlank(phone)) {
-            wrapperNotificationSMS.send(phone, "text");
-        }
+            wrapperNotificationSMS.send(traininer.getNumberPhone(), "text");
     }
 
     private void race(NotificationTrainingModel notificationTrainingModel) throws TwilioRestException {
         Training training = trainingService.getTrainingByName(notificationTrainingModel.getName());
         List<UserShort> spareListeners = UserShort.parseUserShortList(training.getSpareUsers());
         for(UserShort spareListener: spareListeners) {
-            String phone = spareListener.getNumberPhone();
-            if(!StringUtils.isBlank(phone)) {
-                wrapperNotificationSMS.send(phone, "text");
-            }
+                wrapperNotificationSMS.send(spareListener.getNumberPhone(), "text");
         }
     }
 

@@ -45,7 +45,7 @@ public class AuthenticationController {
          try {
              user = userService.findUserByLoginAndPassword(login, password);
          }catch (NullPointerException e){
-             httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+             httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
          }
          httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
             try {

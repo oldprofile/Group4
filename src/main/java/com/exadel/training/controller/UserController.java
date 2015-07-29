@@ -5,6 +5,7 @@ import com.exadel.training.controller.model.User.*;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
 import com.exadel.training.notification.Notification;
+import com.exadel.training.notification.news.NotificationNews;
 import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
 import com.exadel.training.tokenAuthentification.CryptService;
@@ -29,10 +30,12 @@ import java.util.List;
  * Created by HP on 13.07.2015.
  */
 @Controller
+@ResponseBody
 @RequestMapping("/user_controller")
 public class UserController {
 
     private static final Object EMPTY = null;
+
     @Autowired
     private UserService userService;
     @Autowired
@@ -45,6 +48,9 @@ public class UserController {
     @Autowired
     @Qualifier("wrapperNotificationMail")
     private Notification notificationMail;
+    @Autowired
+    private NotificationNews notificationNews;
+
 
     @RequestMapping(value = "/find_by_role/{type}", method = RequestMethod.GET)
     public @ResponseBody List<UserShort> findByRole(@PathVariable("type") int type,
@@ -80,7 +86,7 @@ public class UserController {
             if (us != EMPTY) {
                 httpServletResponse.setStatus((HttpServletResponse.SC_ACCEPTED));
             } else {
-                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
             }
 
             return us;
@@ -91,7 +97,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/all_trainings_of_user", method = RequestMethod.GET)
-    public  @ResponseBody List<AllTrainingUserShort> getAllTrainingOfUser(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
+    public @ResponseBody List<AllTrainingUserShort> getAllTrainingOfUser(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
 
         String header = httpServletRequest.getHeader("authorization");
         String login = httpServletRequest.getHeader("login");
@@ -114,7 +120,7 @@ public class UserController {
             }
 
             if (allTrainingUserShorts.isEmpty()) {
-                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
             } else {
                 httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
             }
@@ -149,7 +155,7 @@ public class UserController {
             }
 
             if (allTrainingUserShorts.isEmpty()) {
-                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
             } else {
                 httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
             }
@@ -184,7 +190,7 @@ public class UserController {
             }
 
             if (allTrainingUserShorts.isEmpty()) {
-                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
             } else {
                 httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
             }
@@ -206,7 +212,7 @@ public class UserController {
             User user = userService.findUserByLogin(login);
 
             if (user == EMPTY) {
-                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
             } else {
                 httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
             }
@@ -225,10 +231,15 @@ public class UserController {
 
         String header = httpServletRequest.getHeader("authorization");
         String login = httpServletRequest.getHeader("login");
+        String trainingName =  userLeaveAndJoinTraining.getNameTraining();
+        String userLogin = userLeaveAndJoinTraining.getLogin();
 
         if(sessionToken.containsToken(header)) {
-            if(userService.checkSubscribeToTraining(userLeaveAndJoinTraining.getNameTraining(),userLeaveAndJoinTraining.getLogin())) {
-                userService.deleteUserTrainingRelationShip(userLeaveAndJoinTraining.getLogin(), userLeaveAndJoinTraining.getNameTraining());
+            if(userService.checkSubscribeToTraining(trainingName, userLogin)) {
+                userService.deleteUserTrainingRelationShip(userLogin, trainingName);
+
+                notificationNews.sendNews(userLogin + " has left " + trainingName, userService.findUserByLogin(userLogin), trainingService.getTrainingByName(trainingName));
+
                 httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
             } else {
                 httpServletResponse.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
@@ -244,24 +255,31 @@ public class UserController {
 
         String header = httpServletRequest.getHeader("authorization");
         String login = httpServletRequest.getHeader("login");
+        String userLogin = userLeaveAndJoinTraining.getLogin();
+        String trainingName = userLeaveAndJoinTraining.getNameTraining();
 
         if(sessionToken.containsToken(header)) {
             try {
-                Training training = trainingService.getTrainingByName(userLeaveAndJoinTraining.getNameTraining());
+                Training training = trainingService.getTrainingByName(trainingName);
                 User user = userService.findUserByLogin(login);
                 if(!userService.checkSubscribeToTraining(training.getId(), user.getId())) {
                     if (training.getListeners().size() < training.getAmount()) {
-                        userService.insertUserTrainingRelationShip(userLeaveAndJoinTraining.getLogin(), userLeaveAndJoinTraining.getNameTraining());
-                        notificationMail.send(user.getEmail(), user.getName() + ",you have subscribed to " + training.getName());
+                        userService.insertUserTrainingRelationShip(userLogin, trainingName);
+
+                        notificationNews.sendNews(userLogin + " has subscribed to " + trainingName,user,training);
+                        notificationMail.send(user.getEmail(), userLogin + ",you have subscribed to " + trainingName);
+
                         httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
                     } else {
-                        trainingService.addSpareUser(training.getName(), login);
-                        notificationMail.send(user.getEmail(), user.getName() + ",you are in reserve " + training.getName());
+                        trainingService.addSpareUser(trainingName, login);
+
+                        notificationMail.send(user.getEmail(), userLogin + ",you are in reserve " + trainingName);
+
                         httpServletResponse.setStatus(HttpServletResponse.SC_CONTINUE);
                     }
                 }
             } catch (NullPointerException e) {
-                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
             } catch (TwilioRestException | MessagingException e) {
                 httpServletResponse.setStatus(HttpServletResponse.SC_CONFLICT);
             }
@@ -294,7 +312,7 @@ public class UserController {
                 }
 
             if (allTrainingUserShorts.isEmpty()) {
-                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
             } else {
                 httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
             }
@@ -305,7 +323,7 @@ public class UserController {
         return  allTrainingUserShorts;
     }
 
-    @RequestMapping(value = "/find_my_training", method = RequestMethod.POST,  consumes = "application/json")
+    @RequestMapping(value = "/find_my_training", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody void findMyTraining(@RequestBody UserLoginAndTraining userLoginAndTraining,
                                              HttpServletResponse response, HttpServletRequest httpServletRequest) {
 
@@ -315,7 +333,7 @@ public class UserController {
         if(training == null) {
             response.setStatus(HttpServletResponse.SC_ACCEPTED);
         } else {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.setStatus(HttpServletResponse.SC_NO_CONTENT);
         }
     }
     @RequestMapping(value = "/find_coach_of_user/{login}", method = RequestMethod.GET)
@@ -345,7 +363,7 @@ public class UserController {
 
         Date d1 = Date.valueOf("2001-01-01");
         Date d2 = Date.valueOf("2005-01-01");
-        List<Training> a = userService.selectAllTrainingBetweenDatesAndSortedByName("1",d1,d2);
+        List<Training> a = userService.selectAllTrainingBetweenDatesAndSortedByName("1", d1, d2);
         List<User> coaches = userService.findAllCoachOfUser("1");
 
         List<java.util.Date> t1 = userService.selectAllDateOfTrainingsBetweenDates("1",d1,d2);
@@ -373,7 +391,7 @@ public class UserController {
         }
 
         if(allTrainingUserShorts.isEmpty()) {
-            httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
         }
@@ -396,15 +414,7 @@ public class UserController {
         Boolean i = userService.checkSubscribeToTraining("Front end","1");
         UserShort us =  UserShort.parseUserShort(userService.findUserByLogin("1"));
 
+        return null;
 
-        List<User> s1 = userService.searchUsersByName("a*");
-        List<UserShort> s2 = new ArrayList<>();
-        if(userService.checkUserByLogin("as")) {
-            for (User user : s1) {
-                s2.add(UserShort.parseUserShort(user));
-            }
-        }
-
-        return s2;
     }
 }
