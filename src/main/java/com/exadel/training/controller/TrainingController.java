@@ -1,9 +1,6 @@
 package com.exadel.training.controller;
 
-import com.exadel.training.controller.model.Training.LessonData;
-import com.exadel.training.controller.model.Training.ShortTrainingInfo;
-import com.exadel.training.controller.model.Training.TrainingForCreation;
-import com.exadel.training.controller.model.Training.TrainingInfo;
+import com.exadel.training.controller.model.Training.*;
 import com.exadel.training.controller.model.User.UserShort;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
@@ -25,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -221,7 +219,7 @@ public class TrainingController {
 
     @RequestMapping(value = "/change_date", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody
-    ShortTrainingInfo getNearestTrainings(@RequestBody LessonData lessonData, HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException, ParseException {
+    ShortTrainingInfo changeDate(@RequestBody LessonData lessonData, HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException, ParseException {
         String header = httpServletRequest.getHeader("authorization");
         String userLogin = cryptService.decrypt(header);
         if(userService.whoIsUser(userLogin, 1)) {
@@ -232,6 +230,21 @@ public class TrainingController {
             return null;
         }
     }
+
+    /*@RequestMapping(value = "/training_controller/date_info/{trainingName}", method = RequestMethod.GET)
+    @ResponseBody
+    LessonsArray getLessonsDates(@PathVariable("trainingName") String trainingName) throws ParseException, NoSuchFieldException, IOException {
+        LessonsArray lessons = new LessonsArray();
+        List<Date> dateTimmes = trainingService.getDatesByTrainingName(trainingName);
+        List<String> places = trainingService.getPlacesByTrainingName(trainingName);
+        for(int i = 0; i < dateTimes.size(); ++i) {
+            lessons.dateTimes.add(sdf.format(dateTimes.get(i)));
+            this.places.add(places.get(i));
+        }
+        List<User> list = trainingService.getListenersByTrainingNameSortByName("angular");
+
+        return ShortTrainingInfo.parseList(null);
+    }*/
 
     //////////////////////////TESTS
 

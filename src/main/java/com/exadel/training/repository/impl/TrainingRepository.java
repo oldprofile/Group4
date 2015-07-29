@@ -29,7 +29,7 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
     @Query("select tr from Training as tr  inner join tr.listeners as trus where tr.name = ?1 and tr.parent = 0 and trus.login = ?2")
     Training findByTrainingNameAndUserLogin(String trainingName, String userLogin);
 
-    @Query("select tr from Training as tr  where tr.name = ?1 and tr.dateTime = ?2")
+    @Query("select tr from Training as tr  where tr.name = ?1 and tr.dateTime = ?2 and parent not in(0)")
     Training findTrainingByNameAndDate(String trainingName, Date date);
 
     @Query(value =  "select tr from Training tr where tr.category.id = ?1 and tr.state in (2,3)")
@@ -86,7 +86,7 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
     @Query("select tr.dateTime from Training as tr where tr.name = ?1 and tr.parent not in(0) order by tr.dateTime asc")
     List<Date> findDatesByTrainingsName(String trainingName);
 
-    @Query("select tr.place from Training as tr where tr.name= ?1 order by tr.dateTime asc")
+    @Query("select tr.place from Training as tr where tr.name= ?1 and tr.parent not in(0) order by tr.dateTime asc")
     List<String> findPlacesByTrainingName(String trainingName);
 
     @Query("select tr.id from Training as tr where tr.name = ?1 and tr.parent = 0")
