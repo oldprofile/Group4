@@ -85,7 +85,7 @@ public class UserController {
             if (us != EMPTY) {
                 httpServletResponse.setStatus((HttpServletResponse.SC_ACCEPTED));
             } else {
-                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
             }
 
             return us;
@@ -119,7 +119,7 @@ public class UserController {
             }
 
             if (allTrainingUserShorts.isEmpty()) {
-                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
             } else {
                 httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
             }
@@ -154,7 +154,7 @@ public class UserController {
             }
 
             if (allTrainingUserShorts.isEmpty()) {
-                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
             } else {
                 httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
             }
@@ -189,7 +189,7 @@ public class UserController {
             }
 
             if (allTrainingUserShorts.isEmpty()) {
-                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
             } else {
                 httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
             }
@@ -211,7 +211,7 @@ public class UserController {
             User user = userService.findUserByLogin(login);
 
             if (user == EMPTY) {
-                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
             } else {
                 httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
             }
@@ -236,7 +236,9 @@ public class UserController {
         if(sessionToken.containsToken(header)) {
             if(userService.checkSubscribeToTraining(trainingName, userLogin)) {
                 userService.deleteUserTrainingRelationShip(userLogin, trainingName);
-                notificationNews.sendNews(userLogin + "has left " + trainingName, userService.findUserByLogin(userLogin), trainingService.getTrainingByName(trainingName));
+
+                notificationNews.sendNews(userLogin + " has left " + trainingName, userService.findUserByLogin(userLogin), trainingService.getTrainingByName(trainingName));
+
                 httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
             } else {
                 httpServletResponse.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
@@ -262,17 +264,21 @@ public class UserController {
                 if(!userService.checkSubscribeToTraining(training.getId(), user.getId())) {
                     if (training.getListeners().size() < training.getAmount()) {
                         userService.insertUserTrainingRelationShip(userLogin, trainingName);
-                        notificationNews.sendNews(userLogin + ",you have subscribed to " + trainingName,user,training);
+
+                        notificationNews.sendNews(userLogin + " has subscribed to " + trainingName,user,training);
                         notificationMail.send(user.getEmail(), userLogin + ",you have subscribed to " + trainingName);
+
                         httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
                     } else {
                         trainingService.addSpareUser(trainingName, login);
+
                         notificationMail.send(user.getEmail(), userLogin + ",you are in reserve " + trainingName);
+
                         httpServletResponse.setStatus(HttpServletResponse.SC_CONTINUE);
                     }
                 }
             } catch (NullPointerException e) {
-                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
             } catch (TwilioRestException | MessagingException e) {
                 httpServletResponse.setStatus(HttpServletResponse.SC_CONFLICT);
             }
@@ -305,7 +311,7 @@ public class UserController {
                 }
 
             if (allTrainingUserShorts.isEmpty()) {
-                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
             } else {
                 httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
             }
@@ -326,7 +332,7 @@ public class UserController {
         if(training == null) {
             response.setStatus(HttpServletResponse.SC_ACCEPTED);
         } else {
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.setStatus(HttpServletResponse.SC_NO_CONTENT);
         }
     }
     @RequestMapping(value = "/find_coach_of_user/{login}", method = RequestMethod.GET)
@@ -384,7 +390,7 @@ public class UserController {
         }
 
         if(allTrainingUserShorts.isEmpty()) {
-            httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
         }
