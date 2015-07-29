@@ -13,7 +13,7 @@ import java.util.List;
 public class JournalOmissionModel {
 
     private String date;
-    private Boolean isOmission;
+    private boolean isOmission;
 
     public JournalOmissionModel() {
     }
@@ -27,11 +27,11 @@ public class JournalOmissionModel {
         this.date = sdf.format(date);
     }
 
-    public Boolean getIsOmission() {
+    public boolean getIsOmission() {
         return isOmission;
     }
 
-    public void setIsOmission(Boolean isOmission) {
+    public void setIsOmission(boolean isOmission) {
         this.isOmission = isOmission;
     }
 
