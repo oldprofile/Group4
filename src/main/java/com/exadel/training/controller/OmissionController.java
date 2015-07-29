@@ -38,12 +38,6 @@ public class OmissionController {
     @Autowired
     ExcelFileGenerator excelFileGenerator;
 
-    @RequestMapping(value = "/add", method = RequestMethod.GET)
-    void add() {
-        OmissionADDModel omissionADDModel = new OmissionADDModel("1", "1", "2015-07-13", true);
-        omissionService.addOmission(omissionADDModel);
-    }
-
     @RequestMapping(value = "/add_ommisions", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody void addOmmisions(@RequestBody List<OmissionADDModel> omissionADDModels, HttpServletResponse response) {
         try {

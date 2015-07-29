@@ -33,8 +33,7 @@ public class OmissionServiceImpl implements OmissionService{
     @Override
     @Transactional
     public void addOmission(OmissionADDModel omissionADDModel) {
-        // get training by name and date
-        Training training = trainingService.getTrainingByNameAndDate(omissionADDModel.getTrainingName(), new Date(omissionADDModel.getDate()));
+        Training training = trainingService.getTrainingByNameAndDate(omissionADDModel.getTrainingName(), java.sql.Date.valueOf(omissionADDModel.getDate()));
         User user = userService.findUserByLogin(omissionADDModel.getUserLogin());
         Omission omission = new Omission(training, user, omissionADDModel.isOmission());
         omissionRepository.save(omission);
