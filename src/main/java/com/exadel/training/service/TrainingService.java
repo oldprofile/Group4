@@ -18,7 +18,8 @@ public interface TrainingService {
     Training addTraining(TrainingForCreation trainingForCreation) throws NoSuchFieldException, ParseException;
     Training getTrainingByID(long id);
     Training getTrainingByName(String name);
-    Training getTrainingByNameAndUserLogin(String trainingName, String userLogin);
+    Training getTrainingByNameAndUserLogin(String trainingName, String userLogin);    Training
+    Training getTrainingByNameAndDate(String trainingName, Date trainingDate);
     Training editTraining(TrainingForCreation trainingForCreation) throws ParseException, NoSuchFieldException;
     Training approveTraining(String trainingName) throws NoSuchFieldException;
     Training deleteTrainingsByName(String trainingName);
