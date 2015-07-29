@@ -11,8 +11,9 @@ import java.util.List;
 public class CategoryShort {
 
     private long id;
-
     private String name;
+    private int trainingsNumber;
+    private String pictureLink;
 
     public CategoryShort() {
     }
@@ -20,6 +21,7 @@ public class CategoryShort {
     public CategoryShort(Category category) {
         this.id = category.getId();
         this.name = category.getName();
+        this.pictureLink = category.getPictureLink();
     }
 
     public static List<CategoryShort> parseListCategoryShort(List<Category> categories) {
@@ -43,5 +45,21 @@ public class CategoryShort {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getTrainingsNumber() {
+        return trainingsNumber;
+    }
+
+    public void setTrainingsNumber(int trainingsNumber) {
+        this.trainingsNumber = trainingsNumber;
+    }
+
+    public String getPictureLink() {
+        return pictureLink;
+    }
+
+    public void setPictureLink(String pictureLink) {
+        this.pictureLink = pictureLink;
     }
 }

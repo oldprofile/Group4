@@ -269,6 +269,11 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
+    public Integer getValidTrainingsNumberByCategory(Category category) {
+        return trainingRepository.findValidTrainingsNumberByCategory(category);
+    }
+
+    @Override
     public Long getParentTrainingId(String trainingName) {
         return trainingRepository.findParentTrainingIdByName(trainingName);
     }
