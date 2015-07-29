@@ -223,6 +223,11 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
+    public List<Training> getTrainingsByHighestRating() {
+        return trainingRepository.findTrainingsByHighestRating();
+    }
+
+    @Override
     public List<User> getUsersByTrainingName(String trainingName) {
         return trainingRepository.findListenersByTrainingName(trainingName);
     }

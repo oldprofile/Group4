@@ -31,19 +31,19 @@ public class NewsController {
     public @ResponseBody List<NewsPage> getNewsPage(@PathVariable("pageNumber") String pageNumber) throws NoSuchFieldException {
         Page<News> page = userNewsService.getNewsPage(Integer.parseInt(pageNumber));
         List<News> newsList = page.getContent();
-        List<NewsPage> newses = new ArrayList<>();
+        List<NewsPage> newsPageList = new ArrayList<>();
         for(News news : newsList) {
-            newses.add(NewsPage.parseNewsPage(news));
+            newsPageList.add(NewsPage.parseNewsPage(news));
         }
 
-        return  newses;
+        return  newsPageList;
     }
 
-    @RequestMapping(value = "/count_of_pages", method = RequestMethod.GET)
-    public @ResponseBody Integer getCountOfPages() {
+    @RequestMapping(value = "/count_of_news", method = RequestMethod.GET)
+    public @ResponseBody Integer getCountOfNews() {
         this.notification();
 
-        return userNewsService.getCountOFPages();
+        return userNewsService.getCountOFNews();
     }
 
     @MessageMapping(value = "/notification1")

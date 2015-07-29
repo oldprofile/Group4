@@ -11,7 +11,7 @@ public class NewsPage {
     private static final Object EMPTY = null;
 
     private String name;
-    private String desciption;
+    private String description;
     private AllTrainingUserShort training;
     private Boolean isRead;
 
@@ -28,11 +28,11 @@ public class NewsPage {
     }
 
     public String getDesciption() {
-        return desciption;
+        return description;
     }
 
-    public void setDesciption(String desciption) {
-        this.desciption = desciption;
+    public void setDesrciption(String description) {
+        this.description = description;
     }
 
     public AllTrainingUserShort getTraining() {
@@ -55,7 +55,7 @@ public class NewsPage {
     public static NewsPage parseNewsPage(News news) throws NoSuchFieldException {
         NewsPage newsPage = new NewsPage();
          newsPage.setName(news.getUser().getName());
-         newsPage.setDesciption(news.getAction());
+         newsPage.setDesrciption(news.getAction());
         if(news.getTraining() != EMPTY) {
          newsPage.setTraining(AllTrainingUserShort.parseAllTrainingUserShort(news.getTraining()));
         }

@@ -35,6 +35,7 @@ public interface TrainingService {
     List<Training> searchTrainingsByName(String trainingName);
     List<Training> getTrainingForApprove();
     List<Training> getTrainingsByCoach(String coachLogin);
+    List<Training> getTrainingsByHighestRating();
 
     List<User> getUsersByTrainingName(String trainingName);
     List<User> getSpareUsersByTrainingName(String trainingName);

@@ -35,8 +35,8 @@ public interface UserRepository extends JpaRepository<User,Long>{
 
     User findUserByLogin(String login);
 
-    @Query(value = "SELECT * FROM users WHERE MATCH (name,login) AGAINST (:name in boolean mode) ", nativeQuery = true)
-    List<User> searchUsersByName(@Param("name")String name);
+    @Query(value = "SELECT * FROM users WHERE MATCH (name,login,email) AGAINST (:search in boolean mode)", nativeQuery = true)
+    List<User> searchUsers(@Param("search")String search);
 
     @Query("select u from User as u inner join u.roles as r where r.id = ?1 ")
     List<User> findUsersByRole(long type);

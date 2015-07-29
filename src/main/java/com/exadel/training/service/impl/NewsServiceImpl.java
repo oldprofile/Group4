@@ -36,7 +36,7 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public int getCountOFPages() {
+    public int getCountOFNews() {
         return newsRepository.getCountOfPages();
     }
 }

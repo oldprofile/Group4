@@ -33,6 +33,7 @@ public class User {
 
     @NotNull
     @Column(unique = true)
+    @Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
     private String login;
 
     @NotNull
