@@ -3,6 +3,7 @@ package com.exadel.training.service;
 import com.exadel.training.controller.model.Omission.OmissionADDModel;
 import com.exadel.training.model.Omission;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  * Created by Клим on 13.07.2015.
  */
 public interface OmissionService {
-    void addOmission(OmissionADDModel omissionADDModel);
+    void addOmission(OmissionADDModel omissionADDModel) throws ParseException;
     List<Omission> getOmissionsByTrainingName(String trainingName);
     List<Omission> findByTrainingNameAndUserLogin(String trainingName, String userLogin);
     List<Omission> findByUserLogin(String userLogin);

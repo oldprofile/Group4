@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -30,10 +33,13 @@ public class OmissionServiceImpl implements OmissionService{
     @Autowired
     UserService userService;
 
+    private static final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+
     @Override
     @Transactional
-    public void addOmission(OmissionADDModel omissionADDModel) {
-        Training training = trainingService.getTrainingByNameAndDate(omissionADDModel.getTrainingName(), java.sql.Date.valueOf(omissionADDModel.getDate()));
+    public void addOmission(OmissionADDModel omissionADDModel) throws ParseException {
+        Date date = SDF.parse(omissionADDModel.getDate());
+        Training training = trainingService.getTrainingByNameAndDate(omissionADDModel.getTrainingName(), date);
         User user = userService.findUserByLogin(omissionADDModel.getUserLogin());
         Omission omission = new Omission(training, user, omissionADDModel.isOmission());
         omissionRepository.save(omission);
