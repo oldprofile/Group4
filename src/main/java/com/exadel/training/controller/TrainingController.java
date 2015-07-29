@@ -231,20 +231,14 @@ public class TrainingController {
         }
     }
 
-    /*@RequestMapping(value = "/training_controller/date_info/{trainingName}", method = RequestMethod.GET)
+    @RequestMapping(value = "/training_controller/date_info/{trainingName}", method = RequestMethod.GET)
     @ResponseBody
     LessonsArray getLessonsDates(@PathVariable("trainingName") String trainingName) throws ParseException, NoSuchFieldException, IOException {
         LessonsArray lessons = new LessonsArray();
-        List<Date> dateTimmes = trainingService.getDatesByTrainingName(trainingName);
-        List<String> places = trainingService.getPlacesByTrainingName(trainingName);
-        for(int i = 0; i < dateTimes.size(); ++i) {
-            lessons.dateTimes.add(sdf.format(dateTimes.get(i)));
-            this.places.add(places.get(i));
-        }
-        List<User> list = trainingService.getListenersByTrainingNameSortByName("angular");
-
-        return ShortTrainingInfo.parseList(null);
-    }*/
+        lessons.setDateTimes(TrainingInfo.parseDates(trainingService.getDatesByTrainingName(trainingName)));
+        lessons.setPlaces(trainingService.getPlacesByTrainingName(trainingName));
+        return lessons;
+    }
 
     //////////////////////////TESTS
 
@@ -253,9 +247,11 @@ public class TrainingController {
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     @ResponseBody
     List<ShortTrainingInfo> trainingTest() throws ParseException, NoSuchFieldException, IOException {
+        String trainingName = "Dark Knight";
 
-
-        List<User> list = trainingService.getListenersByTrainingNameSortByName("angular");
+        LessonsArray lessons = new LessonsArray();
+        lessons.setDateTimes(TrainingInfo.parseDates(trainingService.getDatesByTrainingName(trainingName)));
+        lessons.setPlaces(trainingService.getPlacesByTrainingName(trainingName));
 
         return ShortTrainingInfo.parseList(null);
     }
