@@ -1,5 +1,6 @@
 package com.exadel.training.repository.impl;
 
+import com.exadel.training.model.Category;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -48,7 +49,7 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
     @Query("select  tr from Training as tr where tr.name = ?1 and tr.state in (2,3) order by tr.dateTime asc")
     List<Training> findNearestTrainingsByName(String trainingName);
 
-    @Query("select  tr from Training as tr where tr.state in (2,3) order by tr.dateTime asc")
+    @Query("select  tr from Training as tr where tr.state in (2,3) and tr.parent = 0 order by tr.dateTime asc")
     List<Training> findNearestTrainings();
 
     @Query("select tr from Training as tr where tr.name like ?1")
@@ -94,4 +95,7 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
 
     @Query("select count(tr.dateTime) from Training as tr where tr.name = ?1 and  tr.dateTime <= ?2")
     Integer findTrainingNumber(String trainingName, Date date);
+
+    @Query("select count(tr) from Training as tr where tr.category = ?2 and tr.parent = 0")
+    Integer findValidTrainingsNumberByCategory(Category category);
 }

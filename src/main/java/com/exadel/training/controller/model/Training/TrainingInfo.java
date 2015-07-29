@@ -37,7 +37,7 @@ public class TrainingInfo {
     private String state;
     private List<UserShort> listeners;
     private List<UserShort> spareUsers;
-    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
 
 
     public TrainingInfo() {
@@ -71,6 +71,15 @@ public class TrainingInfo {
         subscribeAvailability = participantsNumber > listeners.size();
         feedbackAvailability = false;
     }
+
+    public static List<String> parseDates(List<Date> dateTimes) {
+        List<String> dates = new ArrayList<>();
+        for (Date dateTime : dateTimes) {
+            dates.add(sdf.format(dateTime));
+        }
+        return dates;
+    }
+
 
     public String getName() {
         return name;
