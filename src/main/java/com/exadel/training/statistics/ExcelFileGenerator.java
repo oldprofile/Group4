@@ -24,8 +24,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Date;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -221,7 +221,7 @@ public class ExcelFileGenerator {
     public String generateForUserFull(Date dateFrom, Date dateTo, String userLogin) throws IOException {
         String fileName = userLogin + "_omissions.xlsx";
 
-        List<Training> trainings = userService.selectAllTrainingBetweenDatesAndSortedByDate(userLogin, dateFrom, dateTo);
+        List<Training> trainings = userService.selectAllTrainingBetweenDatesAndSortedByName(userLogin, dateFrom, dateTo);
         List<Date> dates = userService.selectAllDateOfTrainingsBetweenDates(userLogin, dateFrom, dateTo);
         List<TrainingName> trainingNameAndDates = TrainingName.parseTrainingList(trainings);
 

@@ -42,15 +42,15 @@ public class NewsController {
     @RequestMapping(value = "/count_of_pages", method = RequestMethod.GET)
     public @ResponseBody Integer getCountOfPages() {
         this.notification();
-        return userNewsService.getCountOFPages();
 
+        return userNewsService.getCountOFPages();
     }
+
     @MessageMapping(value = "/notification1")
     @SendTo(value = "/notification")
     public @ResponseBody String notification() {
-
         i++;
-        return "ok" + i.toString();
 
+        return "ok" + i.toString();
     }
 }
