@@ -32,7 +32,6 @@ public interface TrainingService {
     List<Training> getValidTrainingsByCategoryId(int id);
     List<Training> getValidTrainings();
     List<Training> getTrainingsByNearestDate();
-    List<Training> searchTrainingsByName(String trainingName);
     List<Training> getTrainingForApprove();
     List<Training> getTrainingsByCoach(String coachLogin);
     List<Training> getTrainingsByHighestRating();
