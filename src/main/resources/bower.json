@@ -16,6 +16,8 @@
     "angular-http-auth": "~1.2.2",
     "angular-deckgrid": "~0.5.0",
     "moment": "~2.10.3",
-    "angular-websocket": "~1.0.13"
+    "angular-websocket": "~1.0.13",
+    "angular-cookies": "~1.4.3",
+    "v-accordion": "~1.2.7",
   }
 }
