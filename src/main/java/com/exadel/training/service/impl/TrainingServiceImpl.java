@@ -140,9 +140,10 @@ public class TrainingServiceImpl implements TrainingService {
         if (userRepository.whoIsUser(trainingForCreation.getUserLogin(), 1)) {
             if(dateTimes.size() == 0)
                 state = StateTraining.parseToInt("Canceled");
-            else
+            else {
                 state = StateTraining.parseToInt("Ahead");
-            place = trainingForCreation.getPlaces().get(0);
+                place = trainingForCreation.getPlaces().get(0);
+            }
         } else {
             state = StateTraining.parseToInt("Edited");
         }
