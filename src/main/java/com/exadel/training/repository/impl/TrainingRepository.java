@@ -102,4 +102,7 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
 
     @Query(value = "SELECT * FROM trainings WHERE MATCH (name) AGAINST (:search) and trainings.parent = 0", nativeQuery = true)
     List<Training> searchTrainingByName(@Param("search")String search);
+
+    @Query("select case when (count(tr)>0) then true else false end from Training as tr inner join tr.listeners as trus where tr.name = ?1 and tr.parent = 0 and trus.login = ?2")
+    Boolean isSubscriber(String trainingName, String userLogin);
 }

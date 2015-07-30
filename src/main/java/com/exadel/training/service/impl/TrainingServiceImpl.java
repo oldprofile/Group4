@@ -277,6 +277,11 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
+    public Boolean isSubscriber(String trainingName, String userLogin) {
+        return trainingRepository.isSubscriber(trainingName, userLogin);
+    }
+
+    @Override
     public List<Date> getDatesByTrainingNameBetweenDates(String trainingName, Date firstDate, Date secondDate) {
         return trainingRepository.findDatesByTrainingNameBetweenDates(trainingName, firstDate, secondDate);
     }
