@@ -160,4 +160,10 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findUserByLogin(login);
         user.setNumberPhone(number);
     }
+
+    @Override
+    @Transactional
+    public void insertExEmploee(User user) {
+        userRepository.save(user);
+    }
 }

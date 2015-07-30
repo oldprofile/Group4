@@ -324,12 +324,16 @@ public class UserController {
                                              HttpServletResponse response, HttpServletRequest httpServletRequest) {
 
         String header = httpServletRequest.getHeader("authorization");
-        Training training = userService.findMyTraining(userLoginAndTraining.getLogin(), userLoginAndTraining.getTrainingName());
+        String mainLogin = httpServletRequest.getHeader("login");
 
-        if(training == null) {
-            response.setStatus(HttpServletResponse.SC_ACCEPTED);
-        } else {
-            response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+        if(sessionToken.containsToken(header)) {
+            Training training = userService.findMyTraining(userLoginAndTraining.getLogin(), userLoginAndTraining.getTrainingName());
+
+            if (training == null) {
+                response.setStatus(HttpServletResponse.SC_ACCEPTED);
+            } else {
+                response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+            }
         }
     }
     @RequestMapping(value = "/find_coach_of_user/{login}", method = RequestMethod.GET)
@@ -352,6 +356,30 @@ public class UserController {
         }
 
         return userShorts;
+    }
+
+    @RequestMapping(value = "/insert_phone", method = RequestMethod.POST, consumes = "application/json")
+    public void insertPhone(@RequestBody PhoneUser phoneUser, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+
+        String header = httpServletRequest.getHeader("authorization");
+        String login = httpServletRequest.getHeader("login");
+
+        if(sessionToken.containsToken(header)) {
+            userService.insertNumberOfTelephone(phoneUser.getLogin(), phoneUser.getNumberPhone());
+            httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+        } else {
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
+
+    }
+    @RequestMapping(value = "/insert_external_emploee", method = RequestMethod.POST,  consumes = "application/json")
+    public void insertExternalEmploee(@RequestBody UserExEmploee userExEmploee) {
+        User user = new User();
+        user.setName(userExEmploee.getName());
+        user.setLogin(userExEmploee.getLogin());
+        user.setEmail(userExEmploee.getEmail());
+
+        userService.insertExEmploee(user);
     }
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
