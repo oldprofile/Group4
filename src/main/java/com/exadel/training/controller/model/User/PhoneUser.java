@@ -5,18 +5,18 @@ package com.exadel.training.controller.model.User;
  */
 public class PhoneUser {
 
-    private String phone;
+    private String numberPhone;
     private String login;
 
     public PhoneUser() {
     }
 
-    public String getPhone() {
-        return phone;
+    public String getNumberPhone() {
+        return numberPhone;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setNumberPhone(String numberPhone) {
+        this.numberPhone = numberPhone;
     }
 
     public String getLogin() {
