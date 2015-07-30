@@ -372,12 +372,12 @@ public class UserController {
         }
 
     }
-    @RequestMapping(value = "/insert_external_emploee", method = RequestMethod.GET)
-    public void insertExternalEmploee() {
+    @RequestMapping(value = "/insert_external_emploee", method = RequestMethod.POST,  consumes = "application/json")
+    public void insertExternalEmploee(@RequestBody UserExEmploee userExEmploee) {
         User user = new User();
-        user.setName("mladka");
-        user.setLogin("ladka");
-        user.setEmail("mladka@mail.ru");
+        user.setName(userExEmploee.getName());
+        user.setLogin(userExEmploee.getLogin());
+        user.setEmail(userExEmploee.getEmail());
 
         userService.insertExEmploee(user);
     }
