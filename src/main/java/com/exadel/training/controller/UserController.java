@@ -328,12 +328,16 @@ public class UserController {
                                              HttpServletResponse response, HttpServletRequest httpServletRequest) {
 
         String header = httpServletRequest.getHeader("authorization");
-        Training training = userService.findMyTraining(userLoginAndTraining.getLogin(),userLoginAndTraining.getTrainingName());
+        String mainLogin = httpServletRequest.getHeader("login");
 
-        if(training == null) {
-            response.setStatus(HttpServletResponse.SC_ACCEPTED);
-        } else {
-            response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+        if(sessionToken.containsToken(header)) {
+            Training training = userService.findMyTraining(userLoginAndTraining.getLogin(), userLoginAndTraining.getTrainingName());
+
+            if (training == null) {
+                response.setStatus(HttpServletResponse.SC_ACCEPTED);
+            } else {
+                response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+            }
         }
     }
     @RequestMapping(value = "/find_coach_of_user/{login}", method = RequestMethod.GET)
@@ -341,7 +345,7 @@ public class UserController {
                                                          HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException {
 
         String header = httpServletRequest.getHeader("authorization");
-        String mainLogin = cryptService.decrypt(header);
+        String mainLogin = httpServletRequest.getHeader("login");
         List<UserShort> userShorts = new ArrayList<>();
 
         if(userService.checkUserByLogin(mainLogin)) {
@@ -358,6 +362,20 @@ public class UserController {
         return userShorts;
     }
 
+    @RequestMapping(value = "/insert_phone", method = RequestMethod.POST, consumes = "application/json")
+    public void insertPhone(@RequestBody PhoneUser phoneUser, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+
+        String header = httpServletRequest.getHeader("authorization");
+        String login = httpServletRequest.getHeader("login");
+
+        if(sessionToken.containsToken(header)) {
+            userService.insertNumberOfTelephone(phoneUser.getLogin(), phoneUser.getPhone());
+            httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+        } else {
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
+
+    }
     @RequestMapping(value = "/insert_external_emploee", method = RequestMethod.GET)
     public void insertExternalEmploee() {
         User user = new User();
