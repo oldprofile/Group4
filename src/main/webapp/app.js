@@ -5,7 +5,6 @@ var app = angular.module('myApp', [
     'ngRoute',
     'ui.bootstrap',
     'http-auth-interceptor',
-    'akoenig.deckgrid',
     'myApp.view1',
     'myApp.view2',
     'myApp.mycourses',
@@ -35,20 +34,30 @@ app.controller('MainController',['$scope',function($scope){
 }]);
 
 
-app.directive('authClass', ['$location','userService',function($location,userService) {
+app.directive('authClass', ['$location','userService','loginService',function($location,userService,loginService) {
     return {
       restrict: 'C',
       link: function(scope, elem, attrs) {
           //hide content before auth
         
-        scope.isLogged = userService.isLogged; 
+        scope.isLogged = loginService.checkCreds();
         
           if(scope.isLogged == false){
               scope.prevPath = $location.path();
               $location.path('login');
+          } else {
+            //loggedin;
+            var data = loginService.getCreds();
+            userService.setUser(data.login,data.role,data.token);
+            
+            if(scope.prevPath === undefined){
+              //$location.path("/");
+            } else {
+              $location.path(scope.prevPath);
+            }
           }
           
-        elem.removeClass('waiting-for-angular');
+        elem.removeClass('waiting-for-angular-login');
 //        var login = elem.find('#login-holder');
 //        var main = elem.find('#content');
 //        
@@ -61,6 +70,7 @@ app.directive('authClass', ['$location','userService',function($location,userSer
             //showLoginForm(elem);
             scope.isLogged = false;
             userService.clearUser();
+            loginService.clearCreds();
             scope.prevPath = $location.path();
             $location.path('login');
         });
@@ -70,8 +80,10 @@ app.directive('authClass', ['$location','userService',function($location,userSer
           //confirm form server    
             console.log("Confirm User:" + JSON.stringify(data)); 
             scope.isLogged = true;
-            userService.setUser(data.login,data.name,data.password,data.role,data.token);
-            
+            userService.setUser(data.login,data.role,data.token);
+            if(scope.prevPath.toLowerCase() === "/login"){
+              scope.prevPath = "/";
+            }
             $location.path(scope.prevPath);
           //hideLoginForm(elem);
         });

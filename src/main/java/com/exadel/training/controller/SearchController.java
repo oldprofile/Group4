@@ -38,9 +38,9 @@ public class SearchController {
         return userShorts;
     }
 
-    @RequestMapping(value = "/search_trainings", method = RequestMethod.GET)
-    public @ResponseBody List<ShortTrainingInfo> searchTraining() throws NoSuchFieldException {
-        List<Training> searchTrainings = searchService.searchTrainings("java");
+    @RequestMapping(value = "/search_trainings", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody List<ShortTrainingInfo> searchTraining(@RequestBody String searchWord) throws NoSuchFieldException {
+        List<Training> searchTrainings = searchService.searchTrainings(searchWord);
         List<ShortTrainingInfo> shortTrainingInfos = new ArrayList<>();
 
         return ShortTrainingInfo.parseList(searchTrainings);

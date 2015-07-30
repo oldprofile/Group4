@@ -1,18 +1,22 @@
-    <div class="card-layout-browse">
+   
+<div class="card-layout-browse" ng-class="{ 'waiting-for-angular': !isContentLoaded }">
+  <h1>Browse in {{categoryName}}</h1>
         <div ng-repeat="t in allTrainings">
             <div class="col-lg-3 col-md-4 col-sm-4 col-xs-6 card">
               <div class="card-bg">
                 <div class="card-image">
-                  <img ng-src="assets/angular_bg1.png">
+                  <img ng-src="{{t.trainingImage}}">
                 </div>
                 <h1>{{t.trainingName}}</h1>
                 <h2>1 Lesson</h2>
                 <h4>Coach: {{t.trainingCoach}}</h4>
-                <h3>Start Date: {{t.dateTraining | date:"MM.dd"}}</h3>
-                <a ng-href="#/courseinfo/{{t.trainingName}}">more</a>
+                <div class="additional">
+                  <h3>Start Date: {{t.dateTraining | date:'dd MMMM '}}</h3>
+                  <a ng-href="#/courseinfo/{{t.trainingName}}">more</a>
+                </div>  
               </div>  
             </div>    
         </div>  
     </div>
 
-<p><a href="#/createcourse">Create course!</a></p>
+

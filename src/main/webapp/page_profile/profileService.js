@@ -26,6 +26,10 @@ angular.module('myApp.profile')
     }).error(function(err){
       return err;});
   }
+  
+  profileService.saveSettings = function(data){
+    return $http.post("",data);
+  }
      
     
   return profileService

@@ -82,10 +82,12 @@ public class Training {
     }
 
     public void generateRating() {
-        rating = 0;
-        for(TrainingFeedback trainingFeedback: feedbacks)
-            rating += trainingFeedback.getEffective();
-        rating = rating / feedbacks.size();
+        if(feedbacks.size() > 0) {
+            rating = 0;
+            for (TrainingFeedback trainingFeedback : feedbacks)
+                rating += trainingFeedback.getEffective();
+            rating = rating / feedbacks.size();
+        }
     }
 
     public long getId() {
