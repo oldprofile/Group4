@@ -703,3 +703,97 @@ font-weight: 500;
   -webkit-transition: -webkit-transform 0.5s, opacity 0.5s;
           transition: transform 0.5s, opacity 0.5s; }
 
+
+
+/* BUTTONS */
+
+.default-btn {
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 24px;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.accent-btn {
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 24px;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* BUTTON COLORS */
+.default-blue {
+  color: #1DAAE5 !important;
+  background-color: transparent !important;
+  border-color: #1DAAE5 !important;
+}
+
+.default-blue:hover {
+  color: #25709D !important;
+  background-color: transparent !important;
+  border-color: #25709D !important;
+}
+
+.accent-blue {
+  color: white !important;
+  background-color: #1DAAE5 !important;
+  border-color: #1DAAE5 !important;
+}
+
+.accent-blue:hover {
+  color: white !important;
+  background-color: #1C9FD6 !important;
+  border-color: #1C9FD6 !important;
+}
+
+.default-green {
+  color: #8dc540 !important;
+  background-color: transparent !important;
+  border-color: #8dc540 !important;
+}
+
+.default-green:hover {
+  color: #6c9731 !important;
+  background-color: transparent !important;
+  border-color: #6c9731 !important;
+}
+
+.accent-green {
+  color: white !important;
+  background-color: #8dc540 !important;
+  border-color: #8dc540 !important;
+}
+
+.accent-green:hover {
+  color: white !important;
+  background-color: #7fb239 !important;
+  border-color: #7fb239 !important;
+}
+
+.default-red {
+  color: #ef3e36 !important;
+  background-color: transparent !important;
+  border-color: #ef3e36 !important;
+}
+
+.default-red:hover {
+  color: #a1161b !important;
+  background-color: transparent !important;
+  border-color: #a1161b !important;
+}
+
+.accent-red {
+  color: white !important;
+  background-color: #ef3e36 !important;
+  border-color: #ef3e36 !important;
+}
+
+.accent-red:hover {
+  color: white !important;
+  background-color: #a1161b !important;
+  border-color: #a1161b !important;
+}
+
+
