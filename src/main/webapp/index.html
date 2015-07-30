@@ -14,8 +14,10 @@
   <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
   <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
   <link rel="stylesheet" href="assets/SanFranciscoFont/usesf.css">
-  <link rel="stylesheet" href="app.css">
+  
   <link rel="stylesheet" href="page_common/login/LoginCardStyle.css">
+  <link href="bower_components/v-accordion/dist/v-accordion.css" rel="stylesheet" />
+  <link rel="stylesheet" href="app.css">
     
     <link rel="stylesheet" href="page_createcourse/createcourse.css">
     <link rel="stylesheet" href="page_common/datepicker/datepicker1.css">
@@ -33,9 +35,9 @@
 
 
 
-<body ng-app="myApp" class="auth-class waiting-for-angular">
+<body ng-app="myApp" class="auth-class waiting-for-angular-login">
     
-    <div id="initializing-panel"></div>
+<!--    <div id="initializing-panel clearfix"></div>-->
     <div id="content-outer">
         
         <header-menu ng-show="isLogged"></header-menu>
@@ -66,6 +68,7 @@
     <script src="bower_components/moment/moment.js"></script>
     <script src="bower_components/angular-deckgrid/angular-deckgrid.js"></script>
     <script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
+    <script src="bower_components/v-accordion/dist/v-accordion.js"></script>
     <script src="components/angular-bootstrap-datetimepicker/src/js/datetimepicker.js"></script>
     
     
@@ -78,9 +81,11 @@
     <script src="page_mycourses/mycourses.js"></script>
     <script src="page_createcourse/createcourse.js"></script>
     <script src="page_browse/browse.js"></script>
+    <script src="page_browse/browseController.js"></script>
     <script src="page_profile/profile.js"></script>
     <script src="page_admin/admin.js"></script>
     <script src="page_common/login/Login.js"></script>
+    
     
     <script src="page_common/header-menu.js"></script>
     <script src="page_common/footer.js"></script>
@@ -103,6 +108,7 @@
     <script src="page_createcourse/editcourseController.js"></script>
     <script src="page_common/datepicker/datepickerController.js"></script>
     <script src="page_common/image_loader/imageLoaderController.js"></script>
+    <script src="page_browse/browseMainController.js"></script>
   
     
     <!-- ###Pages Serivces### -->

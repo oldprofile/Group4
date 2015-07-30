@@ -51,13 +51,13 @@ app.directive('authClass', ['$location','userService','loginService',function($l
             userService.setUser(data.login,data.role,data.token);
             
             if(scope.prevPath === undefined){
-              $location.path("/");
+              //$location.path("/");
             } else {
               $location.path(scope.prevPath);
             }
           }
           
-        elem.removeClass('waiting-for-angular');
+        elem.removeClass('waiting-for-angular-login');
 //        var login = elem.find('#login-holder');
 //        var main = elem.find('#content');
 //        
@@ -81,7 +81,9 @@ app.directive('authClass', ['$location','userService','loginService',function($l
             console.log("Confirm User:" + JSON.stringify(data)); 
             scope.isLogged = true;
             userService.setUser(data.login,data.role,data.token);
-            
+            if(scope.prevPath.toLowerCase() === "/login"){
+              scope.prevPath = "/";
+            }
             $location.path(scope.prevPath);
           //hideLoginForm(elem);
         });

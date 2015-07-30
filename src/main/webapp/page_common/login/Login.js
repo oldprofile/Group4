@@ -20,7 +20,7 @@
         
         
         loginService.postLoginCred(loginData).success(function(data,status,headers){
-          if($scope.isRemember){
+          
             
             var token = headers("token");
             data.token = token;
@@ -30,10 +30,6 @@
             
             authService.loginConfirmed(data);
             
-            
-            
-          }
-          
           
         }).error(function(error){
             alert("login error from server");

@@ -11,7 +11,7 @@
                 <div class="course-info-text col-xs-12 col-sm-5">
                     <h1>{{course.name}} </h1>
 
-                    <h5>Start Date: {{course.dateTime[0] | date:"dd MM"}}</h5>
+                    <h5>Start Date: {{course.dateTime[0] | date:"dd MMMM"}}</h5>
                     <h5 class="color-gray">{{course.lessonNumber}} Lessons</h5>
                     <h5 class="space-16">Coach: {{course.coachName}}</h5>
 <!--
@@ -34,7 +34,7 @@
               </div>
 
 
-                <div>
+                <div class="course-info-btn-div">
                     <button class="btn btn-default course-info-btn" role="button" ng-click="subscribe()">{{isSubscriber ? "Leave" : "Subscribe" }}</button>
 
                     <button class="btn btn-default course-info-btn" role="button" ng-click="leaveFeedback()">Leave Feedback</button>
@@ -53,7 +53,7 @@
                     <tr ng-repeat="lesson in course.dateTime">
                       <td>{{$index + 1}}</td>
                       <td>{{ lesson | date:"medium" }}</td>
-                      <td>{{ course.place }}</td>
+                      <td>{{ course.places[0] }}</td>
                     </tr>
                   </table>
 

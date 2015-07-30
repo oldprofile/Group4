@@ -8,6 +8,7 @@ menuApp.directive('headerMenu',function(){
 
 menuApp.controller("HeaderMenuController",['$scope','$location',"getCategories",'userService',function($scope, $location,getCategories, userService){
     $scope.categories = [];
+    $scope.username = userService.getUser().login;
     $scope.isActive = function (viewLocation) {
      var viewLocationArray = viewLocation.split("/");
      var locationArray = $location.path().split("/");
