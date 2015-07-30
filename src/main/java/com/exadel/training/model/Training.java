@@ -81,6 +81,15 @@ public class Training {
         additional = trainingForCreation.getAdditional();
     }
 
+    public void generateRating() {
+        if(feedbacks.size() > 0) {
+            rating = 0;
+            for (TrainingFeedback trainingFeedback : feedbacks)
+                rating += trainingFeedback.getEffective();
+            rating = rating / feedbacks.size();
+        }
+    }
+
     public long getId() {
         return id;
     }
@@ -240,4 +249,5 @@ public class Training {
     public void setRating(double rating) {
         this.rating = rating;
     }
+
 }

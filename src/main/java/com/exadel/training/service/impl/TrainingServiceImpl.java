@@ -1,7 +1,7 @@
 package com.exadel.training.service.impl;
 
-import com.exadel.training.common.LanguageTraining;
 import com.exadel.training.common.StateTraining;
+import com.exadel.training.controller.model.Training.LessonData;
 import com.exadel.training.controller.model.Training.TrainingForCreation;
 import com.exadel.training.model.Category;
 import com.exadel.training.model.Training;
@@ -19,7 +19,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 /**
  * Created by Клим on 10.07.2015.
@@ -59,7 +58,16 @@ public class TrainingServiceImpl implements TrainingService {
             place = null;
         }
 
-        Training mainTraining = null;
+        Training mainTraining = new Training();
+        mainTraining.fillTraining(trainingForCreation);
+        mainTraining.setDateTime(dateTimes.get(0));
+        mainTraining.setPlace(place);
+        mainTraining.setCoach(coach);
+        mainTraining.setCategory(category);
+        mainTraining.setState(state);
+        mainTraining.setParent(0);
+        trainingRepository.saveAndFlush(mainTraining);
+        List<Training> trainings = new ArrayList<>(dates.size());
         for (int i = 0; i < dateTimes.size(); ++i) {
             Training newTraining = new Training();
             newTraining.fillTraining(trainingForCreation);
@@ -69,12 +77,8 @@ public class TrainingServiceImpl implements TrainingService {
             newTraining.setCategory(category);
             newTraining.setPlace(place);
             newTraining.setState(state);
-            if (i == 0) {
-                mainTraining = newTraining;
-                newTraining.setParent(0);
-            } else {
-                newTraining.setParent(mainTraining.getId());
-            }
+            newTraining.setParent(mainTraining.getId());
+            trainings.add(newTraining);
             trainingRepository.saveAndFlush(newTraining);
         }
         return mainTraining;
@@ -96,8 +100,18 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
+    public Training getTrainingByNameAndDate(String trainingName, Date trainingDate) {
+        return trainingRepository.findTrainingByNameAndDate(trainingName, trainingDate);
+    }
+
+    @Override
     public List<Training> getAllTrainings() {
         return trainingRepository.findAll();
+    }
+
+    @Override
+    public List<Training> getTrainingsByName(String trainingName) {
+        return  trainingRepository.findTrainingsByName(trainingName);
     }
 
     @Override
@@ -114,37 +128,31 @@ public class TrainingServiceImpl implements TrainingService {
     @Override
     @Transactional
     public Training editTraining(TrainingForCreation trainingForCreation) throws ParseException, NoSuchFieldException {
-        /*List<String> dates = trainingForCreation.getDateTimes();
-        List<Date> dateTimes = new ArrayList<>();
-        for (String date : dates)
-            dateTimes.add(sdf.parse(date));
-        Category category = categoryRepository.findById(trainingForCreation.getIdCategory());
-
-        List<Training> list = trainingRepository.findTrainingsByName(trainingForCreation.getName());
-        for(Training training: list) {
-            trainingRepository.delete(training);
-        }
-        addTraining(trainingForCreation);
-        List<Training> trainings = trainingRepository.findTrainingsByName(trainingForCreation.getName());
-        for(Training training: trainings) {
-            training.setState(StateTraining.parseToInt("Edited"));
-        }
-        return trainings.get(0);*/
         List<String> dates = trainingForCreation.getDateTimes();
         List<Date> dateTimes = new ArrayList<>();
         for (String date : dates)
             dateTimes.add(sdf.parse(date));
+        Training mainTraining = trainingRepository.findByName(trainingForCreation.getName());
         Category category = categoryRepository.findById(trainingForCreation.getIdCategory());
-        User coach = userRepository.findUserByLogin(trainingForCreation.getUserLogin());
+        User coach = mainTraining.getCoach();
 
         int state;
         String place = null;
         if (userRepository.whoIsUser(trainingForCreation.getUserLogin(), 1)) {
-            state = StateTraining.parseToInt("Ahead");
-            place = trainingForCreation.getPlaces().get(0);
+            if(dateTimes.size() == 0)
+                state = StateTraining.parseToInt("Canceled");
+            else {
+                state = StateTraining.parseToInt("Ahead");
+                place = trainingForCreation.getPlaces().get(0);
+            }
         } else {
             state = StateTraining.parseToInt("Edited");
         }
+
+        mainTraining.fillTraining(trainingForCreation);
+        mainTraining.setCategory(category);
+        mainTraining.setState(state);
+
         List<Training> trainings = trainingRepository.findTrainingsByName(trainingForCreation.getName());
         for(int i = 0; i < dateTimes.size(); ++i) {
             Training training;
@@ -153,7 +161,7 @@ public class TrainingServiceImpl implements TrainingService {
             else {
                 training = new Training();
                 training.setCoach(coach);
-                training.setParent(trainings.get(0).getId());
+                training.setParent(mainTraining.getId());
             }
             training.fillTraining(trainingForCreation);
             training.setDateTime(dateTimes.get(i));
@@ -166,7 +174,7 @@ public class TrainingServiceImpl implements TrainingService {
         for(int i = dateTimes.size(); i < trainings.size(); ++i) {
             trainingRepository.deleteTrainingsById(trainings.get(i).getId());
         }
-        return trainings.get(0);
+        return updateParentTraining(trainingForCreation.getName());
     }
 
     @Override
@@ -193,11 +201,6 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
-    public List<Training> searchTrainingsByName(String trainingName) {
-        return trainingRepository.searchTrainingsByName("%" + trainingName + "%");
-    }
-
-    @Override
     public List<Date> getDatesByTrainingName(String trainingName) {
         return trainingRepository.findDatesByTrainingsName(trainingName);
     }
@@ -205,6 +208,17 @@ public class TrainingServiceImpl implements TrainingService {
     @Override
     public List<Training> getTrainingForApprove() {
         return trainingRepository.findDraftAndEditedTrainings();
+    }
+
+    @Override
+    public List<Training> getTrainingsByCoach(String coachLogin) {
+        User coach = userRepository.findUserByLogin(coachLogin);
+        return trainingRepository.findTrainingsByCoach(coach);
+    }
+
+    @Override
+    public List<Training> getTrainingsByHighestRating() {
+        return trainingRepository.findTrainingsByHighestRating();
     }
 
     @Override
@@ -227,8 +241,45 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
+    public Training changeLessonDate(LessonData lessonData) throws ParseException {
+        List<Training> trainings = trainingRepository.findTrainingsWithParentByName(lessonData.getTrainingName());
+        Training training = trainings.get(lessonData.getLessonNumber());
+        training.setDateTime(sdf.parse(lessonData.getNewDate()));
+        training.setPlace(lessonData.getNewPlace());
+        updateParentTraining(training.getName());
+        return training;
+    }
+
+    private Training updateParentTraining(String trainingName) {
+        List<Training> trainings = trainingRepository.findTrainingsWithParentByName(trainingName);
+        Training parent = trainings.get(0);
+        if(trainings.size() > 1) {
+            Training firstLesson = trainings.get(1);
+            parent.setDateTime(firstLesson.getDateTime());
+            parent.setPlace(firstLesson.getPlace());
+        }
+        return parent;
+    }
+
+
+    @Override
     public Integer getTrainingNumber(String trainingName, Date date) {
         return trainingRepository.findTrainingNumber(trainingName, date);
+    }
+
+    @Override
+    public Integer getValidTrainingsNumberByCategory(Category category) {
+        return trainingRepository.findValidTrainingsNumberByCategory(category);
+    }
+
+    @Override
+    public Long getParentTrainingId(String trainingName) {
+        return trainingRepository.findParentTrainingIdByName(trainingName);
+    }
+
+    @Override
+    public Boolean isSubscriber(String trainingName, String userLogin) {
+        return trainingRepository.isSubscriber(trainingName, userLogin);
     }
 
     @Override

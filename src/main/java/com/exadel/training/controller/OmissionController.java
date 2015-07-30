@@ -1,24 +1,28 @@
 package com.exadel.training.controller;
 
-import com.exadel.training.controller.model.Omission.JournalOmissionByTraining;
-import com.exadel.training.controller.model.Omission.JournalOmissionByUserLogin;
-import com.exadel.training.controller.model.Omission.JournalOmissionUserByTraining;
+import com.exadel.training.controller.model.Omission.JournalOmissionModel;
+import com.exadel.training.controller.model.Omission.OmissionADDModel;
+import com.exadel.training.controller.model.Omission.StatisticsRequestModel;
 import com.exadel.training.model.Omission;
-import com.exadel.training.model.User;
 import com.exadel.training.service.OmissionService;
 import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
 import com.exadel.training.statistics.ExcelFileGenerator;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Клим on 13.07.2015.
@@ -38,49 +42,80 @@ public class OmissionController {
     @Autowired
     ExcelFileGenerator excelFileGenerator;
 
-    @RequestMapping(value = "/find_omission_by_training", method = RequestMethod.GET)
-    @ResponseBody List<JournalOmissionByTraining> findByTrainingName() {
-        List<Omission> omissions = omissionService.getOmissionsByTrainingName("Front end");
-        List<JournalOmissionByTraining> journalOmissionByTrainings = new ArrayList<>();
-        for(Omission omission : omissions) {
-         journalOmissionByTrainings.add(JournalOmissionByTraining.parseJournalOmissionByTraining(omission));
+    @RequestMapping(value = "/add_ommisions", method = RequestMethod.POST, consumes = "application/json")
+    @ResponseBody void addOmmisions(@RequestBody List<OmissionADDModel> omissionADDModels, HttpServletResponse response) {
+        try {
+            for (OmissionADDModel omissionADDModel : omissionADDModels) {
+                omissionService.addOmission(omissionADDModel);
+            }
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
-        return journalOmissionByTrainings;
     }
 
-    @RequestMapping(value = "/find_omission_by_training_and_user_login", method = RequestMethod.GET)
-    @ResponseBody List<JournalOmissionUserByTraining> findOmissionByTrainingAndUserLogin() {
-        List<Omission> omissions = omissionService.findByTrainingNameAndUserLogin("Front end","1");
-        List<JournalOmissionUserByTraining> journalOmissionUserByTrainings = new ArrayList<>();
-        for(Omission omission : omissions) {
-            journalOmissionUserByTrainings.add(JournalOmissionUserByTraining.parseJournalOmissionUserByTraining(omission));
+    /*@RequestMapping(value = "/get_ommisions", method = RequestMethod.POST, consumes = "application/json")
+    @ResponseBody Map<> addOmmisions(@RequestBody List<OmissionADDModel> omissionADDModels, HttpServletResponse response) {
+        try {
+            for (OmissionADDModel omissionADDModel : omissionADDModels) {
+                omissionService.addOmission(omissionADDModel);
+            }
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
-        return  journalOmissionUserByTrainings;
-    }
+    }*/
 
-    @RequestMapping(value = "/find_omission_by_user_login", method = RequestMethod.GET)
-    @ResponseBody List<JournalOmissionByUserLogin> findOmissionByUserLogin() {
-        List<Omission> omissions = omissionService.findByUserLogin("1");
-        List<JournalOmissionByUserLogin> journalOmissionByUserLogins = new ArrayList<>();
+    @RequestMapping(value = "/statistics", method = RequestMethod.POST, consumes = "application/json")
+    @ResponseBody String generateStatistics(@RequestBody StatisticsRequestModel statisticsRequestModel, HttpServletResponse response) throws IOException {
 
-        for(Omission omission : omissions) {
-            journalOmissionByUserLogins.add(JournalOmissionByUserLogin.parseJournalOmissionByUserLogin(omission));
+        String filePath = "";
+        String userLogin = statisticsRequestModel.getUserLogin();
+        String trainingName = statisticsRequestModel.getTrainingName();
+        Date dateFrom = Date.valueOf(statisticsRequestModel.getDateFrom());
+        Date dateTo = Date.valueOf(statisticsRequestModel.getDateTo());
+        switch (statisticsRequestModel.getType()) {
+            case 1:
+                if(!StringUtils.isBlank(userLogin)) {
+                    if (!StringUtils.isBlank(trainingName)) {
+                        filePath = excelFileGenerator.generateForUserAndTrainingFull(dateFrom, dateTo, userLogin, trainingName);
+                    } else {
+                        filePath = excelFileGenerator.generateForUserFull(dateFrom, dateTo, userLogin);
+                    }
+                } else {
+                    if (!StringUtils.isBlank(trainingName)) {
+                        filePath = excelFileGenerator.generateForTrainingFull(dateFrom, dateTo, trainingName);
+                    } else {
+                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    }
+                }
+            case 2:
+                if(!StringUtils.isBlank(userLogin)) {
+                    if (!StringUtils.isBlank(trainingName)) {
+                        filePath = excelFileGenerator.generateForUserAndTrainingDates(dateFrom, dateTo, userLogin, trainingName);
+                    } else {
+                        filePath = excelFileGenerator.generateForUserDates(dateFrom, dateTo, userLogin);
+                    }
+                } else {
+                    if (!StringUtils.isBlank(trainingName)) {
+                        filePath = excelFileGenerator.generateForTrainingDates(dateFrom, dateTo, trainingName);
+                    } else {
+                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    }
+                }
+            case 3:
+                if(!StringUtils.isBlank(userLogin)) {
+                    if (!StringUtils.isBlank(trainingName)) {
+                        filePath = excelFileGenerator.generateForUserAndTrainingAmount(dateFrom, dateTo, userLogin, trainingName);
+                    } else {
+                        filePath = excelFileGenerator.generateForUserAmount(dateFrom, dateTo, userLogin);
+                    }
+                } else {
+                    if (!StringUtils.isBlank(trainingName)) {
+                        filePath = excelFileGenerator.generateForTrainingAmount(dateFrom, dateTo, trainingName);
+                    } else {
+                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                    }
+                }
         }
-
-        return  journalOmissionByUserLogins;
+        return filePath;
     }
-
-    @RequestMapping(value = "/find_omission_by_user_login_and_type", method = RequestMethod.GET)
-    @ResponseBody String findOmissionByTrainingAndUserLoginAndType() throws IOException {
-        java.sql.Date d1 = java.sql.Date.valueOf("2001-01-01");
-        java.sql.Date d2 = java.sql.Date.valueOf("2003-03-03");
-        String s = excelFileGenerator.generateForTraining(d1, d2, "Java");
-        excelFileGenerator.generateForTraining("Java");
-        excelFileGenerator.generateForUser(d1, d2, "1");
-        excelFileGenerator.generateForUser("1");
-        excelFileGenerator.generateForUserAndTraining(d1, d2, "1", "Java");
-        excelFileGenerator.generateForUserAndTraining("1", "Java");
-        return  s;
-    }
-
 }

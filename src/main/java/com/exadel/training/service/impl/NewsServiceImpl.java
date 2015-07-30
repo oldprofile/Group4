@@ -24,6 +24,11 @@ public class NewsServiceImpl implements NewsService {
     private NewsRepository newsRepository;
 
     @Override
+    public void insertNews(News news) {
+          newsRepository.save(news);
+    }
+
+    @Override
     public Page<News> getNewsPage(Integer pageNumber) {
         PageRequest request =
                 new PageRequest(pageNumber - 1, PAGE_SIZE, Sort.Direction.DESC, "id");
@@ -31,7 +36,7 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public int getCountOFPages() {
+    public int getCountOFNews() {
         return newsRepository.getCountOfPages();
     }
 }

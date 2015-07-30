@@ -17,6 +17,8 @@ public class Category {
 
     private String name;
 
+    private String pictureLink;
+
     @OneToMany(mappedBy = "category")
     private List<Training> trainings;
 
@@ -49,5 +51,13 @@ public class Category {
 
     public void setTrainings(List<Training> trainings) {
         this.trainings = trainings;
+    }
+
+    public String getPictureLink() {
+        return pictureLink;
+    }
+
+    public void setPictureLink(String pictureLink) {
+        this.pictureLink = pictureLink;
     }
 }

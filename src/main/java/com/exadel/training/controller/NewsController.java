@@ -5,6 +5,8 @@ import com.exadel.training.model.News;
 import com.exadel.training.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,22 +25,32 @@ public class NewsController {
 
     @Autowired
     private NewsService userNewsService;
+    private Integer i = 0;
 
     @RequestMapping(value = "/pages/{pageNumber}", method = RequestMethod.GET)
-    public @ResponseBody List<NewsPage> getNewsPage(@PathVariable("pageNumber") String pageNumber) {
+    public @ResponseBody List<NewsPage> getNewsPage(@PathVariable("pageNumber") String pageNumber) throws NoSuchFieldException {
         Page<News> page = userNewsService.getNewsPage(Integer.parseInt(pageNumber));
         List<News> newsList = page.getContent();
-        List<NewsPage> newses = new ArrayList<>();
+        List<NewsPage> newsPageList = new ArrayList<>();
         for(News news : newsList) {
-            newses.add(NewsPage.parseNewsPage(news));
+            newsPageList.add(NewsPage.parseNewsPage(news));
         }
 
-        return  newses;
+        return  newsPageList;
     }
 
-    @RequestMapping(value = "/count_of_pages", method = RequestMethod.GET)
-    public @ResponseBody Integer getCountOfPages() {
-        return userNewsService.getCountOFPages();
+    @RequestMapping(value = "/count_of_news", method = RequestMethod.GET)
+    public @ResponseBody Integer getCountOfNews() {
+        this.notification();
 
+        return userNewsService.getCountOFNews();
+    }
+
+    @MessageMapping(value = "/notification1")
+    @SendTo(value = "/notification")
+    public @ResponseBody String notification() {
+        i++;
+
+        return "ok" + i.toString();
     }
 }

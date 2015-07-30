@@ -4,6 +4,7 @@ import com.exadel.training.common.LanguageTraining;
 import com.exadel.training.common.StateTraining;
 import com.exadel.training.model.Training;
 import com.exadel.training.controller.model.User.UserShort;
+import com.exadel.training.model.TrainingFeedback;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class TrainingInfo {
     private String state;
     private List<UserShort> listeners;
     private List<UserShort> spareUsers;
-    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
 
 
     public TrainingInfo() {
@@ -57,6 +58,7 @@ public class TrainingInfo {
         description = training.getDescription();
         idCategory = training.getCategory().getId();
         participantsNumber = training.getAmount();
+        training.generateRating();
         rating = training.getRating();
         language = LanguageTraining.parseToString(training.getLanguage());
         isInternal = training.isInternal();
@@ -70,6 +72,14 @@ public class TrainingInfo {
         spareUsers = UserShort.parseUserShortList((training.getSpareUsers()));
         subscribeAvailability = participantsNumber > listeners.size();
         feedbackAvailability = false;
+    }
+
+    public static List<String> parseDates(List<Date> dateTimes) {
+        List<String> dates = new ArrayList<>();
+        for (Date dateTime : dateTimes) {
+            dates.add(sdf.format(dateTime));
+        }
+        return dates;
     }
 
     public String getName() {

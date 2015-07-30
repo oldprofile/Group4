@@ -1,21 +1,23 @@
 form.form-course > * {
-    margin-top: 15px !important;
-    margin-bottom: 15px !important;
+  margin-top: 15px !important;
+  margin-bottom: 15px !important;
 }
 
 #imgPlaceholder {
-    overflow: auto;
-    margin-top: 15px;
-    margin-bottom: 15px;
-    max-height: 300px;
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 img[preloadable].empty {
-    width:0; height:0;
+  width:0;
+  height:0;
 }
 
 img[preloadable]{
-    width:auto; height:auto;
+  width:auto;
+  height:auto;
+  max-height: 300px;
+  max-width: 100%;
 }
 
 .btn-file {

@@ -1,7 +1,7 @@
 'use strict'
 
 
-angular.module('myApp').factory('userService',['$http',function ($http) {
+angular.module('myApp').factory('userService',['$http','loginService','$window',function ($http,loginService,$window) {
   
   var role = {
    admin: {
@@ -24,18 +24,18 @@ angular.module('myApp').factory('userService',['$http',function ($http) {
     
   var currentUser =  {
     login: 'yo_login',  
-    username: 'yo',
-    password: 'yo',
-    role: role.admin,  
+    role: role.admin,
+    token: "",
   }
 
   var userApi = {
     isLogged: false,  
       
-    setUser: function (login,username, password, role_, token) {
+    setUser: function (login,role_, token) {
       currentUser.login = login;    
-      currentUser.username = username;
-      currentUser.password = password;
+      currentUser.token = token;
+      
+      
       
       var nrole = role_.reduce(function(max,cur){
         if(max.id < cur.id){
@@ -73,14 +73,20 @@ angular.module('myApp').factory('userService',['$http',function ($http) {
     },
       
     logout: function(){
+      var userService = this;
+      
       return $http.post("/authentication/logout",{}).success(function(data){
-          this.clearUser();
-          this.isLogged = false;
           
+          userService.clearUser();
+          loginService.clearCreds();
+          userService.isLogged = false;
+         
+          $window.location.reload();
           return data;
     }).error(function(err){
+          alert("Err logout");
           return err;
-      })
+      });
         
     }  
   };

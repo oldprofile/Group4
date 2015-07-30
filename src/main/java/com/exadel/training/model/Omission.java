@@ -24,6 +24,12 @@ public class Omission {
     public Omission() {
     }
 
+    public Omission(Training training, User user, boolean isOmission) {
+        this.training = training;
+        this.user = user;
+        this.isOmission = isOmission;
+    }
+
     public long getId() {
         return id;
     }
