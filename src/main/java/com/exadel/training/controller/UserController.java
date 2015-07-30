@@ -358,6 +358,16 @@ public class UserController {
         return userShorts;
     }
 
+    @RequestMapping(value = "/insert_external_emploee", method = RequestMethod.GET)
+    public void insertExternalEmploee() {
+        User user = new User();
+        user.setName("mladka");
+        user.setLogin("ladka");
+        user.setEmail("mladka@mail.ru");
+
+        userService.insertExEmploee(user);
+    }
+
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public @ResponseBody List<AllTrainingUserShort> t(HttpServletResponse httpServletResponse) throws NoSuchFieldException {
 
