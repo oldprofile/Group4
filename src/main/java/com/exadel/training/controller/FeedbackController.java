@@ -51,13 +51,17 @@ public class FeedbackController {
         return userFeedbackModels;
     }
 
-    //TODO
     @RequestMapping(value = "/create_user_feedback", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody void addUserFeedback(@RequestBody UserFeedbackADDModel userFeedbackModel, HttpServletResponse response) {
-        try {
-            userFeedbackService.addUserFeedback(userFeedbackModel);
-            response.setStatus(HttpServletResponse.SC_CREATED);
-        } catch (Exception e) {
+        Boolean canLeaveFeedback = userService.isCoach(userFeedbackModel.getUserLogin(), userFeedbackModel.getFeedbackerLogin());
+        if(canLeaveFeedback) {
+            try {
+                userFeedbackService.addUserFeedback(userFeedbackModel);
+                response.setStatus(HttpServletResponse.SC_CREATED);
+            } catch (Exception e) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            }
+        } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
@@ -69,14 +73,18 @@ public class FeedbackController {
         List<CoachFeedbackGETModel> coachFeedbackModels = CoachFeedbackGETModel.parseCoachFeedbacks(coachFeedbackList);
         return coachFeedbackModels;
     }
-
-    //TODO
+    
     @RequestMapping(value = "/create_coach_feedback", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody void addCoachFeedback(@RequestBody CoachFeedbackADDModel coachFeedbackModel, HttpServletResponse response) {
-        try {
-            coachFeedbackService.addCoachFeedback(coachFeedbackModel);
-            response.setStatus(HttpServletResponse.SC_CREATED);
-        } catch (Exception e) {
+        Boolean canLeaveFeedback = userService.isCoach(coachFeedbackModel.getFeedbackerLogin(), coachFeedbackModel.getCoachLogin());
+        if(canLeaveFeedback) {
+            try {
+                coachFeedbackService.addCoachFeedback(coachFeedbackModel);
+                response.setStatus(HttpServletResponse.SC_CREATED);
+            } catch (Exception e) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            }
+        } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
@@ -92,16 +100,16 @@ public class FeedbackController {
     @RequestMapping(value = "/create_training_feedback", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody void addTrainingFeedback(@RequestBody TrainingFeedbackADDModel trainingFeedbackADDModel, HttpServletResponse response) {
         Boolean isSubscriber = userService.checkSubscribeToTraining(trainingFeedbackADDModel.getTrainingName(), trainingFeedbackADDModel.getFeedbackerLogin());
-        if(isSubscriber) {
+        if (isSubscriber) {
             try {
                 trainingFeedbackService.addTrainingFeedback(trainingFeedbackADDModel);
                 response.setStatus(HttpServletResponse.SC_CREATED);
             } catch (Exception e) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }
-        }
-        else
+        } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
     }
 
     @RequestMapping(value = "/request_user_feedback", method = RequestMethod.POST, consumes = "application/json")
