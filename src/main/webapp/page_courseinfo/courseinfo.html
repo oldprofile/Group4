@@ -23,9 +23,9 @@
 
 
                 <div>
-                    <button class="btn btn-default default-btn" role="button" ng-click="subscribe()">{{isSubscriber ? "Leave" : "Subscribe" }}</button>
+                    <button class="btn btn-default default-btn" ng-class="{'default-green': !isSubscriber, 'default-red': isSubscriber}" role="button" ng-click="subscribe()">{{isSubscriber ? "Leave" : "Subscribe" }}</button>
 
-                    <button class="btn btn-default default-btn" role="button" ng-click="leaveFeedback()">Leave Feedback</button>
+                    <button class="btn btn-default default-btn default-blue" role="button" ng-click="leaveFeedback()">Leave Feedback</button>
                 </div>
 
                 <div class="timetable">
