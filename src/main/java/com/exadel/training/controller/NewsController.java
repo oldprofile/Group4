@@ -71,11 +71,11 @@ public class NewsController {
         // Update all chat requests as part of the POST request
         // See Redis branch for a more sophisticated, non-blocking approach
 
-        for (Map.Entry<DeferredResult<List<News>>, Integer> entry : this.newsRequests.entrySet()) {
+    /*    for (Map.Entry<DeferredResult<List<News>>, Integer> entry : this.newsRequests.entrySet()) {
             List<String> messages = this.chatRepository.getMessages(entry.getValue());
 
             entry.getKey().setResult(messages);
-        }
+        }*/
     }
     private List<News> getLatestNews(Long timestamp) {
         List<News> list = new ArrayList<>();
