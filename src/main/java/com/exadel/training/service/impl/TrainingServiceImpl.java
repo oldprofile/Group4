@@ -1,6 +1,5 @@
 package com.exadel.training.service.impl;
 
-import com.exadel.training.common.LanguageTraining;
 import com.exadel.training.common.StateTraining;
 import com.exadel.training.controller.model.Training.LessonData;
 import com.exadel.training.controller.model.Training.TrainingForCreation;
@@ -20,7 +19,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 /**
  * Created by Клим on 10.07.2015.
@@ -134,22 +132,23 @@ public class TrainingServiceImpl implements TrainingService {
         List<Date> dateTimes = new ArrayList<>();
         for (String date : dates)
             dateTimes.add(sdf.parse(date));
+        Training mainTraining = trainingRepository.findByName(trainingForCreation.getName());
         Category category = categoryRepository.findById(trainingForCreation.getIdCategory());
-        User coach = userRepository.findUserByLogin(trainingForCreation.getUserLogin());
+        User coach = mainTraining.getCoach();
 
         int state;
         String place = null;
         if (userRepository.whoIsUser(trainingForCreation.getUserLogin(), 1)) {
             if(dateTimes.size() == 0)
                 state = StateTraining.parseToInt("Canceled");
-            else
+            else {
                 state = StateTraining.parseToInt("Ahead");
-            place = trainingForCreation.getPlaces().get(0);
+                place = trainingForCreation.getPlaces().get(0);
+            }
         } else {
             state = StateTraining.parseToInt("Edited");
         }
 
-        Training mainTraining = trainingRepository.findByName(trainingForCreation.getName());
         mainTraining.fillTraining(trainingForCreation);
         mainTraining.setCategory(category);
         mainTraining.setState(state);
@@ -199,11 +198,6 @@ public class TrainingServiceImpl implements TrainingService {
         List<Training> trainings = trainingRepository.findTrainingsByName(trainingName);
         trainingRepository.deleteTrainingsByName(trainingName);
         return trainings.get(0);
-    }
-
-    @Override
-    public List<Training> searchTrainingsByName(String trainingName) {
-        return trainingRepository.searchTrainingsByName("%" + trainingName + "%");
     }
 
     @Override
@@ -281,6 +275,11 @@ public class TrainingServiceImpl implements TrainingService {
     @Override
     public Long getParentTrainingId(String trainingName) {
         return trainingRepository.findParentTrainingIdByName(trainingName);
+    }
+
+    @Override
+    public Boolean isSubscriber(String trainingName, String userLogin) {
+        return trainingRepository.isSubscriber(trainingName, userLogin);
     }
 
     @Override

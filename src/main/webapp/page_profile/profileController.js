@@ -1,12 +1,17 @@
 angular.module('myApp.browse')
-.controller('ProfileController',['$scope','userService','$routeParams','profileService','$modal','feedbacksService', function($scope,userService,$routeParams,profileService,$modal,feedbacksService){
+.controller('ProfileController',['$scope','userService','$routeParams','profileService','$modal','feedbacksService',"$location", function($scope,userService,$routeParams,profileService,$modal,feedbacksService,$location){
     $scope.isContentLoaded = false;
     var userlogin;  
     $scope.studentFeedbacks = [];
     $scope.coachFeedbacks = [];    
     
     $scope.coachArchive = [];
-    $scope.studentArchive = [];   
+    $scope.studentArchive = [];
+  
+    $scope.goto = function(path){
+      
+      $location.path(path);
+    }
                                    
     if($routeParams.userLogin === undefined){
         userlogin = userService.getUser().login;
@@ -44,7 +49,7 @@ angular.module('myApp.browse')
        }                            
                                    
     profileService.getUserInfo(userlogin).success(function(data){
-      alert("User" + JSON.stringify(data));
+      //alert("User" + JSON.stringify(data));
       $scope.user = data;
       $scope.isContentLoaded = true;
       gettingUserProfileData();
@@ -108,6 +113,31 @@ angular.module('myApp.browse')
       feedbacksService.createCoachFeedback(feedback).success(function(){
         gettingUserProfileData();
       });
+      
+    }, function () {
+      //cancel feedback
+    });
+    
+    };
+  
+    $scope.settings = function(){
+    
+      var settingsModalInstance = $modal.open({
+      animation: true,
+      templateUrl: 'page_profile/Settings.html',
+      controller: 'SettingsController',
+      size: "sm",
+      resolve: {
+        user : function () {
+          return $scope.user;
+        }
+      }
+    });
+    
+    settingsModalInstance.result.then(function (data) {
+         
+      //sending new settings
+      profileService.saveSettings(data);
       
     }, function () {
       //cancel feedback
@@ -201,6 +231,35 @@ angular.module('myApp.browse')
     $scope.feedback.coachLogin = user.login;
     $scope.feedback.feedbackerLogin = userService.getUser().login; 
     $modalInstance.close($scope.feedback);
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
+}])
+
+
+.controller('SettingsController',['$scope', '$modalInstance','user','userService',function($scope,$modalInstance,user,userService){
+  $scope.user = user;
+  $scope.isPhoneOn = true;
+  $scope.phoneNumberPattern = /^((8|\+7|\+375)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/;
+  if(user.numberPhone === null || user.numberPhone === ""){
+    $scope.isPhoneOn = false;
+  } else{
+    $scope.isPhoneOn = true;
+    $scope.phoneNumber = user.numberPhone;
+  }
+  
+  
+    
+    
+    
+  
+  $scope.ok = function () {
+    var data = {};
+    data.numberPhone = $scope.phoneNumber;
+    alert("saving " + JSON.stringify(data));
+    $modalInstance.close(data);
   };
 
   $scope.cancel = function () {

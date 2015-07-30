@@ -35,8 +35,9 @@ public interface UserService {
     List<User> findUsersByRole(RoleType type) throws NoSuchFieldException;
     List<User> findAllCoachOfUser(String login);
 
+    void saveUser(User user);
     void deleteUserTrainingRelationShip(String login, String trainingName);
     void insertUserTrainingRelationShip(String login, String trainingName);
-    void saveUser(User user);
     void insertNumberOfTelephone(String login, String number);
+    void insertExEmploee(User user);
 }

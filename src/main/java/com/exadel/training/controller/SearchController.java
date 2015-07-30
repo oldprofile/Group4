@@ -1,6 +1,8 @@
 package com.exadel.training.controller;
 
+import com.exadel.training.controller.model.Training.ShortTrainingInfo;
 import com.exadel.training.controller.model.User.UserShort;
+import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
 import com.exadel.training.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,14 @@ public class SearchController {
         }
 
         return userShorts;
+    }
+
+    @RequestMapping(value = "/search_trainings", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody List<ShortTrainingInfo> searchTraining(@RequestBody String searchWord) throws NoSuchFieldException {
+        List<Training> searchTrainings = searchService.searchTrainings(searchWord);
+        List<ShortTrainingInfo> shortTrainingInfos = new ArrayList<>();
+
+        return ShortTrainingInfo.parseList(searchTrainings);
     }
 
 }

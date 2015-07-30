@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -86,11 +85,12 @@ public class TrainingController {
             Training training = trainingService.getTrainingByName(trainingName);
             TrainingInfo trainingInfo = new TrainingInfo(training,
                     trainingService.getDatesByTrainingName(trainingName), trainingService.getPlacesByTrainingName(trainingName));
-            if (trainingService.getTrainingByNameAndUserLogin(trainingName, userLogin) != null)
-                trainingInfo.setIsSubscriber(true);
+            /*if (trainingService.getTrainingByNameAndUserLogin(trainingName, userLogin) != null)
+                trainingInfo.setIsSubscriber(true);*/
             if (userLogin.equals(training.getCoach().getName()))
                 trainingInfo.setIsCoach(true);
-            trainingInfo.setIsCoach(userLogin.equals(trainingInfo.getCoachName()));
+            trainingInfo.setIsSubscriber(userService.checkSubscribeToTraining(trainingName, userLogin));
+            trainingInfo.setIsCoach(userService.findUserByLogin(userLogin).getName().equals(trainingInfo.getCoachName()));
             trainingInfo.setFeedbackAvailability(!feedbackService.hasFeedback(userLogin, trainingName));
             trainingInfo.setListeners(UserShort.parseUserShortList(trainingService.getUsersByTrainingName(trainingName)));
             trainingInfo.setSpareUsers(UserShort.parseUserShortList(trainingService.getSpareUsersByTrainingName(trainingName)));
@@ -160,7 +160,7 @@ public class TrainingController {
         String header = httpServletRequest.getHeader("authorization");
         String userLogin = cryptService.decrypt(header);
         if(userService.checkUserByLogin(userLogin)) {
-            List<Training> trainings = trainingService.searchTrainingsByName(trainingName);
+            List<Training> trainings = trainingService.getTrainingsByName(trainingName);
             return ShortTrainingInfo.parseList(trainings);
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);

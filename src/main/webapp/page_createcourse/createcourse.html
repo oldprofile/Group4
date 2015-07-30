@@ -17,7 +17,7 @@
                     </div>
                     <div class="row">
                         <div class="col-xs-3">
-                            <span class="btn btn-primary btn-file" style="margin-left: 0 !important;">
+                            <span class="btn btn-primary btn-file default-btn default-blue">
                                 Browse
                                 <input type="file" ng-file-select="onFileSelect($files)" ng-click="nullProgress()">
                             </span>
@@ -129,11 +129,11 @@
                     <div class="form-group">
                         <div class="col-xs-3"></div>
                         <div class="col-xs-9">
-                            <input ng-if="!isAdmin && !isEdited" type="submit" ng-click="saveData()" class="btn btn-primary btn-lg" value="Create course!">
-                            <input ng-if="isAdmin && !isEdited" type="submit" ng-click="saveData()" class="btn btn-success btn-lg" value="Create course!">
+                            <input ng-if="!isAdmin && !isEdited" type="submit" ng-click="saveData()" class="btn btn-lg accent-btn accent-green" value="Create course!">
+                            <input ng-if="isAdmin && !isEdited" type="submit" ng-click="saveData()" class="btn btn-lg accent-btn accent-green" value="Create course!">
                             
-                            <input ng-if="isAdmin && isEdited" type="submit" ng-click="editCourse()" class="btn btn-success btn-lg" value="Approve course">
-                            <input ng-if="!isAdmin && isEdited" type="submit" ng-click="editCourse()" class="btn btn-primary btn-lg" value="Edit course">
+                            <input ng-if="isAdmin && isEdited" type="submit" ng-click="editCourse()" class="btn btn-lg accent-btn accent-green" value="Approve course">
+                            <input ng-if="!isAdmin && isEdited" type="submit" ng-click="editCourse()" class="btn btn-lg default-btn default-blue" value="Edit course">
                         </div>
                     </div>
                 </form>

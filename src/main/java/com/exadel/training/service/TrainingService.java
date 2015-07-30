@@ -32,7 +32,6 @@ public interface TrainingService {
     List<Training> getValidTrainingsByCategoryId(int id);
     List<Training> getValidTrainings();
     List<Training> getTrainingsByNearestDate();
-    List<Training> searchTrainingsByName(String trainingName);
     List<Training> getTrainingForApprove();
     List<Training> getTrainingsByCoach(String coachLogin);
     List<Training> getTrainingsByHighestRating();
@@ -49,6 +48,7 @@ public interface TrainingService {
     Integer getTrainingNumber(String trainingName, Date date);
     Integer getValidTrainingsNumberByCategory(Category category);
     Long getParentTrainingId(String trainingName);
+    Boolean isSubscriber(String trainingName, String userLogin);
 
 
 }

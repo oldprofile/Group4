@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Date;
 import java.util.List;
@@ -30,10 +31,10 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
     @Query("select tr from Training as tr  inner join tr.listeners as trus where tr.name = ?1 and tr.parent = 0 and trus.login = ?2")
     Training findByTrainingNameAndUserLogin(String trainingName, String userLogin);
 
-    @Query("select tr from Training as tr  where tr.name = ?1 and tr.dateTime = ?2 and parent not in(0)")
+    @Query("select tr from Training as tr  where tr.name = ?1 and tr.dateTime = ?2 and tr.parent not in(0)")
     Training findTrainingByNameAndDate(String trainingName, Date date);
 
-    @Query(value =  "select tr from Training tr where tr.category.id = ?1 and tr.state in (2,3)")
+    @Query(value =  "select tr from Training tr where tr.category.id = ?1 and tr.state in (2,3) and tr.parent = 0")
     List<Training> findValidTrainingsByCategoryId(int id);
 
     @Query(value = "select tr from Training tr where tr.name = ?1 and tr.parent not in(0)")
@@ -46,14 +47,11 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
     List<Training> findValidTrainings();
 
     //@Query("select  tr from Training as tr where tr.name = ?1 and tr.state in (2,3) and tr.dateTime = (select min(tr.dateTime) from tr where tr.name = ?1 and tr.state in (2,3))")
-    @Query("select  tr from Training as tr where tr.name = ?1 and tr.state in (2,3) order by tr.dateTime asc")
+    @Query("select  tr from Training as tr where tr.name = ?1 and tr.state in (2,3) and tr.parent not in(0) order by tr.dateTime asc")
     List<Training> findNearestTrainingsByName(String trainingName);
 
     @Query("select  tr from Training as tr where tr.state in (2,3) and tr.parent = 0 order by tr.dateTime asc")
     List<Training> findNearestTrainings();
-
-    @Query("select tr from Training as tr where tr.name like ?1")
-    List<Training> searchTrainingsByName(String trainingName);
 
     @Query("select tr from Training as tr where tr.state in (1,4) and tr.parent = 0")
     List<Training> findDraftAndEditedTrainings();
@@ -96,9 +94,15 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
     @Query("select tr.id from Training as tr where tr.name = ?1 and tr.parent = 0")
     Long findParentTrainingIdByName(String trainingName);
 
-    @Query("select count(tr.dateTime) from Training as tr where tr.name = ?1 and  tr.dateTime <= ?2")
+    @Query("select count(tr.dateTime) from Training as tr where tr.name = ?1 and  tr.dateTime <= ?2 and tr.parent not in(0)")
     Integer findTrainingNumber(String trainingName, Date date);
 
     @Query("select count(tr) from Training as tr where tr.category = ?2 and tr.parent = 0")
     Integer findValidTrainingsNumberByCategory(Category category);
+
+    @Query(value = "SELECT * FROM trainings WHERE MATCH (name) AGAINST (:search) and trainings.parent = 0", nativeQuery = true)
+    List<Training> searchTrainingByName(@Param("search")String search);
+
+    @Query("select case when (count(tr)>0) then true else false end from Training as tr inner join tr.listeners as trus where tr.name = ?1 and tr.parent = 0 and trus.login = ?2")
+    Boolean isSubscriber(String trainingName, String userLogin);
 }
