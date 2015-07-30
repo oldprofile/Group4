@@ -1,17 +1,163 @@
 
 <div ng-class="{ 'waiting-for-angular': !isContentLoaded }">
-  <div ng-show="isContentLoaded" class="row">
+  <div ng-show="isContentLoaded" class="row profile-container">
     <div class="col-xs-12">
       <h3>{{user.name}}</h3>
       <h4>{{user.email}}</h3>
-      <input type="button" class="btn btn-primary btn-sm" value="Leave Student feedback" ng-click="leaveStudentFeedback()">
-      <input type="button" class="btn btn-primary btn-sm" value="Leave Coach feedback" ng-click="leaveCoachFeedback()">
-      <input type="button" class="btn btn-primary btn-sm" value="Request feedback" ng-click="requestFeedback()">
-      <input type="button" class="btn btn-primary btn-sm" value="Settings" ng-click="settings()">
-
+      
+      
+      <button class="btn btn-default" ng-click="settings()" aria-expanded="true"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span style="margin-left:8px;">Settings</span></button>
+      
+      
+      <div class="dropdown">
+        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+          <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> <span style="margin-left:8px;">Feedback</span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+          <li class="dropdown-header">Leave Feedback</li>
+          <li><a href="" ng-click="leaveStudentFeedback()">On Student</a></li>
+          <li><a href="" ng-click="leaveCoachFeedback()">On Coach</a></li>
+          <li role="separator" class="divider"></li>
+          <li class="dropdown-header">Request Feedback</li>
+          <li><a href="" ng-click="requestFeedback()">On Student</a></li>
+        </ul>
+      </div>
 
     </div> 
-      <div class="col-xs-12">
+      <div class="col-xs-12 profile-info">
+        
+        <v-accordion class="vAccordion--default" multiple>
+
+            <!-- add expanded attribute to open the section -->
+            <v-pane expanded>
+              <v-pane-header>
+                Archive
+              </v-pane-header>
+
+              <v-pane-content>
+                <v-accordion class="vAccordion--default" multiple>
+
+                    <!-- add expanded attribute to open the section -->
+                    <v-pane expanded>
+                      <v-pane-header>
+                        Student Archive
+                      </v-pane-header>
+
+                      <v-pane-content>
+                        <table class="table">
+                          <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Course</th>
+                                <th>State</th>
+                                <th>Start Date</th>
+                            </tr>
+                          </thead>
+                          <tr ng-repeat="f in studentArchive" class="link-cursor"  ng-click="goto('/courseinfo/'+ f.trainingName)">
+                            <td>{{$index + 1}}</td>
+                            <td>{{ f.trainingName}}</td>
+                            <td>{{f.state}}</td>
+                            <td>{{ f.dateTraining | date:"mediumDate" }}</td>
+                          </tr>
+                        </table>
+                      </v-pane-content>
+                    </v-pane>
+
+                    <v-pane>
+                      <v-pane-header>
+                        Coach Archive
+                      </v-pane-header>
+
+                      <v-pane-content>
+                        <table class="table">
+                          <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Course</th>
+                                <th>State</th>
+                                <th>Start Date</th>
+                            </tr>
+                          </thead>
+                          <tr ng-repeat="f in coachArchive" class="link-cursor"  ng-click="goto('/courseinfo/'+ f.trainingName)">
+                            <td>{{$index + 1}}</td>
+                            <td>{{ f.trainingName}}</td>
+                            <td>{{f.state}}</td>
+                            <td>{{ f.dateTraining | date:"mediumDate" }}</td>
+                          </tr>
+                        </table> 
+                      </v-pane-content>
+                    </v-pane>
+
+                </v-accordion>
+              </v-pane-content>
+            </v-pane>
+
+            <v-pane>
+              <v-pane-header>
+                Feedbacks
+              </v-pane-header>
+
+              <v-pane-content>
+                <v-accordion class="vAccordion--default" multiple>
+
+                    <!-- add expanded attribute to open the section -->
+                    <v-pane expanded>
+                      <v-pane-header>
+                        Student Feedbacks
+                      </v-pane-header>
+
+                      <v-pane-content>
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                  <th>#</th>
+                                  <th>From</th>
+                                  <th>When</th>
+                                  <th>Mood</th>
+                              </tr>
+                            </thead>
+                            <tr ng-repeat="f in studentFeedbacks" class="link-cursor"  ng-click="leaveStudentFeedback(f)">
+                              <td>{{$index + 1}}</td>
+                              <td>{{ f.feedbackerName}}</td>
+                              <td>{{ f.date | date:"mediumDate" }}</td>
+                              <td> + </td>
+                            </tr>
+                          </table>
+                      </v-pane-content>
+                    </v-pane>
+
+                    <v-pane>
+                      <v-pane-header>
+                        Coach Feedbacks
+                      </v-pane-header>
+
+                      <v-pane-content>
+                        <table class="table">
+                          <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>From</th>
+                                <th>When</th>
+                                <th>Mood</th>
+                            </tr>
+                          </thead>
+                          <tr ng-repeat="f in coachFeedbacks" class="link-cursor"  ng-click="leaveCoachFeedback(f)">
+                            <td>{{$index + 1}}</td>
+                            <td>{{ f.feedbackerName}}</td>
+                            <td>{{ f.date | date:"mediumDate" }}</td>
+                            <td> + </td>
+                          </tr>
+                        </table> 
+                      </v-pane-content>
+                    </v-pane>
+
+                </v-accordion>
+              </v-pane-content>
+            </v-pane>
+
+        </v-accordion>
+        
+<!--
       <h4>Feedbacks</h4>
         <h5>Student Feedbacks</h5>
           <table class="table">
@@ -91,6 +237,8 @@
             </tr>
           </table>  
       </div>
+-->
 
   </div>
 </div>
+</div>  

@@ -1,12 +1,17 @@
 angular.module('myApp.browse')
-.controller('ProfileController',['$scope','userService','$routeParams','profileService','$modal','feedbacksService', function($scope,userService,$routeParams,profileService,$modal,feedbacksService){
+.controller('ProfileController',['$scope','userService','$routeParams','profileService','$modal','feedbacksService',"$location", function($scope,userService,$routeParams,profileService,$modal,feedbacksService,$location){
     $scope.isContentLoaded = false;
     var userlogin;  
     $scope.studentFeedbacks = [];
     $scope.coachFeedbacks = [];    
     
     $scope.coachArchive = [];
-    $scope.studentArchive = [];   
+    $scope.studentArchive = [];
+  
+    $scope.goto = function(path){
+      
+      $location.path(path);
+    }
                                    
     if($routeParams.userLogin === undefined){
         userlogin = userService.getUser().login;
@@ -44,7 +49,7 @@ angular.module('myApp.browse')
        }                            
                                    
     profileService.getUserInfo(userlogin).success(function(data){
-      alert("User" + JSON.stringify(data));
+      //alert("User" + JSON.stringify(data));
       $scope.user = data;
       $scope.isContentLoaded = true;
       gettingUserProfileData();

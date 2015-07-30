@@ -285,7 +285,7 @@ public class UserController {
                 }
 
             if (allTrainingUserShorts.isEmpty()) {
-                httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
             } else {
                 httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
             }
