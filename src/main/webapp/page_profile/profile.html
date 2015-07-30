@@ -5,24 +5,24 @@
       <h3>{{user.name}}</h3>
       <h4>{{user.email}}</h3>
       
-      
-      <button class="btn btn-default" ng-click="settings()" aria-expanded="true"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span style="margin-left:8px;">Settings</span></button>
-      
-      
-      <div class="dropdown">
-        <button class="btn btn-default default-btn  dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-          <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> <span style="margin-left:8px;">Feedback</span>
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-          <li class="dropdown-header">Leave Feedback</li>
-          <li><a href="" ng-click="leaveStudentFeedback()">On Student</a></li>
-          <li><a href="" ng-click="leaveCoachFeedback()">On Coach</a></li>
-          <li role="separator" class="divider"></li>
-          <li class="dropdown-header">Request Feedback</li>
-          <li><a href="" ng-click="requestFeedback()">On Student</a></li>
-        </ul>
-      </div>
+      <div class="profile-control">
+        <button class="btn btn-default default-btn default-gray" ng-click="settings()" aria-expanded="true"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span>Settings</span></button>
 
+
+        <div class="dropdown">
+          <button class="btn btn-default default-btn default-gray dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> <span>Feedback</span>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <li class="dropdown-header">Leave Feedback</li>
+            <li><a href="" ng-click="leaveStudentFeedback()">On Student</a></li>
+            <li><a href="" ng-click="leaveCoachFeedback()">On Coach</a></li>
+            <li role="separator" class="divider"></li>
+            <li class="dropdown-header">Request Feedback</li>
+            <li><a href="" ng-click="requestFeedback()">On Student</a></li>
+          </ul>
+        </div>
+      </div>
     </div> 
       <div class="col-xs-12 profile-info">
         

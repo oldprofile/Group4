@@ -1,7 +1,8 @@
 'use strict'
 
 
-angular.module('myApp').factory('userService',['$http','loginService','$window',function ($http,loginService,$window) {
+angular.module('myApp').factory('userService',['$http','loginService','$window','$q',function ($http,loginService,$window,$q) {
+  var pr = $q.defer();
   
   var role = {
    admin: {
@@ -32,7 +33,9 @@ angular.module('myApp').factory('userService',['$http','loginService','$window',
     isLogged: false,  
       
     setUser: function (login,role_, token) {
-      currentUser.login = login;    
+      
+      currentUser.login = login; 
+      pr.resolve(login);
       currentUser.token = token;
       
       
@@ -70,6 +73,10 @@ angular.module('myApp').factory('userService',['$http','loginService','$window',
     
     isAdmin: function(){
       return (currentUser.role === role.admin);
+    },
+    
+    loginPromise: function(){
+      return pr.promise;
     },
       
     logout: function(){

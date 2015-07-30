@@ -6,6 +6,7 @@ body{
     font-family: 'San Francisco Text', sans-serif !important;
     padding-top: 80px; 
     height: 100vh !important;
+    outline: none !important;
     
 }
 body a{
@@ -456,6 +457,8 @@ font-weight: 500;
   padding: 0;
 }
 .card-layout-browse .card-image{
+  max-height: 150px;
+  
   margin-top: -38px !important;
   margin-left: -16px !important;
   margin-right: -16px !important;
@@ -463,8 +466,8 @@ font-weight: 500;
    
 }
 .card-layout-browse .card img{
-  
-  
+  object-fit: cover;
+  height: 100%;
   width: 100%;
   max-height: 150px;
   
@@ -478,6 +481,7 @@ font-weight: 500;
   margin: 0;
 }
 .card-layout-browse .card h1{
+  margin-top: 8px;
   font-size: 24px;
   margin-bottom: 8px;
   font-weight: 500;
@@ -620,6 +624,13 @@ font-weight: 500;
   margin: auto;
 
 }
+.profile-control{
+  padding-top: 16px;
+}
+.profile-control>*{
+  margin-right: 8px;
+  float: left;
+}
 /*
 .btn-feedback-icon{
   width: 34px;
@@ -706,13 +717,23 @@ font-weight: 500;
 
 
 /* BUTTONS */
+.accent-btn .glyphicon,
+.default-btn .glyphicon{
+  position: relative;
+  top: 2px !important;
+  margin-right: 5px !important;
+}
 
 .default-btn {
   padding-left: 20px;
   padding-right: 20px;
   border-radius: 24px;
+  font-size: 14px;
+  font-weight: 300;
+  letter-spacing: -0.3px;
   box-shadow: none !important;
   outline: none !important;
+  
 }
 
 .accent-btn {
@@ -725,13 +746,15 @@ font-weight: 500;
 
 /* BUTTON COLORS */
 .default-gray {
-  color: rgba(0,0,0,0.15) !important;
+  color: rgba(0,0,0,0.5) !important;
   background-color: white !important;
   border: 1px solid rgba(0,0,0,0.15) !important;
+  
+  transition: all 0.2s ease 0s;
 }
 
 .default-gray:hover {
-  color: rgba(0, 0, 0, 0.3) !important;
+  color: rgba(0, 0, 0, 0.6) !important;
   background-color: white !important;
   border: 1px solid rgba(0, 0, 0, 0.3) !important;
 }
@@ -740,6 +763,8 @@ font-weight: 500;
   color: #1DAAE5 !important;
   background-color: transparent !important;
   border-color: #1DAAE5 !important;
+  
+  transition: all 0.3s ease 0s;
 }
 
 .default-blue:hover {
@@ -748,10 +773,14 @@ font-weight: 500;
   border-color: #25709D !important;
 }
 
+
+
 .accent-blue {
   color: white !important;
   background-color: #1DAAE5 !important;
   border-color: #1DAAE5 !important;
+  
+  transition: all 0.3s ease 0s;
 }
 
 .accent-blue:hover {
@@ -764,6 +793,8 @@ font-weight: 500;
   color: #8dc540 !important;
   background-color: transparent !important;
   border-color: #8dc540 !important;
+  
+  transition: all 0.3s ease 0s;
 }
 
 .default-green:hover {
@@ -776,6 +807,8 @@ font-weight: 500;
   color: white !important;
   background-color: #8dc540 !important;
   border-color: #8dc540 !important;
+  
+  transition: all 0.3s ease 0s;
 }
 
 .accent-green:hover {
@@ -788,6 +821,8 @@ font-weight: 500;
   color: #ef3e36 !important;
   background-color: transparent !important;
   border-color: #ef3e36 !important;
+  
+  transition: all 0.3s ease 0s;
 }
 
 .default-red:hover {
@@ -800,6 +835,8 @@ font-weight: 500;
   color: white !important;
   background-color: #ef3e36 !important;
   border-color: #ef3e36 !important;
+  
+  transition: all 0.3s ease 0s;
 }
 
 .accent-red:hover {

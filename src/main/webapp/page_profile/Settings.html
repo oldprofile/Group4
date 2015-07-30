@@ -14,7 +14,7 @@
             </div>
             
             <div ng-if="isPhoneOn" class="other-textarea" >
-              <input type="tel" class="form-control" placeholder="Phone Number" ng-model="phoneNumber" name="mobile" ng-pattern="phoneNumberPattern" required />
+              <input type="tel" class="form-control" placeholder="Phone Number" ng-model="$parent.phoneNumber" name="phoneNumber" ng-pattern="phoneNumberPattern" required />
             </div>
            
           </form>

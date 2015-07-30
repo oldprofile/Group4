@@ -80,6 +80,7 @@ app.directive('authClass', ['$location','userService','loginService',function($l
           //confirm form server    
             console.log("Confirm User:" + JSON.stringify(data)); 
             scope.isLogged = true;
+            alert(JSON.stringify(data));
             userService.setUser(data.login,data.role,data.token);
             if(scope.prevPath.toLowerCase() === "/login"){
               scope.prevPath = "/";

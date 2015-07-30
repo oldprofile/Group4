@@ -144,6 +144,34 @@ angular.module('myApp.browse')
     });
     
     };
+  
+  $scope.requestFeedback = function(){
+    
+      var settingsModalInstance = $modal.open({
+      animation: true,
+      templateUrl: 'page_profile/Request.html',
+      controller: 'RequestController',
+      size: "lg",
+      resolve: {
+        user : function () {
+          return $scope.user;
+        },
+        archive : function () {
+          return $scope.studentArchive;
+        }
+      }
+    });
+    
+    settingsModalInstance.result.then(function (data) {
+         
+      //sending new settings
+      profileService.saveSettings(data);
+      
+    }, function () {
+      //cancel feedback
+    });
+    
+    };
     
     
 }])
@@ -257,8 +285,34 @@ angular.module('myApp.browse')
   
   $scope.ok = function () {
     var data = {};
+    
     data.numberPhone = $scope.phoneNumber;
-    alert("saving " + JSON.stringify(data));
+    
+    $modalInstance.close(data);
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
+}])
+.controller('RequestController',['$scope', '$modalInstance','user','archive','userService',function($scope,$modalInstance,user,archive,userService){
+  $scope.user = user;
+  $scope.archive = angular.copy(archive);
+  for(var i = 0; i < $scope.archive.length; i++){
+    $scope.archive[i].request = false;
+  }
+  
+    
+    
+  $scope.check = function(index){
+    $scope.archive[index].request = !$scope.archive[index].request;
+  }  
+  
+  $scope.ok = function () {
+    var data = {};
+    
+   alert($scope.archive[0].request);
+    
     $modalInstance.close(data);
   };
 
