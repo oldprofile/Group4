@@ -30,6 +30,9 @@ public class TrainingFeedback{
     @ManyToOne(cascade = CascadeType.ALL)
     private User feedbacker;
 
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "trainingFeedback")
+    private News news;
+
     @NotNull
     private Date date;
 
@@ -146,5 +149,13 @@ public class TrainingFeedback{
 
     public void setTraining(Training training) {
         this.training = training;
+    }
+
+    public News getNews() {
+        return news;
+    }
+
+    public void setNews(News news) {
+        this.news = news;
     }
 }

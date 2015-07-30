@@ -41,6 +41,9 @@ public class CoachFeedback {
     @ManyToOne(cascade = CascadeType.ALL)
     private User feedbacker;
 
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "coachFeedback")
+    private News news;
+
     @NotNull
     private Date date;
 
@@ -196,5 +199,13 @@ public class CoachFeedback {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public News getNews() {
+        return news;
+    }
+
+    public void setNews(News news) {
+        this.news = news;
     }
 }
