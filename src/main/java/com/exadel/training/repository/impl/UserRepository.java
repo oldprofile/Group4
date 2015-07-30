@@ -27,6 +27,9 @@ public interface UserRepository extends JpaRepository<User,Long>{
     @Query("select case when (count(u)>0) then true else false end from User as u inner join u.roles as r where u.login = ?1 and r.id = ?2")
     Boolean whoIsUser(String login, long roleId);
 
+    @Query("select case when (count(c)>0) then true else false end from User as u inner join u.trainings as t inner join t.coach as c where u.login = ?1 and c.login = ?2")
+    Boolean isCoach(String login, String coachName);
+
     @Query(value = "select count(*) > 0 from users_trainings u where :trainingID = trainings and :userID = listeners",nativeQuery = true)
     int checkSubscribeToTraining(@Param("trainingID")Long trainingID,@Param("userID") Long userID);
 
