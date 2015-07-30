@@ -17,21 +17,55 @@ body a:hover{
   text-decoration: none;
 }
 
+.link-cursor{
+  cursor: pointer;
+  
+  
+  
+}
+.link-cursor td{
+  transition: all 0.3s ease 0s;
+  
+}
+.link-cursor:hover td{
+  color: #1DAAE5;
+  transition: all 0.3s ease-out 0.05s;
+  
+}
+
+.separator-lg{
+  height: 75px;
+}
+
 
 /* feat: before angular is ready, display loading animation */
 body.waiting-for-angular div#content-outer {
   display: none;
-  min-height: 100%;
-  position: relative;
+  
 }
 .waiting-for-angular{
   display: block;
-  background: url(assets/puff.svg) center center no-repeat;
+  
+  background: url(assets/puff.svg) no-repeat center center ;
   position:absolute;
   top:0;
   left:0;
   width: 100%;
   height: 100%;
+  
+}
+.waiting-for-angular-login{
+  display: block;
+  margin: 0 auto;
+  background: url(assets/puff.svg) no-repeat center center ;
+/*
+  position:absolute;
+  top:0;
+  left:0;
+  width: 100%;
+  height: 100%;
+*/
+  
 }
 div#content-outer {
     min-height: 100% !important;
@@ -126,6 +160,7 @@ my-app-footer{
 .medium-navbar-nav>.open>a{
   background-color: white !important;
 }
+.dropdown-menu,
 .medium-navbar-nav>.open>.dropdown-menu{
   border: none;
   box-shadow: 0 1 4px 0px rgba(0, 0, 0, 0.25) !important ;
@@ -135,14 +170,17 @@ my-app-footer{
   border-top: 1px solid #fafafa
   
 }
+.dropdown-menu>li>a:hover,
 .medium-navbar-nav>.open>.dropdown-menu>li>a:hover{
   color:#2C2C2C;
   background-color: white;
 }
+.dropdown-menu>li>a,
 .medium-navbar-nav>.open>.dropdown-menu>li>a{
   color:#5C5C5C;
   background-color: white;
 }
+
 
 
 
@@ -223,6 +261,9 @@ course-info
   overflow: auto;
   
 }
+.course-info-content .img-cont{
+  padding-top: 34px;
+}
 .course-info-row{
   padding: 0px 16px 0px 16px !important;
   overflow: auto;
@@ -239,6 +280,7 @@ course-info
   margin-bottom: 16px;
   line-height: 58px;
   width: 60%;
+  
   
 }
 .course-info-text>p{
@@ -278,6 +320,12 @@ course-info
   padding: 0px 10px 4px 10px;
   box-shadow: none !important;
 }
+.edit-btn .course-info-btn{
+  background-color: transparent !important;
+}
+.course-info-btn.glyphicon-edit{
+  background-color: transparent !important;
+}
 .course-info-btn:hover{
   color: #8C8C8C;
   border-bottom-color: #8C8C8C;
@@ -311,6 +359,15 @@ font-weight: 500;
     min-height: 320px;
     
 }
+
+@media screen and (min-width: 768px) and (max-width: 1200px) {
+  .card-layout-mycourses .card,
+  .card-layout-mycourses .card .card-bg{
+      min-height: 280px !important;
+  }
+  
+}
+
 .card-layout-mycourses .card .card-bg{
   padding: 38px 16px;
   height: 100%;
@@ -360,25 +417,33 @@ font-weight: 500;
   font-size: 16px;
 }
 
+.card-layout-mycourses .coach-label{
+  
+  color: #1DAAE5;
+  font-weight: 300;
+}
+
+
 /*browse*/
 
 
 .card-layout-browse {
     padding-top: 16px;
+    padding-bottom: 16px;
     overflow: visible;
 }
 
 .card-layout-browse .card {
     padding: 10px 8px;
     line-height: 32px;
-    min-height: 400px;
+    height: 400px;
     
 }
 .card-layout-browse .card .card-bg{
   padding: 38px 16px;
-  height: 100%;
+  
   width: 100%;
-  min-height: 400px;
+  height: 100%;
   
     -webkit-box-shadow: 0px 1px 2px 0px rgba(158,158,158,1);
     box-shadow: 0px 1px 2px 0px rgba(158,158,158,1);
@@ -399,10 +464,9 @@ font-weight: 500;
 }
 .card-layout-browse .card img{
   
-  width: auto;
-  height: auto;
-  max-width: 100%;
-  min-height: 150px;
+  
+  width: 100%;
+  max-height: 150px;
   
 }
 
@@ -417,7 +481,7 @@ font-weight: 500;
   font-size: 24px;
   margin-bottom: 8px;
   font-weight: 500;
-  letter-spacing: 1.05px;
+  
 }
 .card-layout-browse .card h2{
   font-weight: 200;
@@ -427,7 +491,6 @@ font-weight: 500;
 }
 .card-layout-browse .card h4{
   font-weight: 200;
-  margin-bottom: 50px;
   color: #8C8C8C;
   font-size: 14px;
 }
@@ -435,6 +498,86 @@ font-weight: 500;
   font-weight: 200;
   font-size: 16px;
 }
+
+.card-layout-browse .additional{
+  position: absolute;
+  bottom: 20px; 
+}
+/* browse main */
+.card-layout-browse>h1{
+  font-weight: 300;
+  margin-bottom: 14px;
+  padding-left: 10px;
+  
+}
+.card-layout-browse.category h2{
+  text-align: center;
+  margin-top: 0;
+  font-size: 24px;
+  color: white;
+}
+.card-layout-browse.category .card-image{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  
+  z-index: -1;
+  margin: 0 !important;
+  
+  margin-top: -38px !important;
+  
+}
+.card-layout-browse.category img{
+  position: absolute;
+  display: block;
+  max-height: none;
+  width: 100%;
+  height: 100%;
+  
+  margin-top: -38px;
+  margin-left: -16px;
+  padding-bottom: 19px;
+  padding-right: 16px;
+  z-index: -1;
+  
+  
+  
+  
+  
+  
+}
+
+.card-layout-browse.category .category-content{
+  width:100%;
+  padding-right: 48px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  
+}
+
+.card-layout-browse.category .card {
+    padding: 10px 8px;
+    line-height: 32px;
+    height: 300px;
+    
+}
+@media  (min-width: 970px) and (max-width: 1200px) {
+  .card-layout-browse.category .card{
+    height: 236px;
+  }
+}
+@media (min-width: 750px) and (max-width: 969px) {
+  .card-layout-browse.category .card{
+    height: 172px;
+  }
+}
+@media  (max-width: 769px) {
+  .card-layout-browse.category .card{
+    height: 158px;
+  }
+}
+
 
 
 /*modals*/
@@ -455,3 +598,214 @@ font-weight: 500;
   margin: auto;
   max-width: 700px;
 }
+.course-info-btn-div{
+  float: right;
+}
+
+.course-info-text-div .edit-btn {
+  position: absolute;
+  right: 0;
+  top: 0px;
+  background-color: transparent;
+  
+}
+
+/* profile */
+.profile-info{
+  padding-top: 44px;
+  
+}
+.profile-container{
+  max-width: 900px;
+  margin: auto;
+
+}
+/*
+.btn-feedback-icon{
+  width: 34px;
+  height: 34px;
+  display: block;
+  margin: auto;
+  background: url(assets/men14.svg) no-repeat top center ;
+  background-color: transparent;
+  fill: #aaa;
+  
+}
+.btn-feedback{
+  widows: 32px;
+  height: 64px;
+  vertical-align: middle;
+  text-align: center;
+  line-height: 36px;
+  font-size: 14px;
+  
+}
+*/
+
+/* ACCORDION!!!!
+   ***************************************/
+.vAccordion--default v-accordion {
+  margin-top: 20px;
+  padding-left: 20px; }
+.vAccordion--default v-pane {
+  -webkit-transition: -webkit-transform 0.5s;
+          transition: transform 0.5s; }
+  .vAccordion--default v-pane.is-expanded > v-pane-header {
+    border-bottom-color: #1DAAE5; }
+    .vAccordion--default v-pane.is-expanded > v-pane-header::after {
+      -webkit-transform: rotate(90deg);
+          -ms-transform: rotate(90deg);
+              transform: rotate(90deg);
+      opacity: 0; }
+    .vAccordion--default v-pane.is-expanded > v-pane-header::before {
+      -webkit-transform: rotate(0deg);
+          -ms-transform: rotate(0deg);
+              transform: rotate(0deg); }
+  .vAccordion--default v-pane.is-expanded > v-pane-content > div {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0); }
+  .vAccordion--default v-pane.is-expanded-add > v-pane-content, .vAccordion--default v-pane.is-expanded-remove > v-pane-content {
+    -webkit-transition: max-height 0.5s;
+            transition: max-height 0.5s; }
+.vAccordion--default v-pane-header {
+  padding: 5px 0;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #dddddd;
+  -webkit-transition: color 0.25s, border-color 0.5s;
+          transition: color 0.25s, border-color 0.5s; }
+  .vAccordion--default v-pane-header::after, .vAccordion--default v-pane-header::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    width: 10px;
+    height: 1px;
+    background-color: #1DAAE5;
+    -webkit-transform-origin: 50% 50%;
+        -ms-transform-origin: 50% 50%;
+            transform-origin: 50% 50%;
+    -webkit-transition: all 0.25s;
+            transition: all 0.25s; }
+  .vAccordion--default v-pane-header::before {
+    -webkit-transform: rotate(-90deg);
+        -ms-transform: rotate(-90deg);
+            transform: rotate(-90deg); }
+  .vAccordion--default v-pane-header:hover, .vAccordion--default v-pane-header:focus {
+    color: #1DAAE5; }
+.vAccordion--default v-pane-content > div {
+  padding-bottom: 20px;
+  will-change: transform, opacity;
+  opacity: 0;
+  -webkit-transform: translate3d(0, 30px, 0);
+          transform: translate3d(0, 30px, 0);
+  -webkit-transition: -webkit-transform 0.5s, opacity 0.5s;
+          transition: transform 0.5s, opacity 0.5s; }
+
+
+
+/* BUTTONS */
+
+.default-btn {
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 24px;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.accent-btn {
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 24px;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* BUTTON COLORS */
+.default-gray {
+  color: rgba(0,0,0,0.15) !important;
+  background-color: white !important;
+  border: 1px solid rgba(0,0,0,0.15) !important;
+}
+
+.default-gray:hover {
+  color: rgba(0, 0, 0, 0.3) !important;
+  background-color: white !important;
+  border: 1px solid rgba(0, 0, 0, 0.3) !important;
+}
+
+.default-blue {
+  color: #1DAAE5 !important;
+  background-color: transparent !important;
+  border-color: #1DAAE5 !important;
+}
+
+.default-blue:hover {
+  color: #25709D !important;
+  background-color: transparent !important;
+  border-color: #25709D !important;
+}
+
+.accent-blue {
+  color: white !important;
+  background-color: #1DAAE5 !important;
+  border-color: #1DAAE5 !important;
+}
+
+.accent-blue:hover {
+  color: white !important;
+  background-color: #1C9FD6 !important;
+  border-color: #1C9FD6 !important;
+}
+
+.default-green {
+  color: #8dc540 !important;
+  background-color: transparent !important;
+  border-color: #8dc540 !important;
+}
+
+.default-green:hover {
+  color: #6c9731 !important;
+  background-color: transparent !important;
+  border-color: #6c9731 !important;
+}
+
+.accent-green {
+  color: white !important;
+  background-color: #8dc540 !important;
+  border-color: #8dc540 !important;
+}
+
+.accent-green:hover {
+  color: white !important;
+  background-color: #7fb239 !important;
+  border-color: #7fb239 !important;
+}
+
+.default-red {
+  color: #ef3e36 !important;
+  background-color: transparent !important;
+  border-color: #ef3e36 !important;
+}
+
+.default-red:hover {
+  color: #a1161b !important;
+  background-color: transparent !important;
+  border-color: #a1161b !important;
+}
+
+.accent-red {
+  color: white !important;
+  background-color: #ef3e36 !important;
+  border-color: #ef3e36 !important;
+}
+
+.accent-red:hover {
+  color: white !important;
+  background-color: #a1161b !important;
+  border-color: #a1161b !important;
+}
+
+

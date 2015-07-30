@@ -48,6 +48,7 @@ public interface TrainingService {
     Integer getTrainingNumber(String trainingName, Date date);
     Integer getValidTrainingsNumberByCategory(Category category);
     Long getParentTrainingId(String trainingName);
+    Boolean isSubscriber(String trainingName, String userLogin);
 
 
 }

@@ -1,0 +1,26 @@
+<div class="modal-header">
+
+  <h3 class="modal-title">Settings</h3>
+
+</div>
+        <div class="modal-body">
+            
+          <form  name="telForm">
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" name="sms"  ng-model="isPhoneOn">
+                Turn  <b>SMS</b> notifications on?
+              </label>
+            </div>
+            
+            <div ng-if="isPhoneOn" class="other-textarea" >
+              <input type="tel" class="form-control" placeholder="Phone Number" ng-model="phoneNumber" name="mobile" ng-pattern="phoneNumberPattern" required />
+            </div>
+           
+          </form>
+          
+        </div>
+<div class="modal-footer">
+    <button class="btn btn-default modal-btn" ng-click="ok()" ng-disabled="telForm.$invalid || telForm.$pristine" >Apply</button>
+    <button class="btn btn-default modal-btn" ng-click="cancel()">Cancel</button>
+</div>

@@ -8,7 +8,6 @@ import com.exadel.training.notification.Notification;
 import com.exadel.training.notification.news.NotificationNews;
 import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
-import com.exadel.training.tokenAuthentification.CryptService;
 import com.exadel.training.tokenAuthentification.SessionToken;
 import com.twilio.sdk.TwilioRestException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,9 +39,6 @@ public class UserController {
     private UserService userService;
     @Autowired
     private TrainingService trainingService;
-    @Autowired
-    @Qualifier("decoratorDESCryptServiceImpl")
-    private CryptService cryptService;
     @Autowired
     private SessionToken sessionToken;
     @Autowired
@@ -141,7 +137,7 @@ public class UserController {
 
         if(sessionToken.containsToken(header)) {
 
-            List<Training> trainings = userService.selectAllTrainingSortedByDateTypeCoachTrue(allTrainingUserSortedAndState.getLogin(),allTrainingUserSortedAndState.getState());
+            List<Training> trainings = userService.selectAllTrainingSortedByDateTypeCoachTrue(allTrainingUserSortedAndState.getLogin(), allTrainingUserSortedAndState.getState());
             User user = userService.findUserByLogin(login);
 
             for (Training training : trainings) {
@@ -176,7 +172,7 @@ public class UserController {
 
         if(sessionToken.containsToken(header)) {
 
-            List<Training> trainings = userService.selectAllTrainingSortedByDateTypeCoachFalse(allTrainingUserSortedAndState.getLogin(),allTrainingUserSortedAndState.getState());
+            List<Training> trainings = userService.selectAllTrainingSortedByDateTypeCoachFalse(allTrainingUserSortedAndState.getLogin(), allTrainingUserSortedAndState.getState());
             User user = userService.findUserByLogin("1");
 
             for (Training training : trainings) {
@@ -328,7 +324,7 @@ public class UserController {
                                              HttpServletResponse response, HttpServletRequest httpServletRequest) {
 
         String header = httpServletRequest.getHeader("authorization");
-        Training training = userService.findMyTraining(userLoginAndTraining.getLogin(),userLoginAndTraining.getTrainingName());
+        Training training = userService.findMyTraining(userLoginAndTraining.getLogin(), userLoginAndTraining.getTrainingName());
 
         if(training == null) {
             response.setStatus(HttpServletResponse.SC_ACCEPTED);
@@ -341,7 +337,7 @@ public class UserController {
                                                          HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException {
 
         String header = httpServletRequest.getHeader("authorization");
-        String mainLogin = cryptService.decrypt(header);
+        String mainLogin = httpServletRequest.getHeader("login");
         List<UserShort> userShorts = new ArrayList<>();
 
         if(userService.checkUserByLogin(mainLogin)) {
@@ -411,7 +407,7 @@ public class UserController {
         userService.insertNumberOfTelephone("1","+375291396905");
 
         Boolean is = userService.checkSubscribeToTraining(1L,1L);
-        Boolean i = userService.checkSubscribeToTraining("Front end","1");
+        Boolean i = userService.checkSubscribeToTraining("Front end", "1");
         UserShort us =  UserShort.parseUserShort(userService.findUserByLogin("1"));
 
         return null;

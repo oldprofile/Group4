@@ -5,6 +5,7 @@ angular.module('myApp.browse')
     
     
     browseAPI.getAllTrainings = function(){
+     
         return ($http.get('training_controller/list')
             .success(function(data) {
             
@@ -18,7 +19,9 @@ angular.module('myApp.browse')
     
     browseAPI.getTrainingsByCategory = function(id){
         //get all
-        if(id === 0 || id === undefined){
+      
+        if(id == 0 || id === undefined){
+          
             return browseAPI.getAllTrainings();
         }
         
@@ -30,6 +33,13 @@ angular.module('myApp.browse')
               console.log("Error getting courses by category: " + id);
               return err;
    }));}
+    
+    browseAPI.getRecommended = function(){
+      return $http.get("training_controller/list");
+    }
+    browseAPI.getFeatured = function(){
+      return $http.get("training_controller/list");
+    }
     
      return browseAPI;
 }]);
