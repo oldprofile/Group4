@@ -11,6 +11,7 @@ import com.exadel.training.service.UserService;
 import com.exadel.training.tokenAuthentification.SessionToken;
 import com.twilio.sdk.TwilioRestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -136,7 +137,7 @@ public class UserController {
 
         if(sessionToken.containsToken(header)) {
 
-            List<Training> trainings = userService.selectAllTrainingSortedByDateTypeCoachTrue(allTrainingUserSortedAndState.getLogin(),allTrainingUserSortedAndState.getState());
+            List<Training> trainings = userService.selectAllTrainingSortedByDateTypeCoachTrue(allTrainingUserSortedAndState.getLogin(), allTrainingUserSortedAndState.getState());
             User user = userService.findUserByLogin(login);
 
             for (Training training : trainings) {
@@ -171,7 +172,7 @@ public class UserController {
 
         if(sessionToken.containsToken(header)) {
 
-            List<Training> trainings = userService.selectAllTrainingSortedByDateTypeCoachFalse(allTrainingUserSortedAndState.getLogin(),allTrainingUserSortedAndState.getState());
+            List<Training> trainings = userService.selectAllTrainingSortedByDateTypeCoachFalse(allTrainingUserSortedAndState.getLogin(), allTrainingUserSortedAndState.getState());
             User user = userService.findUserByLogin("1");
 
             for (Training training : trainings) {
@@ -323,7 +324,7 @@ public class UserController {
                                              HttpServletResponse response, HttpServletRequest httpServletRequest) {
 
         String header = httpServletRequest.getHeader("authorization");
-        Training training = userService.findMyTraining(userLoginAndTraining.getLogin(),userLoginAndTraining.getTrainingName());
+        Training training = userService.findMyTraining(userLoginAndTraining.getLogin(), userLoginAndTraining.getTrainingName());
 
         if(training == null) {
             response.setStatus(HttpServletResponse.SC_ACCEPTED);
@@ -406,7 +407,7 @@ public class UserController {
         userService.insertNumberOfTelephone("1","+375291396905");
 
         Boolean is = userService.checkSubscribeToTraining(1L,1L);
-        Boolean i = userService.checkSubscribeToTraining("Front end","1");
+        Boolean i = userService.checkSubscribeToTraining("Front end", "1");
         UserShort us =  UserShort.parseUserShort(userService.findUserByLogin("1"));
 
         return null;
