@@ -132,22 +132,23 @@ public class TrainingServiceImpl implements TrainingService {
         List<Date> dateTimes = new ArrayList<>();
         for (String date : dates)
             dateTimes.add(sdf.parse(date));
+        Training mainTraining = trainingRepository.findByName(trainingForCreation.getName());
         Category category = categoryRepository.findById(trainingForCreation.getIdCategory());
-        User coach = userRepository.findUserByLogin(trainingForCreation.getUserLogin());
+        User coach = mainTraining.getCoach();
 
         int state;
         String place = null;
         if (userRepository.whoIsUser(trainingForCreation.getUserLogin(), 1)) {
             if(dateTimes.size() == 0)
                 state = StateTraining.parseToInt("Canceled");
-            else
+            else {
                 state = StateTraining.parseToInt("Ahead");
-            place = trainingForCreation.getPlaces().get(0);
+                place = trainingForCreation.getPlaces().get(0);
+            }
         } else {
             state = StateTraining.parseToInt("Edited");
         }
 
-        Training mainTraining = trainingRepository.findByName(trainingForCreation.getName());
         mainTraining.fillTraining(trainingForCreation);
         mainTraining.setCategory(category);
         mainTraining.setState(state);
@@ -274,6 +275,11 @@ public class TrainingServiceImpl implements TrainingService {
     @Override
     public Long getParentTrainingId(String trainingName) {
         return trainingRepository.findParentTrainingIdByName(trainingName);
+    }
+
+    @Override
+    public Boolean isSubscriber(String trainingName, String userLogin) {
+        return trainingRepository.isSubscriber(trainingName, userLogin);
     }
 
     @Override

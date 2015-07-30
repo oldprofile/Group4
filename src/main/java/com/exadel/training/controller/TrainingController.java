@@ -85,11 +85,12 @@ public class TrainingController {
             Training training = trainingService.getTrainingByName(trainingName);
             TrainingInfo trainingInfo = new TrainingInfo(training,
                     trainingService.getDatesByTrainingName(trainingName), trainingService.getPlacesByTrainingName(trainingName));
-            if (trainingService.getTrainingByNameAndUserLogin(trainingName, userLogin) != null)
-                trainingInfo.setIsSubscriber(true);
+            /*if (trainingService.getTrainingByNameAndUserLogin(trainingName, userLogin) != null)
+                trainingInfo.setIsSubscriber(true);*/
             if (userLogin.equals(training.getCoach().getName()))
                 trainingInfo.setIsCoach(true);
-            trainingInfo.setIsCoach(userLogin.equals(trainingInfo.getCoachName()));
+            trainingInfo.setIsSubscriber(userService.checkSubscribeToTraining(trainingName, userLogin));
+            trainingInfo.setIsCoach(userService.findUserByLogin(userLogin).getName().equals(trainingInfo.getCoachName()));
             trainingInfo.setFeedbackAvailability(!feedbackService.hasFeedback(userLogin, trainingName));
             trainingInfo.setListeners(UserShort.parseUserShortList(trainingService.getUsersByTrainingName(trainingName)));
             trainingInfo.setSpareUsers(UserShort.parseUserShortList(trainingService.getSpareUsersByTrainingName(trainingName)));
