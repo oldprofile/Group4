@@ -725,15 +725,15 @@ font-weight: 500;
 
 /* BUTTON COLORS */
 .default-gray {
-  color: #1DAAE5 !important;
+  color: rgba(0,0,0,0.15) !important;
   background-color: white !important;
   border: 1px solid rgba(0,0,0,0.15) !important;
 }
 
 .default-gray:hover {
-  color: #25709D !important;
+  color: rgba(0, 0, 0, 0.3) !important;
   background-color: white !important;
-  border: 1px solid rgba(0,0,0,0.15) !important;
+  border: 1px solid rgba(0, 0, 0, 0.3) !important;
 }
 
 .default-blue {
