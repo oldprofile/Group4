@@ -37,6 +37,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Boolean isCoach(String login, String coachName) {
+        return userRepository.isCoach(login, coachName);
+    }
+
+    @Override
     public Boolean checkSubscribeToTraining(String trainingName, String login) {
         return userRepository.checkSubscribeToTraining(trainingName,login);
     }
@@ -128,8 +133,13 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void deleteUserTrainingRelationShip(String login, String trainingName) {
         long userID = userRepository.findUserByLogin(login).getId();
-        long trainingID = trainingRepository.findByName(trainingName).getId();
-        userRepository.deleteUserTrainingRelationShip(trainingID, userID);
+        long trainingParentID = trainingRepository.findByName(trainingName).getId();
+        List<Training> trainings = trainingRepository.findTrainingsByName(trainingName);
+
+        userRepository.deleteUserTrainingRelationShip(trainingParentID, userID);
+        for(Training training : trainings) {
+            userRepository.deleteUserTrainingRelationShip(training.getId(), userID);
+        }
     }
 
     @Override

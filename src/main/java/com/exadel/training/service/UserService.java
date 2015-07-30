@@ -14,6 +14,7 @@ public interface UserService {
 
     Boolean checkUserByLogin(String login);
     Boolean checkSubscribeToTraining(Long trainingID, Long userID);
+    Boolean isCoach(String login, String coachName);
     Boolean checkSubscribeToTraining(String trainingName, String login);
     Boolean whoIsUser(String login, long roleId);
 
