@@ -1,5 +1,6 @@
 package com.exadel.training.controller.model.Feedback;
 
+import com.exadel.training.common.FeedbackType;
 import com.exadel.training.model.CoachFeedback;
 
 import java.io.Serializable;
@@ -45,12 +46,14 @@ public class CoachFeedbackGETModel implements Serializable {
 
     private String feedbackerLogin;
 
+    private String type;
+
     private static SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
 
     public CoachFeedbackGETModel() {
     }
 
-    public CoachFeedbackGETModel(boolean howEnounceMaterial, boolean explainHardness, boolean highlightMain, boolean interesting, boolean askingQuestions, boolean explainHowToUseNew, boolean creativity, boolean kindness, boolean patience, boolean erudition, boolean styleOfTeaching, String other, String coachLogin, Date date, String feedbackerName, String feedbackerLogin) {
+    public CoachFeedbackGETModel(boolean howEnounceMaterial, boolean explainHardness, boolean highlightMain, boolean interesting, boolean askingQuestions, boolean explainHowToUseNew, boolean creativity, boolean kindness, boolean patience, boolean erudition, boolean styleOfTeaching, String other, String coachLogin, Date date, String feedbackerName, String feedbackerLogin, String type) {
         this.howEnounceMaterial = howEnounceMaterial;
         this.explainHardness = explainHardness;
         this.highlightMain = highlightMain;
@@ -67,6 +70,7 @@ public class CoachFeedbackGETModel implements Serializable {
         this.date = SDF.format(date);
         this.feedbackerName = feedbackerName;
         this.feedbackerLogin = feedbackerLogin;
+        this.type = type;
     }
 
     public boolean isHowEnounceMaterial() {
@@ -197,14 +201,22 @@ public class CoachFeedbackGETModel implements Serializable {
         this.other = other;
     }
 
-    public static CoachFeedbackGETModel parseCoachFeedback(CoachFeedback coachFeedback) {
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public static CoachFeedbackGETModel parseCoachFeedback(CoachFeedback coachFeedback) throws NoSuchFieldException {
         CoachFeedbackGETModel coachFeedbackGETModel = new CoachFeedbackGETModel(coachFeedback.isHowEnounceMaterial(), coachFeedback.isExplainHardness(), coachFeedback.isHighlightMain(),
                 coachFeedback.isInteresting(), coachFeedback.isAskingQuestions(), coachFeedback.isExplainHowToUseNew(), coachFeedback.isCreativity(), coachFeedback.isKindness(), coachFeedback.isPatience(),
-                coachFeedback.isErudition(), coachFeedback.isStyleOfTeaching(), coachFeedback.getOther(), coachFeedback.getCoach().getName(), coachFeedback.getDate(), coachFeedback.getFeedbacker().getName(), coachFeedback.getFeedbacker().getLogin());
+                coachFeedback.isErudition(), coachFeedback.isStyleOfTeaching(), coachFeedback.getOther(), coachFeedback.getCoach().getName(), coachFeedback.getDate(), coachFeedback.getFeedbacker().getName(), coachFeedback.getFeedbacker().getLogin(), FeedbackType.parseIntToFeedbackType(coachFeedback.getType()).toString());
         return coachFeedbackGETModel;
     }
 
-    public static List<CoachFeedbackGETModel> parseCoachFeedbacks(List<CoachFeedback> coachFeedbacks) {
+    public static List<CoachFeedbackGETModel> parseCoachFeedbacks(List<CoachFeedback> coachFeedbacks) throws NoSuchFieldException {
         List<CoachFeedbackGETModel> coachFeedbackGETModels = new ArrayList<CoachFeedbackGETModel>();
         for(CoachFeedback coachFeedback: coachFeedbacks) {
             coachFeedbackGETModels.add(CoachFeedbackGETModel.parseCoachFeedback(coachFeedback));

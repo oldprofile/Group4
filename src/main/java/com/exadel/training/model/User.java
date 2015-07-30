@@ -223,35 +223,4 @@ public class User {
     public void setNewses(List<News> newses) {
         this.newses = newses;
     }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        User user = (User) o;
-
-        if (id != user.id) return false;
-        if (password != user.password) return false;
-        if (!email.equals(user.email)) return false;
-        if (!login.equals(user.login)) return false;
-        if (!name.equals(user.name)) return false;
-        if (!roles.equals(user.roles)) return false;
-        if (!feedbacksOnUser.equals(user.feedbacksOnUser)) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + email.hashCode();
-        result = 31 * result + roles.hashCode();
-        result = 31 * result + name.hashCode();
-        result = 31 * result + login.hashCode();
-        result = 31 * result + (int) (password ^ (password >>> 32));
-        result = 31 * result + feedbacksOnUser.hashCode();
-        return result;
-    }
 }

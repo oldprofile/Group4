@@ -1,5 +1,6 @@
 package com.exadel.training.controller.model.Feedback;
 
+import com.exadel.training.common.FeedbackType;
 import com.exadel.training.model.TrainingFeedback;
 
 import java.io.Serializable;
@@ -33,12 +34,14 @@ public class TrainingFeedbackGETModel implements Serializable{
 
     private String feedbackerName;
 
+    private String type;
+
     private static SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
 
     public TrainingFeedbackGETModel() {
     }
 
-    public TrainingFeedbackGETModel(boolean clear, boolean interesting, boolean newMaterial, String effective, boolean recommendation, String other, String feedbackerLogin, String trainingName, Date date, String feedbackerName) {
+    public TrainingFeedbackGETModel(boolean clear, boolean interesting, boolean newMaterial, String effective, boolean recommendation, String other, String feedbackerLogin, String trainingName, Date date, String feedbackerName, String type) {
         this.clear = clear;
         this.interesting = interesting;
         this.newMaterial = newMaterial;
@@ -49,9 +52,10 @@ public class TrainingFeedbackGETModel implements Serializable{
         this.trainingName = trainingName;
         this.date = SDF.format(date);
         this.feedbackerName = feedbackerName;
+        this.type = type;
     }
 
-    public boolean getClear() {
+    public boolean isClear() {
         return clear;
     }
 
@@ -59,7 +63,7 @@ public class TrainingFeedbackGETModel implements Serializable{
         this.clear = clear;
     }
 
-    public boolean getInteresting() {
+    public boolean isInteresting() {
         return interesting;
     }
 
@@ -67,7 +71,7 @@ public class TrainingFeedbackGETModel implements Serializable{
         this.interesting = interesting;
     }
 
-    public boolean getNewMaterial() {
+    public boolean isNewMaterial() {
         return newMaterial;
     }
 
@@ -83,7 +87,7 @@ public class TrainingFeedbackGETModel implements Serializable{
         this.effective = effective;
     }
 
-    public boolean getRecommendation() {
+    public boolean isRecommendation() {
         return recommendation;
     }
 
@@ -131,13 +135,21 @@ public class TrainingFeedbackGETModel implements Serializable{
         this.feedbackerName = feedbackerName;
     }
 
-    public static TrainingFeedbackGETModel parseTrainingFeedback(TrainingFeedback trainingFeedback) {
-        TrainingFeedbackGETModel trainingFeedbackGETModel = new TrainingFeedbackGETModel(trainingFeedback.getClear(), trainingFeedback.getInteresting(), trainingFeedback.getNewMaterial(), String.valueOf(trainingFeedback.getEffective()),
-                trainingFeedback.getRecommendation(), trainingFeedback.getOther(), trainingFeedback.getFeedbacker().getName(), trainingFeedback.getTraining().getName(), trainingFeedback.getDate(), trainingFeedback.getFeedbacker().getName());
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+public static TrainingFeedbackGETModel parseTrainingFeedback(TrainingFeedback trainingFeedback) throws NoSuchFieldException {
+        TrainingFeedbackGETModel trainingFeedbackGETModel = new TrainingFeedbackGETModel(trainingFeedback.isClear(), trainingFeedback.isInteresting(), trainingFeedback.isNewMaterial(), String.valueOf(trainingFeedback.getEffective()),
+                trainingFeedback.isRecommendation(), trainingFeedback.getOther(), trainingFeedback.getFeedbacker().getName(), trainingFeedback.getTraining().getName(), trainingFeedback.getDate(), trainingFeedback.getFeedbacker().getName(), FeedbackType.parseIntToFeedbackType(trainingFeedback.getType()).toString());
         return trainingFeedbackGETModel;
     }
 
-    public static List<TrainingFeedbackGETModel> parseTrainingFeedbacks(List<TrainingFeedback> trainingFeedbacks) {
+    public static List<TrainingFeedbackGETModel> parseTrainingFeedbacks(List<TrainingFeedback> trainingFeedbacks) throws NoSuchFieldException {
         List<TrainingFeedbackGETModel> trainingFeedbackGETModels = new ArrayList<TrainingFeedbackGETModel>();
         for(TrainingFeedback trainingFeedback: trainingFeedbacks) {
             trainingFeedbackGETModels.add(TrainingFeedbackGETModel.parseTrainingFeedback(trainingFeedback));
