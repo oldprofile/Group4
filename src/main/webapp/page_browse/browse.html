@@ -1,4 +1,6 @@
-    <div class="card-layout-browse">
+   
+<div class="card-layout-browse" ng-class="{ 'waiting-for-angular': !isContentLoaded }">
+  <h1>Browse in {{categoryName}}</h1>
         <div ng-repeat="t in allTrainings">
             <div class="col-lg-3 col-md-4 col-sm-4 col-xs-6 card">
               <div class="card-bg">
@@ -9,7 +11,7 @@
                 <h2>1 Lesson</h2>
                 <h4>Coach: {{t.trainingCoach}}</h4>
                 <div class="additional">
-                  <h3>Start Date: {{t.dateTraining | date:'MM.dd'}}</h3>
+                  <h3>Start Date: {{t.dateTraining | date:'dd MMMM '}}</h3>
                   <a ng-href="#/courseinfo/{{t.trainingName}}">more</a>
                 </div>  
               </div>  

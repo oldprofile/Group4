@@ -7,8 +7,8 @@ angular.module('myApp.browse', ['ngRoute'])
     templateUrl: 'page_browse/browse.html',
     controller: 'BrowseController'
   }).when('/browse', {
-    templateUrl: 'page_browse/browse.html',
-    controller: 'BrowseController'
+    templateUrl: 'page_browse/browsemain.html',
+    controller: 'BrowseMainController'
   });
 }])
 
