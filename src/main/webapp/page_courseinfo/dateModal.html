@@ -1,0 +1,36 @@
+<div class="modal-header">
+  <h3 class="modal-title">Edit date & place</h3>
+  <h5 class="modal-title">{{course.name}}</h5>
+  <h5 class="modal-title">Coach: {{course.coachName}}</h5> 
+</div>
+<div class="modal-body">
+  <form name="lessonForm">
+    <div class="row">
+        <label class="col-xs-3 control-label" for="dropdown2">Edit date:</label>
+        
+        <div class="dropdown col-xs-9">
+            <a class="dropdown-toggle" id="dropdown{{index}}" role="button" data-toggle="dropdown">
+                <div class="input-group">
+                    <input type="text" class="form-control" ng-value="courseinfo.dateTime[index] | date: 'medium'">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                </div>
+            </a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <datetimepicker ng-model="courseinfo.dateTime[index]" data-datetimepicker-config="{ dropdownSelector: '#dropdown{{index}}' }"/>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="row">
+      <label for="place" class="col-xs-3 control-label">Place: </label>
+      <div class="col-xs-9">
+          <input class="form-control" name="place" id="place" type="text" placeholder="Place" ng-model="courseinfo.places[index]" required>
+      </div>
+    </div>
+    
+  </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default default-btn default-green" ng-click="ok()">OK</button>
+    <button class="btn btn-default default-btn default-blue" ng-click="cancel()">Cancel</button>
+</div>

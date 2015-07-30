@@ -1,5 +1,7 @@
 package com.exadel.training.model;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import javax.persistence.*;
 
 /**
@@ -12,6 +14,11 @@ public class News {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    private int type;
+
+    @Value("${news.isRead:false}")
+    private boolean isRead;
+
     @ManyToOne(cascade = CascadeType.ALL)
     private User user;
 
@@ -21,6 +28,29 @@ public class News {
     private String action;
 
     public News(){
+    }
+
+    public boolean isRead() {
+        return isRead;
+    }
+
+    public void setRead(boolean isRead) {
+        this.isRead = isRead;
+    }
+    public Training getTraining() {
+        return training;
+    }
+
+    public void setTraining(Training training) {
+        this.training = training;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public long getId() {

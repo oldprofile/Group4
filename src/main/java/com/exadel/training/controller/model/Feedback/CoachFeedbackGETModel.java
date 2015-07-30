@@ -45,7 +45,7 @@ public class CoachFeedbackGETModel implements Serializable {
 
     private String feedbackerLogin;
 
-    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+    private static SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
 
     public CoachFeedbackGETModel() {
     }
@@ -64,7 +64,7 @@ public class CoachFeedbackGETModel implements Serializable {
         this.styleOfTeaching = styleOfTeaching;
         this.other = other;
         this.coachLogin = coachLogin;
-        this.date = sdf.format(date);
+        this.date = SDF.format(date);
         this.feedbackerName = feedbackerName;
         this.feedbackerLogin = feedbackerLogin;
     }

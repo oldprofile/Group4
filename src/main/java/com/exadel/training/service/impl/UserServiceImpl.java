@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,9 +20,9 @@ import java.util.List;
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
+
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private TrainingRepository trainingRepository;
 
@@ -97,8 +98,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Training> selectAllTrainingBetweenDatesAndSortedByDate(String login, Date from, Date to) {
-        return userRepository.selectAllTrainingBetweenDatesAndSortedByName(login, from, to);
+    public List<Training> selectAllTrainingBetweenDatesAndSortedByName(String login, Date from, Date to) {
+        List<Long> trainingsParentID = userRepository.selectAllTrainingBetweenDatesAndSortedByName(login, from, to);
+        List<Training> parents = new ArrayList<>();
+
+        for(Long id : trainingsParentID ) {
+            parents.add(trainingRepository.findById(id));
+        }
+
+        return parents;
     }
 
     @Override
@@ -117,11 +125,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> searchUsersByName(String name) {
-        return userRepository.searchUsersByName("'" + name + "*'");
-    }
-
-    @Override
     @Transactional
     public void deleteUserTrainingRelationShip(String login, String trainingName) {
         long userID = userRepository.findUserByLogin(login).getId();
@@ -133,8 +136,14 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void insertUserTrainingRelationShip(String login, String trainingName) {
         long userID = userRepository.findUserByLogin(login).getId();
-        Training training = trainingRepository.findByName(trainingName);
-        if(training.getListeners().size() < training.getAmount()) {
+        Training parentTraining = trainingRepository.findTrainingByName(trainingName);
+        List<Training> trainings = trainingRepository.findTrainingsByName(trainingName);
+
+        if(parentTraining.getListeners().size() < parentTraining.getAmount()) {
+            userRepository.insertUserTrainingRelationShip(parentTraining.getId(), userID);
+        }
+
+        for(Training training : trainings) {
             userRepository.insertUserTrainingRelationShip(training.getId(), userID);
         }
     }
@@ -143,5 +152,12 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void saveUser(User user) {
         userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void insertNumberOfTelephone(String login, String number) {
+        User user = userRepository.findUserByLogin(login);
+        user.setNumberPhone(number);
     }
 }

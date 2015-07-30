@@ -1,5 +1,6 @@
 package com.exadel.training.controller.model.Training;
 
+import org.apache.commons.lang3.SystemUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -50,7 +51,10 @@ public class TrainingForCreation {
         byte[] data = Base64.decodeBase64(pictureString);
         fileName = fileName.replace(" ", "-");
         String fileLink = filePath + fileName +  "." + fileType;
-        FileOutputStream imageOutFile = new FileOutputStream(System.getProperty("user.dir") + "\\src\\main\\webapp" + fileLink);
+        String destination = System.getProperty("user.dir") + "\\src\\main\\webapp" + fileLink;
+        if(!SystemUtils.IS_OS_WINDOWS)
+            destination = destination.replace("\\", "/");
+        FileOutputStream imageOutFile = new FileOutputStream(destination);
         fileLink = fileLink.replace("\\", "/");
         imageOutFile.write(data);
         imageOutFile.close();

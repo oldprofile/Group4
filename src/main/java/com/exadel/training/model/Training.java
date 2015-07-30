@@ -79,7 +79,13 @@ public class Training {
         audience = trainingForCreation.getAudience();
         pictureLink = trainingForCreation.getPictureLink();
         additional = trainingForCreation.getAdditional();
-        parent = 0;
+    }
+
+    public void generateRating() {
+        rating = 0;
+        for(TrainingFeedback trainingFeedback: feedbacks)
+            rating += trainingFeedback.getEffective();
+        rating = rating / feedbacks.size();
     }
 
     public long getId() {
@@ -241,4 +247,5 @@ public class Training {
     public void setRating(double rating) {
         this.rating = rating;
     }
+
 }

@@ -30,8 +30,11 @@ import java.util.List;
 @EnableScheduling
 public class ScheduledTasksService {
 
-    private WrapperNotificationMail wrapperNotificationMail = new WrapperNotificationMail();
-    private WrapperNotificationSMS wrapperNotificationSMS = new WrapperNotificationSMS();
+    @Autowired
+    WrapperNotificationMail wrapperNotificationMail;
+
+    @Autowired
+    WrapperNotificationSMS wrapperNotificationSMS;
 
     @Autowired
     TrainingService trainingService;
@@ -61,43 +64,34 @@ public class ScheduledTasksService {
     private void cancelTraining(NotificationTrainingModel notificationTrainingModel, List<UserShort> listeners) throws MessagingException, NoSuchFieldException {
         Training training = trainingService.getTrainingByName(notificationTrainingModel.getName());
         training.setState(StateTraining.parseToInt("Canceled"));
-            for (UserShort listener : listeners) {
-                wrapperNotificationMail.sendMessage(listener.getEmail(), "canceled", "topic");
-            }
-            UserShort traininer = notificationTrainingModel.getTrainer();
-            wrapperNotificationMail.sendMessage(traininer.getEmail(), "canceled", "topic");
+        for (UserShort listener : listeners) {
+            wrapperNotificationMail.send(listener.getEmail(), "canceled");
+        }
+        UserShort traininer = notificationTrainingModel.getTrainer();
+        wrapperNotificationMail.send(traininer.getEmail(), "canceled");
     }
 
     private void notificateByEmail(NotificationTrainingModel notificationTrainingModel, List<UserShort> listeners) throws MessagingException {
         for (UserShort listener : listeners) {
-            wrapperNotificationMail.sendMessage(listener.getEmail(), "canceled", "topic");
+            wrapperNotificationMail.send(listener.getEmail(), "canceled");
         }
         UserShort traininer = notificationTrainingModel.getTrainer();
-        wrapperNotificationMail.sendMessage(traininer.getEmail(), "text", "topic");
+        wrapperNotificationMail.send(traininer.getEmail(), "text");
     }
 
     private void notificateBySms(NotificationTrainingModel notificationTrainingModel, List<UserShort> listeners) throws TwilioRestException {
         for(UserShort listener: listeners) {
-            String phone = listener.getNumberPhone();
-            if(!StringUtils.isBlank(phone)){
-                wrapperNotificationSMS.sendSMS(phone, "text");
-            }
+                wrapperNotificationSMS.send(listener.getNumberPhone(), "text");
         }
         UserShort traininer = notificationTrainingModel.getTrainer();
-        String phone = traininer.getNumberPhone();
-        if(!StringUtils.isBlank(phone)) {
-            wrapperNotificationSMS.sendSMS(phone, "text");
-        }
+            wrapperNotificationSMS.send(traininer.getNumberPhone(), "text");
     }
 
     private void race(NotificationTrainingModel notificationTrainingModel) throws TwilioRestException {
         Training training = trainingService.getTrainingByName(notificationTrainingModel.getName());
         List<UserShort> spareListeners = UserShort.parseUserShortList(training.getSpareUsers());
         for(UserShort spareListener: spareListeners) {
-            String phone = spareListener.getNumberPhone();
-            if(!StringUtils.isBlank(phone)) {
-                wrapperNotificationSMS.sendSMS(phone, "text");
-            }
+                wrapperNotificationSMS.send(spareListener.getNumberPhone(), "text");
         }
     }
 

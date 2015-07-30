@@ -1,14 +1,14 @@
 package com.exadel.training.controller;
 
-import com.exadel.training.tokenAuthentification.CryptService;
-import com.exadel.training.tokenAuthentification.impl.DESCryptServiceImpl;
-import com.exadel.training.tokenAuthentification.impl.DecoratorDESCryptServiceImpl;
 import com.exadel.training.controller.model.Authentication;
 import com.exadel.training.model.User;
 import com.exadel.training.service.RoleService;
 import com.exadel.training.service.UserService;
+import com.exadel.training.tokenAuthentification.CryptService;
+import com.exadel.training.tokenAuthentification.SessionToken;
 import com.twilio.sdk.TwilioRestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 import javax.crypto.BadPaddingException;
@@ -30,16 +30,12 @@ public class AuthenticationController {
     private UserService userService;
     @Autowired
     private RoleService roleService;
-
+    @Autowired(required = true)
+    @Qualifier(value = "decoratorDESCryptServiceImpl")
     private CryptService cryptService;
+    @Autowired
+    private SessionToken sessionToken;
 
-    public AuthenticationController() {
-        try {
-            cryptService = new DecoratorDESCryptServiceImpl(new DESCryptServiceImpl());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     @RequestMapping(value = "/log_password", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody Authentication save(@RequestBody Authentication project, HttpServletResponse httpServletResponse) {
@@ -49,11 +45,13 @@ public class AuthenticationController {
          try {
              user = userService.findUserByLoginAndPassword(login, password);
          }catch (NullPointerException e){
-             httpServletResponse.setStatus(HttpServletResponse.SC_NOT_FOUND);
+             httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
          }
          httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
             try {
-                httpServletResponse.setHeader("token", cryptService.encrypt(login));
+                String token = cryptService.encrypt(login);
+                httpServletResponse.setHeader("token", token);
+                sessionToken.addToken(login,token);
             } catch (UnsupportedEncodingException | BadPaddingException | IllegalBlockSizeException e) {
                 e.printStackTrace();
             }
@@ -63,9 +61,10 @@ public class AuthenticationController {
     @RequestMapping(value = "/logout", method = RequestMethod.POST,  consumes = "application/json")
     public void logout(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException {
         String header = httpServletRequest.getHeader("authorization");
-        String login = cryptService.decrypt(header);
+        String login = httpServletRequest.getHeader("login");
 
-        if(userService.checkUserByLogin(login)) {
+        if(sessionToken.containsToken(header)) {
+            sessionToken.deleteToken(login, header);
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -73,9 +72,12 @@ public class AuthenticationController {
     }
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public @ResponseBody Authentication get() throws TwilioRestException {
+    public @ResponseBody Authentication get(HttpServletRequest httpServletRequest) throws TwilioRestException {
         // Role role = roleService.getRoleByID(1);
         User user = userService.findUserByLoginAndPassword("1", 1l);
+        String header = httpServletRequest.getHeader("authorization");
+        String login = httpServletRequest.getHeader("login");
+        sessionToken.deleteToken(login, header);
         return Authentication.parseAuthentication(user);
     }
 }
