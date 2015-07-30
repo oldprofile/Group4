@@ -33,6 +33,8 @@ public class TrainingFeedback{
     @NotNull
     private Date date;
 
+    private int type;
+
     @ManyToOne(cascade = CascadeType.ALL)
     private Training training;
 
@@ -41,7 +43,7 @@ public class TrainingFeedback{
     }
 
     public TrainingFeedback(boolean clear, boolean interesting, boolean newMaterial, int effective, boolean recommendation,
-                            String other, User feedbacker, Training training) {
+                            String other, User feedbacker, Training training, int type) {
         this.clear = clear;
         this.interesting = interesting;
         this.newMaterial = newMaterial;
@@ -51,13 +53,22 @@ public class TrainingFeedback{
         this.feedbacker = feedbacker;
         this.training = training;
         this.date = new Date();
+        this.type = type;
     }
 
-    public long getId() {
-        return id;
+    public TrainingFeedback(boolean clear, boolean interesting, boolean newMaterial, int effective, boolean recommendation, String other, User feedbacker, Training training) {
+        this.clear = clear;
+        this.interesting = interesting;
+        this.newMaterial = newMaterial;
+        this.effective = effective;
+        this.recommendation = recommendation;
+        this.other = other;
+        this.feedbacker = feedbacker;
+        this.date = new Date();
+        this.training = training;
     }
 
-    public boolean getClear() {
+    public boolean isClear() {
         return clear;
     }
 
@@ -65,7 +76,7 @@ public class TrainingFeedback{
         this.clear = clear;
     }
 
-    public boolean getInteresting() {
+    public boolean isInteresting() {
         return interesting;
     }
 
@@ -73,7 +84,7 @@ public class TrainingFeedback{
         this.interesting = interesting;
     }
 
-    public boolean getNewMaterial() {
+    public boolean isNewMaterial() {
         return newMaterial;
     }
 
@@ -89,7 +100,7 @@ public class TrainingFeedback{
         this.effective = effective;
     }
 
-    public boolean getRecommendation() {
+    public boolean isRecommendation() {
         return recommendation;
     }
 
@@ -119,6 +130,14 @@ public class TrainingFeedback{
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public Training getTraining() {

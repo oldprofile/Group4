@@ -1,5 +1,7 @@
 package com.exadel.training.controller.model.Feedback;
 
+import com.exadel.training.common.FeedbackType;
+import com.exadel.training.common.UserEnglishLevel;
 import com.exadel.training.model.UserFeedback;
 
 import java.io.Serializable;
@@ -39,12 +41,14 @@ public class UserFeedbackGETModel implements Serializable{
 
     private String level;
 
+    private String type;
+
     private static SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
 
     public UserFeedbackGETModel() {
     }
 
-    public UserFeedbackGETModel(boolean attendance, boolean attitude, boolean commSkills, boolean questions, boolean motivation, boolean focusOnResult, String other, String feedbackerLogin, String feedbackerName, String userLogin, Date date, String assessment, String level) {
+    public UserFeedbackGETModel(boolean attendance, boolean attitude, boolean commSkills, boolean questions, boolean motivation, boolean focusOnResult, String other, String feedbackerLogin, String feedbackerName, String userLogin, Date date, String assessment, String level, String type) {
         this.attendance = attendance;
         this.attitude = attitude;
         this.commSkills = commSkills;
@@ -58,6 +62,7 @@ public class UserFeedbackGETModel implements Serializable{
         this.date = SDF.format(date);
         this.assessment = assessment;
         this.level = level;
+        this.type = type;
     }
 
     public boolean getAttendance() {
@@ -164,12 +169,20 @@ public class UserFeedbackGETModel implements Serializable{
         this.date = date;
     }
 
-    public static UserFeedbackGETModel parseToUserFeedbackModel(UserFeedback userFeedback) {
-        return new UserFeedbackGETModel(userFeedback.getAttendance(), userFeedback.getAttitude(), userFeedback.getCommSkills(), userFeedback.getQuestions(),
-                userFeedback.getMotivation(), userFeedback.getFocusOnResult(), userFeedback.getOther(), userFeedback.getFeedbacker().getLogin(), userFeedback.getFeedbacker().getName(), userFeedback.getUser().getName(), userFeedback.getDate(), String.valueOf(userFeedback.getAssessment()), String.valueOf(userFeedback.getLevel()));
+    public String getType() {
+        return type;
     }
 
-    public static List <UserFeedbackGETModel> parseUserFeedbacks (List<UserFeedback> userFeedbacks) {
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public static UserFeedbackGETModel parseToUserFeedbackModel(UserFeedback userFeedback) throws NoSuchFieldException {
+        return new UserFeedbackGETModel(userFeedback.isAttendance(), userFeedback.isAttitude(), userFeedback.isCommSkills(), userFeedback.isQuestions(),
+                userFeedback.isMotivation(), userFeedback.isFocusOnResult(), userFeedback.getOther(), userFeedback.getFeedbacker().getLogin(), userFeedback.getFeedbacker().getName(), userFeedback.getUser().getName(), userFeedback.getDate(), String.valueOf(userFeedback.getAssessment()), UserEnglishLevel.parseIntToUserEnglishLevel(userFeedback.getLevel()).toString(), FeedbackType.parseIntToFeedbackType(userFeedback.getType()).toString());
+    }
+
+    public static List <UserFeedbackGETModel> parseUserFeedbacks (List<UserFeedback> userFeedbacks) throws NoSuchFieldException {
         List<UserFeedbackGETModel> userFeedbackModels = new ArrayList<UserFeedbackGETModel>();
         for(UserFeedback userFeedback: userFeedbacks) {
             userFeedbackModels.add(UserFeedbackGETModel.parseToUserFeedbackModel(userFeedback));

@@ -47,6 +47,8 @@ public class CoachFeedback {
     @ManyToOne(cascade = CascadeType.ALL)
     private User coach;
 
+    private int type;
+
     public CoachFeedback() {
     }
 
@@ -156,6 +158,14 @@ public class CoachFeedback {
         this.styleOfTeaching = styleOfTeaching;
     }
 
+    public String getOther() {
+        return other;
+    }
+
+    public void setOther(String other) {
+        this.other = other;
+    }
+
     public User getFeedbacker() {
         return feedbacker;
     }
@@ -180,11 +190,11 @@ public class CoachFeedback {
         this.coach = coach;
     }
 
-    public String getOther() {
-        return other;
+    public int getType() {
+        return type;
     }
 
-    public void setOther(String other) {
-        this.other = other;
+    public void setType(int type) {
+        this.type = type;
     }
 }

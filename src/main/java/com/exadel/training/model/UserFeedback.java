@@ -39,6 +39,7 @@ public class UserFeedback{
 
     private int level;
 
+    private int type;
 
     public UserFeedback() {
         this.date = new Date();
@@ -57,11 +58,22 @@ public class UserFeedback{
         this.user = user;
     }
 
-    public long getId() {
-        return id;
+    public UserFeedback(boolean attendance, boolean attitude, boolean commSkills, boolean questions, boolean motivation, boolean focusOnResult, String other, User feedbacker, User user, int assessment, int level) {
+        this.attendance = attendance;
+        this.attitude = attitude;
+        this.commSkills = commSkills;
+        this.questions = questions;
+        this.motivation = motivation;
+        this.focusOnResult = focusOnResult;
+        this.other = other;
+        this.date = new Date();
+        this.feedbacker = feedbacker;
+        this.user = user;
+        this.assessment = assessment;
+        this.level = level;
     }
 
-    public boolean getAttendance() {
+    public boolean isAttendance() {
         return attendance;
     }
 
@@ -69,15 +81,7 @@ public class UserFeedback{
         this.attendance = attendance;
     }
 
-    public boolean getCommSkills() {
-        return commSkills;
-    }
-
-    public void setCommSkills(boolean commSkills) {
-        this.commSkills = commSkills;
-    }
-
-    public boolean getAttitude() {
+    public boolean isAttitude() {
         return attitude;
     }
 
@@ -85,7 +89,15 @@ public class UserFeedback{
         this.attitude = attitude;
     }
 
-    public boolean getQuestions() {
+    public boolean isCommSkills() {
+        return commSkills;
+    }
+
+    public void setCommSkills(boolean commSkills) {
+        this.commSkills = commSkills;
+    }
+
+    public boolean isQuestions() {
         return questions;
     }
 
@@ -93,7 +105,7 @@ public class UserFeedback{
         this.questions = questions;
     }
 
-    public boolean getMotivation() {
+    public boolean isMotivation() {
         return motivation;
     }
 
@@ -101,7 +113,7 @@ public class UserFeedback{
         this.motivation = motivation;
     }
 
-    public boolean getFocusOnResult() {
+    public boolean isFocusOnResult() {
         return focusOnResult;
     }
 
@@ -155,5 +167,13 @@ public class UserFeedback{
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }
