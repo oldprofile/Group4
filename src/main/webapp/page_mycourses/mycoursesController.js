@@ -7,10 +7,12 @@ angular.module('myApp.mycourses')
     $scope.mycourses = [];
     $scope.isContentLoaded = false;
     
-    mycourses.getAllActualUserCourses().success(function(data) {
+    mycourses.getAllActualUserCourses().success(function(data,status) {
        // alert("mycourses success")
         console.log("Getting courses: " + JSON.stringify(data));
-        if(data.length === 0){
+        console.log("Getting courses: " + status);
+        if(data.length === 0 || status === 204){
+          //No courses
             $scope.isNoCourses = true;
             return;
         }
@@ -20,8 +22,9 @@ angular.module('myApp.mycourses')
         $scope.isContentLoaded = true;
         
         
-    }).error(function(err){
-        alert("err getting training");
+    }).error(function(err,status){
+      
+        alert("error getting courses");
     });  
     
 }]);

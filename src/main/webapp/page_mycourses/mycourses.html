@@ -10,14 +10,19 @@
           
             <div class="col-md-6 col-sm-12 col-xs-12 card">
               <div class="card-bg">
+                
                   <div class="col-xs-7 card-image">
                     <img ng-src="{{c.trainingImage}}">
                   </div>
                   <div class="col-xs-5">
                     <h1>{{c.trainingName}}</h1>
-
+                    
                     <h2>Lesson #1</h2>
-                    <h3>{{c.dateTraining | date:"dd.MM, hh.mm" }} | {{c.trainingPlace}}</h3>
+                    <div class="coach-label" ng-if="c.isCoach">
+                      <span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;You're the Master!
+                    </div>  
+                    <h3>When: {{c.dateTraining | date:"dd MMM, HH.mm" }}</h3>
+                    <h3>Where: {{c.trainingPlace}}</h3>
                     <a ng-href="#/courseinfo/{{c.trainingName}}">more</a>
                   </div>  
 
