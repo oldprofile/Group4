@@ -132,8 +132,9 @@ public class TrainingServiceImpl implements TrainingService {
         List<Date> dateTimes = new ArrayList<>();
         for (String date : dates)
             dateTimes.add(sdf.parse(date));
+        Training mainTraining = trainingRepository.findByName(trainingForCreation.getName());
         Category category = categoryRepository.findById(trainingForCreation.getIdCategory());
-        User coach = userRepository.findUserByLogin(trainingForCreation.getUserLogin());
+        User coach = mainTraining.getCoach();
 
         int state;
         String place = null;
@@ -148,7 +149,6 @@ public class TrainingServiceImpl implements TrainingService {
             state = StateTraining.parseToInt("Edited");
         }
 
-        Training mainTraining = trainingRepository.findByName(trainingForCreation.getName());
         mainTraining.fillTraining(trainingForCreation);
         mainTraining.setCategory(category);
         mainTraining.setState(state);
