@@ -1,0 +1,24 @@
+.statistics-container th {
+    text-align: left;
+    margin-left: 60px; /* Отступ слева в пикселах */
+    margin-right: 10px; /* Отступ справа в пикселах */
+    width: 20%;
+    padding-left: 4%; /* Отступ от линии слева до текста  */
+    padding-bottom: 4%; /* Отступ от линии снизу до текста  */
+}
+
+.statistics-container td{
+    text-align: left;
+    margin-left: 60px; /* Отступ слева в пикселах */
+    margin-right: 10px; /* Отступ справа в пикселах */
+    padding-left: 4%; /* Отступ от линии слева до текста  */
+    padding-bottom: 4%; /* Отступ от линии снизу до текста  */
+}
+
+.statistics-container{
+    margin-top: 2%
+}
+
+.statistics-container td + b{
+    border-color: #FDBE33 #000 #D77206;
+}

@@ -1,0 +1,103 @@
+<div class="statistics-container" >
+    <table>
+        <thead>
+        <tr>
+            <th>Start date</th>
+            <td>
+                <div class="dropdown col-xs-10">
+                    <a class="dropdown-toggle" id="dropdown1" role="button" data-toggle="dropdown">
+                        <div class="input-group" id="inputDate">
+                            <input type="text" class="form-control" ng-value="temp.tempDates[$index] | date: 'medium'">
+                        <span class="input-group-addon">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                        </span>
+                        </div>
+                    </a>
+
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                        <datetimepicker ng-model="temp.tempDates[$index]" data-datetimepicker-config="{ dropdownSelector: '#dropdown1' }"/>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th>End date</th>
+            <td>
+                <div class="dropdown col-xs-10">
+                    <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown">
+                        <div class="input-group" id="inputDate2">
+                            <input type="text" class="form-control" ng-value="temp.tempDates[$index] | date: 'medium'">
+                        <span class="input-group-addon">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                        </span>
+                        </div>
+                    </a>
+
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                        <datetimepicker ng-model="temp.tempDates[$index]" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"/>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th>Select type</th>
+            <td>
+                <input type="checkbox" checked>Listener
+                <input type="checkbox">Trainings
+            </td>
+        </tr>
+        <tr>
+            <th>Select person</th>
+            <td>
+                <select class="form-control">
+                    <option disabled>Choose, please</option>
+                    <option>Number one</option>
+                    <option>Number two</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>Select training</th>
+            <td>
+                <select class="form-control">
+                    <option disabled>Choose, please</option>
+                    <option>Number one</option>
+                    <option>Number two</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>Count of pass</th>
+            <td>
+                <input type="radio" name="cpass" checked>Yes
+                <input type="radio" name="cpass">No
+            </td>
+        </tr>
+        <tr>
+            <th>Count of trainigs</th>
+            <td>
+                <input type="radio" name="training" checked>Yes
+                <input type="radio" name="training">No
+            </td>
+        </tr>
+        <tr>
+            <th>Full statistics </th>
+            <td>
+                <input type="radio" name="full" checked>Yes
+                <input type="radio" name="full">No
+            </td>
+        </tr>
+        <tr>
+            <th>Dates of pass</th>
+            <td>
+                <input type="radio" name="dpass" checked>Yes
+                <input type="radio" name="dpass">No
+            </td>
+        </tr>
+        <tr>
+            <th></th>
+            <td><b><input type="button" value="Get statistics"></b></td>
+        </tr>
+        </thead>
+    </table>
+</div>
