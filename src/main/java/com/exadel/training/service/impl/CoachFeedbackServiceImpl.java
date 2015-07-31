@@ -1,5 +1,6 @@
 package com.exadel.training.service.impl;
 
+import com.exadel.training.common.FeedbackType;
 import com.exadel.training.controller.model.Feedback.CoachFeedbackADDModel;
 import com.exadel.training.model.CoachFeedback;
 import com.exadel.training.model.User;
@@ -33,6 +34,7 @@ public class CoachFeedbackServiceImpl implements CoachFeedbackService {
         CoachFeedback cfeedback = new CoachFeedback(coachFeedbackModel.isHowEnounceMaterial(), coachFeedbackModel.isExplainHardness(), coachFeedbackModel.isHighlightMain(), coachFeedbackModel.isInteresting(), coachFeedbackModel.isAskingQuestions(),
                 coachFeedbackModel.isExplainHowToUseNew(), coachFeedbackModel.isCreativity(), coachFeedbackModel.isKindness(), coachFeedbackModel.isPatience(), coachFeedbackModel.isErudition(), coachFeedbackModel.isStyleOfTeaching(), coachFeedbackModel.getOther(),
                 feedbacker, coach);
+        cfeedback.setType(FeedbackType.getFeedbackType(cfeedback));
         coachFeedbackRepository.save(cfeedback);
     }
 

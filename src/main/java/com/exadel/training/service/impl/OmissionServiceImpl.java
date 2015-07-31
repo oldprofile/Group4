@@ -85,4 +85,11 @@ public class OmissionServiceImpl implements OmissionService{
     public List<Omission> getOmisssionsByTrainingAndUser(String trainingName, String userLogin, Date dateFrom, Date dateTo) {
         return omissionRepository.findByTrainingNameAndUserLoginSortedByDate(userLogin, trainingName, dateFrom, dateTo);
    }
+
+    @Override
+    public List<Boolean> getAllOmissions(String trainingName, Date date) {
+        return omissionRepository.getAllOmissions(trainingName, date);
+    }
+
+
 }

@@ -27,6 +27,9 @@ public interface UserRepository extends JpaRepository<User,Long>{
     @Query("select case when (count(u)>0) then true else false end from User as u inner join u.roles as r where u.login = ?1 and r.id = ?2")
     Boolean whoIsUser(String login, long roleId);
 
+    @Query("select case when (count(c)>0) then true else false end from User as u inner join u.trainings as t inner join t.coach as c where u.login = ?1 and c.login = ?2")
+    Boolean isCoach(String login, String coachName);
+
     @Query(value = "select count(*) > 0 from users_trainings u where :trainingID = trainings and :userID = listeners",nativeQuery = true)
     int checkSubscribeToTraining(@Param("trainingID")Long trainingID,@Param("userID") Long userID);
 
@@ -59,10 +62,10 @@ public interface UserRepository extends JpaRepository<User,Long>{
     @Query(value = "insert into users_trainings values(:trainingID,:userID)", nativeQuery = true)
     void insertUserTrainingRelationShip(@Param("userID")Long userID, @Param("trainingID")Long trainingID);
 
-    @Query("select distinct t from User as u inner join u.trainings as t where u.login = ?1 and t.state in (?2) order by t.dateTime asc ")
+    @Query("select distinct t from User as u inner join u.trainings as t where u.login = ?1 and t.state in (?2) and t.parent = 0 order by t.dateTime asc ")
     List<Training> selectAllTrainingSortedByDate(String login, List<Integer> state);
 
-    @Query("select distinct t from User as u inner join u.trainings as t inner join t.coach as c where u.login = ?1 and t.state in (?2) and t.parent = 0 and c.id = u.id order by t.dateTime asc")
+    @Query("select distinct t from User as u inner join u.ownTrainings as t where u.login = ?1 and t.state in (?2) and t.parent = 0 order by t.dateTime asc")
     List<Training> selectAllTrainingSortedByDateTypeCoachTrue(String login, List<Integer> state);
 
     @Query("select distinct t from User as u inner join u.trainings as t inner join t.coach as c where u.login = ?1 and t.state in (?2) and t.parent = 0 and c.id not in (u.id) order by t.dateTime asc")

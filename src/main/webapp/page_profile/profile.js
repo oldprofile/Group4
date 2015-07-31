@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('myApp.profile', ['ngRoute'])
+angular.module('myApp.profile', ['ngRoute', "vAccordion"])
 
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/profile', {

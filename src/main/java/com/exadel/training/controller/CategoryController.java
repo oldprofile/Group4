@@ -29,9 +29,16 @@ public class CategoryController {
 
     @RequestMapping(value = "/allCategories", method = RequestMethod.GET)
     @ResponseBody
-    List<CategoryShort> findByCategory() {
-        List<CategoryShort> categories = CategoryShort.parseListCategoryShort(categoryService.getAllCategories());
-        return categories;
+    List<CategoryShort> allCategories() {
+        List<Category> categories = categoryService.getAllCategories();
+        List<CategoryShort> shortCategories = new ArrayList<>();
+        for(int i = 0; i < categories.size(); ++i) {
+            Category category = categories.get(i);
+            CategoryShort categoryShort = new CategoryShort(category);
+            categoryShort.setTrainingsNumber(trainingService.getValidTrainingsNumberByCategory(category));
+            shortCategories.add(categoryShort);
+        }
+        return shortCategories;
     }
 
     @RequestMapping(value = "/log_password", method = RequestMethod.POST, consumes = "application/json")

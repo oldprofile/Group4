@@ -8,7 +8,6 @@ import com.exadel.training.notification.Notification;
 import com.exadel.training.notification.news.NotificationNews;
 import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
-import com.exadel.training.tokenAuthentification.CryptService;
 import com.exadel.training.tokenAuthentification.SessionToken;
 import com.twilio.sdk.TwilioRestException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,15 +40,13 @@ public class UserController {
     @Autowired
     private TrainingService trainingService;
     @Autowired
-    @Qualifier("decoratorDESCryptServiceImpl")
-    private CryptService cryptService;
-    @Autowired
     private SessionToken sessionToken;
     @Autowired
     @Qualifier("wrapperNotificationMail")
     private Notification notificationMail;
     @Autowired
     private NotificationNews notificationNews;
+    private Object object = new Object();
 
 
     @RequestMapping(value = "/find_by_role/{type}", method = RequestMethod.GET)
@@ -141,7 +138,7 @@ public class UserController {
 
         if(sessionToken.containsToken(header)) {
 
-            List<Training> trainings = userService.selectAllTrainingSortedByDateTypeCoachTrue(allTrainingUserSortedAndState.getLogin(),allTrainingUserSortedAndState.getState());
+            List<Training> trainings = userService.selectAllTrainingSortedByDateTypeCoachTrue(allTrainingUserSortedAndState.getLogin(), allTrainingUserSortedAndState.getState());
             User user = userService.findUserByLogin(login);
 
             for (Training training : trainings) {
@@ -176,7 +173,7 @@ public class UserController {
 
         if(sessionToken.containsToken(header)) {
 
-            List<Training> trainings = userService.selectAllTrainingSortedByDateTypeCoachFalse(allTrainingUserSortedAndState.getLogin(),allTrainingUserSortedAndState.getState());
+            List<Training> trainings = userService.selectAllTrainingSortedByDateTypeCoachFalse(allTrainingUserSortedAndState.getLogin(), allTrainingUserSortedAndState.getState());
             User user = userService.findUserByLogin("1");
 
             for (Training training : trainings) {
@@ -227,7 +224,7 @@ public class UserController {
 
     @RequestMapping(value = "/leave_training", method = RequestMethod.POST, consumes = "application/json")
     public void leaveTraining(@RequestBody UserLeaveAndJoinTraining userLeaveAndJoinTraining,
-                              HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws TwilioRestException, BadPaddingException, IOException, IllegalBlockSizeException {
+                              HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws TwilioRestException, BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
 
         String header = httpServletRequest.getHeader("authorization");
         String login = httpServletRequest.getHeader("login");
@@ -238,7 +235,7 @@ public class UserController {
             if(userService.checkSubscribeToTraining(trainingName, userLogin)) {
                 userService.deleteUserTrainingRelationShip(userLogin, trainingName);
 
-                notificationNews.sendNews(userLogin + " has left " + trainingName, userService.findUserByLogin(userLogin), trainingService.getTrainingByName(trainingName));
+                notificationNews.sendNews(" has left ", userService.findUserByLogin(userLogin), trainingService.getTrainingByName(trainingName));
 
                 httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
             } else {
@@ -263,25 +260,29 @@ public class UserController {
                 Training training = trainingService.getTrainingByName(trainingName);
                 User user = userService.findUserByLogin(login);
                 if(!userService.checkSubscribeToTraining(training.getId(), user.getId())) {
-                    if (training.getListeners().size() < training.getAmount()) {
-                        userService.insertUserTrainingRelationShip(userLogin, trainingName);
+                   synchronized(object) {
+                        if (training.getListeners().size() < training.getAmount()) {
+                            userService.insertUserTrainingRelationShip(userLogin, trainingName);
 
-                        notificationNews.sendNews(userLogin + " has subscribed to " + trainingName,user,training);
-                        notificationMail.send(user.getEmail(), userLogin + ",you have subscribed to " + trainingName);
+                            notificationNews.sendNews(userLogin + " has subscribed to " + trainingName, user, training);
+                            notificationMail.send(user.getEmail(), userLogin + ",you have subscribed to " + trainingName);
 
-                        httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
-                    } else {
-                        trainingService.addSpareUser(trainingName, login);
+                            httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+                        } else {
+                            trainingService.addSpareUser(trainingName, login);
 
-                        notificationMail.send(user.getEmail(), userLogin + ",you are in reserve " + trainingName);
+                            notificationMail.send(user.getEmail(), userLogin + ",you are in reserve " + trainingName);
 
-                        httpServletResponse.setStatus(HttpServletResponse.SC_CONTINUE);
+                            httpServletResponse.setStatus(HttpServletResponse.SC_CONTINUE);
+                        }
                     }
                 }
             } catch (NullPointerException e) {
                 httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
             } catch (TwilioRestException | MessagingException e) {
                 httpServletResponse.setStatus(HttpServletResponse.SC_CONFLICT);
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
             }
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -328,12 +329,16 @@ public class UserController {
                                              HttpServletResponse response, HttpServletRequest httpServletRequest) {
 
         String header = httpServletRequest.getHeader("authorization");
-        Training training = userService.findMyTraining(userLoginAndTraining.getLogin(),userLoginAndTraining.getTrainingName());
+        String mainLogin = httpServletRequest.getHeader("login");
 
-        if(training == null) {
-            response.setStatus(HttpServletResponse.SC_ACCEPTED);
-        } else {
-            response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+        if(sessionToken.containsToken(header)) {
+            Training training = userService.findMyTraining(userLoginAndTraining.getLogin(), userLoginAndTraining.getTrainingName());
+
+            if (training == null) {
+                response.setStatus(HttpServletResponse.SC_ACCEPTED);
+            } else {
+                response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+            }
         }
     }
     @RequestMapping(value = "/find_coach_of_user/{login}", method = RequestMethod.GET)
@@ -341,7 +346,7 @@ public class UserController {
                                                          HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException {
 
         String header = httpServletRequest.getHeader("authorization");
-        String mainLogin = cryptService.decrypt(header);
+        String mainLogin = httpServletRequest.getHeader("login");
         List<UserShort> userShorts = new ArrayList<>();
 
         if(userService.checkUserByLogin(mainLogin)) {
@@ -356,6 +361,30 @@ public class UserController {
         }
 
         return userShorts;
+    }
+
+    @RequestMapping(value = "/insert_phone", method = RequestMethod.POST, consumes = "application/json")
+    public void insertPhone(@RequestBody PhoneUser phoneUser, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+
+        String header = httpServletRequest.getHeader("authorization");
+        String login = httpServletRequest.getHeader("login");
+
+        if(sessionToken.containsToken(header)) {
+            userService.insertNumberOfTelephone(phoneUser.getLogin(), phoneUser.getNumberPhone());
+            httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+        } else {
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
+
+    }
+    @RequestMapping(value = "/insert_external_employee", method = RequestMethod.POST,  consumes = "application/json")
+    public void insertExternalEmployee(@RequestBody UserExEmployee userExEmployee) {
+        User user = new User();
+        user.setName(userExEmployee.getName());
+        user.setLogin(userExEmployee.getLogin());
+        user.setEmail(userExEmployee.getEmail());
+
+        userService.insertExEmploee(user);
     }
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
@@ -408,10 +437,11 @@ public class UserController {
 
 
         //   List<User> users = userService.searchUsersByName("art");
+        Boolean s = userService.isCoach("1","1");
         userService.insertNumberOfTelephone("1","+375291396905");
 
         Boolean is = userService.checkSubscribeToTraining(1L,1L);
-        Boolean i = userService.checkSubscribeToTraining("Front end","1");
+        Boolean i = userService.checkSubscribeToTraining("Front end", "1");
         UserShort us =  UserShort.parseUserShort(userService.findUserByLogin("1"));
 
         return null;

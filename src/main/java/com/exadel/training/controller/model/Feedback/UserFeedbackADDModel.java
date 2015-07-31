@@ -1,6 +1,9 @@
 package com.exadel.training.controller.model.Feedback;
 
+import com.exadel.training.common.FeedbackType;
+import com.exadel.training.common.UserEnglishLevel;
 import com.exadel.training.model.UserFeedback;
+import com.twilio.sdk.resource.instance.Feedback;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -50,7 +53,7 @@ public class UserFeedbackADDModel implements Serializable{
         this.level = level;
     }
 
-    public boolean getAttendance() {
+    public boolean isAttendance() {
         return attendance;
     }
 
@@ -58,7 +61,7 @@ public class UserFeedbackADDModel implements Serializable{
         this.attendance = attendance;
     }
 
-    public boolean getAttitude() {
+    public boolean isAttitude() {
         return attitude;
     }
 
@@ -66,7 +69,7 @@ public class UserFeedbackADDModel implements Serializable{
         this.attitude = attitude;
     }
 
-    public boolean getCommSkills() {
+    public boolean isCommSkills() {
         return commSkills;
     }
 
@@ -74,7 +77,7 @@ public class UserFeedbackADDModel implements Serializable{
         this.commSkills = commSkills;
     }
 
-    public boolean getQuestions() {
+    public boolean isQuestions() {
         return questions;
     }
 
@@ -82,7 +85,7 @@ public class UserFeedbackADDModel implements Serializable{
         this.questions = questions;
     }
 
-    public boolean getMotivation() {
+    public boolean isMotivation() {
         return motivation;
     }
 
@@ -90,7 +93,7 @@ public class UserFeedbackADDModel implements Serializable{
         this.motivation = motivation;
     }
 
-    public boolean getFocusOnResult() {
+    public boolean isFocusOnResult() {
         return focusOnResult;
     }
 
@@ -104,22 +107,6 @@ public class UserFeedbackADDModel implements Serializable{
 
     public void setOther(String other) {
         this.other = other;
-    }
-
-    public String getAssessment() {
-        return assessment;
-    }
-
-    public void setAssessment(String assessment) {
-        this.assessment = assessment;
-    }
-
-    public String getLevel() {
-        return level;
-    }
-
-    public void setLevel(String level) {
-        this.level = level;
     }
 
     public String getFeedbackerLogin() {
@@ -138,12 +125,28 @@ public class UserFeedbackADDModel implements Serializable{
         this.userLogin = userLogin;
     }
 
-    public static UserFeedbackADDModel parseToUserFeedbackModel(UserFeedback userFeedback) {
-        return new UserFeedbackADDModel(userFeedback.getAttendance(), userFeedback.getAttitude(), userFeedback.getCommSkills(), userFeedback.getQuestions(),
-                userFeedback.getMotivation(), userFeedback.getFocusOnResult(), userFeedback.getOther(), userFeedback.getFeedbacker().getLogin(), userFeedback.getUser().getName(), String.valueOf(userFeedback.getAssessment()), String.valueOf(userFeedback.getLevel()));
+    public String getAssessment() {
+        return assessment;
     }
 
-    public static List <UserFeedbackADDModel> parseUserFeedbacks (List<UserFeedback> userFeedbacks) {
+    public void setAssessment(String assessment) {
+        this.assessment = assessment;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    public static UserFeedbackADDModel parseToUserFeedbackModel(UserFeedback userFeedback) throws NoSuchFieldException {
+        return new UserFeedbackADDModel(userFeedback.isAttendance(), userFeedback.isAttitude(), userFeedback.isCommSkills(), userFeedback.isQuestions(),
+                userFeedback.isMotivation(), userFeedback.isFocusOnResult(), userFeedback.getOther(), userFeedback.getFeedbacker().getLogin(), userFeedback.getUser().getName(), String.valueOf(userFeedback.getAssessment()), UserEnglishLevel.parseIntToUserEnglishLevel(userFeedback.getLevel()).toString());
+    }
+
+    public static List <UserFeedbackADDModel> parseUserFeedbacks (List<UserFeedback> userFeedbacks) throws NoSuchFieldException {
         List<UserFeedbackADDModel> userFeedbackModels = new ArrayList<UserFeedbackADDModel>();
         for(UserFeedback userFeedback: userFeedbacks) {
             userFeedbackModels.add(UserFeedbackADDModel.parseToUserFeedbackModel(userFeedback));

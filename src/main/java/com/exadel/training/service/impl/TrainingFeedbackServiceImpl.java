@@ -1,5 +1,6 @@
 package com.exadel.training.service.impl;
 
+import com.exadel.training.common.FeedbackType;
 import com.exadel.training.controller.model.Feedback.TrainingFeedbackADDModel;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.TrainingFeedback;
@@ -38,7 +39,8 @@ public class TrainingFeedbackServiceImpl implements TrainingFeedbackService {
         String name = trainingFeedbackADDModel.getTrainingName();
         Training training = trainingService.getTrainingByName(name);
         TrainingFeedback tfeedback = new TrainingFeedback(trainingFeedbackADDModel.getClear(), trainingFeedbackADDModel.getInteresting(), trainingFeedbackADDModel.getNewMaterial(),
-                Integer.parseInt(trainingFeedbackADDModel.getEffective()), trainingFeedbackADDModel.getRecommendation(), trainingFeedbackADDModel.getOther(), feedbacker, training);
+                Integer.valueOf(trainingFeedbackADDModel.getEffective()), trainingFeedbackADDModel.getRecommendation(), trainingFeedbackADDModel.getOther(), feedbacker, training);
+        tfeedback.setType(FeedbackType.getFeedbackType(tfeedback));
         trainingFeedbackRepository.save(tfeedback);
     }
 

@@ -9,7 +9,7 @@ import com.exadel.training.model.User;
  */
 public interface NotificationNews {
 
-    void sendNews(News news);
-    void sendNews(String action, String with, String who);
-    void sendNews(String action, User user, Training training);
+    void sendNews(News news) throws NoSuchFieldException;
+    void sendNews(String action, String with, String who) throws NoSuchFieldException;
+    void sendNews(String action, User user, Training training) throws NoSuchFieldException;
 }

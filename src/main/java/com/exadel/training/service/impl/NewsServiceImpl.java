@@ -8,8 +8,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.async.DeferredResult;
 
 import javax.transaction.Transactional;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by HP on 23.07.2015.
@@ -19,13 +24,15 @@ import javax.transaction.Transactional;
 public class NewsServiceImpl implements NewsService {
 
     private static final int PAGE_SIZE = 2;
+    private Map<DeferredResult, Long> newsRequests = new ConcurrentHashMap<DeferredResult, Long>();
 
    @Autowired
     private NewsRepository newsRepository;
 
     @Override
-    public void insertNews(News news) {
+    public void insertNews(News news) throws NoSuchFieldException {
           newsRepository.save(news);
+          this.addToDeferredResult();
     }
 
     @Override
@@ -36,7 +43,46 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
+    public List<News> getLatestNews(Long id) {
+        return newsRepository.getLatestNews(id);
+    }
+
+    @Override
     public int getCountOFNews() {
-        return newsRepository.getCountOfPages();
+        return newsRepository.getCountOfNews();
+    }
+
+    @Override
+    public long getCountOfUnreadNews() {
+        return newsRepository.getCountOfUnreadNews();
+    }
+
+    public  DeferredResult<Long> getDefferdResult(Long state) throws NoSuchFieldException {
+        final DeferredResult<Long> deferredResult = new DeferredResult<Long>(null, Collections.emptyList());
+        newsRequests.put(deferredResult, state);
+
+        deferredResult.onCompletion(new Runnable() {
+            @Override
+            public void run() {
+                newsRequests.remove(deferredResult);
+            }
+        });
+
+        Long newNews = this.newsRepository.getCountOfUnreadNews();
+
+        if (state < newNews) {
+            deferredResult.setResult(newNews);
+        }
+
+        return deferredResult;
+        }
+
+    public void addToDeferredResult() throws NoSuchFieldException {
+        for (Map.Entry<DeferredResult, Long> entry : this.newsRequests.entrySet()) {
+            Long news = this.newsRepository.getCountOfUnreadNews();
+
+                entry.getKey().setResult(news);
+        }
+
     }
 }

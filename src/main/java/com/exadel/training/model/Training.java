@@ -81,11 +81,24 @@ public class Training {
         additional = trainingForCreation.getAdditional();
     }
 
+    public void fillTraining(Training editedTraining) throws NoSuchFieldException {
+        name = editedTraining.getName();
+        description = editedTraining.getDescription();
+        language = editedTraining.getLanguage();
+        isInternal = editedTraining.isInternal();
+        amount = editedTraining.getAmount();
+        audience = editedTraining.getAudience();
+        pictureLink = editedTraining.getPictureLink();
+        additional = editedTraining.getAdditional();
+    }
+
     public void generateRating() {
-        rating = 0;
-        for(TrainingFeedback trainingFeedback: feedbacks)
-            rating += trainingFeedback.getEffective();
-        rating = rating / feedbacks.size();
+        if(feedbacks.size() > 0) {
+            rating = 0;
+            for (TrainingFeedback trainingFeedback : feedbacks)
+                rating += trainingFeedback.getEffective();
+            rating = rating / feedbacks.size();
+        }
     }
 
     public long getId() {
