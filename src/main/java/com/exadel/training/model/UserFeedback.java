@@ -35,7 +35,7 @@ public class UserFeedback{
     @ManyToOne(cascade = CascadeType.ALL)
     private User user;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "userFeedback")
+    @OneToOne
     private News news;
     
     private int assessment;

@@ -12,8 +12,8 @@ import java.util.List;
  */
 public interface NewsService {
 
-    void insertNews(News news);
-    void addToDeferredResult();
+    void insertNews(News news) throws NoSuchFieldException;
+    void addToDeferredResult() throws NoSuchFieldException;
 
     Page<News> getNewsPage(Integer page);
     List<News> getLatestNews(Long id);

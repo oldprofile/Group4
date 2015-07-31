@@ -46,6 +46,7 @@ public class UserController {
     private Notification notificationMail;
     @Autowired
     private NotificationNews notificationNews;
+    private Object object = new Object();
 
 
     @RequestMapping(value = "/find_by_role/{type}", method = RequestMethod.GET)
@@ -223,7 +224,7 @@ public class UserController {
 
     @RequestMapping(value = "/leave_training", method = RequestMethod.POST, consumes = "application/json")
     public void leaveTraining(@RequestBody UserLeaveAndJoinTraining userLeaveAndJoinTraining,
-                              HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws TwilioRestException, BadPaddingException, IOException, IllegalBlockSizeException {
+                              HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws TwilioRestException, BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
 
         String header = httpServletRequest.getHeader("authorization");
         String login = httpServletRequest.getHeader("login");
@@ -259,25 +260,29 @@ public class UserController {
                 Training training = trainingService.getTrainingByName(trainingName);
                 User user = userService.findUserByLogin(login);
                 if(!userService.checkSubscribeToTraining(training.getId(), user.getId())) {
-                    if (training.getListeners().size() < training.getAmount()) {
-                        userService.insertUserTrainingRelationShip(userLogin, trainingName);
+                   synchronized(object) {
+                        if (training.getListeners().size() < training.getAmount()) {
+                            userService.insertUserTrainingRelationShip(userLogin, trainingName);
 
-                        notificationNews.sendNews(userLogin + " has subscribed to " + trainingName,user,training);
-                        notificationMail.send(user.getEmail(), userLogin + ",you have subscribed to " + trainingName);
+                            notificationNews.sendNews(userLogin + " has subscribed to " + trainingName, user, training);
+                            notificationMail.send(user.getEmail(), userLogin + ",you have subscribed to " + trainingName);
 
-                        httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
-                    } else {
-                        trainingService.addSpareUser(trainingName, login);
+                            httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+                        } else {
+                            trainingService.addSpareUser(trainingName, login);
 
-                        notificationMail.send(user.getEmail(), userLogin + ",you are in reserve " + trainingName);
+                            notificationMail.send(user.getEmail(), userLogin + ",you are in reserve " + trainingName);
 
-                        httpServletResponse.setStatus(HttpServletResponse.SC_CONTINUE);
+                            httpServletResponse.setStatus(HttpServletResponse.SC_CONTINUE);
+                        }
                     }
                 }
             } catch (NullPointerException e) {
                 httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
             } catch (TwilioRestException | MessagingException e) {
                 httpServletResponse.setStatus(HttpServletResponse.SC_CONFLICT);
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
             }
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
