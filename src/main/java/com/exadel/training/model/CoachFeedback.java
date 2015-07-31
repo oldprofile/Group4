@@ -41,7 +41,7 @@ public class CoachFeedback {
     @ManyToOne(cascade = CascadeType.ALL)
     private User feedbacker;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "coachFeedback")
+    @OneToOne
     private News news;
 
     @NotNull
