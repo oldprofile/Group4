@@ -1,23 +1,13 @@
-angular.module('myApp.notifications', ['ngWebSocket'])
-.factory('MyData', ['$websocket', function($websocket) {
-      // Open a WebSocket connection
-      var dataStream = $websocket('ws://localhost:8080/demo/actions');
-
-      var collection = [];
-
-      dataStream.onMessage(function(message) {
-        collection.push(JSON.parse(message.data));
-      });
-
-      var methods = {
-        collection: collection,
-        get: function() {
-          dataStream.send(JSON.stringify({ action: 'get' }));
-        }
-      };
-
-      return methods;
-    }]).controller('SomeController', ['$scope', 'MyData', function ($scope, MyData) {
-      $scope.MyData = MyData;
-    }]);
+angular.module('myApp.notifications', [])
+.factory('notificationService', ['$http', function($http) {
+  var api = {};
+  api.notification = function(c){
+    
+      return $http.get("/news_controller/c");
+   }
+  
+  return api;
+  
+  
+}])
   

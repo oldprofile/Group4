@@ -18,6 +18,11 @@ angular.module('myApp.browse')
     } else {
         userlogin = $routeParams.userLogin;
     }
+  
+    $scope.isCanLeaveCoachFeedback = false;
+    $scope.isCanLeaveStudentFeedback = false;
+  
+    
                                    
                                    
        var gettingUserProfileData = function(rights){
@@ -45,6 +50,8 @@ angular.module('myApp.browse')
             $scope.coachArchive = coachArchive;
           });
          
+         
+         
        
        }                            
                                    
@@ -52,11 +59,25 @@ angular.module('myApp.browse')
       //alert("User" + JSON.stringify(data));
       $scope.user = data;
       $scope.isContentLoaded = true;
+      alert(userService.getUser().login + userlogin);
+      feedbacksService.isCanLeaveCoachFeedback(userService.getUser().login,userlogin)
+       .success(function(data){
+       $scope.isCanLeaveCoachFeedback = data;
+    });
+         
+     feedbacksService.isCanLeaveStudentFeedback(userService.getUser().login,userlogin)
+       .success(function(data){
+       $scope.isCanLeaveStudentFeedback = data;
+     });
+      
+      
       gettingUserProfileData();
+      
+      
 
 
     }).error(function(err,status){
-      alert(status);
+      
       alert("Can't get user " + userlogin);
     });    
   
@@ -147,7 +168,7 @@ angular.module('myApp.browse')
   
   $scope.requestFeedback = function(){
     
-      var settingsModalInstance = $modal.open({
+      var requestModalInstance = $modal.open({
       animation: true,
       templateUrl: 'page_profile/Request.html',
       controller: 'RequestController',
@@ -162,10 +183,16 @@ angular.module('myApp.browse')
       }
     });
     
-    settingsModalInstance.result.then(function (data) {
-         
+    requestModalInstance.result.then(function (data) {
+         //alert(JSON.stringify(data));
       //sending new settings
-      profileService.saveSettings(data);
+         for(var i = 0; i < data.length ; i++){
+           feedbacksService.requestFeedback(data[i]).success(function(data){
+             // successfull request
+           });
+         }
+        
+      
       
     }, function () {
       //cancel feedback
@@ -287,7 +314,7 @@ angular.module('myApp.browse')
     var data = {};
     
     data.numberPhone = $scope.phoneNumber;
-    
+    data.login = user.login;
     $modalInstance.close(data);
   };
 
@@ -309,9 +336,13 @@ angular.module('myApp.browse')
   }  
   
   $scope.ok = function () {
-    var data = {};
+    var data = [];
+    for(var i = 0; i < $scope.archive.length; i++){
+      if ($scope.archive[i].request === true){
+        data.push({login:user.login, trainingName:$scope.archive[i].trainingName});
+      } 
+    }
     
-   alert($scope.archive[0].request);
     
     $modalInstance.close(data);
   };

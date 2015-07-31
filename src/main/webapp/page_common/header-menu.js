@@ -6,9 +6,24 @@ menuApp.directive('headerMenu',function(){
     };
 });
 
-menuApp.controller("HeaderMenuController",['$scope','$location',"getCategories",'userService',function($scope, $location,getCategories, userService){
+menuApp.controller("HeaderMenuController",['$scope','$location',"getCategories",'userService',"notificationService",function($scope, $location,getCategories, userService,notificationService){
     $scope.categories = [];
     $scope.username = "";
+  
+    $scope.notifications = 0;
+  
+    function polling(c){
+      notificationService.notification(c).success(function(data){
+      alert("getting notification " + data);
+      $scope.notifications = data;
+      
+      setTimeout(function(){
+        polling(data);
+      },5000);
+    })
+    }
+    polling($scope.notifications);
+    
     userService.loginPromise().then(function(un){
       $scope.username = un;
     });

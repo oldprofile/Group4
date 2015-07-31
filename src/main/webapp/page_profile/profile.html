@@ -15,11 +15,11 @@
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
             <li class="dropdown-header">Leave Feedback</li>
-            <li><a href="" ng-click="leaveStudentFeedback()">On Student</a></li>
-            <li><a href="" ng-click="leaveCoachFeedback()">On Coach</a></li>
-            <li role="separator" class="divider"></li>
-            <li class="dropdown-header">Request Feedback</li>
-            <li><a href="" ng-click="requestFeedback()">On Student</a></li>
+            <li><a href="" ng-hide="!isCanLeaveStudentFeedback" ng-click="leaveStudentFeedback()">On Student</a></li>
+            <li><a href="" ng-hide="!isCanLeaveCoachFeedback" ng-click="leaveCoachFeedback()">On Coach</a></li>
+            <li role="separator" ng-hide="false" class="divider"></li>
+            <li class="dropdown-header" ng-hide="false">Request Feedback</li>
+            <li><a href="" ng-hide="false" ng-click="requestFeedback()">On Student</a></li>
           </ul>
         </div>
       </div>

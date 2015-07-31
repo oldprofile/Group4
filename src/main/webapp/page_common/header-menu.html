@@ -49,7 +49,9 @@
         <li ng-class="{ active: isActive('/browse') }"><a href="#/browse">Browse</a></li>
           
         <li ng-class="{ active: isActive('/profile') }"><a href="#/profile">Profile</a></li>
-        <li ng-show="isAdmin()" ng-class="{ active: isActive('/admin') }"><a href="#/admin">Admin</a></li>  
+        <li ng-show="isAdmin()" ng-class="{ active: isActive('/admin') }"><a href="#/admin">Admin</a>
+        <div class="notification-number" ng-show="notifications > 0"><span>{{notifications}}</span></div>
+        </li>  
         
       </ul>
         

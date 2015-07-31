@@ -25,11 +25,15 @@ angular.module('myApp.profile')
       return data;
     }).error(function(err){
       return err;});
-  }
+  };
   
   profileService.saveSettings = function(data){
-    return $http.post("",data);
-  }
+    return $http.post("user_controller/insert_phone",data);
+  };
+  
+  
+  
+  
      
     
   return profileService
