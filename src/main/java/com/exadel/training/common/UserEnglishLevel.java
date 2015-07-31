@@ -9,15 +9,15 @@ public enum  UserEnglishLevel {
     UpperIntermediate,
     Advanced;
 
-public static int parseUserEnglishLevelToInt(UserEnglishLevel userEnglishLevel) throws NoSuchFieldException{
+public static int parseUserEnglishLevelToInt(String userEnglishLevel) throws NoSuchFieldException{
     switch (userEnglishLevel) {
-        case PreIntermediate:
+        case "PreIntermediate":
             return 1;
-        case Intermediate:
+        case "Intermediate":
             return 2;
-        case UpperIntermediate:
+        case "UpperIntermediate":
             return 3;
-        case Advanced:
+        case "Advanced":
             return 4;
         default:
             throw new NoSuchFieldException("can't find such type");

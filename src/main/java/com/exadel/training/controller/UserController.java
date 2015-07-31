@@ -372,12 +372,12 @@ public class UserController {
         }
 
     }
-    @RequestMapping(value = "/insert_external_emploee", method = RequestMethod.POST,  consumes = "application/json")
-    public void insertExternalEmploee(@RequestBody UserExEmploee userExEmploee) {
+    @RequestMapping(value = "/insert_external_employee", method = RequestMethod.POST,  consumes = "application/json")
+    public void insertExternalEmployee(@RequestBody UserExEmployee userExEmployee) {
         User user = new User();
-        user.setName(userExEmploee.getName());
-        user.setLogin(userExEmploee.getLogin());
-        user.setEmail(userExEmploee.getEmail());
+        user.setName(userExEmployee.getName());
+        user.setLogin(userExEmployee.getLogin());
+        user.setEmail(userExEmployee.getEmail());
 
         userService.insertExEmploee(user);
     }
@@ -432,6 +432,7 @@ public class UserController {
 
 
         //   List<User> users = userService.searchUsersByName("art");
+        Boolean s = userService.isCoach("1","1");
         userService.insertNumberOfTelephone("1","+375291396905");
 
         Boolean is = userService.checkSubscribeToTraining(1L,1L);

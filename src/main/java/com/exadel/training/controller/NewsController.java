@@ -6,14 +6,14 @@ import com.exadel.training.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by HP on 23.07.2015.
@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequestMapping("/news_controller")
 public class NewsController {
 
-    private Map<DeferredResult, Long> newsRequests = new ConcurrentHashMap<DeferredResult, Long>();
+
     @Autowired
     private NewsService userNewsService;
     private Integer i = 0;
@@ -46,37 +46,11 @@ public class NewsController {
 
     @RequestMapping("/quotes")
     @ResponseBody
-    public DeferredResult<List<News>> quotes(/*@RequestParam(required = false) Long timestamp*/) {
-
-        final DeferredResult<List<News>> result = new DeferredResult<List<News>>(null, Collections.emptyList());
-        this.newsRequests.put(result,1L);
-
-        result.onCompletion(new Runnable() {
-            public void run() {
-                newsRequests.remove(result);
-            }
-        });
-
-        List<News> list = getLatestNews(1L);
-        if (!list.isEmpty()) {
-            result.setResult(list);
-        }
-
-        return result;
+    public DeferredResult<List<NewsPage>> quotes(/*@RequestParam(required = false) Long timestamp*/) throws NoSuchFieldException {
+        return userNewsService.getDefferdResult();
     }
 
-    public void postMessage(@RequestParam String message) {
 
-
-        // Update all chat requests as part of the POST request
-        // See Redis branch for a more sophisticated, non-blocking approach
-
-    /*    for (Map.Entry<DeferredResult<List<News>>, Integer> entry : this.newsRequests.entrySet()) {
-            List<String> messages = this.chatRepository.getMessages(entry.getValue());
-
-            entry.getKey().setResult(messages);
-        }*/
-    }
     private List<News> getLatestNews(Long timestamp) {
         List<News> list = new ArrayList<>();
         News news = new News();

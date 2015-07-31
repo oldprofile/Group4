@@ -3,13 +3,13 @@ package com.exadel.training.controller.model.User;
 /**
  * Created by HP on 30.07.2015.
  */
-public class UserExEmploee {
+public class UserExEmployee {
 
     private String login;
     private String name;
     private String email;
 
-    public UserExEmploee(){
+    public UserExEmployee(){
     }
 
     public String getLogin() {

@@ -106,8 +106,7 @@ public class TrainingFeedbackADDModel implements Serializable {
     }
 
     public static TrainingFeedbackADDModel parseTrainingFeedback(TrainingFeedback trainingFeedback) {
-        TrainingFeedbackADDModel trainingFeedbackADDModel = new TrainingFeedbackADDModel(trainingFeedback.getClear(), trainingFeedback.getInteresting(), trainingFeedback.getNewMaterial(), String.valueOf(trainingFeedback.getEffective()),
-                trainingFeedback.getRecommendation(), trainingFeedback.getOther(), trainingFeedback.getFeedbacker().getName(), trainingFeedback.getTraining().getName());
+        TrainingFeedbackADDModel trainingFeedbackADDModel = new TrainingFeedbackADDModel(trainingFeedback.isClear(), trainingFeedback.isInteresting(), trainingFeedback.isNewMaterial(), String.valueOf(trainingFeedback.getEffective()), trainingFeedback.isRecommendation(), trainingFeedback.getOther(), trainingFeedback.getFeedbacker().getLogin(), trainingFeedback.getTraining().getName());
         return trainingFeedbackADDModel;
     }
 
