@@ -95,7 +95,7 @@ my-app-footer{
 .ng-view-content {
     /*footer height*/
   padding-bottom:80px;
-  overflow: auto;
+  
   display:block;
   
 }
@@ -623,6 +623,12 @@ font-weight: 500;
   max-width: 900px;
   margin: auto;
 
+}
+.profile-container h3{
+  font-weight: 300;
+}
+.profile-container h4{
+  font-weight: 300;
 }
 .profile-control{
   padding-top: 16px;
