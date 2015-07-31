@@ -82,17 +82,11 @@ angular.module('myApp').factory('userService',['$http','loginService','$window',
     logout: function(){
       var userService = this;
       
-      return $http.post("/authentication/logout",{}).success(function(data){
-          
+      return $http.post("/authentication/logout",{}).finally(function(){
           userService.clearUser();
           loginService.clearCreds();
           userService.isLogged = false;
-         
           $window.location.reload();
-          return data;
-    }).error(function(err){
-          alert("Err logout");
-          return err;
       });
         
     }  
