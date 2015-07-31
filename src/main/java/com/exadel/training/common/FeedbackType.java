@@ -21,7 +21,7 @@ public enum FeedbackType {
             case Negative:
                 return 3;
             default:
-                throw new NoSuchFieldException("can't find such type");
+                return 2;
         }
     }
 
@@ -34,7 +34,7 @@ public enum FeedbackType {
             case 3:
                 return Negative;
             default:
-                throw new NoSuchFieldException("can't find such type");
+                return Neutral;
         }
     }
 

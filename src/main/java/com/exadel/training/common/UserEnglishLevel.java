@@ -20,7 +20,7 @@ public static int parseUserEnglishLevelToInt(String userEnglishLevel) throws NoS
         case "Advanced":
             return 4;
         default:
-            throw new NoSuchFieldException("can't find such type");
+            return 1;
     }
 }
 
@@ -35,7 +35,7 @@ public static UserEnglishLevel parseIntToUserEnglishLevel(int i) throws NoSuchFi
         case 4:
             return Advanced;
         default:
-            throw new NoSuchFieldException("can't find such type");
+            return PreIntermediate;
     }
 }
 }
