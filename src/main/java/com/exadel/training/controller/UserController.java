@@ -235,7 +235,7 @@ public class UserController {
             if(userService.checkSubscribeToTraining(trainingName, userLogin)) {
                 userService.deleteUserTrainingRelationShip(userLogin, trainingName);
 
-                notificationNews.sendNews(userLogin + " has left " + trainingName, userService.findUserByLogin(userLogin), trainingService.getTrainingByName(trainingName));
+                notificationNews.sendNews(" has left ", userService.findUserByLogin(userLogin), trainingService.getTrainingByName(trainingName));
 
                 httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
             } else {

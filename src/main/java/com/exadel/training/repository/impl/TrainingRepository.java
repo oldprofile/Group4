@@ -56,7 +56,7 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
     @Query("select  tr from Training as tr where tr.state in (2,3) and tr.parent = 0 order by tr.dateTime asc")
     List<Training> findNearestTrainings();
 
-    @Query("select tr from Training as tr where tr.state in (1,4) and tr.parent = 0")
+    @Query("select tr from Training as tr where tr.state in (1,4) and tr.parent in (0,-1)")
     List<Training> findDraftAndEditedTrainings();
 
     @Query("select tr from Training as tr where tr.coach = ?1 and tr.parent = 0 order by tr.dateTime asc")
@@ -100,7 +100,7 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
     @Query("select count(tr.dateTime) from Training as tr where tr.name = ?1 and  tr.dateTime <= ?2 and tr.parent > 0")
     Integer findTrainingNumber(String trainingName, Date date);
 
-    @Query("select count(tr) from Training as tr where tr.category = ?2 and tr.parent = 0")
+    @Query("select count(tr) from Training as tr where tr.category = ?1 and tr.parent = 0")
     Integer findValidTrainingsNumberByCategory(Category category);
 
     @Query(value = "SELECT * FROM trainings WHERE MATCH (name) AGAINST (:search) and trainings.parent = 0", nativeQuery = true)
