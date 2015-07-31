@@ -15,6 +15,7 @@ menuApp.controller("HeaderMenuController",['$scope','$location',"getCategories",
     function polling(c){
       notificationService.notification(c).success(function(data){
       alert("getting notification " + data);
+      JSON.stringify(data);  
       $scope.notifications = data;
       
       setTimeout(function(){
