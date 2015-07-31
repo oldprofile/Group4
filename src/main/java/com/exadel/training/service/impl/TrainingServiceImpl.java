@@ -270,6 +270,11 @@ public class TrainingServiceImpl implements TrainingService {
         return training;
     }
 
+    @Override
+    public Training getEditedTrainingByName(String trainingName) {
+        return trainingRepository.findEditedTrainingByName(trainingName);
+    }
+
     private Training updateParentTraining(String trainingName) {
         List<Training> trainings = trainingRepository.findTrainingsWithParentByName(trainingName);
         Training parent = trainings.get(0);
