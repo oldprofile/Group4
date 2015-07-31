@@ -27,21 +27,61 @@ angular.module('myApp.createcourse')
     
     var editcourse = {};
     
-    editcourse.editCourse = function(courseData){
+    editcourse.editCourse = function(courseData, isDraft, justEdit){
         var fd = new FormData();
-        fd.append('courseInfo', JSON.stringify(courseData));
-        
-        return $http.post('/training_controller/edit_training', fd, {
-            headers : {
-                'Content-Type' : undefined
-            },
-            transformRequest : angular.identity
-        })
-            .then(function(results) {
-            alert('Course edited successfully!');
-            $location.path("/mycourses");
-            return results.data;
-        });
+        if(isDraft) {
+            alert("Course just created");
+            fd.append('courseInfo', JSON.stringify(courseData));
+            if(justEdit) {
+                return $http.post('/training_controller/edit_training', fd, {
+                    headers : {
+                        'Content-Type' : undefined
+                    },
+                    transformRequest : angular.identity
+                })
+                    .then(function(results) {
+                        alert('Course edited successfully!');
+                        $location.path("/mycourses");
+                        return results.data;
+                    });
+            }
+            else {
+                alert("admin approves course!");
+                return $http.post('/training_controller/approve_create_training', fd, {
+                    headers : {
+                        'Content-Type' : undefined
+                    },
+                    transformRequest : angular.identity
+                })
+                    .then(function(results) {
+                        alert('Course edited successfully!');
+                        $location.path("/mycourses");
+                        return results.data;
+                    });
+            }
+
+        }
+        else {
+            alert("isnt draft");
+            courseData.additional = "";
+            courseData.dateTime = [""];
+            courseData.places = [""];
+
+            fd.append('courseInfo', JSON.stringify(courseData));
+
+            return $http.post('/training_controller/edit_training', fd, {
+                headers: {
+                    'Content-Type': undefined
+                },
+                transformRequest: angular.identity
+            })
+                .then(function (results) {
+                    alert('Course approved successfully!');
+                    $location.path("/mycourses");
+                    return results.data;
+                });
+
+        }
     }
     return editcourse;
 }

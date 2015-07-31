@@ -37,52 +37,6 @@ public class TrainingServiceImpl implements TrainingService {
 
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
-    @Transactional
-    @Override
-    public Training addTraining(TrainingForCreation trainingForCreation) throws NoSuchFieldException, ParseException {
-
-        List<String> dates = trainingForCreation.getDateTimes();
-        List<Date> dateTimes = new ArrayList<>();
-        for (String date : dates) {
-            dateTimes.add(sdf.parse(date));
-        }
-        User coach = userRepository.findUserByLogin(trainingForCreation.getUserLogin());
-        Category category = categoryRepository.findById(trainingForCreation.getIdCategory());
-        int state;
-        String place;
-        if (userRepository.whoIsUser(trainingForCreation.getUserLogin(), 1)) {
-            state = StateTraining.parseToInt("Ahead");
-            place = trainingForCreation.getPlaces().get(0);
-        } else {
-            state = StateTraining.parseToInt("Draft");
-            place = null;
-        }
-
-        Training mainTraining = new Training();
-        mainTraining.fillTraining(trainingForCreation);
-        mainTraining.setDateTime(dateTimes.get(0));
-        mainTraining.setPlace(place);
-        mainTraining.setCoach(coach);
-        mainTraining.setCategory(category);
-        mainTraining.setState(state);
-        mainTraining.setParent(0);
-        trainingRepository.saveAndFlush(mainTraining);
-        List<Training> trainings = new ArrayList<>(dates.size());
-        for (int i = 0; i < dateTimes.size(); ++i) {
-            Training newTraining = new Training();
-            newTraining.fillTraining(trainingForCreation);
-            newTraining.setDateTime(dateTimes.get(i));
-            newTraining.setPlace(trainingForCreation.getPlaces().get(i));
-            newTraining.setCoach(coach);
-            newTraining.setCategory(category);
-            newTraining.setPlace(place);
-            newTraining.setState(state);
-            newTraining.setParent(mainTraining.getId());
-            trainings.add(newTraining);
-            trainingRepository.saveAndFlush(newTraining);
-        }
-        return mainTraining;
-    }
 
     @Override
     public Training getTrainingByID(long id) {
@@ -124,10 +78,55 @@ public class TrainingServiceImpl implements TrainingService {
         return trainingRepository.findValidTrainings();
     }
 
+    @Transactional
+    @Override
+    public Training addTraining(TrainingForCreation trainingForCreation) throws NoSuchFieldException, ParseException {
+
+        List<String> dates = trainingForCreation.getDateTimes();
+        List<Date> dateTimes = new ArrayList<>();
+        for (String date : dates) {
+            dateTimes.add(sdf.parse(date));
+        }
+        User coach = userRepository.findUserByLogin(trainingForCreation.getUserLogin());
+        Category category = categoryRepository.findById(trainingForCreation.getIdCategory());
+        int state;
+        String place;
+        if (userRepository.whoIsUser(trainingForCreation.getUserLogin(), 1)) {
+            state = StateTraining.parseToInt("Ahead");
+            place = trainingForCreation.getPlaces().get(0);
+        } else {
+            state = StateTraining.parseToInt("Draft");
+            place = null;
+        }
+
+        Training mainTraining = new Training();
+        mainTraining.fillTraining(trainingForCreation);
+        mainTraining.setDateTime(dateTimes.get(0));
+        mainTraining.setPlace(place);
+        mainTraining.setCoach(coach);
+        mainTraining.setCategory(category);
+        mainTraining.setState(state);
+        mainTraining.setParent(0);
+        trainingRepository.saveAndFlush(mainTraining);
+        List<Training> trainings = new ArrayList<>(dates.size());
+        for (int i = 0; i < dateTimes.size(); ++i) {
+            Training newTraining = new Training();
+            newTraining.fillTraining(trainingForCreation);
+            newTraining.setDateTime(dateTimes.get(i));
+            newTraining.setPlace(trainingForCreation.getPlaces().get(i));
+            newTraining.setCoach(coach);
+            newTraining.setCategory(category);
+            newTraining.setState(state);
+            newTraining.setParent(mainTraining.getId());
+            trainings.add(newTraining);
+            trainingRepository.saveAndFlush(newTraining);
+        }
+        return mainTraining;
+    }
 
     @Override
     @Transactional
-    public Training editTraining(TrainingForCreation trainingForCreation) throws ParseException, NoSuchFieldException {
+    public Training approveCreateTraining(TrainingForCreation trainingForCreation) throws ParseException, NoSuchFieldException {
         List<String> dates = trainingForCreation.getDateTimes();
         List<Date> dateTimes = new ArrayList<>();
         for (String date : dates)
@@ -178,13 +177,34 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
-    public Training approveTraining(String trainingName) throws NoSuchFieldException {
-        List<Training> trainings = trainingRepository.findTrainingsByName(trainingName);
-        for (Training training : trainings) {
-            training.setState(StateTraining.parseToInt("Ahead"));
-            trainingRepository.saveAndFlush(training);
+    @Transactional
+    public Training editTraining(TrainingForCreation trainingForCreation) throws ParseException, NoSuchFieldException {
+        Training mainTraining = trainingRepository.findByName(trainingForCreation.getName());
+        if (userRepository.whoIsUser(trainingForCreation.getUserLogin(), 1)) {
+            mainTraining.fillTraining(trainingForCreation);
+            mainTraining.setCategory(categoryRepository.findById(trainingForCreation.getIdCategory()));
+            return mainTraining;
         }
-        return trainings.get(0);
+        else {
+            Training editedTraining = new Training();
+            editedTraining.fillTraining(trainingForCreation);
+            editedTraining.setCategory(categoryRepository.findById(trainingForCreation.getIdCategory()));
+            editedTraining.setCoach(mainTraining.getCoach());
+            editedTraining.setState(StateTraining.parseToInt("Edited"));
+            editedTraining.setParent(-1);
+            trainingRepository.saveAndFlush(editedTraining);
+            return editedTraining;
+        }
+    }
+
+    @Override
+    public Training approveEditTraining(TrainingForCreation trainingForCreation) throws NoSuchFieldException {
+        Training parentTraining = trainingRepository.findTrainingByName(trainingForCreation.getName());
+        Training editedTraining = trainingRepository.findEditedTrainingByName(trainingForCreation.getName());
+        parentTraining.fillTraining(trainingForCreation);
+        parentTraining.setState(StateTraining.parseToInt("Ahead"));
+        trainingRepository.deleteTrainingsById(editedTraining.getId());
+        return parentTraining;
     }
 
     @Override

@@ -30,7 +30,7 @@ public class TrainingFeedback{
     @ManyToOne(cascade = CascadeType.ALL)
     private User feedbacker;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "trainingFeedback")
+    @OneToOne
     private News news;
 
     @NotNull
