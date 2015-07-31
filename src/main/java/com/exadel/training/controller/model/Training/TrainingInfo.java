@@ -44,6 +44,23 @@ public class TrainingInfo {
     public TrainingInfo() {
     }
 
+    public TrainingInfo(Training training) throws NoSuchFieldException {
+        name = training.getName();
+        coachName = training.getCoach().getName();
+        pictureLink = training.getPictureLink();
+        description = training.getDescription();
+        idCategory = training.getCategory().getId();
+        participantsNumber = training.getAmount();
+        training.generateRating();
+        rating = training.getRating();
+        language = LanguageTraining.parseToString(training.getLanguage());
+        isInternal = training.isInternal();
+        isRepeating = training.getParent() != 0;
+        additional = training.getAdditional();
+        audience = training.getAudience();
+        state = StateTraining.parseToString(training.getState());
+    }
+
     public TrainingInfo(Training training, List<Date> dateTimes, List<String> places) throws NoSuchFieldException {
         name = training.getName();
         this.dateTimes = new ArrayList<>();

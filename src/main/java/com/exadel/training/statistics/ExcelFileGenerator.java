@@ -660,4 +660,8 @@ public class ExcelFileGenerator {
         fileOut.close();
         return FILE_PATH +fileName;
     }
+
+    public void addToGoogleDoc() {
+
+    }
 }

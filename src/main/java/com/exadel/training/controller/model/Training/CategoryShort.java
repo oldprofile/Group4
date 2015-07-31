@@ -1,6 +1,8 @@
 package com.exadel.training.controller.model.Training;
 
 import com.exadel.training.model.Category;
+import com.exadel.training.service.TrainingService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +28,11 @@ public class CategoryShort {
 
     public static List<CategoryShort> parseListCategoryShort(List<Category> categories) {
         List<CategoryShort> categoriesShorts = new ArrayList<>();
-        for(int i = 0; i < categories.size(); ++i)
-            categoriesShorts.add(new CategoryShort(categories.get(i)));
+        for (Category category : categories) {
+            CategoryShort categoryShort = new CategoryShort(category);
+            //categoryShort.trainingsNumber = trainingService.getValidTrainingsNumberByCategory(category);
+            categoriesShorts.add(categoryShort);
+        }
         return categoriesShorts;
     }
 
