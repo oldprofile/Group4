@@ -46,7 +46,7 @@ public class NewsController {
 
     @RequestMapping("/quotes")
     @ResponseBody
-    public DeferredResult<List<NewsPage>> quotes(/*@RequestParam(required = false) Long timestamp*/) throws NoSuchFieldException {
+    public DeferredResult<Long> quotes(/*@RequestParam(required = false) Long timestamp*/) throws NoSuchFieldException {
         return userNewsService.getDefferdResult();
     }
 

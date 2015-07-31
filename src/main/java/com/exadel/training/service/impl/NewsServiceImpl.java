@@ -1,6 +1,5 @@
 package com.exadel.training.service.impl;
 
-import com.exadel.training.controller.model.News.NewsPage;
 import com.exadel.training.model.News;
 import com.exadel.training.repository.impl.NewsRepository;
 import com.exadel.training.service.NewsService;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +32,7 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public void insertNews(News news) throws NoSuchFieldException {
           newsRepository.save(news);
-          this.addToDeferredResult();
+          this.addToDeferredResult(2l);
     }
 
     @Override
@@ -51,44 +49,40 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public int getCountOFNews() {
-        return newsRepository.getCountOfPages();
+        return newsRepository.getCountOfNews();
     }
 
-    public  DeferredResult<List<NewsPage>> getDefferdResult(/*@RequestParam(required = false) Long timestamp*/) throws NoSuchFieldException {
+    @Override
+    public long getCountOfUnreadNews() {
+        return newsRepository.getCountOfUnreadNews();
+    }
 
-        final DeferredResult<List<NewsPage>> result = new DeferredResult<List<NewsPage>>(null, Collections.emptyList());
-        this.newsRequests.put(result,45L);
+    public  DeferredResult<Long> getDefferdResult(/*@RequestParam(required = false) Long timestamp*/) throws NoSuchFieldException {
+        final DeferredResult<Long> deferredResult = new DeferredResult<Long>(null, Collections.emptyList());
+        newsRequests.put(deferredResult, 2L);
 
-        result.onCompletion(new Runnable() {
+        deferredResult.onCompletion(new Runnable() {
+            @Override
             public void run() {
-                newsRequests.remove(result);
+                newsRequests.remove(deferredResult);
             }
         });
 
+        Long newNews = this.newsRepository.getCountOfUnreadNews();
 
-        List<NewsPage> list = new ArrayList<>();
-        for(News news : this.getLatestNews(45l)) {
-            list.add(NewsPage.parseNewsPage(news));
+        if (2l < newNews) {
+            deferredResult.setResult(newNews-2l);
         }
 
-        if (!list.isEmpty()) {
-            result.setResult(list);
+        return deferredResult;
         }
 
-        return result;
-    }
-
-    public void addToDeferredResult() throws NoSuchFieldException {
-
+    public void addToDeferredResult(long newNews) throws NoSuchFieldException {
         for (Map.Entry<DeferredResult, Long> entry : this.newsRequests.entrySet()) {
-           List<News> newsList = this.getLatestNews(entry.getValue());
-           List<NewsPage> newsPageList = new ArrayList<>();
+            Long news = this.newsRepository.getCountOfUnreadNews();
 
-            for(News news : newsList) {
-             newsPageList.add(NewsPage.parseNewsPage(news));
-            }
-
-            entry.getKey().setResult(newsPageList);
+                entry.getKey().setResult(news-newNews);
         }
+
     }
 }
