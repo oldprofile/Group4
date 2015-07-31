@@ -25,6 +25,15 @@ public class News {
     @ManyToOne(cascade = CascadeType.ALL)
     private Training training;
 
+    @OneToOne
+    private CoachFeedback coachFeedback;
+
+    @OneToOne
+    private UserFeedback userFeedback;
+
+    @OneToOne
+    private TrainingFeedback trainingFeedback;
+
     private String action;
 
     public News(){
@@ -37,6 +46,7 @@ public class News {
     public void setRead(boolean isRead) {
         this.isRead = isRead;
     }
+
     public Training getTraining() {
         return training;
     }
@@ -75,5 +85,29 @@ public class News {
 
     public void setAction(String action) {
         this.action = action;
+    }
+
+    public void setCoachFeedback(CoachFeedback coachFeedback) {
+        this.coachFeedback = coachFeedback;
+    }
+
+    public CoachFeedback getCoachFeedback() {
+        return coachFeedback;
+    }
+
+    public UserFeedback getUserFeedback() {
+        return userFeedback;
+    }
+
+    public void setUserFeedback(UserFeedback userFeedback) {
+        this.userFeedback = userFeedback;
+    }
+
+    public TrainingFeedback getTrainingFeedback() {
+        return trainingFeedback;
+    }
+
+    public void setTrainingFeedback(TrainingFeedback trainingFeedback) {
+        this.trainingFeedback = trainingFeedback;
     }
 }
