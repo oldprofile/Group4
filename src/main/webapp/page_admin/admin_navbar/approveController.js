@@ -1,6 +1,10 @@
 angular.module('myApp.admin')
-.controller('ApproveController', ['$scope', 'adminService', function($scope, adminService) {
+.controller('ApproveController', ['$scope', '$location', 'adminService', function($scope, $location, adminService) {
     $scope.toApproveList=[];
+
+    $scope.goTo = function(path) {
+      $location.path(path);
+    };
     
     adminService.getApproveList().then(function(results) {
         $scope.toApproveList = results;

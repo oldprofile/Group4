@@ -13,7 +13,7 @@ angular.module('myApp.createcourse')
     
     initCourseService($scope);
     
-    courseInfoService.getCourseInfo($routeParams.coursename).success(function(data) {
+    courseInfoService.getEditedCourseInfo($routeParams.coursename).success(function(data) {
         $scope.courseInfo = angular.copy(data);
         $scope.temp.tempDates = angular.copy($scope.courseInfo.dateTime);
         

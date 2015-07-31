@@ -11,6 +11,26 @@ angular.module('myApp.courseinfo')
       return err;
     })
   };
+
+  courseInfoService.getEditedCourseInfo = function() {
+    return $http.get('/training_controller/training_info/' + courseName)
+        .success(function(data) {
+          return data;
+        })
+        .error(function(err) {
+          return err;
+        })
+  };
+
+  courseInfoService.getOmissions = function(courseName, lessonDate) {
+    return $http.get('/training_controller/date_info/' + courseName)
+        .success(function(result) {
+          return result.data;
+        })
+        .error(function(err) {
+          return err;
+        })
+  };
   
   courseInfoService.updateDates = function(courseName) {
     return $http.get('/training_controller/date_info/' + courseName)

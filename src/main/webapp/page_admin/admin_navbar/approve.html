@@ -7,16 +7,12 @@
                   <th>Name</th>
                   <th>Coach</th>
                   <th>Status</th>
-                  <th></th>
               </tr>
             </thead>
-            <tr ng-repeat="course in toApproveList track by $index">
+            <tr ng-repeat="course in toApproveList track by $index" class="link-cursor" ng-click="goTo('#/editcourse/' + course.trainingName + '/' + course.state)">
                 <td>{{course.trainingName}}</td>
                 <td>{{course.trainingCoach}}</td>
                 <td>{{course.state}}</td>
-                <td>
-                    <a href="#/editcourse/{{course.trainingName}}/{{course.state}}">Go to course page</a>
-                </td>
             </tr>
         </table>
         </div>

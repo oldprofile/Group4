@@ -13,8 +13,8 @@ angular.module('myApp')
         scope.temp = {};
         scope.temp.tempDates = [];
         scope.temp.place = "";
-      scope.temp.startDate = "";
-      scope.temp.endDate = "";
+        scope.temp.startDate = "";
+        scope.temp.endDate = "";
         scope.temp.pictureHolder = "";  //pictureLink or pictureData
         
         scope.isAdmin = userService.isAdmin();

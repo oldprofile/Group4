@@ -212,13 +212,22 @@ angular.module('myApp.courseinfo')
       $scope.index = index;
       
       $scope.omissionData = [];
-      
+
+      $scope.existingOmissions = [];
+
+      courseInfoService.getOmissions(courseinfo.name, courseinfo.dateTime[index]).then(
+          function(result) {
+              $scope.existingOmissions = angular.copy(result);
+              console.log("omissions loaded successfully");
+          }
+      );
+
       for(var i = 0; i < courseinfo.listeners.length; i++) {
         var info = {
           trainingName: courseinfo.name,
           date: courseinfo.dateTime[index],
           userLogin: courseinfo.listeners[index].login,
-          isOmission: false,
+          isOmission: $scope.existingOmissions[i],
         };
         $scope.omissionData.push(info);
       }
