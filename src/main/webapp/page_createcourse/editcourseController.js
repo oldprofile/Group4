@@ -1,6 +1,14 @@
 angular.module('myApp.createcourse')
 .controller('EditCourseController', ['$scope', '$routeParams', '$filter', 'editcourse', 'courseInfoService', 'initCourseService', function($scope, $routeParams, $filter, editcourse, courseInfoService, initCourseService) {
     $scope.isEdited = true;
+
+    if(!$routeParams.coursestate) {
+        $scope.justEdit = true;
+    }
+    else {
+        $scope.justEdit = false;
+        $scope.isDraft = (($routeParams.coursestate == "Draft") ? true : false);
+    }
     $scope.header = 'Edit';
     
     initCourseService($scope);
@@ -32,6 +40,6 @@ angular.module('myApp.createcourse')
             }
         }
         console.log($scope.courseInfo);
-        editcourse.editCourse($scope.courseInfo); //! ? some then()...?
+        editcourse.editCourse($scope.courseInfo, $scope.isDraft, $scope.justEdit); //! ? some then()...?
     };
 }]);

@@ -6,7 +6,7 @@ angular.module('myApp.admin', ['ngRoute', 'ui.bootstrap.pagination'])
   $routeProvider.when('/admin', {
     templateUrl: 'page_admin/admin.html',
     controller: 'AdminController'
-  }).when('/editcourse/:coursename', {
+  }).when('/editcourse/:coursename/:coursestate', {
     templateUrl: 'page_createcourse/createcourse.html',
     controller: 'EditCourseController'
   });

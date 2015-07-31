@@ -193,6 +193,9 @@ angular.module('myApp.courseinfo')
         courseInfoService.editLesson($scope.index + 1, $scope.courseinfo.name, $scope.courseinfo.dateTime[$scope.index], $scope.courseinfo.places[$scope.index]).then(function(data) {
           courseInfoService.updateDates($scope.courseinfo.name).then(function(result) {
             $scope.courseinfo.dateTime = angular.copy(result.dateTime);
+            for(var i = 0; i < $scope.courseinfo.dateTime.length; i++) {
+              $scope.courseinfo.dateTime[i] = $filter('date')($scope.courseinfo.dateTime[i], 'medium');
+            }
             $scope.courseinfo.places = angular.copy(result.places);
           });
         });
