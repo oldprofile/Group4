@@ -101,6 +101,23 @@ public class TrainingController {
         }
     }
 
+    @RequestMapping(value = "/edited_training_info/{trainingName}", method = RequestMethod.GET)
+    public @ResponseBody
+    TrainingInfo postEditedTrainingInfo (@PathVariable("trainingName") String trainingName,
+                                   HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
+        String header = httpServletRequest.getHeader("authorization");
+        String userLogin = cryptService.decrypt(header);
+
+        if (userService.checkUserByLogin(userLogin)) {
+            Training training = trainingService.getEditedTrainingByName(trainingName);
+            TrainingInfo trainingInfo = new TrainingInfo(training);
+            return trainingInfo;
+        } else {
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return null;
+        }
+    }
+
     @RequestMapping(value = "/create_training", method = RequestMethod.POST)
     public @ResponseBody
     ShortTrainingInfo createTraining(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest ) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException, org.json.simple.parser.ParseException, ParseException {
