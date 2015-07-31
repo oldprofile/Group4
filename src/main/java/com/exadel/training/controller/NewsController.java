@@ -6,10 +6,7 @@ import com.exadel.training.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import java.util.ArrayList;
@@ -44,10 +41,10 @@ public class NewsController {
         return userNewsService.getCountOFNews();
     }
 
-    @RequestMapping("/quotes")
+    @RequestMapping("/unread/{state}")
     @ResponseBody
-    public DeferredResult<Long> quotes(/*@RequestParam(required = false) Long timestamp*/) throws NoSuchFieldException {
-        return userNewsService.getDefferdResult();
+    public DeferredResult<Long> quotes(@PathVariable("state")Long state) throws NoSuchFieldException {
+        return userNewsService.getDefferdResult(state);
     }
 
 

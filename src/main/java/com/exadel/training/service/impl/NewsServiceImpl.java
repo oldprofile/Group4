@@ -32,7 +32,7 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public void insertNews(News news) throws NoSuchFieldException {
           newsRepository.save(news);
-          this.addToDeferredResult(2l);
+          this.addToDeferredResult();
     }
 
     @Override
@@ -57,9 +57,9 @@ public class NewsServiceImpl implements NewsService {
         return newsRepository.getCountOfUnreadNews();
     }
 
-    public  DeferredResult<Long> getDefferdResult(/*@RequestParam(required = false) Long timestamp*/) throws NoSuchFieldException {
+    public  DeferredResult<Long> getDefferdResult(Long state) throws NoSuchFieldException {
         final DeferredResult<Long> deferredResult = new DeferredResult<Long>(null, Collections.emptyList());
-        newsRequests.put(deferredResult, 2L);
+        newsRequests.put(deferredResult, state);
 
         deferredResult.onCompletion(new Runnable() {
             @Override
@@ -70,18 +70,18 @@ public class NewsServiceImpl implements NewsService {
 
         Long newNews = this.newsRepository.getCountOfUnreadNews();
 
-        if (2l < newNews) {
-            deferredResult.setResult(newNews-2l);
+        if (state < newNews) {
+            deferredResult.setResult(newNews);
         }
 
         return deferredResult;
         }
 
-    public void addToDeferredResult(long newNews) throws NoSuchFieldException {
+    public void addToDeferredResult() throws NoSuchFieldException {
         for (Map.Entry<DeferredResult, Long> entry : this.newsRequests.entrySet()) {
             Long news = this.newsRepository.getCountOfUnreadNews();
 
-                entry.getKey().setResult(news-newNews);
+                entry.getKey().setResult(news);
         }
 
     }
