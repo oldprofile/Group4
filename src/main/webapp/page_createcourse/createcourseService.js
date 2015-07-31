@@ -30,6 +30,7 @@ angular.module('myApp.createcourse')
     editcourse.editCourse = function(courseData, isDraft, justEdit){
         var fd = new FormData();
         if(isDraft) {
+            alert("Course just created");
             fd.append('courseInfo', JSON.stringify(courseData));
             if(justEdit) {
                 return $http.post('/training_controller/edit_training', fd, {
@@ -45,6 +46,7 @@ angular.module('myApp.createcourse')
                     });
             }
             else {
+                alert("admin approves course!");
                 return $http.post('/training_controller/approve_create_training', fd, {
                     headers : {
                         'Content-Type' : undefined
@@ -60,13 +62,14 @@ angular.module('myApp.createcourse')
 
         }
         else {
+            alert("isnt draft");
             courseData.additional = "";
             courseData.dateTime = [""];
             courseData.places = [""];
 
             fd.append('courseInfo', JSON.stringify(courseData));
 
-            return $http.post('/training_controller/approve_edit_training', fd, {
+            return $http.post('/training_controller/edit_training', fd, {
                 headers: {
                     'Content-Type': undefined
                 },

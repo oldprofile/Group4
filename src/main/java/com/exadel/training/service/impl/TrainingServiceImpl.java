@@ -111,9 +111,11 @@ public class TrainingServiceImpl implements TrainingService {
         List<Training> trainings = new ArrayList<>(dates.size());
         for (int i = 0; i < dateTimes.size(); ++i) {
             Training newTraining = new Training();
+            newTraining.fillTraining(trainingForCreation);
             newTraining.setDateTime(dateTimes.get(i));
             newTraining.setPlace(trainingForCreation.getPlaces().get(i));
             newTraining.setCoach(coach);
+            newTraining.setCategory(category);
             newTraining.setState(state);
             newTraining.setParent(mainTraining.getId());
             trainings.add(newTraining);

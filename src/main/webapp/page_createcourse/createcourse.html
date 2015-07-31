@@ -132,7 +132,7 @@
                             <input ng-if="!isAdmin && !isEdited" type="submit" ng-click="saveData()" class="btn btn-lg accent-btn accent-green" value="Create course!">
                             <input ng-if="isAdmin && !isEdited" type="submit" ng-click="saveData()" class="btn btn-lg accent-btn accent-green" value="Create course!">
                             
-                            <input ng-if="isAdmin && isEdited" type="submit" ng-click="approveCourse()" class="btn btn-lg accent-btn accent-green" value="Approve course">
+                            <input ng-if="isAdmin && isEdited" type="submit" ng-click="editCourse()" class="btn btn-lg accent-btn accent-green" value="Approve course">
                             <input ng-if="!isAdmin && isEdited" type="submit" ng-click="editCourse()" class="btn btn-lg default-btn default-blue" value="Edit course">
                         </div>
                     </div>

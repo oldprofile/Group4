@@ -42,7 +42,7 @@ public class OmissionController {
     @Autowired
     ExcelFileGenerator excelFileGenerator;
 
-    @RequestMapping(value = "/add_ommisions", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/add_omissions", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody void addOmmisions(@RequestBody List<OmissionADDModel> omissionADDModels, HttpServletResponse response) {
         try {
             for (OmissionADDModel omissionADDModel : omissionADDModels) {

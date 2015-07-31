@@ -27,7 +27,12 @@ public class ShortTrainingInfo {
         trainingName = training.getName();
         trainingCoach = training.getCoach().getName();
         trainingImage = training.getPictureLink();
-        dateTraining = sdf.format(training.getDateTime());
+        if(training.getDateTime() == null) {
+            dateTraining = null;
+        }
+        else {
+            dateTraining = sdf.format(training.getDateTime());
+        }
         trainingPlace = training.getPlace();
         state = StateTraining.parseToString(training.getState());
     }
