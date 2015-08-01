@@ -27,11 +27,11 @@ public class NewsPage {
         this.name = name;
     }
 
-    public String getDesciption() {
+    public String getDescription() {
         return description;
     }
 
-    public void setDesrciption(String description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
@@ -55,7 +55,7 @@ public class NewsPage {
     public static NewsPage parseNewsPage(News news) throws NoSuchFieldException {
         NewsPage newsPage = new NewsPage();
          newsPage.setName(news.getUser().getName());
-         newsPage.setDesrciption(news.getAction());
+         newsPage.setDescription(news.getAction());
         if(news.getTraining() != EMPTY) {
          newsPage.setTraining(AllTrainingUserShort.parseAllTrainingUserShort(news.getTraining()));
         }
