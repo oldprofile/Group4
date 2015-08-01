@@ -33,6 +33,7 @@ import java.util.Map;
  * Created by Клим on 13.07.2015.
  */
 @Controller
+@ResponseBody
 @RequestMapping("/omission_controller")
 public class OmissionController {
     @Autowired
