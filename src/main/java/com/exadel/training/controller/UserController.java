@@ -312,6 +312,18 @@ public class UserController {
         userService.insertExEmploee(user);
     }
 
+    @RequestMapping(value = "/select_all_users", method = RequestMethod.GET)
+    public @ResponseBody List<UserShort> selectAllUsers() {
+        List<User> userList = userService.selectAllUsers();
+        List<UserShort> userShortList  = new ArrayList<>();
+
+        for(User user : userList) {
+            userShortList.add(UserShort.parseUserShort(user));
+        }
+
+        return userShortList;
+    }
+
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public @ResponseBody List<AllTrainingUserShort> t(HttpServletResponse httpServletResponse) throws NoSuchFieldException {
 
