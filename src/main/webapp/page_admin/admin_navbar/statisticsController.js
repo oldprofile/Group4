@@ -16,9 +16,15 @@ angular.module('myApp.admin')
         $scope.fullstat = true;
         $scope.partstat = true;
 
-		$http.get('').success(function(usersData) {
+		$http.get('http://localhost:8080/user_controller/select_all_users').success(function(usersData) {
 			$scope.users = usersData;
+			console.log(usersData);
 		});
+
+		/*$http.get('http://localhost:8080/').success(function(trainingData) {
+			$scope.trainings = trainingData;
+			console.log(trainingData);
+		});*/
 
 		$scope.save = function (userselect){
 			userselect.startDate = $filter('date')($scope.temp.tempDates[0], 'yyyy-MM-dd');

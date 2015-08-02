@@ -65,7 +65,7 @@ public class OmissionController {
         return omissions;
     }
 
-dd    @RequestMapping(value = "/test", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/test", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody void generate(@RequestBody StatisticsRequestModel statisticsRequestModel, HttpServletResponse response){
         response.setStatus(HttpServletResponse.SC_OK);
     }
