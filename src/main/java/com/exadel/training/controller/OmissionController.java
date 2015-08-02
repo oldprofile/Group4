@@ -64,10 +64,14 @@ public class OmissionController {
         }
     }*/
 
+dd    @RequestMapping(value = "/test", method = RequestMethod.POST, consumes = "application/json")
+    @ResponseBody void generate(@RequestBody StatisticsRequestModel statisticsRequestModel, HttpServletResponse response){
+        response.setStatus(HttpServletResponse.SC_OK);
+    }
+
     @RequestMapping(value = "/statistics", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody String generateStatistics(@RequestBody StatisticsRequestModel statisticsRequestModel, HttpServletResponse response) throws IOException {
 
-        String filePath = "";
         String userLogin = statisticsRequestModel.getUserLogin();
         String trainingName = statisticsRequestModel.getTrainingName();
         Date dateFrom = Date.valueOf(statisticsRequestModel.getDateFrom());
@@ -76,13 +80,13 @@ public class OmissionController {
             case 1:
                 if(!StringUtils.isBlank(userLogin)) {
                     if (!StringUtils.isBlank(trainingName)) {
-                        filePath = excelFileGenerator.generateForUserAndTrainingFull(dateFrom, dateTo, userLogin, trainingName);
+                        return excelFileGenerator.generateForUserAndTrainingFull(dateFrom, dateTo, userLogin, trainingName);
                     } else {
-                        filePath = excelFileGenerator.generateForUserFull(dateFrom, dateTo, userLogin);
+                        return excelFileGenerator.generateForUserFull(dateFrom, dateTo, userLogin);
                     }
                 } else {
                     if (!StringUtils.isBlank(trainingName)) {
-                        filePath = excelFileGenerator.generateForTrainingFull(dateFrom, dateTo, trainingName);
+                        return excelFileGenerator.generateForTrainingFull(dateFrom, dateTo, trainingName);
                     } else {
                         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     }
@@ -90,13 +94,13 @@ public class OmissionController {
             case 2:
                 if(!StringUtils.isBlank(userLogin)) {
                     if (!StringUtils.isBlank(trainingName)) {
-                        filePath = excelFileGenerator.generateForUserAndTrainingDates(dateFrom, dateTo, userLogin, trainingName);
+                        return excelFileGenerator.generateForUserAndTrainingDates(dateFrom, dateTo, userLogin, trainingName);
                     } else {
-                        filePath = excelFileGenerator.generateForUserDates(dateFrom, dateTo, userLogin);
+                        return excelFileGenerator.generateForUserDates(dateFrom, dateTo, userLogin);
                     }
                 } else {
                     if (!StringUtils.isBlank(trainingName)) {
-                        filePath = excelFileGenerator.generateForTrainingDates(dateFrom, dateTo, trainingName);
+                        return excelFileGenerator.generateForTrainingDates(dateFrom, dateTo, trainingName);
                     } else {
                         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     }
@@ -104,18 +108,18 @@ public class OmissionController {
             case 3:
                 if(!StringUtils.isBlank(userLogin)) {
                     if (!StringUtils.isBlank(trainingName)) {
-                        filePath = excelFileGenerator.generateForUserAndTrainingAmount(dateFrom, dateTo, userLogin, trainingName);
+                        return excelFileGenerator.generateForUserAndTrainingAmount(dateFrom, dateTo, userLogin, trainingName);
                     } else {
-                        filePath = excelFileGenerator.generateForUserAmount(dateFrom, dateTo, userLogin);
+                        return excelFileGenerator.generateForUserAmount(dateFrom, dateTo, userLogin);
                     }
                 } else {
                     if (!StringUtils.isBlank(trainingName)) {
-                        filePath = excelFileGenerator.generateForTrainingAmount(dateFrom, dateTo, trainingName);
+                        return excelFileGenerator.generateForTrainingAmount(dateFrom, dateTo, trainingName);
                     } else {
                         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     }
                 }
         }
-        return filePath;
+        return "";
     }
 }

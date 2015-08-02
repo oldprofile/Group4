@@ -14,6 +14,14 @@ angular.module('myApp.admin')
             return results.data;
         });
     };
+
+	adminService.sendStatistics = function(statData) {
+		return $http.post('/omission_controller/test', statData)
+			.then(function(results) {
+				alert(results.status);
+				return results.data;
+			});
+	};
     
     return adminService;
 }]);

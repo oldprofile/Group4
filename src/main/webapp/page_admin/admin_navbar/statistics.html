@@ -1,103 +1,103 @@
-<div class="statistics-container" >
-    <table>
-        <thead>
-        <tr>
-            <th>Start date</th>
-            <td>
-                <div class="dropdown col-xs-10">
-                    <a class="dropdown-toggle" id="dropdown1" role="button" data-toggle="dropdown">
-                        <div class="input-group" id="inputDate">
-                            <input type="text" class="form-control" ng-value="temp.tempDates[$index] | date: 'medium'">
+<div ng-controller="StatisticsController">
+	<div class="statistics-container">
+
+		<form class="form-horizontal" role="form">
+			<div class="form-group">
+				<label class="control-label col-sm-2">Start date:</label>
+
+				<div class="col-sm-8">
+					<a class="dropdown-toggle" id="dropdown0" role="button" data-toggle="dropdown">
+						<div class="input-group">
+							<input type="text" class="form-control" ng-value="temp.tempDates[0] | date: 'mediumDate'">
                         <span class="input-group-addon">
                             <i class="glyphicon glyphicon-calendar"></i>
                         </span>
-                        </div>
-                    </a>
+						</div>
+					</a>
 
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                        <datetimepicker ng-model="temp.tempDates[$index]" data-datetimepicker-config="{ dropdownSelector: '#dropdown1' }"/>
-                    </ul>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <th>End date</th>
-            <td>
-                <div class="dropdown col-xs-10">
-                    <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown">
-                        <div class="input-group" id="inputDate2">
-                            <input type="text" class="form-control" ng-value="temp.tempDates[$index] | date: 'medium'">
+					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+						<datetimepicker ng-model="temp.tempDates[0]" data-datetimepicker-config="{ dropdownSelector: '#dropdown0' }"/>
+					</ul>
+
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-sm-2">End date:</label>
+
+				<div class="col-sm-8">
+					<a class="dropdown-toggle" id="dropdown1" role="button" data-toggle="dropdown">
+						<div class="input-group">
+							<input type="text" class="form-control" ng-value="temp.tempDates[1] | date: 'mediumDate'">
                         <span class="input-group-addon">
                             <i class="glyphicon glyphicon-calendar"></i>
                         </span>
-                        </div>
-                    </a>
+						</div>
+					</a>
 
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                        <datetimepicker ng-model="temp.tempDates[$index]" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"/>
-                    </ul>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <th>Select type</th>
-            <td>
-                <input type="checkbox" checked>Listener
-                <input type="checkbox">Trainings
-            </td>
-        </tr>
-        <tr>
-            <th>Select person</th>
-            <td>
-                <select class="form-control">
-                    <option disabled>Choose, please</option>
-                    <option>Number one</option>
-                    <option>Number two</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <th>Select training</th>
-            <td>
-                <select class="form-control">
-                    <option disabled>Choose, please</option>
-                    <option>Number one</option>
-                    <option>Number two</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <th>Count of pass</th>
-            <td>
-                <input type="radio" name="cpass" checked>Yes
-                <input type="radio" name="cpass">No
-            </td>
-        </tr>
-        <tr>
-            <th>Count of trainigs</th>
-            <td>
-                <input type="radio" name="training" checked>Yes
-                <input type="radio" name="training">No
-            </td>
-        </tr>
-        <tr>
-            <th>Full statistics </th>
-            <td>
-                <input type="radio" name="full" checked>Yes
-                <input type="radio" name="full">No
-            </td>
-        </tr>
-        <tr>
-            <th>Dates of pass</th>
-            <td>
-                <input type="radio" name="dpass" checked>Yes
-                <input type="radio" name="dpass">No
-            </td>
-        </tr>
-        <tr>
-            <th></th>
-            <td><b><input type="button" value="Get statistics"></b></td>
-        </tr>
-        </thead>
-    </table>
+					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+						<datetimepicker ng-model="temp.tempDates[1]" data-datetimepicker-config="{ dropdownSelector: '#dropdown1' }"/>
+					</ul>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-sm-2">Select type:</label>
+
+				<div class="col-sm-8">
+					<div class="btn-group" data-ng-model="userSelect.whoOrWhat" required>
+						<label class="btn btn-default" ng-model="currentType" btn-checkbox>Training</label>
+						<label class="btn btn-default" ng-model="currentType2" btn-checkbox>Listener</label>
+					</div>
+
+				</div>
+			</div>
+			<div class="form-group" data-ng-show="currentType2">
+				<label class="control-label col-sm-2">Select person:</label>
+				<div class="col-sm-8">
+					<select class="form-control" data-ng-model="userSelect.person" ng-options="userName for userName in users" required>
+						<option value="">Please select user</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group" data-ng-show="currentType">
+				<label class="control-label col-sm-2">Select training:</label>
+				<div class="col-sm-8">
+					<select class="form-control" data-ng-model="userSelect.training" ng-options="trainingName for trainingName in trainings" required>
+						<option value="">Please select training</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-sm-2" ng-model="userSelect.typeOfStatistics">Select type of statistic:</label>
+				<div class="col-sm-8">
+					<div class="btn-group">
+						<label class="btn btn-default" ng-model="stat" btn-radio="'f'">Full statistic</label>
+						<label class="btn btn-default" ng-model="stat" btn-radio="'p'">Part of statistic</label>
+					</div>
+
+
+				</div>
+			</div>
+			<div class="form-group" ng-show="stat === 'p'">
+				<label class="control-label col-sm-2">Pass:</label>
+				<div class="col-sm-8">
+					<select class="form-control" data-ng-model="userSelect.partPass" ng-options="partOfPass for partOfPass in partType" required>
+						<option value="">Please select type</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group" ng-show="stat === 'f'">
+				<label class="control-label col-sm-2">Full statistics:</label>
+				<div class="col-sm-8">
+					<select class="form-control" data-ng-model="userSelect.fullPass" ng-options="fullOfPass for fullOfPass in fullPass" required>
+						<option value="">Please select type</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-8">
+					<button ng-click="save(userSelect)" type="submit" class="btn btn-success">Get statistics</button>
+				</div>
+			</div>
+		</form>
+	</div>
 </div>
