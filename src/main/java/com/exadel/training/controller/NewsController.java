@@ -5,13 +5,9 @@ import com.exadel.training.model.News;
 import com.exadel.training.service.NewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.async.DeferredResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +18,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/news_controller")
 public class NewsController {
+
 
     @Autowired
     private NewsService userNewsService;
@@ -41,16 +38,22 @@ public class NewsController {
 
     @RequestMapping(value = "/count_of_news", method = RequestMethod.GET)
     public @ResponseBody Integer getCountOfNews() {
-        this.notification();
-
         return userNewsService.getCountOFNews();
     }
 
-    @MessageMapping(value = "/notification1")
-    @SendTo(value = "/notification")
-    public @ResponseBody String notification() {
-        i++;
+    @RequestMapping("/unread/{state}")
+    @ResponseBody
+    public DeferredResult<Long> quotes(@PathVariable("state")Long state) throws NoSuchFieldException {
+        return userNewsService.getDefferdResult(state);
+    }
 
-        return "ok" + i.toString();
+
+    private List<News> getLatestNews(Long timestamp) {
+        List<News> list = new ArrayList<>();
+        News news = new News();
+        news.setAction("as");
+        list.add(news);
+
+        return list;
     }
 }

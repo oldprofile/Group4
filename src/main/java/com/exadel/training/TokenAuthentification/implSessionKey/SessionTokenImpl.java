@@ -41,6 +41,11 @@ public class SessionTokenImpl implements SessionToken {
     }
 
     @Override
+    public Boolean isEmpty() {
+        return tokens.isEmpty();
+    }
+
+    @Override
     public void deleteToken(String login, String token) {
         tokens.remove(login, token);
     }

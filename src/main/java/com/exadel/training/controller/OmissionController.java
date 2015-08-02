@@ -3,7 +3,10 @@ package com.exadel.training.controller;
 import com.exadel.training.controller.model.Omission.JournalOmissionModel;
 import com.exadel.training.controller.model.Omission.OmissionADDModel;
 import com.exadel.training.controller.model.Omission.StatisticsRequestModel;
+import com.exadel.training.controller.model.Training.TrainingNameAndDate;
 import com.exadel.training.model.Omission;
+import com.exadel.training.model.Training;
+import com.exadel.training.model.User;
 import com.exadel.training.service.OmissionService;
 import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
@@ -20,6 +23,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +33,7 @@ import java.util.Map;
  * Created by Клим on 13.07.2015.
  */
 @Controller
+@ResponseBody
 @RequestMapping("/omission_controller")
 public class OmissionController {
     @Autowired
@@ -42,8 +48,8 @@ public class OmissionController {
     @Autowired
     ExcelFileGenerator excelFileGenerator;
 
-    @RequestMapping(value = "/add_ommisions", method = RequestMethod.POST, consumes = "application/json")
-    @ResponseBody void addOmmisions(@RequestBody List<OmissionADDModel> omissionADDModels, HttpServletResponse response) {
+    @RequestMapping(value = "/add_omissions", method = RequestMethod.POST, consumes = "application/json")
+    @ResponseBody void addOmissions(@RequestBody List<OmissionADDModel> omissionADDModels, HttpServletResponse response) {
         try {
             for (OmissionADDModel omissionADDModel : omissionADDModels) {
                 omissionService.addOmission(omissionADDModel);
@@ -53,16 +59,11 @@ public class OmissionController {
         }
     }
 
-    /*@RequestMapping(value = "/get_ommisions", method = RequestMethod.POST, consumes = "application/json")
-    @ResponseBody Map<> addOmmisions(@RequestBody List<OmissionADDModel> omissionADDModels, HttpServletResponse response) {
-        try {
-            for (OmissionADDModel omissionADDModel : omissionADDModels) {
-                omissionService.addOmission(omissionADDModel);
-            }
-        } catch (Exception e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        }
-    }*/
+    @RequestMapping(value = "/get_omissions", method = RequestMethod.POST, consumes = "application/json")
+    @ResponseBody List<Boolean> getOmissions(@RequestBody TrainingNameAndDate trainingNameAndDate) throws ParseException {
+        List<Boolean> omissions = omissionService.getAllOmissions(trainingNameAndDate.getTrainingName(), trainingNameAndDate.parseToDate());
+        return omissions;
+    }
 
 dd    @RequestMapping(value = "/test", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody void generate(@RequestBody StatisticsRequestModel statisticsRequestModel, HttpServletResponse response){

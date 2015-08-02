@@ -23,7 +23,7 @@ public class NotificationNewsImpl implements NotificationNews {
     @Autowired
     TrainingService trainingService;
 
-    public void sendNews(String action, String with, String who) {
+    public void sendNews(String action, String with, String who) throws NoSuchFieldException {
         News news = new News();
         User user = userService.findUserByLogin(who);
         Training training = trainingService.getTrainingByName(with);
@@ -36,7 +36,7 @@ public class NotificationNewsImpl implements NotificationNews {
     }
 
     @Override
-    public void sendNews(String action, User user, Training training) {
+    public void sendNews(String action, User user, Training training) throws NoSuchFieldException {
         News news = new News();
 
         news.setTraining(training);
@@ -46,7 +46,7 @@ public class NotificationNewsImpl implements NotificationNews {
         newsService.insertNews(news);
     }
 
-    public void sendNews(News news) {
+    public void sendNews(News news) throws NoSuchFieldException {
         newsService.insertNews(news);
     }
 }

@@ -14,6 +14,7 @@ public interface UserService {
 
     Boolean checkUserByLogin(String login);
     Boolean checkSubscribeToTraining(Long trainingID, Long userID);
+    Boolean isCoach(String login, String coachName);
     Boolean checkSubscribeToTraining(String trainingName, String login);
     Boolean whoIsUser(String login, long roleId);
 
@@ -32,11 +33,13 @@ public interface UserService {
     List<Date> selectAllDateOfTrainingsBetweenDates(String login, Date from, Date to);
     List<Date> selectAllDateOfTrainings(String login);
 
+    List<User> selectAllUsers();
     List<User> findUsersByRole(RoleType type) throws NoSuchFieldException;
     List<User> findAllCoachOfUser(String login);
 
+    void saveUser(User user);
     void deleteUserTrainingRelationShip(String login, String trainingName);
     void insertUserTrainingRelationShip(String login, String trainingName);
-    void saveUser(User user);
     void insertNumberOfTelephone(String login, String number);
+    void insertExEmploee(User user);
 }
