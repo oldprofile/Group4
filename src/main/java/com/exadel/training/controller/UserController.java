@@ -312,16 +312,9 @@ public class UserController {
         userService.insertExEmploee(user);
     }
 
-    @RequestMapping(value = "/select_all_users", method = RequestMethod.GET)
-    public @ResponseBody List<UserShort> selectAllUsers() {
-        List<User> userList = userService.selectAllUsers();
-        List<UserShort> userShortList  = new ArrayList<>();
-
-        for(User user : userList) {
-            userShortList.add(UserShort.parseUserShort(user));
-        }
-
-        return userShortList;
+    @RequestMapping(value = "/select_all_users_login", method = RequestMethod.GET)
+    public @ResponseBody List<String> selectAllLoginOfUser() {
+       return userService.selectAllLoginOfUsers();
     }
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)

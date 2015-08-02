@@ -33,7 +33,7 @@ public interface UserService {
     List<Date> selectAllDateOfTrainingsBetweenDates(String login, Date from, Date to);
     List<Date> selectAllDateOfTrainings(String login);
 
-    List<User> selectAllUsers();
+    List<String> selectAllLoginOfUsers();
     List<User> findUsersByRole(RoleType type) throws NoSuchFieldException;
     List<User> findAllCoachOfUser(String login);
 
