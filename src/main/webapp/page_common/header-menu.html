@@ -50,7 +50,7 @@
           
         <li ng-class="{ active: isActive('/profile') }"><a href="#/profile">Profile</a></li>
         <li ng-show="isAdmin()" ng-class="{ active: isActive('/admin') }"><a href="#/admin">Admin</a>
-        <div class="notification-number" ng-show="notifications > 0"><span>{{notifications}}</span></div>
+        <div class="notification-number" ng-class="{'bounce-notif':anim}" ng-show="notifications > 0"><span>{{notifications}}</span></div>
         </li>  
         
       </ul>
@@ -65,7 +65,7 @@
       <ul class="nav navbar-nav navbar-right medium-navbar-nav">
         
         <li><a href="#/createcourse">Create course!</a></li>
-        <li><a href="#/Search"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a></li>
+        <li><a href="" ng-click="openSearch()"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a></li>
         <li><a href="#/Lang">en</a></li>
 <!--        <li><a href="" ng-click="logoutFunction()">Logout</a></li>-->
           

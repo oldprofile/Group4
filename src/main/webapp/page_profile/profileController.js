@@ -56,10 +56,10 @@ angular.module('myApp.browse')
        }                            
                                    
     profileService.getUserInfo(userlogin).success(function(data){
-      //alert("User" + JSON.stringify(data));
+      ////alert("User" + JSON.stringify(data));
       $scope.user = data;
       $scope.isContentLoaded = true;
-      alert(userService.getUser().login + userlogin);
+      //alert(userService.getUser().login + userlogin);
       feedbacksService.isCanLeaveCoachFeedback(userService.getUser().login,userlogin)
        .success(function(data){
        $scope.isCanLeaveCoachFeedback = data;
@@ -78,7 +78,7 @@ angular.module('myApp.browse')
 
     }).error(function(err,status){
       
-      alert("Can't get user " + userlogin);
+      //alert("Can't get user " + userlogin);
     });    
   
   
@@ -101,7 +101,7 @@ angular.module('myApp.browse')
     });
     
     feedbackModalInstance.result.then(function (feedback) {
-      alert("Creating User Feedback" + JSON.stringify(feedback))   
+      //alert("Creating User Feedback" + JSON.stringify(feedback))   
       feedbacksService.createUserFeedback(feedback).success(function(){
         gettingUserProfileData();
       });
@@ -130,7 +130,7 @@ angular.module('myApp.browse')
     });
     
     feedbackModalInstance.result.then(function (feedback) {
-      alert("Creating Coach Feedback" + JSON.stringify(feedback))   
+     // //alert("Creating Coach Feedback" + JSON.stringify(feedback))   
       feedbacksService.createCoachFeedback(feedback).success(function(){
         gettingUserProfileData();
       });
@@ -161,6 +161,7 @@ angular.module('myApp.browse')
       profileService.saveSettings(data);
       
     }, function () {
+      
       //cancel feedback
     });
     
@@ -184,7 +185,7 @@ angular.module('myApp.browse')
     });
     
     requestModalInstance.result.then(function (data) {
-         //alert(JSON.stringify(data));
+         ////alert(JSON.stringify(data));
       //sending new settings
          for(var i = 0; i < data.length ; i++){
            feedbacksService.requestFeedback(data[i]).success(function(data){
@@ -207,7 +208,7 @@ angular.module('myApp.browse')
   $scope.isEnglish = false;
   
   if(feedback === undefined){
-    alert("Creating feedback");
+    //alert("Creating feedback");
     $scope.isView = false;
     
     
@@ -228,7 +229,7 @@ angular.module('myApp.browse')
     };
     
   } else{
-    alert("Viewing: " + JSON.stringify(feedback));
+    ////alert("Viewing: " + JSON.stringify(feedback));
     $scope.isView = true;
     $scope.feedback = feedback;
   }
@@ -250,7 +251,7 @@ angular.module('myApp.browse')
   
   
   if(feedback === undefined){
-    alert("Creating feedback");
+    //////alert("Creating feedback");
     $scope.isView = false;
     
     
@@ -275,7 +276,7 @@ angular.module('myApp.browse')
     };
     
   } else {
-    alert("Viewing: " + JSON.stringify(feedback));
+    //alert("Viewing: " + JSON.stringify(feedback));
     $scope.isView = true;
     $scope.feedback = feedback;
   }

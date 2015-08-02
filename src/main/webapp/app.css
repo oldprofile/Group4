@@ -73,6 +73,164 @@ div#content-outer {
     position: relative;
 
 }
+
+/* modal */
+
+.modal-backdrop.in{
+  opacity: 0.75;
+}
+.search-modal .modal-content{
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+}
+.search-modal .right-corner{
+  position: fixed !important;;
+  
+  border: none;
+  border-radius: 0 !important;
+  
+  top:16px;
+  right: 16px;
+  font-size: 14px;
+  
+  color: rgba(255,255,255,0.5) !important;
+  }
+.search-modal .right-corner:hover{
+  color: #1DAAE5 !important;
+}
+
+
+.search-modal .modal-dialog.modal-lg{
+  width: 100% !important;
+  margin: 0;
+}
+.search-container{
+  width: 720px;
+  margin: auto;
+}
+.search-container>*{
+  padding-right: 0;
+  padding-left: 0;
+}
+.search-container>.modal-header{
+  border: none;
+  
+}
+.search-container .message{
+  margin-top: -8px;
+  color:white;
+  width: 100%;
+  text-align: center;
+  
+}
+.search-container .form-control{
+  width: 100%;
+  padding-left:0;
+  padding-right: 24px;
+  
+  font-size: 32px;
+  font-weight: bold;
+  height: 60px;
+  line-height: normal;
+  outline-color: rgb(255, 255, 255);
+  vertical-align: middle;
+  
+  color:white;
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  
+  border-bottom: 1px solid white;
+  border-radius: 0px;
+}
+.search-container .glyphicon{
+  float: right;
+  color: rgba(255,255,255,0.5);
+  top: -36px;
+  font-size: 18px;
+  line-height: 18px;
+  
+}
+.search-container .query{
+  height: 140px;
+  position: relative;
+  color: white;
+  border-bottom: 0.65px solid rgba(255,255,255,0.5);
+  padding-top: 16px;
+  padding-bottom: 16px;
+  
+  cursor: pointer;
+} 
+.search-container .query .img-cont{
+  width: 172px;
+  height: 110px;
+  padding: 0;
+  
+  display: block;
+  background-color:gray;
+  margin-left: 8px;
+  
+
+}
+.search-container .query .img-cont img{
+object-fit: cover;
+  height: 100%;
+  width: 100%;
+  
+  height: 110px;
+  width: 172px;
+}
+.search-container .query>.main-content{
+  width: 540px;
+  
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+.search-container .query h3{
+  font-size: 11px;
+  line-height: 11px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-top: 0;
+  margin-bottom: 8px;
+  
+  color: #1DAAE5;
+}
+.search-container .query h1{
+  font-size: 18px;
+  line-height: 22px;
+  
+  margin: 0;
+}
+.search-container .query h2{
+  font-size: 16px;
+  line-height: 16px;
+  color:rgb(153,153,153);
+  
+  margin: 0;
+}
+
+
+.query .q-footer{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  margin: 0;
+  
+  
+  font-size: 11px;
+  line-height: 11px;
+  color:rgb(153,153,153)
+}
+.query h4{
+  margin: 0;
+  font-size: 11px;
+  line-height: 11px;
+}
+
+
 /* my-app-footer*/
 my-app-footer{
   overflow: auto;
@@ -221,8 +379,27 @@ my-app-footer{
   left: -0.5px;
 }
 
+.bounce-notif-add{
+  -webkit-animation: bounce 1s;
+	-moz-animation: bounce 1s;
+	-o-animation: bounce 1s;
+	animation: bounce 1s;
+}
+.bounce-notif-remove{
+-webkit-animation: bounce 1s;
+	-moz-animation: bounce 1s;
+	-o-animation: bounce 1s;
+	animation: bounce 1s;
+}
 
 
+
+.notification-number.ng-hide-remove{
+  -webkit-animation: bounce 1s;
+	-moz-animation: bounce 1s;
+	-o-animation: bounce 1s;
+	animation: bounce 1s;
+}
 
 
 /* 

@@ -4,13 +4,14 @@
 var app = angular.module('myApp', [
     'ngRoute',
     'ui.bootstrap',
+    
     'http-auth-interceptor',
     'myApp.view1',
     'myApp.view2',
     'myApp.mycourses',
     'myApp.browse',
     'myApp.createcourse',
-  'myApp.notifications',
+    'myApp.notifications',
     'myApp.profile',
     'myApp.admin',
     'myApp.version',
@@ -21,6 +22,7 @@ var app = angular.module('myApp', [
     'myApp.footerApp',
     'myApp.login',
     'myApp.courseinfo',
+  
     
 ]).config(['$routeProvider', function($routeProvider) {
   $routeProvider.otherwise({redirectTo: '/mycourses'});
