@@ -130,6 +130,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> selectAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
     @Transactional
     public void deleteUserTrainingRelationShip(String login, String trainingName) {
         long userID = userRepository.findUserByLogin(login).getId();

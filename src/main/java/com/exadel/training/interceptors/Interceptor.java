@@ -43,7 +43,7 @@ public class Interceptor implements HandlerInterceptor {
     }
 
     private boolean isAuthentication(String uri) {
-        return uri == "/authentication/log_password" ? false : true;
+        return uri.equalsIgnoreCase("/authentication/log_password");
     }
 
     @Override
