@@ -86,6 +86,6 @@ public interface UserRepository extends JpaRepository<User,Long>{
     @Query("select distinct t.dateTime from User as u inner  join u.trainings as t where u.login = ?1 and t.id > 0  order by t.dateTime asc")
     List<Date> selectAllDateOfTrainings(String login);
 
-    @Query("select distinct t.name from User as u inner join u.trainings as t where t.parent = 0 and t.state in (2,3)")
-    List<String> selectAllTrainingNameActual();
+    @Query("select distinct t.name from User as u inner join u.trainings as t where t.parent = 0 and t.state in (?2) and u.login = ?1")
+    List<String> selectAllTrainingNameActual(String login, List<Integer> state);
 }
