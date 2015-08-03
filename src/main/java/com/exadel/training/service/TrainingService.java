@@ -46,8 +46,9 @@ public interface TrainingService {
     List<Date> getDatesByTrainingNameBetweenDates(String trainingName, Date firstDate, Date secondDate);
 
     List<String> getPlacesByTrainingName(String trainingName);
+    List<String> getTrainingsNames();
 
-    Integer getTrainingNumber(String trainingName, Date date);
+    Integer getTrainingNumber(String trainingName);
     Integer getValidTrainingsNumberByCategory(Category category);
     Long getParentTrainingId(String trainingName);
     Boolean isSubscriber(String trainingName, String userLogin);

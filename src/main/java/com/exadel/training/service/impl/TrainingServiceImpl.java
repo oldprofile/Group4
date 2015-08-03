@@ -288,8 +288,9 @@ public class TrainingServiceImpl implements TrainingService {
 
 
     @Override
-    public Integer getTrainingNumber(String trainingName, Date date) {
-        return trainingRepository.findTrainingNumber(trainingName, date);
+    public Integer getTrainingNumber(String trainingName) {
+        Integer trainingNumber =  trainingRepository.findTrainingNumber(trainingName, new Date());
+        return (trainingNumber + 1);
     }
 
     @Override
@@ -320,6 +321,11 @@ public class TrainingServiceImpl implements TrainingService {
     @Override
     public List<String> getPlacesByTrainingName(String trainingName) {
         return trainingRepository.findPlacesByTrainingName(trainingName);
+    }
+
+    @Override
+    public List<String> getTrainingsNames() {
+        return trainingRepository.findTrainingsNames();
     }
 
 

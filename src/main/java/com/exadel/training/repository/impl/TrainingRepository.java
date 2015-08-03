@@ -94,10 +94,13 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
     @Query("select tr.place from Training as tr where tr.name= ?1 and tr.parent > 0 order by tr.dateTime asc")
     List<String> findPlacesByTrainingName(String trainingName);
 
+    @Query("select tr.name from Training as tr where tr.parent = 0")
+    List<String> findTrainingsNames();
+
     @Query("select tr.id from Training as tr where tr.name = ?1 and tr.parent = 0")
     Long findParentTrainingIdByName(String trainingName);
 
-    @Query("select count(tr.dateTime) from Training as tr where tr.name = ?1 and  tr.dateTime <= ?2 and tr.parent > 0")
+    @Query("select count(tr.dateTime) from Training as tr where tr.name = ?1 and  tr.dateTime < ?2 and tr.parent > 0 order by tr.date asc")
     Integer findTrainingNumber(String trainingName, Date date);
 
     @Query("select count(tr) from Training as tr where tr.category = ?1 and tr.parent = 0")
