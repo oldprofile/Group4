@@ -103,11 +103,11 @@ public class ExcelFileGenerator {
             headers.createCell(datesIndex).setCellStyle(headersStyle);
         }
 
-        title.getCell(0).setCellValue(trainingName + " training's full statistics by period: " + TITLE_DATE_FORMAT.format(dateFrom) + " - " + TITLE_DATE_FORMAT.format(dateTo));
+        title.createCell(0).setCellValue(trainingName + " training's full statistics by period: " + TITLE_DATE_FORMAT.format(dateFrom) + " - " + TITLE_DATE_FORMAT.format(dateTo));
         title.getCell(0).setCellStyle(titleStyle);
-        headers.getCell(0).setCellValue("Listeners");
+        headers.createCell(0).setCellValue("Listeners");
         headers.getCell(0).setCellStyle(headersStyle);
-        headers.getCell(1).setCellValue("Dates");
+        headers.createCell(1).setCellValue("Dates");
         headers.getCell(1).setCellStyle(headersStyle);
 
         sheet.addMergedRegion(new CellRangeAddress(0, 0, title.getFirstCellNum(), title.getLastCellNum()));
@@ -185,11 +185,11 @@ public class ExcelFileGenerator {
             headers.createCell(datesIndex).setCellStyle(headersStyle);
         }
 
-        title.getCell(0).setCellValue(userLogin + "'s full statistics by period: " + TITLE_DATE_FORMAT.format(dateFrom) + " - " + TITLE_DATE_FORMAT.format(dateTo));
+        title.createCell(0).setCellValue(userLogin + "'s full statistics by period: " + TITLE_DATE_FORMAT.format(dateFrom) + " - " + TITLE_DATE_FORMAT.format(dateTo));
         title.getCell(0).setCellStyle(titleStyle);
-        headers.getCell(0).setCellValue("Trainings");
+        headers.createCell(0).setCellValue("Trainings");
         headers.getCell(0).setCellStyle(headersStyle);
-        headers.getCell(1).setCellValue("Dates");
+        headers.createCell(1).setCellValue("Dates");
         headers.getCell(1).setCellStyle(headersStyle);
 
         sheet.addMergedRegion(new CellRangeAddress(0, 0, title.getFirstCellNum(), title.getLastCellNum()));
@@ -265,11 +265,11 @@ public class ExcelFileGenerator {
             headers.createCell(datesIndex).setCellStyle(headersStyle);
         }
 
-        title.getCell(0).setCellValue(userLogin + " on " + trainingName + " full statistics by period: " + TITLE_DATE_FORMAT.format(dateFrom) + " - " + TITLE_DATE_FORMAT.format(dateTo));
+        title.createCell(0).setCellValue(userLogin + " on " + trainingName + " full statistics by period: " + TITLE_DATE_FORMAT.format(dateFrom) + " - " + TITLE_DATE_FORMAT.format(dateTo));
         title.getCell(0).setCellStyle(titleStyle);
-        headers.getCell(0).setCellValue("Training");
+        headers.createCell(0).setCellValue("Training");
         headers.getCell(0).setCellStyle(headersStyle);
-        headers.getCell(1).setCellValue("Dates");
+        headers.createCell(1).setCellValue("Dates");
         headers.getCell(1).setCellStyle(headersStyle);
 
         sheet.addMergedRegion(new CellRangeAddress(0, 0, title.getFirstCellNum(), title.getLastCellNum()));
