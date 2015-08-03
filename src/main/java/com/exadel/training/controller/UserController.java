@@ -97,7 +97,7 @@ public class UserController {
                     allTrainingUserShort.setIsCoach(false);
                 }
 
-                allTrainingUserShort.setNumberOfTraining(trainingService.getTrainingNumber(training.getName(),training.getDateTime()));
+                allTrainingUserShort.setNumberOfTraining(trainingService.getNextTrainingNumber(training.getName()));
                 allTrainingUserShorts.add(allTrainingUserShort);
             }
 
@@ -126,7 +126,7 @@ public class UserController {
                     allTrainingUserShort.setIsCoach(true);
                 }
 
-                allTrainingUserShort.setNumberOfTraining(trainingService.getTrainingNumber(training.getName(),training.getDateTime()));
+                allTrainingUserShort.setNumberOfTraining(trainingService.getNextTrainingNumber(training.getName()));
                 allTrainingUserShorts.add(allTrainingUserShort);
             }
 
@@ -154,7 +154,7 @@ public class UserController {
                     allTrainingUserShort.setIsCoach(true);
                 }
 
-                allTrainingUserShort.setNumberOfTraining(trainingService.getTrainingNumber(training.getName(),training.getDateTime()));
+                allTrainingUserShort.setNumberOfTraining(trainingService.getNextTrainingNumber(training.getName()));
                 allTrainingUserShorts.add(allTrainingUserShort);
             }
 
@@ -246,7 +246,6 @@ public class UserController {
                                                                                HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
 
         List<AllTrainingUserShort> allTrainingUserShorts = new ArrayList<>();
-
             List<Training> trainings = userService.selectAllTrainingSortedByDate(loginAndState.getLogin(), loginAndState.getState());
             User user = userService.findUserByLogin(loginAndState.getLogin());
 
@@ -346,7 +345,7 @@ public class UserController {
             } else {
                 allTrainingUserShort.setIsCoach(false);
             }
-            allTrainingUserShort.setNumberOfTraining(trainingService.getTrainingNumber(training.getName(),training.getDateTime()));
+            allTrainingUserShort.setNumberOfTraining(trainingService.getNextTrainingNumber(training.getName()));
             allTrainingUserShorts.add(allTrainingUserShort);
         }
 
