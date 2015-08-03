@@ -257,6 +257,7 @@ public class UserController {
                         allTrainingUserShort.setIsCoach(false);
                     }
 
+                    allTrainingUserShort.setNumberOfTraining(trainingService.getNextTrainingNumber(allTrainingUserShort.getTrainingName()));
                     allTrainingUserShorts.add(allTrainingUserShort);
                 }
 

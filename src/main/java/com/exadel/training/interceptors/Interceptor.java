@@ -29,7 +29,7 @@ public class Interceptor implements HandlerInterceptor {
         } else {
             if (!sessionToken.isEmpty()) {
                 String header = httpServletRequest.getHeader("authorization");
-                if (sessionToken.containsToken(header)) {
+                if (header != null && sessionToken.containsToken(header)) {
                     httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
                     return true;
                 } else {

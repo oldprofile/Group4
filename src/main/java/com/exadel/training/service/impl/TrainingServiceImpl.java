@@ -277,9 +277,13 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Override
     public Training getNextTraining(String trainingName) {
-        Integer numberTraining = getNextTrainingNumber(trainingName);
-        List<Training> trainings = trainingRepository.findTrainingsByName(trainingName);
-        return trainings.get(numberTraining - 1);
+        try {
+            Integer numberTraining = getNextTrainingNumber(trainingName);
+            List<Training> trainings = trainingRepository.findTrainingsByName(trainingName);
+            return trainings.get(numberTraining - 1);
+        } catch (IndexOutOfBoundsException | NullPointerException ex) {
+            return null;
+        }
     }
 
     private Training updateParentTraining(String trainingName) {

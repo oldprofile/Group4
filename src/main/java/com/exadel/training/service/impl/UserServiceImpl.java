@@ -5,11 +5,13 @@ import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
 import com.exadel.training.repository.impl.TrainingRepository;
 import com.exadel.training.repository.impl.UserRepository;
+import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import javax.validation.constraints.Null;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,6 +27,8 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     @Autowired
     private TrainingRepository trainingRepository;
+    @Autowired
+    private TrainingService trainingService;
 
     @Override
     public Boolean checkUserByLogin(String login) {
@@ -43,7 +47,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean checkSubscribeToTraining(String trainingName, String login) {
-        return userRepository.checkSubscribeToTraining(trainingName,login);
+        return userRepository.checkSubscribeToTraining(trainingName, login);
     }
 
     @Override
@@ -89,7 +93,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Training> selectAllTrainingSortedByDate(String login, List<Integer> state) {
-        return userRepository.selectAllTrainingSortedByDate(login, state);
+        List<String> allName = userRepository.selectAllTrainingNameActual(login, state);
+        List<Training> firstLessons = new ArrayList<>();
+
+        for(String name : allName) {
+            Training training = trainingService.getNextTraining(name);
+
+            if(training != null) {
+                firstLessons.add(training);
+            }
+        }
+
+        return firstLessons;
     }
 
     @Override
