@@ -5,7 +5,11 @@ package com.exadel.training.tokenAuthentification;
  */
 public interface SessionToken {
     void addToken(String login, String key);
-    String getToken(String login);
-    Boolean containsToken(String token);
     void deleteToken(String login,String token);
+
+    String getToken(String login);
+
+    Boolean containsToken(String token);
+    Boolean isEmpty();
+
 }

@@ -4,6 +4,7 @@ import com.exadel.training.common.StateTraining;
 import com.exadel.training.controller.model.Training.NotificationTrainingModel;
 import com.exadel.training.controller.model.User.UserShort;
 import com.exadel.training.model.Training;
+import com.exadel.training.notification.MessageFabric;
 import com.exadel.training.notification.mail.WrapperNotificationMail;
 import com.exadel.training.notification.sms.WrapperNotificationSMS;
 import com.exadel.training.service.TrainingService;
@@ -65,33 +66,34 @@ public class ScheduledTasksService {
         Training training = trainingService.getTrainingByName(notificationTrainingModel.getName());
         training.setState(StateTraining.parseToInt("Canceled"));
         for (UserShort listener : listeners) {
-            wrapperNotificationMail.send(listener.getEmail(), "canceled");
+
+            wrapperNotificationMail.send(listener.getEmail(), MessageFabric.getMessage(MessageFabric.messageType.Canceled,training.getName()));
         }
         UserShort traininer = notificationTrainingModel.getTrainer();
-        wrapperNotificationMail.send(traininer.getEmail(), "canceled");
+        wrapperNotificationMail.send(traininer.getEmail(), MessageFabric.getMessage(MessageFabric.messageType.Canceled,training.getName()));
     }
 
-    private void notificateByEmail(NotificationTrainingModel notificationTrainingModel, List<UserShort> listeners) throws MessagingException {
+    private void notificateByEmail(NotificationTrainingModel notificationTrainingModel, List<UserShort> listeners, MessageFabric.messageType messageType) throws MessagingException {
         for (UserShort listener : listeners) {
-            wrapperNotificationMail.send(listener.getEmail(), "canceled");
+            wrapperNotificationMail.send(listener.getEmail(), MessageFabric.getMessage(messageType, notificationTrainingModel.getName()));
         }
         UserShort traininer = notificationTrainingModel.getTrainer();
-        wrapperNotificationMail.send(traininer.getEmail(), "text");
+        wrapperNotificationMail.send(traininer.getEmail(), MessageFabric.getMessage(messageType, notificationTrainingModel.getName()));
     }
 
-    private void notificateBySms(NotificationTrainingModel notificationTrainingModel, List<UserShort> listeners) throws TwilioRestException {
+    private void notificateBySms(NotificationTrainingModel notificationTrainingModel, List<UserShort> listeners, MessageFabric.messageType messageType) throws TwilioRestException {
         for(UserShort listener: listeners) {
-                wrapperNotificationSMS.send(listener.getNumberPhone(), "text");
+                wrapperNotificationSMS.send(listener.getNumberPhone(), MessageFabric.getMessage(messageType, notificationTrainingModel.getName()));
         }
         UserShort traininer = notificationTrainingModel.getTrainer();
-            wrapperNotificationSMS.send(traininer.getNumberPhone(), "text");
+            wrapperNotificationSMS.send(traininer.getNumberPhone(), MessageFabric.getMessage(messageType, notificationTrainingModel.getName()));
     }
 
     private void race(NotificationTrainingModel notificationTrainingModel) throws TwilioRestException {
         Training training = trainingService.getTrainingByName(notificationTrainingModel.getName());
         List<UserShort> spareListeners = UserShort.parseUserShortList(training.getSpareUsers());
         for(UserShort spareListener: spareListeners) {
-                wrapperNotificationSMS.send(spareListener.getNumberPhone(), "text");
+                wrapperNotificationSMS.send(spareListener.getNumberPhone(), MessageFabric.getMessage(MessageFabric.messageType.Race,training.getName()));
         }
     }
 
@@ -116,7 +118,7 @@ public class ScheduledTasksService {
                         if (shouldBeCanceled(notificationTrainingModel, listeners)) {
                             cancelTraining(notificationTrainingModel, listeners);
                         } else {
-                            notificateByEmail(notificationTrainingModel, listeners);
+                            notificateByEmail(notificationTrainingModel, listeners, MessageFabric.messageType.OneDayLeft);
                         }
                         continue;
                     }
@@ -127,7 +129,7 @@ public class ScheduledTasksService {
                         continue;
                     }
                     case 1: {
-                        notificateBySms(notificationTrainingModel, listeners);
+                        notificateBySms(notificationTrainingModel, listeners, MessageFabric.messageType.OneHourLeft);
                         continue;
                     }
                     default: {
