@@ -12,6 +12,8 @@ public class Access {
     private final static String USER_CONTROLLER = "/user_controller";
     private final static String SEARCH_CONTROLLER = "/search_controller";
     private final static String NEWS_CONTROLLER = "/news_controller";
+    private final static String OMISSION_CONTROLLER = "/omission_controller";
+    private final static String FEEDBACK_CONTROLLER = "/feedbacks";
 
     private ConcurrentHashMap<Integer,List<String>> access = new ConcurrentHashMap<>();
 
@@ -42,6 +44,18 @@ public class Access {
         admin.add(NEWS_CONTROLLER + "/count_of_news");
         admin.add(NEWS_CONTROLLER + "/unread/{state}");
 
+        admin.add(OMISSION_CONTROLLER + "/statistics");
+        admin.add(OMISSION_CONTROLLER + "/get_omissions");
+        admin.add(OMISSION_CONTROLLER + "/add_omissions");
+
+        admin.add(FEEDBACK_CONTROLLER + "/user_feedback");
+        admin.add(FEEDBACK_CONTROLLER + "/create_user_feedback");
+        admin.add(FEEDBACK_CONTROLLER + "/coach_feedback");
+        admin.add(FEEDBACK_CONTROLLER + "/create_coach_feedback");
+        admin.add(FEEDBACK_CONTROLLER + "/training_feedback");
+        admin.add(FEEDBACK_CONTROLLER + "/create_training_feedback");
+        admin.add(FEEDBACK_CONTROLLER + "/request_user_feedback");
+
         return admin;
     }
 
@@ -63,6 +77,24 @@ public class Access {
 
         employee.add(SEARCH_CONTROLLER + "/search_trainings");
 
+        employee.add(OMISSION_CONTROLLER + "/get_omissions");
+        employee.add(OMISSION_CONTROLLER + "/add_omissions");
+
+        employee.add(FEEDBACK_CONTROLLER + "/user_feedback");
+        employee.add(FEEDBACK_CONTROLLER + "/create_user_feedback");
+        employee.add(FEEDBACK_CONTROLLER + "/coach_feedback");
+        employee.add(FEEDBACK_CONTROLLER + "/create_coach_feedback");
+        employee.add(FEEDBACK_CONTROLLER + "/training_feedback");
+        employee.add(FEEDBACK_CONTROLLER + "/create_training_feedback");
+
         return employee;
+    }
+    private List<String> excoachAccess() {
+        List<String> excoach = new LinkedList<>();
+
+        excoach.add(OMISSION_CONTROLLER + "/get_omissions");
+        excoach.add(OMISSION_CONTROLLER + "/add_omissions");
+
+        return excoach;
     }
 }
