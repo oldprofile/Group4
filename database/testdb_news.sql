@@ -16,29 +16,43 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `trainings_spare_users`
+-- Table structure for table `news`
 --
 
-DROP TABLE IF EXISTS `trainings_spare_users`;
+DROP TABLE IF EXISTS `news`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `trainings_spare_users` (
-  `spare_trainings` bigint(20) NOT NULL,
-  `spare_users` bigint(20) NOT NULL,
-  KEY `FK_mwcklpfq5mgpgaeutwp8g3q98` (`spare_users`),
-  KEY `FK_7qn3so14bvmo3ocjn588bxr1x` (`spare_trainings`),
-  CONSTRAINT `FK_7qn3so14bvmo3ocjn588bxr1x` FOREIGN KEY (`spare_trainings`) REFERENCES `trainings` (`id`),
-  CONSTRAINT `FK_mwcklpfq5mgpgaeutwp8g3q98` FOREIGN KEY (`spare_users`) REFERENCES `users` (`id`)
+CREATE TABLE `news` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `action` varchar(255) DEFAULT NULL,
+  `training` bigint(20) DEFAULT NULL,
+  `user` bigint(20) DEFAULT NULL,
+  `is_read` bit(1) NOT NULL,
+  `type` int(11) NOT NULL,
+  `coach_feedback` bigint(20) DEFAULT NULL,
+  `training_feedback` bigint(20) DEFAULT NULL,
+  `user_feedback` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK_fha3d2l0ab2cfjn8aaxjkdfen` (`training`),
+  KEY `FK_iooav87b4408r9ums33l9pp0j` (`user`),
+  KEY `FK_nf6i204qvi5rst4gqu0bjkhlc` (`coach_feedback`),
+  KEY `FK_10do26mbyehl5qcuv1xfrpu9g` (`training_feedback`),
+  KEY `FK_plegj8ocoqhunh0aqicrw8y68` (`user_feedback`),
+  CONSTRAINT `FK_10do26mbyehl5qcuv1xfrpu9g` FOREIGN KEY (`training_feedback`) REFERENCES `tfeedbacks` (`id`),
+  CONSTRAINT `FK_fha3d2l0ab2cfjn8aaxjkdfen` FOREIGN KEY (`training`) REFERENCES `trainings` (`id`),
+  CONSTRAINT `FK_iooav87b4408r9ums33l9pp0j` FOREIGN KEY (`user`) REFERENCES `users` (`id`),
+  CONSTRAINT `FK_nf6i204qvi5rst4gqu0bjkhlc` FOREIGN KEY (`coach_feedback`) REFERENCES `cfeedbacks` (`id`),
+  CONSTRAINT `FK_plegj8ocoqhunh0aqicrw8y68` FOREIGN KEY (`user_feedback`) REFERENCES `ufeedbacks` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `trainings_spare_users`
+-- Dumping data for table `news`
 --
 
-LOCK TABLES `trainings_spare_users` WRITE;
-/*!40000 ALTER TABLE `trainings_spare_users` DISABLE KEYS */;
-/*!40000 ALTER TABLE `trainings_spare_users` ENABLE KEYS */;
+LOCK TABLES `news` WRITE;
+/*!40000 ALTER TABLE `news` DISABLE KEYS */;
+/*!40000 ALTER TABLE `news` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -50,4 +64,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-08-03 11:03:27
+-- Dump completed on 2015-08-03 11:03:28
