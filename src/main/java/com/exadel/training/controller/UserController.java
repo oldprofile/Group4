@@ -4,6 +4,7 @@ import com.exadel.training.common.RoleType;
 import com.exadel.training.controller.model.User.*;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
+import com.exadel.training.notification.MessageFabric;
 import com.exadel.training.notification.Notification;
 import com.exadel.training.notification.news.NotificationNews;
 import com.exadel.training.service.TrainingService;
@@ -219,7 +220,7 @@ public class UserController {
                             userService.insertUserTrainingRelationShip(userLogin, trainingName);
 
                             notificationNews.sendNews(userLogin + " has subscribed to " + trainingName, user, training);
-                            notificationMail.send(user.getEmail(), userLogin + ",you have subscribed to " + trainingName);
+                            notificationMail.send(user.getEmail(), MessageFabric.getMessage(MessageFabric.messageType.Subscribe,trainingName));
 
                             httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
                         } else {

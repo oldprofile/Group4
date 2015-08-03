@@ -8,6 +8,7 @@ public class MessageFabric {
         Canceled,
         OneHourLeft,
         OneDayLeft,
+        Subscribe,
         Race;
     }
 
@@ -21,6 +22,8 @@ public class MessageFabric {
                 return new String("Don't forget about your " + trainingName + " training, one hour left!");
             case Race:
                 return new String("We offer you a place on a " + trainingName + " training. Hurry up and contact us if you ready to take it.");
+            case Subscribe:
+                return new String("you have subscribed to "+trainingName);
         }
         return "";
     }
