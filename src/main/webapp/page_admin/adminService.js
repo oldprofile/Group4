@@ -16,7 +16,7 @@ angular.module('myApp.admin')
     };
 
 	adminService.sendStatistics = function(statData) {
-		return $http.post('/omission_controller/test', statData)
+		return $http.post('/omission_controller/statistics', statData)
 			.then(function(results) {
 				alert(results.status);
 				return results.data;

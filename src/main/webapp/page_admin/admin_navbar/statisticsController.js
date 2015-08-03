@@ -9,8 +9,7 @@ angular.module('myApp.admin')
       /*  $scope.users = ['User1', 'User2' ];*/
         $scope.trainings = ['Training1', 'Training2'];
         $scope.types = ['Select Training', 'Select Listener'];
-		$scope.partType = ['Count of pass', 'Dates of pass'];
-		$scope.fullPass = ['Yes', 'No'];
+		$scope.statisticType = ['Count of pass', 'Dates of pass', 'Full statistic'];
         $scope.currentType = true;
         $scope.currentType2 = true;
         $scope.fullstat = true;
@@ -27,10 +26,27 @@ angular.module('myApp.admin')
 		});*/
 
 		$scope.save = function (userselect){
-			userselect.startDate = $filter('date')($scope.temp.tempDates[0], 'yyyy-MM-dd');
-			userselect.endDate = $filter('date')($scope.temp.tempDates[1], 'yyyy-MM-dd');
+			userselect.dateFrom = $filter('date')($scope.temp.tempDates[0], 'yyyy-MM-dd');
+			userselect.dateTo = $filter('date')($scope.temp.tempDates[1], 'yyyy-MM-dd');
+			if (userselect.type==='Full statistic'){
+				userselect.type='1';
+			}
+			if (userselect.type==='Dates of pass'){
+				userselect.type='2';
+			}
+			if (userselect.type==='Count of pass'){
+				userselect.type='3';
+			}
+			if (userselect.type == null){
+				alert ('Please select type of statistic!');
+			}
+			if (userselect.trainingName == null){
+				userselect.trainingName = "";
+			}
+			if (userselect.userLogin == null){
+				userselect.userLogin = "";
+			}
 			console.log(userselect);
 			adminService.sendStatistics(userselect);
 			};
-
     }]);

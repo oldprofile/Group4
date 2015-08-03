@@ -16,7 +16,7 @@
 					</a>
 
 					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-						<datetimepicker ng-model="temp.tempDates[0]" data-datetimepicker-config="{ dropdownSelector: '#dropdown0' }"/>
+						<datetimepicker ng-model="temp.tempDates[0]" data-datetimepicker-config="{ dropdownSelector: '#dropdown0', minView: 'day' }"/>
 					</ul>
 
 				</div>
@@ -35,7 +35,7 @@
 					</a>
 
 					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-						<datetimepicker ng-model="temp.tempDates[1]" data-datetimepicker-config="{ dropdownSelector: '#dropdown1' }"/>
+						<datetimepicker ng-model="temp.tempDates[1]" data-datetimepicker-config="{ dropdownSelector: '#dropdown1', minView: 'day' }"/>
 					</ul>
 				</div>
 			</div>
@@ -53,7 +53,7 @@
 			<div class="form-group" data-ng-show="currentType2">
 				<label class="control-label col-sm-2">Select person:</label>
 				<div class="col-sm-8">
-					<select class="form-control" data-ng-model="userSelect.person" ng-options="userName for userName in users" required>
+					<select class="form-control" data-ng-model="userSelect.userLogin" ng-options="userName for userName in users">
 						<option value="">Please select user</option>
 					</select>
 				</div>
@@ -61,36 +61,25 @@
 			<div class="form-group" data-ng-show="currentType">
 				<label class="control-label col-sm-2">Select training:</label>
 				<div class="col-sm-8">
-					<select class="form-control" data-ng-model="userSelect.training" ng-options="trainingName for trainingName in trainings" required>
+					<select class="form-control" data-ng-model="userSelect.trainingName" ng-options="trainingsName for trainingsName in trainings">
 						<option value="">Please select training</option>
 					</select>
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-2" ng-model="userSelect.typeOfStatistics">Select type of statistic:</label>
+				<label class="control-label col-sm-2">Select type of statistic:</label>
 				<div class="col-sm-8">
-					<div class="btn-group">
-						<label class="btn btn-default" ng-model="stat" btn-radio="'f'">Full statistic</label>
-						<label class="btn btn-default" ng-model="stat" btn-radio="'p'">Part of statistic</label>
-					</div>
-
-
-				</div>
-			</div>
-			<div class="form-group" ng-show="stat === 'p'">
-				<label class="control-label col-sm-2">Pass:</label>
-				<div class="col-sm-8">
-					<select class="form-control" data-ng-model="userSelect.partPass" ng-options="partOfPass for partOfPass in partType" required>
+					<select class="form-control" data-ng-model="userSelect.type" ng-options="statType for statType in statisticType">
 						<option value="">Please select type</option>
 					</select>
 				</div>
 			</div>
-			<div class="form-group" ng-show="stat === 'f'">
-				<label class="control-label col-sm-2">Full statistics:</label>
-				<div class="col-sm-8">
-					<select class="form-control" data-ng-model="userSelect.fullPass" ng-options="fullOfPass for fullOfPass in fullPass" required>
-						<option value="">Please select type</option>
-					</select>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-8">
+					<div class=«blocker»> <!--блок, перекрывающий поле ввода слева от кнопки-->
+						<input type=«file» id=«File1» class=«customFile» />
+						<div id=«BrowseButton» title=«choose» class=«fakeButton»>
+						<div id=«FileName»> <!--сюда мы будем вставлять имя файла и иконку-->
 				</div>
 			</div>
 			<div class="form-group">
