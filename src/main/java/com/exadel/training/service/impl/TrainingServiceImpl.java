@@ -275,6 +275,13 @@ public class TrainingServiceImpl implements TrainingService {
         return trainingRepository.findEditedTrainingByName(trainingName);
     }
 
+    @Override
+    public Training getNextTraining(String trainingName) {
+        Integer numberTraining = getNextTrainingNumber(trainingName);
+        List<Training> trainings = trainingRepository.findTrainingsByName(trainingName);
+        return trainings.get(numberTraining - 1);
+    }
+
     private Training updateParentTraining(String trainingName) {
         List<Training> trainings = trainingRepository.findTrainingsWithParentByName(trainingName);
         Training parent = trainings.get(0);
@@ -288,9 +295,21 @@ public class TrainingServiceImpl implements TrainingService {
 
 
     @Override
-    public Integer getTrainingNumber(String trainingName) {
+    public Integer getNextTrainingNumber(String trainingName) {
         Integer trainingNumber =  trainingRepository.findTrainingNumber(trainingName, new Date());
         return (trainingNumber + 1);
+    }
+
+    @Override
+    public Integer getTrainingNumberByDate(String trainingName, Date date) {
+        Integer trainingNumber =  trainingRepository.findTrainingNumber(trainingName, date);
+        return trainingNumber;
+    }
+
+    @Override
+    public Integer getTrainingsCount(String trainingName) {
+        Integer trainingNumber =  trainingRepository.findTrainingsCount(trainingName);
+        return trainingNumber;
     }
 
     @Override
