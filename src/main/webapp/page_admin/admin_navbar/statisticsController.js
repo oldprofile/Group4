@@ -16,7 +16,7 @@ angular.module('myApp.admin')
         $scope.fullstat = true;
         $scope.partstat = true;
 
-		$http.get('http://localhost:8080/user_controller/select_all_users').success(function(usersData) {
+		$http.get('http://localhost:8080/user_controller/select_all_users_login').success(function(usersData) {
 			$scope.users = usersData;
 			console.log(usersData);
 		});
