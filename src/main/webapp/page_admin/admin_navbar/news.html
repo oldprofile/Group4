@@ -3,10 +3,11 @@
     <thead>
     </thead>
     <tr ng-repeat="news in newsList track by $index">
-      <td align="center" ng-class="{bgcolorgray: !news.isRead}"><a href="">{{news.name}}</a> {{news.desciption}}</td> <!-- LOGIN HREF -->
+      <td align="center" ng-class="{bgcolorgray: !news.isRead}"><a href="">{{news.name}}</a> {{news.description}} <a href="">{{news.training.trainingName}}</a></td> <!-- LOGIN HREF -->
     </tr>
   </table>
   
-  <pagination total-items="totalItems" ng-model="pageNumber" items-per-page="2" ng-change="getNews(pageNumber)" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;">
+  <pagination total-items="totalItems" ng-model="pageNumber" items-per-page="10" ng-change="getNews(pageNumber)" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;">
   </pagination>
+</div>
 </div>
