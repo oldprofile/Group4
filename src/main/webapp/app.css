@@ -3,7 +3,7 @@
 @import url(assets/SanFranciscoFont/usesf.css);
 
 body{
-    font-family: 'San Francisco Text', sans-serif !important;
+    font-family: 'San Francisco Text', 'Georgia', sans-serif, serif !important;
     padding-top: 80px;
     height: 100vh !important;
     outline: 0 !important;
@@ -543,6 +543,8 @@ font-weight: 500;
     margin-left: 0;
 }
 
+
+
 .glyphicon-calendar,
 .glyphicon-delete {
     margin: 0;
@@ -774,27 +776,27 @@ font-weight: 500;
 }
 
 .default-red {
-  color: #ef3e36 !important;
+  color: #d9534f !important;
   background-color: transparent !important;
-  border-color: #ef3e36 !important;
+  border-color: #d9534f !important;
 }
 
 .default-red:hover {
-  color: #a1161b !important;
+  color: #c9302c !important;
   background-color: transparent !important;
-  border-color: #a1161b !important;
+  border-color: #c9302c !important;
 }
 
 .accent-red {
   color: white !important;
-  background-color: #ef3e36 !important;
-  border-color: #ef3e36 !important;
+  background-color: #d9534f !important;
+  border-color: #d9534f !important;
 }
 
 .accent-red:hover {
   color: white !important;
-  background-color: #a1161b !important;
-  border-color: #a1161b !important;
+  background-color: #c9302c !important;
+  border-color: #c9302c !important;
 }
 
 

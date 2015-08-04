@@ -8,8 +8,8 @@
                 <div class="calendar">
                     <a class="dropdown-toggle" id="dropdown{{$index}}" role="button" data-toggle="dropdown">
                         <div class="input-group">
-                            <input type="text" class="form-control calendar" ng-value="temp.tempDates[$index] | date: 'medium'" disabled>
-                            <span class="input-group-addon">
+                            <input type="text" class="form-control calendar" ng-value="temp.tempDates[$index] | date: 'medium'" placeholder="click here" disabled>
+                            <span class="input-group-addon addon-calendar">
                                 <i class="glyphicon glyphicon-calendar"></i>
                             </span>
                         </div>
@@ -21,7 +21,7 @@
                 </div>
                 <div id="deleteDate">
                     <span id="delete-btn" class="btn btn-danger round-btn default-red" ng-click="deleteDate($index)">
-                        X
+                        <i class="fa fa-minus"></i>
                     </span>
                 </div>
             </div>

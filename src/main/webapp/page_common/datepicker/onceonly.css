@@ -14,6 +14,13 @@ div.inputs-container > * {
     width: 40%;
     min-width: 200px;
     float: left;
+    border: none !important;
+}
+
+.addon-calendar {
+	background-color: white !important;
+	border: none !important;
+	box-shadow: none !important;
 }
 
 #deleteDate {

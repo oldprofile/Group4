@@ -1,11 +1,16 @@
 angular.module('myApp.courseinfo')
-    .controller('CourseInfoController', ['$scope','$routeParams', '$filter', 'courseInfoService','userService','$modal','feedbacksService', function($scope, $routeParams, $filter,  courseInfoService,userService,$modal,feedbacksService) {
+    .controller('CourseInfoController', ['$scope','$routeParams', '$filter', '$location', 'courseInfoService','userService','$modal','feedbacksService', function($scope, $routeParams, $filter, $location, courseInfoService,userService,$modal,feedbacksService) {
         $scope.isAdmin = userService.isAdmin();
 
         $scope.courseName = $routeParams.coursename;
         $scope.subButtonText = "Subscribe";
         $scope.isContentLoaded = false;
         $scope.course = {};
+
+        $scope.goTo = function(path) {
+            console.log(path);
+            $location.path(path);
+        };
 
         var courseInfoData1 = {
             login: userService.getUser().login,
@@ -14,20 +19,27 @@ angular.module('myApp.courseinfo')
 
         $scope.isSubscriber = false;
         $scope.subscribe = function(){
-            var isSub = $scope.isSubscriber;
+            var isSub = $scope.isSubscriber,
+				promise;
+			$scope.subscriptionLoading = true;
             if(isSub){
-                courseInfoService.leave(courseInfoData1).success(function(data){
+                promise = courseInfoService.leave(courseInfoData1).then(function(data){
                     $scope.course.subscriber = false;
                     $scope.course.promtText = courseInfoService.getPromtText($scope.course);
                     $scope.isSubscriber = false;
-                }).error(function(err){});
+                }).catch(function(err){});
             } else {
-                courseInfoService.subscribe(courseInfoData1).success(function(data){
+                promise = courseInfoService.subscribe(courseInfoData1).then(function(data){
                     $scope.course.subscriber = true;
                     $scope.course.promtText = courseInfoService.getPromtText($scope.course);
                     $scope.isSubscriber = true;
-                }).error(function(err){});
+                }).catch(function(err){});
             }
+			promise.finally(
+				function () {
+					$scope.subscriptionLoading = false;
+				}
+			);
         }
 
         courseInfoService.getCourseInfo($routeParams.coursename).success(function(data){
