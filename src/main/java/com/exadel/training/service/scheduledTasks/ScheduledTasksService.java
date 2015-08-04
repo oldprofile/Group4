@@ -64,6 +64,7 @@ public class ScheduledTasksService {
 
     private void cancelTraining(NotificationTrainingModel notificationTrainingModel, List<UserShort> listeners) throws MessagingException, NoSuchFieldException {
         Training training = trainingService.getTrainingByName(notificationTrainingModel.getName());
+        // can't set state
         training.setState(StateTraining.parseToInt("Canceled"));
         for (UserShort listener : listeners) {
 
@@ -101,20 +102,21 @@ public class ScheduledTasksService {
         Training training = trainingService.getTrainingByNameAndDate(notificationTrainingModel.getName(), notificationTrainingModel.getDate());
         int state = training.getState();
         if (getHoursBeforeTraining(notificationTrainingModel) < 0 &&  (state == StateTraining.parseToInt("InProcess") || state == StateTraining.parseToInt("Ahead"))) {
+            // can't set state
             training.setState(StateTraining.parseToInt("Finished"));
-            long i = trainingService.getTrainingNumberByDate(notificationTrainingModel.getName(), notificationTrainingModel.getDate());
-            long j = trainingService.getTrainingsCount(notificationTrainingModel.getName());
-            if ( i == j){
-                //long l = trainingService.getParentTrainingId(notificationTrainingModel.getName());
-                trainingService.getTrainingByName(notificationTrainingModel.getName()).setState(StateTraining.parseToInt("Finished"));
+            long trainingNumber = trainingService.getTrainingNumberByDate(notificationTrainingModel.getName(), notificationTrainingModel.getDate());
+            long trainingsCount = trainingService.getTrainingsCount(notificationTrainingModel.getName());
+            if ( trainingNumber == trainingsCount){
+                // can't set state
+                Training parent = trainingService.getTrainingByName(notificationTrainingModel.getName());
+                parent.setState(StateTraining.parseToInt("Finished"));
             }
         }
     }
 
     @Scheduled(fixedDelay = 3600000)
     public void doSomething() throws ParseException, NoSuchFieldException, MessagingException, TwilioRestException {
-        // new method without parent
-        List<Training> trainings = trainingService.getValidTrainings();
+        List<Training> trainings = trainingService.getValidTrainingsExceptParent();
         if (!trainings.isEmpty()) {
             List<NotificationTrainingModel> notificationTrainingModels = NotificationTrainingModel.parseTrainingList(trainings);
             for (NotificationTrainingModel notificationTrainingModel : notificationTrainingModels) {
@@ -127,21 +129,21 @@ public class ScheduledTasksService {
                         } else {
                             notificateByEmail(notificationTrainingModel, listeners, MessageFabric.messageType.OneDayLeft);
                         }
-                        continue;
+                        break;
                     }
                     case 3: {
                         if (emptyPlaces(notificationTrainingModel, listeners) > 0) {
                             race(notificationTrainingModel);
                         }
-                        continue;
+                        break;
                     }
                     case 1: {
                         notificateBySms(notificationTrainingModel, listeners, MessageFabric.messageType.OneHourLeft);
-                        continue;
+                        break;
                     }
                     default: {
                         hasPased(notificationTrainingModel);
-                        continue;
+                        break;
                     }
                 }
             }
