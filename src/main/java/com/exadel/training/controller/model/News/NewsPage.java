@@ -13,13 +13,20 @@ public class NewsPage {
     private Long id;
     private String name;
     private String description;
+    private int type;
     private AllTrainingUserShort training;
     private Boolean isRead;
-
 
     public NewsPage(){
     }
 
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     public Long getId() {
         return id;
@@ -71,6 +78,7 @@ public class NewsPage {
         if(news.getTraining() != EMPTY) {
          newsPage.setTraining(AllTrainingUserShort.parseAllTrainingUserShort(news.getTraining()));
         }
+        newsPage.setType(news.getType());
         newsPage.setIsRead(news.isRead());
         newsPage.setId(news.getId());
 
