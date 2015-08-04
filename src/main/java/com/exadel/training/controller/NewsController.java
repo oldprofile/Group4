@@ -42,11 +42,15 @@ public class NewsController {
     }
 
     @RequestMapping("/unread/{state}")
-    @ResponseBody
-    public DeferredResult<Long> quotes(@PathVariable("state")Long state) throws NoSuchFieldException {
+    public @ResponseBody DeferredResult<Long> getAllNewsActual(@PathVariable("state") Long state) throws NoSuchFieldException {
         return userNewsService.getDefferdResult(state);
     }
 
+    @RequestMapping(value = "/change_unread/{id}")
+    public @ResponseBody void changeUnread(@PathVariable("id") Long id) {
+
+        userNewsService.changeUnread(id);
+    }
 
     private List<News> getLatestNews(Long timestamp) {
         List<News> list = new ArrayList<>();
