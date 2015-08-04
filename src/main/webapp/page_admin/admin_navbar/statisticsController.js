@@ -9,7 +9,7 @@ angular.module('myApp.admin')
       /*  $scope.users = ['User1', 'User2' ];*/
         $scope.trainings = ['Training1', 'Training2'];
         $scope.types = ['Select Training', 'Select Listener'];
-		$scope.statisticType = ['Count of pass', 'Dates of pass', 'Full statistic'];
+		$scope.statisticType = ['1', '2', '3'];
         $scope.currentType = true;
         $scope.currentType2 = true;
         $scope.fullstat = true;
@@ -28,7 +28,10 @@ angular.module('myApp.admin')
 		$scope.save = function (userselect){
 			userselect.dateFrom = $filter('date')($scope.temp.tempDates[0], 'yyyy-MM-dd');
 			userselect.dateTo = $filter('date')($scope.temp.tempDates[1], 'yyyy-MM-dd');
-			if (userselect.type==='Full statistic'){
+			if (userselect.dateFrom>userselect.dateTo){
+				alert ('You are wrong! Check the second date!');
+			}
+			/*if (userselect.type==='Full statistic'){
 				userselect.type='1';
 			}
 			if (userselect.type==='Dates of pass'){
@@ -36,7 +39,8 @@ angular.module('myApp.admin')
 			}
 			if (userselect.type==='Count of pass'){
 				userselect.type='3';
-			}
+			}*/
+			alert(userselect.type);
 			if (userselect.type == null){
 				alert ('Please select type of statistic!');
 			}
@@ -47,6 +51,8 @@ angular.module('myApp.admin')
 				userselect.userLogin = "";
 			}
 			console.log(userselect);
+			debugger
 			adminService.sendStatistics(userselect);
 			};
+
     }]);

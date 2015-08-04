@@ -1,15 +1,15 @@
 <div ng-controller="StatisticsController">
 	<div class="statistics-container">
 
-		<form class="form-horizontal" role="form">
+		<form class="form-horizontal" novalidate>
 			<div class="form-group">
 				<label class="control-label col-sm-2">Start date:</label>
 
 				<div class="col-sm-8">
 					<a class="dropdown-toggle" id="dropdown0" role="button" data-toggle="dropdown">
-						<div class="input-group">
+						<div class="input-append">
 							<input type="text" class="form-control" ng-value="temp.tempDates[0] | date: 'mediumDate'">
-                        <span class="input-group-addon">
+                        <span class="add-on">
                             <i class="glyphicon glyphicon-calendar"></i>
                         </span>
 						</div>
@@ -26,9 +26,9 @@
 
 				<div class="col-sm-8">
 					<a class="dropdown-toggle" id="dropdown1" role="button" data-toggle="dropdown">
-						<div class="input-group">
+						<div class="input-append">
 							<input type="text" class="form-control" ng-value="temp.tempDates[1] | date: 'mediumDate'">
-                        <span class="input-group-addon">
+                        <span class="add-on">
                             <i class="glyphicon glyphicon-calendar"></i>
                         </span>
 						</div>
@@ -67,17 +67,16 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-2">Select type of statistic:</label>
+				<label class="control-label col-sm-2">Statistic: (1 - full, 2 - dates of pass, 3 - count of pass)</label>
 				<div class="col-sm-8">
 					<select class="form-control" data-ng-model="userSelect.type" ng-options="statType for statType in statisticType">
 						<option value="">Please select type</option>
 					</select>
 				</div>
 			</div>
-
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-8">
-					<button ng-click="save(userSelect)" type="submit" class="btn btn-success">Get statistics</button>
+					<button ng-click="save(userSelect)" type="button" class="btn btn-success">Download statistics</button>
 				</div>
 			</div>
 		</form>
