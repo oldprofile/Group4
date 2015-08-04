@@ -49,10 +49,15 @@ public class OmissionController {
     ExcelFileGenerator excelFileGenerator;
 
     @RequestMapping(value = "/add_omissions", method = RequestMethod.POST, consumes = "application/json")
-    @ResponseBody void addOmissions(@RequestBody List<OmissionADDModel> omissionADDModels, HttpServletResponse response) {
+    public @ResponseBody void addOmissions(@RequestBody List<OmissionADDModel> omissionADDModels, HttpServletResponse response) {
         try {
             for (OmissionADDModel omissionADDModel : omissionADDModels) {
-                omissionService.addOmission(omissionADDModel);
+                Omission omission = omissionService.findByTrainingAndUserLogin(omissionADDModel.getTrainingName(), omissionADDModel.getUserLogin(), omissionADDModel.getDate());
+                if(omission.equals(null)) {
+                    omissionService.addOmission(omissionADDModel);
+                } else {
+                    omission.setOmission(omissionADDModel.isOmission());
+                }
             }
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -60,13 +65,13 @@ public class OmissionController {
     }
 
     @RequestMapping(value = "/get_omissions", method = RequestMethod.POST, consumes = "application/json")
-    @ResponseBody List<Boolean> getOmissions(@RequestBody TrainingNameAndDate trainingNameAndDate) throws ParseException {
+    public @ResponseBody List<Boolean> getOmissions(@RequestBody TrainingNameAndDate trainingNameAndDate) throws ParseException {
         List<Boolean> omissions = omissionService.getAllOmissions(trainingNameAndDate.getTrainingName(), trainingNameAndDate.parseToDate());
         return omissions;
     }
 
     @RequestMapping(value = "/statistics", method = RequestMethod.POST, consumes = "application/json")
-    @ResponseBody String generateStatistics(@RequestBody StatisticsRequestModel statisticsRequestModel, HttpServletResponse response) throws IOException {
+    public @ResponseBody String generateStatistics(@RequestBody StatisticsRequestModel statisticsRequestModel, HttpServletResponse response) throws IOException {
 
         String userLogin = statisticsRequestModel.getUserLogin();
         String trainingName = statisticsRequestModel.getTrainingName();
