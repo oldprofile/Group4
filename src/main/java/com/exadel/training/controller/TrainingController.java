@@ -382,4 +382,11 @@ public class TrainingController {
         List<Training> list = trainingService.getTrainingsByCoach(userLogin);
         return ShortTrainingInfo.parseList(list);
     }
+
+    @RequestMapping(value = "/test_trainings_number", method = RequestMethod.GET/*consumes = "application/json"*/)
+    public @ResponseBody
+    Integer testTrainingNumber () throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
+        Integer number = trainingService.getNextTrainingNumber("batman forever");
+        return number;
+    }
 }

@@ -12,7 +12,10 @@ import java.util.List;
 public interface NewsRepository extends JpaRepository<News, Long> {
 
     @Query("select count(n) from News as n")
-    int getCountOfPages();
+    int getCountOfNews();
+
+    @Query("select count(n) from News as n where n.isRead = false")
+    long getCountOfUnreadNews();
 
     @Query("select n from News as n where n.id > ?1")
     List<News> getLatestNews(Long id);

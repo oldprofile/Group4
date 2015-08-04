@@ -1,10 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `testdb` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `testdb`;
--- MySQL dump 10.13  Distrib 5.6.13, for Win32 (x86)
+-- MySQL dump 10.13  Distrib 5.6.24, for Win64 (x86_64)
 --
 -- Host: localhost    Database: testdb
 -- ------------------------------------------------------
--- Server version	5.6.15
+-- Server version	5.6.21
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -26,22 +24,28 @@ DROP TABLE IF EXISTS `ufeedbacks`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ufeedbacks` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `attendance` varchar(255) DEFAULT NULL,
-  `attitude` varchar(255) DEFAULT NULL,
-  `comm_skills` varchar(255) DEFAULT NULL,
+  `assessment` int(11) NOT NULL,
+  `attendance` bit(1) NOT NULL,
+  `attitude` bit(1) NOT NULL,
+  `comm_skills` bit(1) NOT NULL,
   `date` datetime DEFAULT NULL,
-  `focus_on_result` varchar(255) DEFAULT NULL,
-  `motivation` varchar(255) DEFAULT NULL,
+  `focus_on_result` bit(1) NOT NULL,
+  `level` int(11) NOT NULL,
+  `motivation` bit(1) NOT NULL,
   `other` varchar(255) DEFAULT NULL,
-  `questions` varchar(255) DEFAULT NULL,
+  `questions` bit(1) NOT NULL,
   `feedbacker` bigint(20) DEFAULT NULL,
   `user` bigint(20) DEFAULT NULL,
+  `type` int(11) NOT NULL,
+  `news` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_gccxtvxdi2s1gm618neuqkrct` (`feedbacker`),
   KEY `FK_gro8es0fu6pnrwbbcqo245naa` (`user`),
-  CONSTRAINT `FK_gro8es0fu6pnrwbbcqo245naa` FOREIGN KEY (`user`) REFERENCES `users` (`id`),
-  CONSTRAINT `FK_gccxtvxdi2s1gm618neuqkrct` FOREIGN KEY (`feedbacker`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+  KEY `FK_7mgcpdn0wdypwxgdmo1xc6v2c` (`news`),
+  CONSTRAINT `FK_7mgcpdn0wdypwxgdmo1xc6v2c` FOREIGN KEY (`news`) REFERENCES `news` (`id`),
+  CONSTRAINT `FK_gccxtvxdi2s1gm618neuqkrct` FOREIGN KEY (`feedbacker`) REFERENCES `users` (`id`),
+  CONSTRAINT `FK_gro8es0fu6pnrwbbcqo245naa` FOREIGN KEY (`user`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -50,7 +54,6 @@ CREATE TABLE `ufeedbacks` (
 
 LOCK TABLES `ufeedbacks` WRITE;
 /*!40000 ALTER TABLE `ufeedbacks` DISABLE KEYS */;
-INSERT INTO `ufeedbacks` VALUES (1,'normal','normal','good','2011-12-20 14:00:00','excelent','good','sdf','jbmj',1,2),(2,'good','excelent','bad','2015-09-20 15:00:00','good','good','sdfg','dfvg',2,3),(3,'bad','bad','excelent','2013-10-20 15:00:00','bad','good','sdfj','sdf',3,1);
 /*!40000 ALTER TABLE `ufeedbacks` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -63,4 +66,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-07-15 19:27:45
+-- Dump completed on 2015-08-03 11:03:28

@@ -42,19 +42,28 @@ public class AuthenticationController {
         String login = project.getLogin();
         Long password = project.getPassword();
         User user = new User();
-         try {
+
+        try {
              user = userService.findUserByLoginAndPassword(login, password);
          }catch (NullPointerException e){
              httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
          }
-         httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
-            try {
-                String token = cryptService.encrypt(login);
-                httpServletResponse.setHeader("token", token);
-                sessionToken.addToken(login,token);
-            } catch (UnsupportedEncodingException | BadPaddingException | IllegalBlockSizeException e) {
-                e.printStackTrace();
-            }
+
+         if(user != EMPTY) {
+             httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+
+             try {
+                 String token = cryptService.encrypt(login);
+                 httpServletResponse.setHeader("token", token);
+                 sessionToken.addToken(login, token);
+             } catch (UnsupportedEncodingException | BadPaddingException | IllegalBlockSizeException e) {
+                 e.printStackTrace();
+             }
+         } else {
+             httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
+             return new Authentication();
+         }
+
         return Authentication.parseAuthentication(user);
     }
 

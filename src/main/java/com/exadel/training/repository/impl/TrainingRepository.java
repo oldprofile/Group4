@@ -40,7 +40,7 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
     @Query(value =  "select tr from Training tr where tr.category.id = ?1 and tr.state in (2,3) and tr.parent = 0")
     List<Training> findValidTrainingsByCategoryId(int id);
 
-    @Query(value = "select tr from Training tr where tr.name = ?1 and tr.parent > 0")
+    @Query("select tr from Training tr where tr.name = ?1 and tr.parent > 0 order by tr.dateTime asc")
     List<Training> findTrainingsByName(String name);
 
     @Query("select tr from Training tr where tr.name = ?1 and tr.parent > 0")
@@ -94,16 +94,22 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
     @Query("select tr.place from Training as tr where tr.name= ?1 and tr.parent > 0 order by tr.dateTime asc")
     List<String> findPlacesByTrainingName(String trainingName);
 
+    @Query("select tr.name from Training as tr where tr.parent = 0")
+    List<String> findTrainingsNames();
+
     @Query("select tr.id from Training as tr where tr.name = ?1 and tr.parent = 0")
     Long findParentTrainingIdByName(String trainingName);
 
-    @Query("select count(tr.dateTime) from Training as tr where tr.name = ?1 and  tr.dateTime <= ?2 and tr.parent > 0")
+    @Query("select count(tr.dateTime) from Training as tr where tr.name = ?1 and  tr.dateTime <= ?2 and tr.parent > 0 order by tr.dateTime asc")
     Integer findTrainingNumber(String trainingName, Date date);
+
+    @Query("select count(tr.dateTime) from Training as tr where tr.name = ?1 and tr.parent > 0")
+    Integer findTrainingsCount(String trainingName);
 
     @Query("select count(tr) from Training as tr where tr.category = ?1 and tr.parent = 0")
     Integer findValidTrainingsNumberByCategory(Category category);
 
-    @Query(value = "SELECT * FROM trainings WHERE MATCH (name) AGAINST (:search) and trainings.parent = 0", nativeQuery = true)
+    @Query(value = "SELECT * FROM trainings WHERE MATCH (name) AGAINST (:search in boolean mode) and trainings.parent = 0", nativeQuery = true)
     List<Training> searchTrainingByName(@Param("search")String search);
 
     @Query("select case when (count(tr)>0) then true else false end from Training as tr inner join tr.listeners as trus where tr.name = ?1 and tr.parent = 0 and trus.login = ?2")
