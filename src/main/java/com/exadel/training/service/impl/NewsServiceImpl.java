@@ -85,4 +85,11 @@ public class NewsServiceImpl implements NewsService {
         }
 
     }
+
+    @Override
+    public void changeUnread(long id) {
+        News news = newsRepository.findOne(id);
+
+        news.setRead(true);
+    }
 }
