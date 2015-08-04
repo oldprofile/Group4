@@ -1,122 +1,136 @@
 <div ng-class="{ 'waiting-for-angular': !isContentLoaded }">
   <div ng-show="isContentLoaded">
     <div class="row courseinfo-div">
-      <div class="row big-margin">
-        <div class="col-xs-6">
-          <img ng-src="{{course.pictureLink}}"></img>
-        </div>
-        <div class="col-xs-6">
-          <div class="courseinfo-header">
+      <div class="col-xs-12">
+
+        <div class="row">
+
+          <div class="col-xs-12 col-sm-6">
             <span class="courseinfo-h1">{{course.name}}</span>
 
-            <a href="#/editcourse/{{course.name}}" class="btn btn-default btn-md courseinfo-btn no-border" role="button">
-              <span class="glyphicon glyphicon-edit"></span>Edit Course
-            </a>
+            <p class="courseinfo-h5 big-margin">Starts on: {{course.dateTime[0] | date:"dd MMMM"}}</p>
+
+            <p class="courseinfo-h5 color-gray">{{course.lessonNumber}} lessons</p>
+
+            <p class="courseinfo-h5 top-margin">Coach: {{course.coachName}}</p>
+
+            <p class="courseinfo-h5">Category: </p>
+
+            <p class="info-small color-gray">Recommended for: {{course.audience}}</p>
 
           </div>
-          <p class="courseinfo-small top-margin">
-            <span><b>Starts on:</b></span><span class="color-gray"> {{course.dateTime[0] | date:"dd MMMM"}}</span>
-          </p>
-          <p class="courseinfo-small color-gray">{{course.lessonNumber}} lessons</p>
-          <p class="top-margin">
-            <span><b>Recommended for:</b></span> <span class="color-gray">{{course.audience}}</span>
-          </p>
-          <p><span class="color-gray">Coach:</span> <a href="">{{course.coachName}}</a></p> <!-- EMPTY LINK -->
-          <p class="big-margin"><b>About this course</b></p>
-          <p>{{course.description}}</p>
 
-          <div>
+          <div class="col-xs-12 col-sm-6 courseinfo-img-container">
+            <img class="courseinfo-img" ng-src="{{course.pictureLink}}">
+          </div>
+
+        </div>
+
+        <div class="row top-margin">
+          <div class="col-xs-12">
             <button class="btn btn-default default-btn" ng-class="{'default-blue': !isSubscriber, 'default-red': isSubscriber}" role="button" ng-click="subscribe()">{{isSubscriber ? "Leave" : "Subscribe" }}</button>
 
             <button class="btn btn-default default-btn default-gray" role="button" ng-click="leaveFeedback()">Leave Feedback</button>
           </div>
-
         </div>
-      </div>
 
-      <!-- Accordeon -->
-      <div class="row big-margin">
-        <v-accordion class="vAccordion--default" multiple>
+        <div class="row top-margin">
+          <div class="col-xs-12">
+            <div class="courseinfo-description scroll">
+              {{course.description}}
+            </div>
+          </div>
+        </div>
 
-          <!-- add expanded attribute to open the section -->
-          <v-pane>
-            <v-pane-header>
-              <span class="glyphicon glyphicon-time"></span>Timetable
-            </v-pane-header>
+        <!-- Accordeon -->
+        <div class="row top-margin">
+          <div class="col-xs-12">
+            <v-accordion class="vAccordion--default" multiple>
 
-            <v-pane-content>
-              <table class="table courseinfo-table">
-                <thead>
-                <tr>
-                  <th>Lesson</th>
-                  <th>When</th>
-                  <th>Where</th>
-                  <th>Edit date & place</th>
-                  <th>Omissions</th>
-                </tr>
-                </thead>
-                <tr ng-repeat="lesson in course.dateTime">
-                  <td>{{$index + 1}}</td>
-                  <td>{{ lesson | date: "medium" }}</td>
-                  <td>{{ course.places[$index] }}</td>
-                  <td><a href="" ng-click="editDatePlace($index)">edit</a></td>
-                  <td><a href="" ng-click="manageOmissions($index)">edit</a></td>
-                </tr>
-              </table>
-            </v-pane-content>
-          </v-pane>
+              <!-- add expanded attribute to open the section -->
+              <v-pane>
+                <v-pane-header>
+                  <span class="glyphicon glyphicon-time"></span>Timetable
+                </v-pane-header>
 
-          <!-- add expanded attribute to open the section -->
-          <v-pane>
-            <v-pane-header>
-              <span class="glyphicon glyphicon-user"></span>Participants
-            </v-pane-header>
+                <v-pane-content>
+                  <table class="table courseinfo-table" ng-if="course.dateTime.length != 0">
+                    <thead>
+                    <tr>
+                      <th>Lesson</th>
+                      <th>When</th>
+                      <th>Where</th>
+                      <th ng-if="isAdmin">Edit date & place</th>
+                      <th ng-if="isAdmin">Omissions</th>    <!--OR isCoach! -->
+                    </tr>
+                    </thead>
+                    <tr ng-repeat="lesson in course.dateTime">
+                      <td>{{$index + 1}}</td>
+                      <td>{{ lesson | date: "medium" }}</td>
+                      <td>{{ course.places[$index] }}</td>
+                      <td ng-if="isAdmin"><a href="" ng-click="editDatePlace($index)">edit</a></td>
+                      <td ng-if="isAdmin"><a href="" ng-click="manageOmissions($index)">edit</a></td>
+                    </tr>
+                  </table>
+                  <p ng-if="course.dateTime.length == 0">Sorry, no dates are known yet</p>
+                </v-pane-content>
+              </v-pane>
 
-            <v-pane-content>
-              <table class="table  courseinfo-table">
-                <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Name</th>
-                  <th>E-Mail</th>
-                </tr>
-                </thead>
-                <tr ng-repeat="p in course.listeners">
-                  <td>{{$index + 1}}</td>
-                  <td>{{ p.name}}</td>
-                  <td>somecoolemail@email.com{{ p.email }}</td>
-                </tr>
-              </table>
-            </v-pane-content>
-          </v-pane>
+              <!-- add expanded attribute to open the section -->
+              <v-pane ng-if="isAdmin">
+                <v-pane-header>
+                  <span class="glyphicon glyphicon-user"></span>Participants
+                </v-pane-header>
 
-          <!-- add expanded attribute to open the section -->
-          <v-pane>
-            <v-pane-header>
-              <span class="glyphicon glyphicon-comment"></span>Feedbacks
-            </v-pane-header>
+                <v-pane-content>
+                  <table class="table courseinfo-table" ng-if="(course.listeners.length + course.spareUsers.length) != 0">
+                    <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>E-Mail</th>
+                    </tr>
+                    </thead>
+                    <tr ng-repeat="p in course.listeners">
+                      <td>{{$index + 1}}</td>
+                      <td>{{ p.name}}</td>
+                      <td>somecoolemail@email.com{{ p.email }}</td>
+                    </tr>
+                  </table>
+                  <p ng-if="(course.listeners.length + course.spareUsers.length) == 0">No participants yet</p>
+                </v-pane-content>
+              </v-pane>
 
-            <v-pane-content>
-              <table class="table courseinfo-table">
-                <thead>
-                <tr>
-                  <th>#</th>
-                  <th>From</th>
-                  <th>When</th>
-                  <th>View</th>
-                </tr>
-                </thead>
-                <tr ng-repeat="f in course.feedbacks">
-                  <td>{{$index + 1}}</td>
-                  <td>{{ f.feedbackerName}}</td>
-                  <td>{{ f.date | date:"mediumDate" }}</td>
-                  <td> <a href="" ng-click="viewFeedback(f)">show me</a></td>
-                </tr>
-              </table>
-            </v-pane-content>
-          </v-pane>
+              <!-- add expanded attribute to open the section -->
+              <v-pane>
+                <v-pane-header>
+                  <span class="glyphicon glyphicon-comment"></span>Feedbacks
+                </v-pane-header>
 
-        </v-accordion>
+                <v-pane-content>
+                  <table class="table courseinfo-table" ng-if="course.feedbacks.length != 0">
+                    <thead>
+                    <tr>
+                      <th>#</th>
+                      <th ng-if="isAdmin">From</th>
+                      <th>When</th>
+                      <th>View</th>
+                    </tr>
+                    </thead>
+                    <tr ng-repeat="f in course.feedbacks">
+                      <td>{{$index + 1}}</td>
+                      <td ng-if="isAdmin">{{ f.feedbackerName}}</td>
+                      <td>{{ f.date | date:"mediumDate" }}</td>
+                      <td> <a href="" ng-click="viewFeedback(f)">show me</a></td>
+                    </tr>
+                  </table>
+                    <p ng-if="course.feedbacks.length == 0">No feedbacks yet</p>
+                </v-pane-content>
+              </v-pane>
+
+            </v-accordion>
+          </div>
+        </div>
       </div>
     </div>
   </div>

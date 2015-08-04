@@ -9,7 +9,7 @@
                   <th>Status</th>
               </tr>
             </thead>
-            <tr ng-repeat="course in toApproveList track by $index" class="link-cursor" ng-click="goTo('#/editcourse/' + course.trainingName + '/' + course.state)">
+            <tr ng-repeat="course in toApproveList track by $index" class="link-cursor" ng-click="goTo('/editcourse/' + course.trainingName + '/' + course.state)">
                 <td>{{course.trainingName}}</td>
                 <td>{{course.trainingCoach}}</td>
                 <td>{{course.state}}</td>

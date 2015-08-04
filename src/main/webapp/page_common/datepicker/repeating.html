@@ -55,12 +55,12 @@
         <div class="dropdown col-xs-9">
             <a class="dropdown-toggle" id="dropdownRepeat" role="button" data-toggle="dropdown">
                 <div class="input-group">
-                    <input type="text" class="form-control" ng-value="temp.startDate | date: 'medium'">
+                    <input type="text" class="form-control calendar" ng-value="temp.startDate | date: 'medium'" disabled>
                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                 </div>
             </a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                <datetimepicker ng-model="temp.startDate" data-datetimepicker-config="{ dropdownSelector: '#dropdownRepeat' }"/>
+                <datetimepicker ng-model="temp.startDate" data-datetimepicker-config="{ dropdownSelector: '#dropdownRepeat', minuteStep: 15 }"/>
             </ul>
         </div>
     </div>
@@ -72,12 +72,12 @@
         <div class="dropdown col-xs-9">
             <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown">
                 <div class="input-group">
-                    <input type="text" class="form-control" data-ng-model="temp.endDate">
+                    <input type="text" class="form-control calendar" data-ng-model="temp.endDate" disabled>
                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                 </div>
             </a>
             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                <datetimepicker data-ng-model="temp.endDate" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"/>
+                <datetimepicker data-ng-model="temp.endDate" data-datetimepicker-config="{ dropdownSelector: '#dropdown2', minuteStep: 15 }"/>
             </ul>
         </div>
     </div>

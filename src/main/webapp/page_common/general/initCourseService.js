@@ -23,7 +23,11 @@ angular.module('myApp')
         scope.courseInfo.dateTime = [];
         scope.courseInfo.places = [];
         scope.courseInfo.additional = "";
-        scope.courseInfo.isInternal = true;
+
+        if(!scope.isAdmin) {
+            scope.courseInfo.isInternal = true;
+        }
+
         scope.courseInfo.userLogin = userService.getUser().login;
         
         getCategories.success(function(data) {

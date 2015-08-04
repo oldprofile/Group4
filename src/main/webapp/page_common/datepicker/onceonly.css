@@ -10,6 +10,20 @@ div.inputs-container > * {
     margin: 10px;
 }
 
+.calendar {
+    width: 40%;
+    min-width: 200px;
+    float: left;
+}
+
+#deleteDate {
+    float: left;
+}
+
+#delete-btn {
+    margin-left: 8px;
+}
+
 .scroll::-webkit-scrollbar-track {
 	width:8px;
 }

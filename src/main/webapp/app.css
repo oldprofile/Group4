@@ -1,21 +1,20 @@
 /* app css stylesheet */
 
-/*@import url(assets/SanFranciscoFont/usesf.css)*/
-
-@import url(http://fonts.googleapis.com/css?family=Lora:400,700&subset=latin,cyrillic);
+@import url(assets/SanFranciscoFont/usesf.css);
 
 body{
-    /*font-family: 'San Francisco Text', sans-serif !important;*/
-    font-family: 'Lora', sans-serif !important;
-    padding-top: 80px; 
+    font-family: 'San Francisco Text', sans-serif !important;
+    padding-top: 80px;
     height: 100vh !important;
+    outline: 0 !important;
+    box-shadow: none !important;
 }
 body a{
   color: #1DAAE5;
   font-weight: 200;
 }
 body a:hover{
-  color: #25709D ; 
+  color: #25709D ;
   text-decoration: none;
 }
 
@@ -25,12 +24,12 @@ body a:hover{
 }
 .link-cursor td{
   transition: all 0.3s ease 0s;
-  
+
 }
 .link-cursor:hover td{
   color: #1DAAE5;
   transition: all 0.3s ease-out 0.05s;
-  
+
 }
 
 .separator-lg{
@@ -41,18 +40,18 @@ body a:hover{
 /* feat: before angular is ready, display loading animation */
 body.waiting-for-angular div#content-outer {
   display: none;
-  
+
 }
 .waiting-for-angular{
   display: block;
-  
+
   background: url(assets/puff.svg) no-repeat center center ;
   position:absolute;
   top:0;
   left:0;
   width: 100%;
   height: 100%;
-  
+
 }
 .waiting-for-angular-login{
   display: block;
@@ -65,7 +64,7 @@ body.waiting-for-angular div#content-outer {
   width: 100%;
   height: 100%;
 */
-  
+
 }
 div#content-outer {
     min-height: 100% !important;
@@ -87,8 +86,8 @@ my-app-footer{
   position:absolute;
   bottom:0;
   left:0;
-  
- 
+
+
 }
 
 .ng-view-content {
@@ -96,7 +95,7 @@ my-app-footer{
   padding-bottom:80px;
   overflow: auto;
   display:block;
-  
+
 }
 
 .footer-link {
@@ -111,31 +110,31 @@ my-app-footer{
   color: #4C4C4C !important;
   height: 67px;
   background-color: white !important;
-  
+
   border-bottom: 1px solid #fafafa;
 }
 .navbar-collapse.medium-navbar{
   border-bottom: 1px solid #fafafa;
   max-height: none;
   height: auto;
-  
+
 }
 .medium-navbar-nav>li>a{
   color: #5C5C5C !important;
   font-weight: 400;
   letter-spacing: 1.05px;
   padding-top: 25px;
-  padding-bottom: 22px;  
+  padding-bottom: 22px;
 }
 .medium-navbar-nav>li>a:hover{
   color: #3C3C3C !important;
 }
 .navbar-brand.medium-brand{
-  
+
   padding-top: 14px;
   padding-bottom: 10px; /* approximetly */
   margin-right: -10px;
-  
+
 }
 .navbar-brand.medium-brand>img{
   height:28px;
@@ -148,14 +147,14 @@ my-app-footer{
   color: #2C2C2C !important;
   height: 67px;
   border-bottom: 2px solid #2C2C2C;
-  
+
   padding-left: 0px;
   padding-right: 0px;
   margin-left: 15px;
   margin-right: 15px;
   padding-top: 25px;
   padding-bottom: 22px;
-  
+
 }
 .medium-navbar-nav>.open>a{
   background-color: white !important;
@@ -168,7 +167,6 @@ my-app-footer{
   text-transform: none;
   border-radius: 0px;
   border-top: 1px solid #fafafa
-  
 }
 .dropdown-menu>li>a:hover,
 .medium-navbar-nav>.open>.dropdown-menu>li>a:hover{
@@ -185,8 +183,8 @@ my-app-footer{
 
 
 
-/* 
-    !!!!Deckgrid!!!! 
+/*
+    !!!!Deckgrid!!!!
 */
 
 
@@ -199,7 +197,7 @@ DOS-HEAD-TOOL
 */
 #localSearch {
     float: right;
-    
+
 }
 .localSearchForm{
     width: 200px;
@@ -211,7 +209,7 @@ DOS-HEAD-TOOL
    align-content: center;
     width: 240px;
     margin: auto;
-   
+
 }
 
 .segmented-button{
@@ -223,11 +221,11 @@ DOS-HEAD-TOOL
     border-color: #ccc !important;
 }
 .segmented-button.active{
-    
+
     background-color: #fafafa !important;
-    
+
     color:#8C8C8C !important;
-    
+
 }
 
 
@@ -245,7 +243,7 @@ DOS-HEAD-TOOL
     width: 240;
     height: 44px;
     padding-bottom: 16px;
-    
+
 }
 
 /* GENERAL */
@@ -281,7 +279,7 @@ font-weight: 500;
     padding: 10px 8px;
     line-height: 32px;
     min-height: 320px;
-    
+
 }
 
 @media screen and (min-width: 768px) and (max-width: 1200px) {
@@ -289,7 +287,7 @@ font-weight: 500;
   .card-layout-mycourses .card .card-bg{
       min-height: 280px !important;
   }
-  
+
 }
 
 .card-layout-mycourses .card .card-bg{
@@ -297,7 +295,7 @@ font-weight: 500;
   height: 100%;
   width: 100%;
   min-height: 320px;
-  
+
     -webkit-box-shadow: 0px 1px 2px 0px rgba(158,158,158,1);
     box-shadow: 0px 1px 2px 0px rgba(158,158,158,1);
 }
@@ -310,7 +308,7 @@ font-weight: 500;
 }
 .card-layout-mycourses .card .card-image{
   padding-right: 40px !important;
-   
+
 }
 .card-layout-mycourses .card img{
   max-width: 100%;
@@ -342,7 +340,7 @@ font-weight: 500;
 }
 
 .card-layout-mycourses .coach-label{
-  
+
   color: #1DAAE5;
   font-weight: 300;
 }
@@ -361,14 +359,14 @@ font-weight: 500;
     padding: 10px 8px;
     line-height: 32px;
     height: 400px;
-    
+
 }
 .card-layout-browse .card .card-bg{
   padding: 38px 16px;
-  
+
   width: 100%;
   height: 100%;
-  
+
     -webkit-box-shadow: 0px 1px 2px 0px rgba(158,158,158,1);
     box-shadow: 0px 1px 2px 0px rgba(158,158,158,1);
 }
@@ -384,14 +382,14 @@ font-weight: 500;
   margin-left: -16px !important;
   margin-right: -16px !important;
   padding-bottom: 16px !important;
-   
+
 }
 .card-layout-browse .card img{
-  
-  
+
+
   width: 100%;
   max-height: 150px;
-  
+
 }
 
 
@@ -405,7 +403,7 @@ font-weight: 500;
   font-size: 24px;
   margin-bottom: 8px;
   font-weight: 500;
-  
+
 }
 .card-layout-browse .card h2{
   font-weight: 200;
@@ -425,14 +423,14 @@ font-weight: 500;
 
 .card-layout-browse .additional{
   position: absolute;
-  bottom: 20px; 
+  bottom: 20px;
 }
 /* browse main */
 .card-layout-browse>h1{
   font-weight: 300;
   margin-bottom: 14px;
   padding-left: 10px;
-  
+
 }
 .card-layout-browse.category h2{
   text-align: center;
@@ -444,12 +442,12 @@ font-weight: 500;
   position: absolute;
   width: 100%;
   height: 100%;
-  
+
   z-index: -1;
   margin: 0 !important;
-  
+
   margin-top: -38px !important;
-  
+
 }
 .card-layout-browse.category img{
   position: absolute;
@@ -457,18 +455,18 @@ font-weight: 500;
   max-height: none;
   width: 100%;
   height: 100%;
-  
+
   margin-top: -38px;
   margin-left: -16px;
   padding-bottom: 19px;
   padding-right: 16px;
   z-index: -1;
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
 }
 
 .card-layout-browse.category .category-content{
@@ -477,14 +475,14 @@ font-weight: 500;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  
+
 }
 
 .card-layout-browse.category .card {
     padding: 10px 8px;
     line-height: 32px;
     height: 300px;
-    
+
 }
 @media  (min-width: 970px) and (max-width: 1200px) {
   .card-layout-browse.category .card{
@@ -507,11 +505,24 @@ font-weight: 500;
 /* COURSE INFO*/
 
 .courseinfo-div {
-
     font-weight: 300 !important;
     color: #4C4C4C;
     margin: auto;
     max-width: 900px;
+}
+
+.courseinfo-img-container {
+    min-height: 300px;
+    max-height: 600px;
+    height: auto;
+    max-width: 90%;
+    float: left;
+}
+
+.courseinfo-img {
+    max-width: 100%;
+    height: auto;
+    max-height: 300px;
 }
 
 .courseinfo-table {
@@ -522,19 +533,37 @@ font-weight: 500;
     font-style: normal !important;
 }
 
+.courseinfo-photoicon {
+    float: left;
+    margin-left: 8px;
+}
+
 .glyphicon {
     margin: 8px;
+    margin-left: 0;
+}
+
+.glyphicon-calendar,
+.glyphicon-delete {
+    margin: 0;
 }
 
 /* text*/
 
+.float-left {
+    float: left;
+}
+
 .top-margin {
     margin-top: 25px;
-    line-height: 80%;
+}
+
+.margin-32 {
+    margin-top: 32px;
 }
 
 .big-margin {
-    margin-top: 50px;
+    margin-top: 40px;
 }
 
 .courseinfo-header {
@@ -543,17 +572,30 @@ font-weight: 500;
 }
 
 .courseinfo-h1 {
-    font-size: 40px;
+    font-size: 48px;
     color: #4C4C4C;
+    font-weight: 500;
+    margin: 0;
+    margin-top: 32px;
+    margin-bottom: 16px;
+    line-height: 58px;
+    width: 60%;
 }
 
 .courseinfo-h5 {
-    font-size: 18px;
-    color: #4C4C4C;
+    font-size: 24px;
+    color: #4C4C4C ;
+    font-weight: 300;
+}
+
+.courseinfo-description {
+    max-height: 300px;
+    font-size: 16px;
+    word-wrap: break-word;
 }
 
 .courseinfo-small {
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .courseinfo-btn {
@@ -572,7 +614,7 @@ font-weight: 500;
 /* profile */
 .profile-info{
   padding-top: 44px;
-  
+
 }
 .profile-container{
   max-width: 900px;
@@ -650,7 +692,6 @@ font-weight: 500;
   padding-right: 20px;
   border-radius: 24px;
   box-shadow: none !important;
-  outline: none !important;
 }
 
 .accent-btn {
@@ -658,7 +699,17 @@ font-weight: 500;
   padding-right: 20px;
   border-radius: 24px;
   box-shadow: none !important;
-  outline: none !important;
+}
+
+.round-btn {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 24px;
+    text-align: center;
+    padding: 0;
+    border-radius: 50%;
+    box-shadow: none !important;
 }
 
 /* BUTTON COLORS */

@@ -1,5 +1,6 @@
 angular.module('myApp.courseinfo')
     .controller('CourseInfoController', ['$scope','$routeParams', '$filter', 'courseInfoService','userService','$modal','feedbacksService', function($scope, $routeParams, $filter,  courseInfoService,userService,$modal,feedbacksService) {
+        $scope.isAdmin = userService.isAdmin();
 
         $scope.courseName = $routeParams.coursename;
         $scope.subButtonText = "Subscribe";
@@ -45,9 +46,6 @@ angular.module('myApp.courseinfo')
                 .success(function(data){
                     $scope.course.feedbacks = data;
                 })
-
-
-
         }).error(function(err){
             alert("Can't Access training info");
         });
@@ -217,20 +215,21 @@ angular.module('myApp.courseinfo')
 
       courseInfoService.getOmissions(courseinfo.name, courseinfo.dateTime[index]).then(
           function(result) {
-              $scope.existingOmissions = angular.copy(result);
+              $scope.existingOmissions = angular.copy(result.data);
+              for(var i = 0; i < courseinfo.listeners.length; i++) {
+                  var info = {
+                      trainingName: courseinfo.name,
+                      date: courseinfo.dateTime[index],
+                      userLogin: courseinfo.listeners[index].login,
+                      isOmission: $scope.existingOmissions[i],
+                  };
+                  $scope.omissionData.push(info);
+              }
               console.log("omissions loaded successfully");
           }
       );
 
-      for(var i = 0; i < courseinfo.listeners.length; i++) {
-        var info = {
-          trainingName: courseinfo.name,
-          date: courseinfo.dateTime[index],
-          userLogin: courseinfo.listeners[index].login,
-          isOmission: $scope.existingOmissions[i],
-        };
-        $scope.omissionData.push(info);
-      }
+
       
       $scope.selectAll = function() {
         for(var i = 0; i < courseinfo.listeners.length; i++) {

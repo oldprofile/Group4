@@ -1,34 +1,35 @@
-<div class="once-only-container" class="row">
+<div class="once-only-container" class="row" ng-controller="DatepickerController">
     
     <div class="col-xs-12 inputs-container scroll" scroll="dateTime">
         
         <!--Datetimepicker-->
         <div class="row" ng-repeat="date in temp.tempDates track by $index">
-            <div class="dropdown col-xs-10">
-                <a class="dropdown-toggle" id="dropdown{{$index}}" role="button" data-toggle="dropdown">
-                    <div class="input-group">
-                        <input type="text" class="form-control" ng-value="temp.tempDates[$index] | date: 'medium'">
-                        <span class="input-group-addon">
-                            <i class="glyphicon glyphicon-calendar"></i>
-                        </span>
-                    </div>
-                </a>
-                
-                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                    <datetimepicker ng-model="temp.tempDates[$index]" data-datetimepicker-config="{ dropdownSelector: '#dropdown{{$index}}' }"/>
-                </ul>
-            </div>
-            <div class="col-xs-2">
-                <button type="button" class="btn btn-danger" ng-click="deleteDate($index)">
-                        <span class="glyphicon glyphicon-remove"></span>
-                </button>
+            <div class="col-xs-12">
+                <div class="calendar">
+                    <a class="dropdown-toggle" id="dropdown{{$index}}" role="button" data-toggle="dropdown">
+                        <div class="input-group">
+                            <input type="text" class="form-control calendar" ng-value="temp.tempDates[$index] | date: 'medium'" disabled>
+                            <span class="input-group-addon">
+                                <i class="glyphicon glyphicon-calendar"></i>
+                            </span>
+                        </div>
+                    </a>
+
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                        <datetimepicker ng-model="temp.tempDates[$index]" data-datetimepicker-config="{ dropdownSelector: '#dropdown{{$index}}', minuteStep: 15 }"/>
+                    </ul>
+                </div>
+                <div id="deleteDate">
+                    <span id="delete-btn" class="btn btn-danger round-btn default-red" ng-click="deleteDate($index)">
+                        X
+                    </span>
+                </div>
             </div>
         </div>
-      
         
         <div class="row">
             <div class="col-xs-3">
-                <button type="button" class="btn btn-sm default-btn default-blue" ng-click="addDate()">Add date</button>
+                <span type="button" class="btn btn-sm default-btn default-blue" ng-click="addDate()">Add date</span>
             </div>
             <div class="col-xs-9"></div>
         </div>

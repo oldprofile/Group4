@@ -3,6 +3,7 @@ angular.module('myApp.admin')
     $scope.toApproveList=[];
 
     $scope.goTo = function(path) {
+        console.log(path);
       $location.path(path);
     };
     

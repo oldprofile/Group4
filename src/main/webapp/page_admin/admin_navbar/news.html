@@ -7,16 +7,6 @@
     </tr>
   </table>
   
-  <pagination total-items="totalItems" ng-model="pageNumber" items-per-page="2" ng-change="getNews(pageNumber)" boundary-links="true">
+  <pagination total-items="totalItems" ng-model="pageNumber" items-per-page="2" ng-change="getNews(pageNumber)" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;">
   </pagination>
 </div>
-
-
-<!--WebSockets
-<div ng-controller="SomeController">
-  <ul>
-      <li ng-repeat="data in MyData.collection track by $index">
-        {{ data }}
-      </li>
-    </ul>
-</div>-->
