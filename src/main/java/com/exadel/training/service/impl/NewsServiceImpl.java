@@ -23,7 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Transactional
 public class NewsServiceImpl implements NewsService {
 
-    private static final int PAGE_SIZE = 2;
+    private static final int PAGE_SIZE = 10;
     private Map<DeferredResult, Long> newsRequests = new ConcurrentHashMap<DeferredResult, Long>();
 
    @Autowired
@@ -84,5 +84,12 @@ public class NewsServiceImpl implements NewsService {
                 entry.getKey().setResult(news);
         }
 
+    }
+
+    @Override
+    public void changeUnread(long id) {
+        News news = newsRepository.findOne(id);
+
+        news.setRead(true);
     }
 }

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class NotificationNewsImpl implements NotificationNews {
 
+    private final static int TRAINING_TYPE = 0;
     @Autowired
     NewsService newsService;
     @Autowired
@@ -42,6 +43,7 @@ public class NotificationNewsImpl implements NotificationNews {
         news.setTraining(training);
         news.setUser(user);
         news.setAction(action);
+        news.setType(TRAINING_TYPE);
 
         newsService.insertNews(news);
     }

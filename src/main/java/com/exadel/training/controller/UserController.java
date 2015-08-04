@@ -204,7 +204,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/join_training", method = RequestMethod.POST, consumes = "application/json")
-    public void joinTraining(@RequestBody UserLeaveAndJoinTraining userLeaveAndJoinTraining,
+    public @ResponseBody void joinTraining(@RequestBody UserLeaveAndJoinTraining userLeaveAndJoinTraining,
                              HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException {
 
         String login = httpServletRequest.getHeader("login");
@@ -219,16 +219,17 @@ public class UserController {
                         if (training.getListeners().size() < training.getAmount()) {
                             userService.insertUserTrainingRelationShip(userLogin, trainingName);
 
-                            notificationNews.sendNews(userLogin + " has subscribed to " + trainingName, user, training);
+                            notificationNews.sendNews(" has subscribed to ", user, training);
                             notificationMail.send(user.getEmail(), MessageFabric.getMessage(MessageFabric.messageType.Subscribe,trainingName));
 
                             httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
                         } else {
                             trainingService.addSpareUser(trainingName, login);
 
+                            notificationNews.sendNews(" are in spare list ", user, training);
                             notificationMail.send(user.getEmail(), userLogin + ",you are in reserve " + trainingName);
 
-                            httpServletResponse.setStatus(HttpServletResponse.SC_CONTINUE);
+                            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_GATEWAY);
                         }
                     }
                 }
