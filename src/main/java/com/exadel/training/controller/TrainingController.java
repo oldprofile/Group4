@@ -343,7 +343,7 @@ public class TrainingController {
         ArrayList<String> list = new ArrayList<>();
         list.add("1-1-2015 23:23:23");
         list.add("2-2-2015 23:23:23");
-        trainingForCreation.setDateTimes(list);
+        //trainingForCreation.setDateTimes(list);
         trainingForCreation.setDescription("training");
         trainingForCreation.setIdCategory(1);
         trainingForCreation.setIsInternal(true);

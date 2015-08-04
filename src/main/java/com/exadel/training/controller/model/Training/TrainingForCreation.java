@@ -6,7 +6,10 @@ import org.json.simple.JSONObject;
 
 import java.io.*;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.codec.binary.Base64;
@@ -27,8 +30,10 @@ public class TrainingForCreation {
     private String language;
     private boolean isInternal;
     private List<String> places;
-    private List<String> dateTimes;
+    private List<Date> dateTimes;
     private String additional;
+    private boolean isRepeating;
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     public TrainingForCreation() {
     }
@@ -61,12 +66,34 @@ public class TrainingForCreation {
         return fileLink;
     }
 
-    public TrainingForCreation(JSONObject json) throws NoSuchFieldException, IOException {
-        JSONArray jsonDates = (JSONArray) json.get("dateTime");
+    public TrainingForCreation(JSONObject json) throws NoSuchFieldException, IOException, ParseException {
         dateTimes = new ArrayList<>();
-        for (Object jsonDate : jsonDates) {
-            dateTimes.add((String) jsonDate);
-        }
+        /*isRepeating = (Boolean)json.get("isRepeating");
+        isRepeating = true;
+        if (isRepeating){
+            //DateParser dateParser = new DateParser(json);
+
+            DateParser dateParser = new DateParser();
+            dateParser.setRepeats(2);
+            dateParser.setRepeatEvery(10);
+            List<Boolean> list = new ArrayList<>();
+            list.add(true);
+            list.add(false);
+            list.add(true);
+            list.add(false);
+            list.add(true);
+            list.add(false);
+            list.add(false);
+            dateParser.setRepeatOn(list);
+            dateParser.setStartsOn("2015-09-10T12:00");
+            dateParser.parseDateTimes();
+
+            dateTimes = dateParser.getDateTimes();
+        } else {*/
+            JSONArray jsonDates = (JSONArray) json.get("dateTime");
+            for (Object jsonDate : jsonDates)
+                dateTimes.add(sdf.parse((String) jsonDate));
+        //}
 
         JSONArray jsonPlaces = (JSONArray) json.get("places");
         places = new ArrayList<>();
@@ -152,11 +179,11 @@ public class TrainingForCreation {
         this.isInternal = isInternal;
     }
 
-    public List<String> getDateTimes() {
+    public List<Date> getDateTimes() {
         return dateTimes;
     }
 
-    public void setDateTimes(List<String> dateTimes) {
+    public void setDateTimes(List<Date> dateTimes) {
         this.dateTimes = dateTimes;
     }
 
@@ -190,5 +217,13 @@ public class TrainingForCreation {
 
     public void setAdditional(String additional) {
         this.additional = additional;
+    }
+
+    public boolean getIsRepeating() {
+        return isRepeating;
+    }
+
+    public void setIsRepeating(boolean isRepeating) {
+        this.isRepeating = isRepeating;
     }
 }
