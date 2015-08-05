@@ -2,6 +2,7 @@ package com.exadel.training.controller;
 
 import com.exadel.training.controller.model.Omission.JournalOmissionModel;
 import com.exadel.training.controller.model.Omission.OmissionADDModel;
+import com.exadel.training.controller.model.Omission.PathToStatistics;
 import com.exadel.training.controller.model.Omission.StatisticsRequestModel;
 import com.exadel.training.controller.model.Training.TrainingNameAndDate;
 import com.exadel.training.model.Omission;
@@ -70,9 +71,17 @@ public class OmissionController {
         return omissions;
     }
 
-    @RequestMapping(value = "/statistics", method = RequestMethod.POST, consumes = "application/json")
-    public @ResponseBody String generateStatistics(@RequestBody StatisticsRequestModel statisticsRequestModel, HttpServletResponse response) throws IOException {
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public @ResponseBody String generate(@RequestBody StatisticsRequestModel statisticsRequestModel, HttpServletResponse response){
+        //response.setStatus(HttpServletResponse.SC_OK);
+        return "string";
+    }
 
+    @RequestMapping(value = "/statistics", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody
+    PathToStatistics generateStatistics(@RequestBody StatisticsRequestModel statisticsRequestModel, HttpServletResponse response) throws IOException {
+
+        String filePath = "";
         String userLogin = statisticsRequestModel.getUserLogin();
         String trainingName = statisticsRequestModel.getTrainingName();
         Date dateFrom = Date.valueOf(statisticsRequestModel.getDateFrom());
@@ -81,13 +90,13 @@ public class OmissionController {
             case 1:
                 if(!StringUtils.isBlank(userLogin)) {
                     if (!StringUtils.isBlank(trainingName)) {
-                        return excelFileGenerator.generateForUserAndTrainingFull(dateFrom, dateTo, userLogin, trainingName);
+                        filePath = excelFileGenerator.generateForUserAndTrainingFull(dateFrom, dateTo, userLogin, trainingName);
                     } else {
-                        return excelFileGenerator.generateForUserFull(dateFrom, dateTo, userLogin);
+                        filePath = excelFileGenerator.generateForUserFull(dateFrom, dateTo, userLogin);
                     }
                 } else {
                     if (!StringUtils.isBlank(trainingName)) {
-                        return excelFileGenerator.generateForTrainingFull(dateFrom, dateTo, trainingName);
+                        filePath = excelFileGenerator.generateForTrainingFull(dateFrom, dateTo, trainingName);
                     } else {
                         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     }
@@ -95,13 +104,13 @@ public class OmissionController {
             case 2:
                 if(!StringUtils.isBlank(userLogin)) {
                     if (!StringUtils.isBlank(trainingName)) {
-                        return excelFileGenerator.generateForUserAndTrainingDates(dateFrom, dateTo, userLogin, trainingName);
+                        filePath = excelFileGenerator.generateForUserAndTrainingDates(dateFrom, dateTo, userLogin, trainingName);
                     } else {
-                        return excelFileGenerator.generateForUserDates(dateFrom, dateTo, userLogin);
+                        filePath = excelFileGenerator.generateForUserDates(dateFrom, dateTo, userLogin);
                     }
                 } else {
                     if (!StringUtils.isBlank(trainingName)) {
-                        return excelFileGenerator.generateForTrainingDates(dateFrom, dateTo, trainingName);
+                        filePath = excelFileGenerator.generateForTrainingDates(dateFrom, dateTo, trainingName);
                     } else {
                         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     }
@@ -109,18 +118,19 @@ public class OmissionController {
             case 3:
                 if(!StringUtils.isBlank(userLogin)) {
                     if (!StringUtils.isBlank(trainingName)) {
-                        return excelFileGenerator.generateForUserAndTrainingAmount(dateFrom, dateTo, userLogin, trainingName);
+                        filePath = excelFileGenerator.generateForUserAndTrainingAmount(dateFrom, dateTo, userLogin, trainingName);
                     } else {
-                        return excelFileGenerator.generateForUserAmount(dateFrom, dateTo, userLogin);
+                        filePath = excelFileGenerator.generateForUserAmount(dateFrom, dateTo, userLogin);
                     }
                 } else {
                     if (!StringUtils.isBlank(trainingName)) {
-                        return excelFileGenerator.generateForTrainingAmount(dateFrom, dateTo, trainingName);
+                        filePath = excelFileGenerator.generateForTrainingAmount(dateFrom, dateTo, trainingName);
                     } else {
                         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     }
                 }
         }
-        return "";
+        PathToStatistics pathToStatistics = new PathToStatistics(filePath);
+        return pathToStatistics;
     }
 }

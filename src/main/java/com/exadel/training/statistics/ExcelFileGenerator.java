@@ -50,7 +50,14 @@ public class ExcelFileGenerator {
     }
 
     public static String createFilePath(String fileName) throws IOException {
-        String destination = System.getProperty("user.dir") + "\\src\\main\\webapp\\" + fileName;
+        String destination = System.getProperty("user.dir") + "\\src\\main\\webapp\\statistics\\" + fileName;
+        if(!SystemUtils.IS_OS_WINDOWS)
+            destination = destination.replace("\\", "/");
+        return destination;
+    }
+
+    public static String returnFilePath(String fileName) {
+        String destination = "statistics\\" + fileName;
         if(!SystemUtils.IS_OS_WINDOWS)
             destination = destination.replace("\\", "/");
         return destination;
@@ -103,11 +110,11 @@ public class ExcelFileGenerator {
             headers.createCell(datesIndex).setCellStyle(headersStyle);
         }
 
-        title.getCell(0).setCellValue(trainingName + " training's full statistics by period: " + TITLE_DATE_FORMAT.format(dateFrom) + " - " + TITLE_DATE_FORMAT.format(dateTo));
+        title.createCell(0).setCellValue(trainingName + " training's full statistics by period: " + TITLE_DATE_FORMAT.format(dateFrom) + " - " + TITLE_DATE_FORMAT.format(dateTo));
         title.getCell(0).setCellStyle(titleStyle);
-        headers.getCell(0).setCellValue("Listeners");
+        headers.createCell(0).setCellValue("Listeners");
         headers.getCell(0).setCellStyle(headersStyle);
-        headers.getCell(1).setCellValue("Dates");
+        headers.createCell(1).setCellValue("Dates");
         headers.getCell(1).setCellStyle(headersStyle);
 
         sheet.addMergedRegion(new CellRangeAddress(0, 0, title.getFirstCellNum(), title.getLastCellNum()));
@@ -132,10 +139,11 @@ public class ExcelFileGenerator {
             }
         }
 
-        FileOutputStream fileOut = new FileOutputStream(createFilePath(fileName));
+        String filePath = createFilePath(fileName);
+        FileOutputStream fileOut = new FileOutputStream(filePath);
         workbook.write(fileOut);
         fileOut.close();
-        return createFilePath(fileName);
+        return returnFilePath(fileName);
     }
 
     public String generateForUserFull(Date dateFrom, Date dateTo, String userLogin) throws IOException {
@@ -185,11 +193,11 @@ public class ExcelFileGenerator {
             headers.createCell(datesIndex).setCellStyle(headersStyle);
         }
 
-        title.getCell(0).setCellValue(userLogin + "'s full statistics by period: " + TITLE_DATE_FORMAT.format(dateFrom) + " - " + TITLE_DATE_FORMAT.format(dateTo));
+        title.createCell(0).setCellValue(userLogin + "'s full statistics by period: " + TITLE_DATE_FORMAT.format(dateFrom) + " - " + TITLE_DATE_FORMAT.format(dateTo));
         title.getCell(0).setCellStyle(titleStyle);
-        headers.getCell(0).setCellValue("Trainings");
+        headers.createCell(0).setCellValue("Trainings");
         headers.getCell(0).setCellStyle(headersStyle);
-        headers.getCell(1).setCellValue("Dates");
+        headers.createCell(1).setCellValue("Dates");
         headers.getCell(1).setCellStyle(headersStyle);
 
         sheet.addMergedRegion(new CellRangeAddress(0, 0, title.getFirstCellNum(), title.getLastCellNum()));
@@ -211,11 +219,11 @@ public class ExcelFileGenerator {
                 }
             }
         }
-
-        FileOutputStream fileOut = new FileOutputStream(createFilePath(fileName));
+        String filePath = createFilePath(fileName);
+        FileOutputStream fileOut = new FileOutputStream(filePath);
         workbook.write(fileOut);
         fileOut.close();
-        return createFilePath(fileName);
+        return returnFilePath(fileName);
     }
 
     public String generateForUserAndTrainingFull(Date dateFrom, Date dateTo, String userLogin, String trainingName) throws IOException {
@@ -265,11 +273,11 @@ public class ExcelFileGenerator {
             headers.createCell(datesIndex).setCellStyle(headersStyle);
         }
 
-        title.getCell(0).setCellValue(userLogin + " on " + trainingName + " full statistics by period: " + TITLE_DATE_FORMAT.format(dateFrom) + " - " + TITLE_DATE_FORMAT.format(dateTo));
+        title.createCell(0).setCellValue(userLogin + " on " + trainingName + " full statistics by period: " + TITLE_DATE_FORMAT.format(dateFrom) + " - " + TITLE_DATE_FORMAT.format(dateTo));
         title.getCell(0).setCellStyle(titleStyle);
-        headers.getCell(0).setCellValue("Training");
+        headers.createCell(0).setCellValue("Training");
         headers.getCell(0).setCellStyle(headersStyle);
-        headers.getCell(1).setCellValue("Dates");
+        headers.createCell(1).setCellValue("Dates");
         headers.getCell(1).setCellStyle(headersStyle);
 
         sheet.addMergedRegion(new CellRangeAddress(0, 0, title.getFirstCellNum(), title.getLastCellNum()));
@@ -286,11 +294,11 @@ public class ExcelFileGenerator {
                 }
             }
         }
-
-        FileOutputStream fileOut = new FileOutputStream(createFilePath(fileName));
+        String filePath = createFilePath(fileName);
+        FileOutputStream fileOut = new FileOutputStream(filePath);
         workbook.write(fileOut);
         fileOut.close();
-        return createFilePath(fileName);
+        return returnFilePath(fileName);
     }
 
     public String generateForTrainingDates(Date dateFrom, Date dateTo, String trainingName) throws IOException {
@@ -348,11 +356,11 @@ public class ExcelFileGenerator {
                 }
             }
         }
-
-        FileOutputStream fileOut = new FileOutputStream(createFilePath(fileName));
+        String filePath = createFilePath(fileName);
+        FileOutputStream fileOut = new FileOutputStream(filePath);
         workbook.write(fileOut);
         fileOut.close();
-        return createFilePath(fileName);
+        return returnFilePath(fileName);
     }
 
     public String generateForUserDates(Date dateFrom, Date dateTo, String userLogin) throws IOException {
@@ -411,11 +419,11 @@ public class ExcelFileGenerator {
                 }
             }
         }
-
-        FileOutputStream fileOut = new FileOutputStream(createFilePath(fileName));
+        String filePath = createFilePath(fileName);
+        FileOutputStream fileOut = new FileOutputStream(filePath);
         workbook.write(fileOut);
         fileOut.close();
-        return createFilePath(fileName);
+        return returnFilePath(fileName);
     }
 
     // for user and training
@@ -469,11 +477,11 @@ public class ExcelFileGenerator {
                 row.createCell(columnIndex).setCellValue(journalOmissionModels.get(omissionsIndex).getDate());
             }
         }
-
-        FileOutputStream fileOut = new FileOutputStream(createFilePath(fileName));
+        String filePath = createFilePath(fileName);
+        FileOutputStream fileOut = new FileOutputStream(filePath);
         workbook.write(fileOut);
         fileOut.close();
-        return createFilePath(fileName);
+        return returnFilePath(fileName);
     }
 
     public String generateForTrainingAmount(Date dateFrom, Date dateTo, String trainingName) throws IOException {
@@ -535,11 +543,11 @@ public class ExcelFileGenerator {
             }
             row.createCell(1).setCellValue(Integer.valueOf(omissionCount).toString() + "/" + Integer.valueOf(amountOfTrainings));
         }
-
-        FileOutputStream fileOut = new FileOutputStream(createFilePath(fileName));
+        String filePath = createFilePath(fileName);
+        FileOutputStream fileOut = new FileOutputStream(filePath);
         workbook.write(fileOut);
         fileOut.close();
-        return createFilePath(fileName);
+        return returnFilePath(fileName);
     }
 
     public String generateForUserAmount(Date dateFrom, Date dateTo, String userLogin) throws IOException {
@@ -600,11 +608,11 @@ public class ExcelFileGenerator {
             }
             row.createCell(1).setCellValue(Integer.valueOf(omissionAmount).toString() + "/" + Integer.valueOf(amountOfTrainings).toString());
         }
-
-        FileOutputStream fileOut = new FileOutputStream(createFilePath(fileName));
+        String filePath = createFilePath(fileName);
+        FileOutputStream fileOut = new FileOutputStream(filePath);
         workbook.write(fileOut);
         fileOut.close();
-        return createFilePath(fileName);
+        return returnFilePath(fileName);
     }
 
     public String generateForUserAndTrainingAmount(Date dateFrom, Date dateTo, String userLogin, String trainingName) throws IOException {
@@ -661,9 +669,10 @@ public class ExcelFileGenerator {
         }
         row.createCell(1).setCellValue(Integer.valueOf(omissionAmount).toString() + "/" + Integer.valueOf(amountOfTrainings).toString());
 
-        FileOutputStream fileOut = new FileOutputStream(createFilePath(fileName));
+        String filePath = createFilePath(fileName);
+        FileOutputStream fileOut = new FileOutputStream(filePath);
         workbook.write(fileOut);
         fileOut.close();
-        return createFilePath(fileName);
+        return returnFilePath(fileName);
     }
 }
