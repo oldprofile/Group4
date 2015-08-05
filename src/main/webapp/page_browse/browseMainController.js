@@ -8,14 +8,19 @@ angular.module('myApp.browse')
   $scope.isContentLoaded = false;
   
   
-  var categories = getCategories.success(function(data){
-    $scope.categories = [];
-    console.log("categories:" + JSON.stringify(data));
-    $scope.categories = angular.copy(data);
-    $scope.categories.unshift({id:0,name:"All"});
-    categoriesLocal.setCategories(angular.copy($scope.categories));
-    
-  });
+//  var categories = getCategories().success(function(data){
+//    $scope.categories = [];
+//    console.log("categories:" + JSON.stringify(data));
+//    $scope.categories = angular.copy(data);
+//    $scope.categories.unshift({id:0,name:"All"});
+//    categoriesLocal.setCategories(angular.copy($scope.categories));
+//    
+//  });
+  
+  var categories = categoriesLocal.getCategories().then(function(categories){
+    console.log("categories:" + JSON.stringify(categories));
+    $scope.categories = categories;
+  })
   
   var featured = browseService.getFeatured().success(function(data){
     console.log("featured:" + JSON.stringify(data));
