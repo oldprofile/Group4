@@ -51,7 +51,7 @@
             
             
             <div class="other-textarea" style="padding-top:16px;">
-              <p>Anything else?</p>
+              
               <textarea class="form-control" name="description" rows="3" placeholder="Имеете шота сказать?" ng-model="feedback.other" ng-disabled="isView"></textarea> 
             </div>
             
@@ -62,6 +62,6 @@
           
         </div>
 <div class="modal-footer">
-    <button class="btn btn-default modal-btn" ng-click="ok()" ng-hide="isView">Leave Feedback</button>
-    <button class="btn btn-default modal-btn" ng-click="cancel()">Cancel</button>
+    <button class="btn btn-default default-btn default-blue" ng-click="ok()" ng-hide="isView">Leave Feedback</button>
+    <button class="btn btn-default default-btn default-gray" ng-click="cancel()">Cancel</button>
 </div>

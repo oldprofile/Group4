@@ -266,6 +266,7 @@ public class UserController {
                 httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
             }
 
+        
         return  allTrainingUserShorts;
     }
 

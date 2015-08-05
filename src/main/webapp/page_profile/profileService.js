@@ -5,7 +5,7 @@ angular.module('myApp.profile')
     profileService.getUserInfo = function(userlogin){
         return $http.get('/user_controller/user_info/' + userlogin).success(function(data) {
           
-          
+              console.log("Getting user info: " + JSON.stringify(data));
               return data;
             })
             .error(function(err) {

@@ -7,6 +7,11 @@ menuApp.directive('headerMenu',function(){
 });
 
 menuApp.controller("HeaderMenuController",['$scope','$location',"getCategories",'userService',"notificationService", "$modal", function($scope, $location,getCategories, userService,notificationService, $modal){
+  
+    $scope.createcourse = function(){
+      $location.path("/createcourse");
+    }
+  
     $scope.categories = [];
     $scope.username = "";
   
@@ -28,10 +33,13 @@ menuApp.controller("HeaderMenuController",['$scope','$location',"getCategories",
       },5000);
     })
     }
-    polling($scope.notifications);
+    
     
     userService.loginPromise().then(function(un){
       $scope.username = un;
+      if(userService.isAdmin()){
+          polling($scope.notifications);
+      }
     });
     $scope.isActive = function (viewLocation) {
      var viewLocationArray = viewLocation.split("/");
@@ -42,12 +50,7 @@ menuApp.controller("HeaderMenuController",['$scope','$location',"getCategories",
      return active;
     };
     
-    getCategories.success(function(data){
-                          //alert(JSON.stringify(data))
-                          $scope.categories = data;
-    }).error(function(err){
-        alert("Can't get categories")
-    })
+    
     
     $scope.logoutFunction = function(){
       
@@ -87,9 +90,12 @@ menuApp.controller("HeaderMenuController",['$scope','$location',"getCategories",
 }])
 .controller("SearchController",['$scope','$modalInstance',"searchService","$location","userService",function($scope,$modalInstance,searchService,$location,userService){
   $scope.goto = function(path){
+    
     $location.path(path);
     $scope.cancel();
   }
+  
+  
   
   $scope.searchQuery = "";
   $scope.result = [];

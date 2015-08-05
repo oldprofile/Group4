@@ -22,6 +22,7 @@ var app = angular.module('myApp', [
     'myApp.footerApp',
     'myApp.login',
     'myApp.courseinfo',
+    "myApp.ohman",
   
     
 ]).config(['$routeProvider', function($routeProvider) {
@@ -70,6 +71,7 @@ app.directive('authClass', ['$location','userService','loginService',function($l
         scope.$on('event:auth-loginRequired', function() {
             //deny from server
             //showLoginForm(elem);
+           
             scope.isLogged = false;
             userService.clearUser();
             loginService.clearCreds();
@@ -79,10 +81,11 @@ app.directive('authClass', ['$location','userService','loginService',function($l
           
           
         scope.$on('event:auth-loginConfirmed', function(event,data) {
-          //confirm form server    
+          //confirm form server   
+         
             console.log("Confirm User:" + JSON.stringify(data)); 
             scope.isLogged = true;
-            alert(JSON.stringify(data));
+            //alert(JSON.stringify(data));
             userService.setUser(data.login,data.role,data.token);
             if(scope.prevPath.toLowerCase() === "/login"){
               scope.prevPath = "/";
@@ -90,17 +93,35 @@ app.directive('authClass', ['$location','userService','loginService',function($l
             $location.path(scope.prevPath);
           //hideLoginForm(elem);
         });
-          
-          
-        scope.$on('hideLoginEvent',function(event, data){
-            //hideLoginForm(elem);
+        
+          function presentErrorPage(statusCode){
             
-            if(data.login == "test" && data.password == "test"){
-                scope.isLogged = true;
-                userService.setUser(data.login,data.login,data.password,{},"");
-                $location.path(scope.prevPath);
-            }
-        });
+            $location.path("/ohman/" + statusCode);
+            
+          }
+          
+          scope.$on('event:bad-request',function(event,rejection){
+            presentErrorPage(rejection.status);
+          });
+        
+          scope.$on('event:not-found',function(event,rejection){
+            alert(JSON.stringify(rejection))
+            presentErrorPage(rejection.status);
+          });
+        
+          scope.$on('event:server-down',function(event,rejection){
+            presentErrorPage(rejection.status);
+          });
+          
+          scope.$on('event:auth-forbidden',function(event,rejection){
+            presentErrorPage(rejection.status);
+          });
+
+          scope.$on('event:server-not-responds',function(event,rejection){
+            // somehow on client
+            alert("Is Server off?");
+          });
+        
           
       }
     }

@@ -1,4 +1,4 @@
-angular.module('myApp.browse')
+angular.module('myApp.profile')
 .controller('ProfileController',['$scope','userService','$routeParams','profileService','$modal','feedbacksService',"$location", function($scope,userService,$routeParams,profileService,$modal,feedbacksService,$location){
     $scope.isContentLoaded = false;
     var userlogin;  
@@ -313,9 +313,15 @@ angular.module('myApp.browse')
   
   $scope.ok = function () {
     var data = {};
-    
-    data.numberPhone = $scope.phoneNumber;
     data.login = user.login;
+    
+    if(!$scope.isPhoneOn){
+      data.numberPhone = "";
+    } else {
+      data.numberPhone = $scope.phoneNumber;
+    }
+    
+    
     $modalInstance.close(data);
   };
 

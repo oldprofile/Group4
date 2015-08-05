@@ -21,8 +21,8 @@ angular.module('myApp')
   api.getCategoryNameById = function(id){
     
      if (categories.length == 0){
-       alert("no local cat!!!");    
-       return "";
+           
+       return undefined;
      }
     if (id < categories.length){
       //alert(categories[id].name)
