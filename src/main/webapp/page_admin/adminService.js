@@ -19,17 +19,14 @@ angular.module('myApp.admin')
 	adminService.sendStatistics = function(statData) {
 		return $http.post('/omission_controller/statistics', angular.copy(statData))
 			.then(function(response) {
-				alert(response.status);
-				alert(response.data.path);
 				adminService.download(response.data);
 				return response.data;
 			}, function (r) {debugger});
 	};
 
 		adminService.download = function (formData) {
-		 var url = 'file:///' + encodeURI(formData.path);
+		 var url = 'http://localhost:8080/' + encodeURI(formData.path);
 		 url = url.replace(/%5C/g, "/");
-		 alert(url);
 		 var deferred = $q.defer();
 		 deferred.resolve(window.open(url, '_blank'));
 		 return deferred.promise;

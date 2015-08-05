@@ -18,10 +18,9 @@ angular.module('myApp.admin')
 			$scope.users = usersData;
 		});
 
-		/*$http.get('http://localhost:8080/').success(function(trainingData) {
+		$http.get('http://localhost:8080/training_controller/names_list').success(function(trainingData) {
 			$scope.trainings = trainingData;
-			console.log(trainingData);
-		});*/
+		});
 
 		$scope.save = function (userselect){
 			userselect.dateFrom = $filter('date')($scope.temp.tempDates[0], 'yyyy-MM-dd');
@@ -47,7 +46,6 @@ angular.module('myApp.admin')
 			if (userselect.userLogin == null){
 				userselect.userLogin = "";
 			}
-			console.log(userselect);
 			adminService.sendStatistics(userselect);
 			};
 

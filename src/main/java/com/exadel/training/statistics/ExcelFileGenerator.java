@@ -50,16 +50,18 @@ public class ExcelFileGenerator {
     }
 
     public static String createFilePath(String fileName) throws IOException {
-        String destination = System.getProperty("user.dir") + "\\src\\main\\webapp\\" + fileName;
+        String destination = System.getProperty("user.dir") + "\\src\\main\\webapp\\statistics\\" + fileName;
         if(!SystemUtils.IS_OS_WINDOWS)
             destination = destination.replace("\\", "/");
         return destination;
     }
 
-    /*public static String createFileLink(String filePath) {
-        String s = new String("\"" + filePath + "\"");
-        return s;
-    }*/
+    public static String returnFilePath(String fileName) {
+        String destination = "statistics\\" + fileName;
+        if(!SystemUtils.IS_OS_WINDOWS)
+            destination = destination.replace("\\", "/");
+        return destination;
+    }
 
     public String generateForTrainingFull(Date dateFrom, Date dateTo, String trainingName) throws IOException {
         String fileName = trainingName + "_full_statistics.xlsx";
@@ -141,7 +143,7 @@ public class ExcelFileGenerator {
         FileOutputStream fileOut = new FileOutputStream(filePath);
         workbook.write(fileOut);
         fileOut.close();
-        return filePath;
+        return returnFilePath(fileName);
     }
 
     public String generateForUserFull(Date dateFrom, Date dateTo, String userLogin) throws IOException {
@@ -221,7 +223,7 @@ public class ExcelFileGenerator {
         FileOutputStream fileOut = new FileOutputStream(filePath);
         workbook.write(fileOut);
         fileOut.close();
-        return filePath;
+        return returnFilePath(fileName);
     }
 
     public String generateForUserAndTrainingFull(Date dateFrom, Date dateTo, String userLogin, String trainingName) throws IOException {
@@ -296,7 +298,7 @@ public class ExcelFileGenerator {
         FileOutputStream fileOut = new FileOutputStream(filePath);
         workbook.write(fileOut);
         fileOut.close();
-        return filePath;
+        return returnFilePath(fileName);
     }
 
     public String generateForTrainingDates(Date dateFrom, Date dateTo, String trainingName) throws IOException {
@@ -358,7 +360,7 @@ public class ExcelFileGenerator {
         FileOutputStream fileOut = new FileOutputStream(filePath);
         workbook.write(fileOut);
         fileOut.close();
-        return filePath;
+        return returnFilePath(fileName);
     }
 
     public String generateForUserDates(Date dateFrom, Date dateTo, String userLogin) throws IOException {
@@ -421,7 +423,7 @@ public class ExcelFileGenerator {
         FileOutputStream fileOut = new FileOutputStream(filePath);
         workbook.write(fileOut);
         fileOut.close();
-        return filePath;
+        return returnFilePath(fileName);
     }
 
     // for user and training
@@ -479,7 +481,7 @@ public class ExcelFileGenerator {
         FileOutputStream fileOut = new FileOutputStream(filePath);
         workbook.write(fileOut);
         fileOut.close();
-        return filePath;
+        return returnFilePath(fileName);
     }
 
     public String generateForTrainingAmount(Date dateFrom, Date dateTo, String trainingName) throws IOException {
@@ -545,7 +547,7 @@ public class ExcelFileGenerator {
         FileOutputStream fileOut = new FileOutputStream(filePath);
         workbook.write(fileOut);
         fileOut.close();
-        return filePath;
+        return returnFilePath(fileName);
     }
 
     public String generateForUserAmount(Date dateFrom, Date dateTo, String userLogin) throws IOException {
@@ -610,7 +612,7 @@ public class ExcelFileGenerator {
         FileOutputStream fileOut = new FileOutputStream(filePath);
         workbook.write(fileOut);
         fileOut.close();
-        return filePath;
+        return returnFilePath(fileName);
     }
 
     public String generateForUserAndTrainingAmount(Date dateFrom, Date dateTo, String userLogin, String trainingName) throws IOException {
@@ -671,6 +673,6 @@ public class ExcelFileGenerator {
         FileOutputStream fileOut = new FileOutputStream(filePath);
         workbook.write(fileOut);
         fileOut.close();
-        return filePath;
+        return returnFilePath(fileName);
     }
 }
