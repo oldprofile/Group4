@@ -18,9 +18,9 @@ angular.module('myApp.createcourse').controller('CreateCourseController', [
 		$scope.courseInfo.pictureLink = "";
 
 		$scope.saveData = function () {
-			if($scope.isRepeating) {
+			if($scope.courseInfo.isRepeating) {
 				$scope.courseInfo.repeatOn = angular.copy($scope.temp.repeatOn);
-				$scope.courseInfo.startsOn = $scope.temp.startDate;
+				$scope.courseInfo.startsOn = $scope.temp.startsOn;
 				$scope.courseInfo.startsOn = $filter('date')($scope.courseInfo.startsOn, 'yyyy-MM-dd HH:mm');
 				$scope.courseInfo.lessonsNumber = $scope.temp.lessonsNumber;
 				for (var i = 0; i < $scope.courseInfo.lessonsNumber; i++) {

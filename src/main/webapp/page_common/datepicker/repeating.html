@@ -19,13 +19,13 @@
 				<div class="dropdown col-xs-9">
 					<a class="dropdown-toggle" id="dropdown1" role="button" data-toggle="dropdown">
 						<div class="input-group">
-							<input type="text" class="form-control calendar" ng-value="temp.startDate | date: 'medium'"
+							<input type="text" class="form-control calendar" ng-value="temp.startsOn | date: 'medium'"
 								   disabled>
 							<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
 						</div>
 					</a>
 					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-						<datetimepicker ng-model="temp.startDate"
+						<datetimepicker ng-model="temp.startsOn"
 										data-datetimepicker-config="{ dropdownSelector: '#dropdown1', minuteStep: 15 }"/>
 					</ul>
 				</div>

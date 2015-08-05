@@ -119,7 +119,7 @@ app.directive('authClass', ['$location','userService','loginService',function($l
 
           scope.$on('event:server-not-responds',function(event,rejection){
             // somehow on client
-            alert("Is Server off?");
+            //alert("Is Server off?");
           });
         
           

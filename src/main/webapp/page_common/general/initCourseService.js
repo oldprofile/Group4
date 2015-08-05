@@ -40,8 +40,9 @@ angular.module('myApp')
 
 			scope.courseInfo.userLogin = userService.getUser().login;
 
-			categoriesLocal.getCategories().success(function (data) {
+			categoriesLocal.getCategories().then(function (data) {
 				scope.categoriesObj = data;
+				scope.categoriesObj.shift();
 			});
 		};
 	}]);

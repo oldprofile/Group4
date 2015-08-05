@@ -145,9 +145,27 @@ angular.module('myApp.courseinfo')
 			});
 		};
 
-		$scope.addDate = function() {
+		$scope.addLesson = function () {
+			var addLessonModalInstance = $modal.open({
+				animation: true,
+				templateUrl: "page_courseinfo/addLessonModal.html",
+				controller: "AddLessonModalInstanceController",
+				size: "lg",
+				resolve: {
+					courseinfo: function () {
+						return $scope.course;
+					},
+					index: function () {
+						return $scope.course.dateTime.length;
+					}
+				}
+			});
+			addLessonModalInstance.result.then(function (data) {
+				$scope.course.dateTime[$scope.course.dateTime.length] = $filter('date')(data, 'medium');
+				;
+			});
+		};
 
-		}
 
 		$scope.addParticipant = function() {
 
@@ -215,6 +233,32 @@ angular.module('myApp.courseinfo')
 		};
 	}])
 
+	.controller('AddLessonModalInstanceController', ['$scope', '$modalInstance', '$filter', 'courseInfoService', 'courseinfo', 'index', function ($scope, $modalInstance, $filter, courseInfoService, courseinfo, index) {
+		$scope.courseinfo = courseinfo;
+		$scope.index = index;
+
+		$scope.newDate = "";
+		$scope.newPlace = "";
+
+		$scope.ok = function () {
+			$scope.newDate = $filter('date')($scope.newDate, 'yyyy-MM-dd HH:mm');
+			courseInfoService.addLesson($scope.courseinfo.name, $scope.newDate, $scope.newPlace).then(function (data) {
+				courseInfoService.updateDates($scope.courseinfo.name).then(function (result) {
+					$scope.courseinfo.dateTime = angular.copy(result.data.dateTimes);
+					for (var i = 0; i < $scope.courseinfo.dateTime.length; i++) {
+						$scope.courseinfo.dateTime[i] = $filter('date')($scope.courseinfo.dateTime[i], 'medium');
+					}
+					$scope.courseinfo.places = angular.copy(result.places);
+				});
+			});
+			$modalInstance.close();
+		};
+
+		$scope.cancel = function () {
+			$modalInstance.dismiss('cancel');
+		};
+	}])
+
 	.controller('EditDateModalInstanceController', ['$scope', '$modalInstance', '$filter', 'courseInfoService', 'courseinfo', 'index', function ($scope, $modalInstance, $filter, courseInfoService, courseinfo, index) {
 		$scope.courseinfo = courseinfo;
 		$scope.index = index;
@@ -227,7 +271,7 @@ angular.module('myApp.courseinfo')
 			$scope.courseinfo.dateTime[$scope.index] = $filter('date')($scope.courseinfo.dateTime[$scope.index], 'yyyy-MM-dd HH:mm');
 			courseInfoService.editLesson($scope.index + 1, $scope.courseinfo.name, $scope.courseinfo.dateTime[$scope.index], $scope.courseinfo.places[$scope.index]).then(function (data) {
 				courseInfoService.updateDates($scope.courseinfo.name).then(function (result) {
-					$scope.courseinfo.dateTime = angular.copy(result.dateTime);
+					$scope.courseinfo.dateTime = angular.copy(result.data.dateTimes);
 					for (var i = 0; i < $scope.courseinfo.dateTime.length; i++) {
 						$scope.courseinfo.dateTime[i] = $filter('date')($scope.courseinfo.dateTime[i], 'medium');
 					}
