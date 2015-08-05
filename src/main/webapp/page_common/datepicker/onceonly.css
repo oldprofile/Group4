@@ -10,6 +10,27 @@ div.inputs-container > * {
     margin: 10px;
 }
 
+.calendar {
+    width: 40%;
+    min-width: 200px;
+    float: left;
+    border: none !important;
+}
+
+.addon-calendar {
+	background-color: white !important;
+	border: none !important;
+	box-shadow: none !important;
+}
+
+#deleteDate {
+    float: left;
+}
+
+#delete-btn {
+    margin-left: 8px;
+}
+
 .scroll::-webkit-scrollbar-track {
 	width:8px;
 }

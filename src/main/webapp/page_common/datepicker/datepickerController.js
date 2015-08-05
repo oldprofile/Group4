@@ -13,8 +13,9 @@ angular.module('createcourse.datepickerApp')
         
         $scope.page = $scope.pages[0];
         
-        $scope.setPage = function(index) {
+        $scope.setPage = function(index, isRepeating) {
             $scope.page = $scope.pages[index];
+            $scope.courseInfo.isRepeating = isRepeating;
         };
         
         $scope.addDate = function() {

@@ -2,7 +2,10 @@ angular.module('myApp.browse')
 .controller('BrowseController',['$scope','$routeParams','browseService',"getCategories",'categoriesLocal', function($scope,$routeParams, browseService,getCategories,categoriesLocal){
    $scope.isContentLoaded = false;
     var categoryID = $routeParams.id;
-    $scope.categoryName = categoriesLocal.getCategoryNameById(categoryID);
+    $scope.categoryName = "" 
+    categoriesLocal.getCategoryNameById(categoryID).then(function(categoryName){
+      $scope.categoryName = categoryName;
+    });
     
     
     browseService.getTrainingsByCategory(categoryID)

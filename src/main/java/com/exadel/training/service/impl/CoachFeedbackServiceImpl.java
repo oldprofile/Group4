@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,5 +42,10 @@ public class CoachFeedbackServiceImpl implements CoachFeedbackService {
     @Override
     public List<CoachFeedback> getCoachFeedbacksOrderByDate(User coach) {
         return coachFeedbackRepository.findFeedbackByCoachOrderByDateAsc(coach);
+    }
+
+    @Override
+    public CoachFeedback getCoachFeeddbackByLoginsAndDate(String coachLogin, String feedbackerLogin, Date date) {
+        return coachFeedbackRepository.findFeedbackByTrainingAndDateAndFeedbacker(coachLogin, feedbackerLogin, date);
     }
 }
