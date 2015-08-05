@@ -1381,5 +1381,42 @@ margin-right: 4px;
     background-color: rgba(0,0,0,0.025) !important;
   }
 
+.login-card {
+  padding: 40px 0px;
+  width: 420px !important;
+  background-color: white;
+  margin: auto;
+  
+  -webkit-box-shadow:  0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  box-shadow:  0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  overflow: hidden;
+}
+.login-card form{
+  margin-left: 186px;
+}
+.login-card .form-inline{
+  
+  
+}
+.login-card .form-inline input{
+  padding-bottom: 8px;
+  
+}
+.login-card div.checkbox{
+  margin-top: 20px;
+  margin-left: 1px;
+}
+.login-card div.checkbox span{
+  margin-left: 12px;
+}
+
+
+
+
+
+
+
+
+
 
 
