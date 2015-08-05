@@ -78,15 +78,21 @@ public class TrainingServiceImpl implements TrainingService {
         return trainingRepository.findValidTrainings();
     }
 
+    @Override
+    public List<Training> getValidTrainingsExceptParent() {
+        return trainingRepository.findValidTrainingsExceptParent();
+    }
+
     @Transactional
     @Override
     public Training addTraining(TrainingForCreation trainingForCreation) throws NoSuchFieldException, ParseException {
 
-        List<String> dates = trainingForCreation.getDateTimes();
+        //List<String> dates = trainingForCreation.getDateTimes();
         List<Date> dateTimes = new ArrayList<>();
-        for (String date : dates) {
+        dateTimes = trainingForCreation.getDateTimes();
+        /*for (String date : dates) {
             dateTimes.add(sdf.parse(date));
-        }
+        }*/
         User coach = userRepository.findUserByLogin(trainingForCreation.getUserLogin());
         Category category = categoryRepository.findById(trainingForCreation.getIdCategory());
         int state;
@@ -108,7 +114,7 @@ public class TrainingServiceImpl implements TrainingService {
         mainTraining.setState(state);
         mainTraining.setParent(0);
         trainingRepository.saveAndFlush(mainTraining);
-        List<Training> trainings = new ArrayList<>(dates.size());
+        List<Training> trainings = new ArrayList<>(dateTimes.size());
         for (int i = 0; i < dateTimes.size(); ++i) {
             Training newTraining = new Training();
             newTraining.fillTraining(trainingForCreation);
@@ -127,10 +133,11 @@ public class TrainingServiceImpl implements TrainingService {
     @Override
     @Transactional
     public Training approveCreateTraining(TrainingForCreation trainingForCreation) throws ParseException, NoSuchFieldException {
-        List<String> dates = trainingForCreation.getDateTimes();
-        List<Date> dateTimes = new ArrayList<>();
-        for (String date : dates)
-            dateTimes.add(sdf.parse(date));
+        //List<String> dates = trainingForCreation.getDateTimes();
+        //List<Date> dateTimes = new ArrayList<>();
+        //for (String date : dates)
+        //    dateTimes.add(sdf.parse(date));
+        List<Date> dateTimes = trainingForCreation.getDateTimes();
         Training mainTraining = trainingRepository.findByName(trainingForCreation.getName());
         Category category = categoryRepository.findById(trainingForCreation.getIdCategory());
         User coach = mainTraining.getCoach();
