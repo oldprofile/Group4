@@ -50,6 +50,7 @@ angular.module('myApp.courseinfo')
 			}
 			promise.finally(
 				function () {
+                 
 					$scope.subscriptionLoading = false;
 				}
 			);

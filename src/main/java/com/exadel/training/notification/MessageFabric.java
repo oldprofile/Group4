@@ -23,9 +23,13 @@ public class MessageFabric {
             case Race:
                 return new String("We offer you a place on a " + trainingName + " training. Hurry up and contact us if you ready to take it.");
             case Subscribe:
-                return new String("you have subscribed to "+trainingName);
+                return new String("You have subscribed to " + trainingName);
         }
         return "";
+    }
+
+    public static String getMessage(String trainingName, String userName) {
+        return new String ("Please, leave your feedback on " + userName + " within " + trainingName + " training");
     }
 
 }

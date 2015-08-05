@@ -7,6 +7,7 @@ import com.exadel.training.model.Training;
 import com.exadel.training.notification.MessageFabric;
 import com.exadel.training.notification.mail.WrapperNotificationMail;
 import com.exadel.training.notification.sms.WrapperNotificationSMS;
+import com.exadel.training.repository.impl.TrainingRepository;
 import com.exadel.training.service.TrainingService;
 import com.twilio.sdk.TwilioRestException;
 import org.apache.commons.lang3.StringUtils;
@@ -40,6 +41,9 @@ public class ScheduledTasksService {
     @Autowired
     TrainingService trainingService;
 
+    @Autowired
+    TrainingRepository trainingRepository;
+
     public ScheduledTasksService() {
     }
 
@@ -64,8 +68,8 @@ public class ScheduledTasksService {
 
     private void cancelTraining(NotificationTrainingModel notificationTrainingModel, List<UserShort> listeners) throws MessagingException, NoSuchFieldException {
         Training training = trainingService.getTrainingByName(notificationTrainingModel.getName());
-        // can't set state
         training.setState(StateTraining.parseToInt("Canceled"));
+        trainingRepository.save(training);
         for (UserShort listener : listeners) {
 
             wrapperNotificationMail.send(listener.getEmail(), MessageFabric.getMessage(MessageFabric.messageType.Canceled,training.getName()));
@@ -102,14 +106,14 @@ public class ScheduledTasksService {
         Training training = trainingService.getTrainingByNameAndDate(notificationTrainingModel.getName(), notificationTrainingModel.getDate());
         int state = training.getState();
         if (getHoursBeforeTraining(notificationTrainingModel) < 0 &&  (state == StateTraining.parseToInt("InProcess") || state == StateTraining.parseToInt("Ahead"))) {
-            // can't set state
             training.setState(StateTraining.parseToInt("Finished"));
+            trainingRepository.save(training);
             long trainingNumber = trainingService.getTrainingNumberByDate(notificationTrainingModel.getName(), notificationTrainingModel.getDate());
             long trainingsCount = trainingService.getTrainingsCount(notificationTrainingModel.getName());
             if ( trainingNumber == trainingsCount){
-                // can't set state
                 Training parent = trainingService.getTrainingByName(notificationTrainingModel.getName());
                 parent.setState(StateTraining.parseToInt("Finished"));
+                trainingRepository.save(parent);
             }
         }
     }
@@ -129,21 +133,21 @@ public class ScheduledTasksService {
                         } else {
                             notificateByEmail(notificationTrainingModel, listeners, MessageFabric.messageType.OneDayLeft);
                         }
-                        continue;
+                        break;
                     }
                     case 3: {
                         if (emptyPlaces(notificationTrainingModel, listeners) > 0) {
                             race(notificationTrainingModel);
                         }
-                        continue;
+                        break;
                     }
                     case 1: {
                         notificateBySms(notificationTrainingModel, listeners, MessageFabric.messageType.OneHourLeft);
-                        continue;
+                        break;
                     }
                     default: {
                         hasPased(notificationTrainingModel);
-                        continue;
+                        break;
                     }
                 }
             }

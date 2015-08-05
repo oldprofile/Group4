@@ -4,6 +4,7 @@ import com.exadel.training.controller.model.Feedback.CoachFeedbackADDModel;
 import com.exadel.training.model.CoachFeedback;
 import com.exadel.training.model.User;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -12,4 +13,5 @@ import java.util.List;
 public interface CoachFeedbackService {
     public void addCoachFeedback(CoachFeedbackADDModel coachFeedbackModel);
     public List<CoachFeedback> getCoachFeedbacksOrderByDate(User coach);
+    public CoachFeedback getCoachFeeddbackByLoginsAndDate(String coachLogin, String feedbackerLogin, Date date);
 }
