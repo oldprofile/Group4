@@ -1,5 +1,5 @@
 angular.module('myApp')
-	.factory('initCourseService', ['$http', 'getCategories', 'userService', function ($http, getCategories, userService) {
+	.factory('initCourseService', ['$http', 'categoriesLocal', 'userService', function ($http, categoriesLocal, userService) {
 		return function (scope) {
 			scope.categoriesObj = [];
 			scope.types = [
@@ -40,8 +40,9 @@ angular.module('myApp')
 
 			scope.courseInfo.userLogin = userService.getUser().login;
 
-			getCategories.success(function (data) {
+			categoriesLocal.getCategories().then(function (data) {
 				scope.categoriesObj = data;
+				scope.categoriesObj.shift();
 			});
 		};
 	}]);

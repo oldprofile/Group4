@@ -273,7 +273,7 @@ public class TrainingServiceImpl implements TrainingService {
         Training training = trainings.get(lessonData.getLessonNumber());
         training.setDateTime(sdf.parse(lessonData.getNewDate()));
         training.setPlace(lessonData.getNewPlace());
-        trainingRepository.saveAndFlush(training);
+        //trainingRepository.saveAndFlush(training);
         updateParentTraining(training.getName());
         return training;
     }
@@ -283,6 +283,7 @@ public class TrainingServiceImpl implements TrainingService {
         List<Training> trainings = trainingRepository.findTrainingsWithParentByName(lessonData.getTrainingName());
         Training training = trainings.get(lessonData.getLessonNumber());
         trainingRepository.deleteTrainingsById(training.getId());
+        updateParentTraining(training.getName());
         return trainings.get(0);
     }
 
@@ -294,6 +295,7 @@ public class TrainingServiceImpl implements TrainingService {
         newLesson.setPlace(lessonData.getNewPlace());
         newLesson.setState(StateTraining.parseToInt("Ahead"));
         trainingRepository.saveAndFlush(newLesson);
+        updateParentTraining(parent.getName());
         return newLesson;
     }
 
@@ -314,10 +316,10 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     private Training updateParentTraining(String trainingName) {
-        List<Training> trainings = trainingRepository.findTrainingsWithParentByName(trainingName);
-        Training parent = trainings.get(0);
-        if(trainings.size() > 1) {
-            Training firstLesson = trainings.get(1);
+        Training parent = trainingRepository.findByName(trainingName);
+        List<Training> lessons = trainingRepository.findTrainingsByName(trainingName);
+        if(lessons.size() > 0) {
+            Training firstLesson = lessons.get(0);
             parent.setDateTime(firstLesson.getDateTime());
             parent.setPlace(firstLesson.getPlace());
         }

@@ -10,14 +10,14 @@
 
 						<p class="courseinfo-h5 big-margin">Starts on: {{course.dateTime[0] | date:"dd MMMM"}}</p>
 
-						<p class="courseinfo-h5 color-gray">{{course.lessonNumber}} lessons</p>
+						<p class="courseinfo-h5 color-gray">{{course.dateTime.length}} lessons</p>
 
 						<p class="courseinfo-h5 top-margin">Coach: {{course.coachName}}</p>
 
 						<p class="courseinfo-h5">Category:
 
 						<p ng-show="!course.idCategory">no category</p>
-						{{categoriesObj[course.idCategory - 1].name}}
+						{{courseCategory}}
 						</p>
 
 						<p class="info-small color-gray">Recommended for:
@@ -68,7 +68,9 @@
 								</v-pane-header>
 
 								<v-pane-content>
-									<button class="btn btn-default default-btn default-gray" ng-click="addLesson()">Add lesson</button>
+									<button class="btn btn-default default-btn default-gray" ng-click="addLesson()">Add
+										lesson
+									</button>
 									<table class="table courseinfo-table" ng-if="course.dateTime.length != 0">
 										<thead>
 										<tr>
@@ -101,7 +103,9 @@
 								</v-pane-header>
 
 								<v-pane-content>
-									<button class="btn btn-default default-btn default-gray" ng-click="addParticipant()">Add participant</button>
+									<button class="btn btn-default default-btn default-gray"
+											ng-click="addParticipant()">Add participant
+									</button>
 									<table class="table courseinfo-table"
 										   ng-if="(course.listeners.length + course.spareUsers.length) != 0">
 										<thead>

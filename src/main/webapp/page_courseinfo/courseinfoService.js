@@ -86,6 +86,22 @@ angular.module('myApp.courseinfo')
 			return promtText;
 		};
 
+		courseInfoService.addLesson = function (courseName, newDate, newPlace) {
+			var lessonData = {
+				trainingName: courseName,
+				lessonNumber: 0,
+				newDate: newDate,
+				newPlace: newPlace
+			};
+			return $http.post('/training_controller/add_date', lessonData).then(function (result) {
+				console.log("Lesson added successfully");
+				return result.data;
+			}, function (err) {
+				console.log("Add lesson error: " + err.statusCode);
+				return err;
+			});
+		};
+
 		courseInfoService.editLesson = function (lessonNumber, courseName, newDate, newPlace) {
 			var lessonData = {
 				trainingName: courseName,
@@ -98,6 +114,22 @@ angular.module('myApp.courseinfo')
 				return result.data;
 			}, function (err) {
 				console.log("Edit lesson error: " + err.statusCode);
+				return err;
+			});
+		};
+
+		courseInfoService.deleteLesson = function (lessonNumber, courseName) {
+			var lessonData = {
+				trainingName: courseName,
+				lessonNumber: lessonNumber,
+				newDate: "",
+				newPlace: ""
+			};
+			return $http.post('/training_controller/delete_date', lessonData).then(function (result) {
+				console.log("Lesson deleted successfully");
+				return result.data;
+			}, function (err) {
+				console.log("Delete lesson error: " + err.statusCode);
 				return err;
 			});
 		};

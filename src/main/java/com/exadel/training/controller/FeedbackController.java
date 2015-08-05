@@ -4,6 +4,7 @@ import com.exadel.training.controller.model.Feedback.*;
 import com.exadel.training.controller.model.Training.TrainingNameAndUserLogin;
 import com.exadel.training.controller.model.User.UserLoginAndFeedbackerLogin;
 import com.exadel.training.model.*;
+import com.exadel.training.notification.MessageFabric;
 import com.exadel.training.notification.mail.WrapperNotificationMail;
 import com.exadel.training.notification.news.NotificationNews;
 import com.exadel.training.notification.sms.WrapperNotificationSMS;
@@ -145,7 +146,7 @@ public class FeedbackController {
     public @ResponseBody void addTrainingFeedback(@RequestBody TrainingNameAndUserLogin trainingNameAndUserLogin, HttpServletResponse response) {
         User coach = trainingService.getTrainingByName(trainingNameAndUserLogin.getTrainingName()).getCoach();
       try {
-                wrapperNotificationMail.send(coach.getEmail(), "text");
+                wrapperNotificationMail.send(coach.getEmail(), MessageFabric.getMessage(trainingNameAndUserLogin.getTrainingName(), trainingNameAndUserLogin.getLogin()));
                 response.setStatus(HttpServletResponse.SC_OK);
             } catch (Exception e) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

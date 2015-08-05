@@ -17,9 +17,9 @@ public class DateParser {
 
     private List<Boolean> repeatOn;
     private String startsOn;
-    private int lessonsNumber;
+    private long lessonsNumber;
     private List<Date> dateTimes;
-    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     public DateParser() {
         repeatOn = new ArrayList<>();
@@ -27,7 +27,7 @@ public class DateParser {
     }
 
     public DateParser(JSONObject json) {
-        lessonsNumber = (Integer)json.get("lessonsNumber");
+        lessonsNumber = (Long)json.get("lessonsNumber");
         startsOn = (String)json.get("startsOn");
 
         repeatOn = new ArrayList<>();
@@ -66,11 +66,11 @@ public class DateParser {
         this.startsOn = startsOn;
     }
 
-    public int getLessonsNumber() {
+    public long getLessonsNumber() {
         return lessonsNumber;
     }
 
-    public void setLessonsNumber(int lessonsNumber) {
+    public void setLessonsNumber(long lessonsNumber) {
         this.lessonsNumber = lessonsNumber;
     }
 
