@@ -56,6 +56,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Boolean isMyTraining(String login, String trainingName) {
+        return userRepository.isMyTraining(login, trainingName);
+    }
+
+    @Override
     public User getUserByID(long id) {
         User user = userRepository.getOne(id);
         return user;
