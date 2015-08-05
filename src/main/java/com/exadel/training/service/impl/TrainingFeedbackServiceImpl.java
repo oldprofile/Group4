@@ -60,7 +60,7 @@ public class TrainingFeedbackServiceImpl implements TrainingFeedbackService {
     }
 
     @Override
-    public TrainingFeedback getTrainingFeedbackByNameLoginAndDate(String trainingName, String feedbackerLogin, DateTime date) throws ParseException {
-        return trainingFeedbackRepository.findFeedbackByTrainingrAndDateAndFeedbacker(trainingName, feedbackerLogin, SDF.parse(date.toString()));
+    public TrainingFeedback getTrainingFeedbackByNameLoginAndDate(String trainingName, String feedbackerLogin, Date date) throws ParseException {
+        return trainingFeedbackRepository.findFeedbackByTrainingrAndDateAndFeedbacker(trainingName, feedbackerLogin, date);
     }
 }

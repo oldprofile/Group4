@@ -11,14 +11,10 @@ import com.exadel.training.notification.sms.WrapperNotificationSMS;
 import com.exadel.training.repository.impl.TrainingFeedbackRepository;
 import com.exadel.training.service.*;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.text.DateFormatter;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -58,6 +54,8 @@ public class FeedbackController {
     @Autowired
     NotificationNews notificationNews;
 
+    private static final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+
     @RequestMapping(value = "/user_feedback", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody List<UserFeedbackGETModel> getUserFeedbacks(@RequestBody String login) throws NoSuchFieldException {
         User user = userService.findUserByLogin(login);
@@ -74,7 +72,16 @@ public class FeedbackController {
     @RequestMapping(value = "/create_user_feedback", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody void addUserFeedback(@RequestBody UserFeedbackADDModel userFeedbackModel, HttpServletResponse response) {
             try {
-            //    userFeedbackService.addUserFeedback(userFeedbackModel, new Date());
+                DateTime dateDB = new DateTime();
+                Date date = SDF.parse(dateDB.toString());
+
+                userFeedbackService.addUserFeedback(userFeedbackModel, new Date());
+
+                User user = userService.findUserByLogin(userFeedbackModel.getFeedbackerLogin());
+                UserFeedback userFeedback = userFeedbackService.getUserFeedbackByLoginsAndDate(userFeedbackModel.getUserLogin(), userFeedbackModel.getFeedbackerLogin(), date);
+
+                notificationNews.sendNews("has written feedback", user, userFeedback);
+
                 response.setStatus(HttpServletResponse.SC_CREATED);
             } catch (Exception e) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -98,7 +105,16 @@ public class FeedbackController {
     @RequestMapping(value = "/create_coach_feedback", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody void addCoachFeedback(@RequestBody CoachFeedbackADDModel coachFeedbackModel, HttpServletResponse response) {
             try {
-              //  coachFeedbackService.addCoachFeedback(coachFeedbackModel, new Date());
+                DateTime dateDB = new DateTime();
+                Date date = SDF.parse(dateDB.toString());
+
+                coachFeedbackService.addCoachFeedback(coachFeedbackModel, new Date());
+
+                User user = userService.findUserByLogin(coachFeedbackModel.getFeedbackerLogin());
+                CoachFeedback coachFeedback = coachFeedbackService.getCoachFeeddbackByLoginsAndDate(coachFeedbackModel.getCoachLogin(), coachFeedbackModel.getFeedbackerLogin(), date);
+
+                notificationNews.sendNews("has written feedback", user, coachFeedback);
+
                 response.setStatus(HttpServletResponse.SC_CREATED);
             } catch (Exception e) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -121,18 +137,13 @@ public class FeedbackController {
     @RequestMapping(value = "/create_training_feedback", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody void addTrainingFeedback(@RequestBody TrainingFeedbackADDModel trainingFeedbackADDModel, HttpServletResponse response) {
             try {
-                Date dateDB = new Date();
-                DateTime date = new DateTime();
+                DateTime dateDB = new DateTime();
+                Date date = SDF.parse(dateDB.toString());
 
-
-                trainingFeedbackService.addTrainingFeedback(trainingFeedbackADDModel, dateDB);
-
+                trainingFeedbackService.addTrainingFeedback(trainingFeedbackADDModel, date);
 
                 User user = userService.findUserByLogin(trainingFeedbackADDModel.getFeedbackerLogin());
                 TrainingFeedback trainingFeedback = trainingFeedbackService.getTrainingFeedbackByNameLoginAndDate(trainingFeedbackADDModel.getTrainingName(), trainingFeedbackADDModel.getFeedbackerLogin(), date);
-
-               Boolean b = trainingFeedbackRepository.checkFeedbackByLoginAndName("1", "basketball");
-               TrainingFeedback trainingFeedback1 = trainingFeedbackRepository.findOne(1L);
 
                 notificationNews.sendNews("has written feedback", user, trainingFeedback);
 
