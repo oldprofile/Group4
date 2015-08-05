@@ -212,7 +212,7 @@ public class UserController {
         String trainingName = userLeaveAndJoinTraining.getNameTraining();
         Training training = trainingService.getTrainingByName(trainingName);
 
-          if(userService.isCoach(userLogin, trainingName)) {
+          if(!userService.isMyTraining(userLogin, trainingName)) {
               try {
                   User user = userService.findUserByLogin(login);
                   if (!userService.checkSubscribeToTraining(training.getId(), user.getId())) {
