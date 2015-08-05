@@ -53,7 +53,7 @@ public class FeedbackController {
     }
 
     @RequestMapping(value = "/can_leave_user_feedback", method = RequestMethod.POST, consumes = "application/json")
-    public @ResponseBody boolean canLeaveUserFeedback(UserLoginAndFeedbackerLogin userLoginAndFeedbackerLogin) {
+    public @ResponseBody boolean canLeaveUserFeedback(@RequestBody UserLoginAndFeedbackerLogin userLoginAndFeedbackerLogin) {
         return userService.isCoach(userLoginAndFeedbackerLogin.getUserLogin(), userLoginAndFeedbackerLogin.getFeedbackerLogin());
     }
 
@@ -76,7 +76,8 @@ public class FeedbackController {
     }
 
     @RequestMapping(value = "/can_leave_coach_feedback", method = RequestMethod.POST, consumes = "application/json")
-    public @ResponseBody boolean canLeaveCoachFeedback(UserLoginAndFeedbackerLogin userLoginAndFeedbackerLogin) {
+    public @ResponseBody boolean canLeaveCoachFeedback(@RequestBody UserLoginAndFeedbackerLogin userLoginAndFeedbackerLogin) {
+
         return userService.isCoach(userLoginAndFeedbackerLogin.getFeedbackerLogin(), userLoginAndFeedbackerLogin.getUserLogin());
     }
     
@@ -99,7 +100,7 @@ public class FeedbackController {
     }
 
     @RequestMapping(value = "/can_leave_training_feedback", method = RequestMethod.POST, consumes = "application/json")
-    public @ResponseBody boolean canLeaveTrainingFeedback(TrainingNameAndUserLogin trainingNameAndUserLogin) {
+    public @ResponseBody boolean canLeaveTrainingFeedback(@RequestBody TrainingNameAndUserLogin trainingNameAndUserLogin) {
         return userService.checkSubscribeToTraining(trainingNameAndUserLogin.getTrainingName(), trainingNameAndUserLogin.getLogin());
     }
 

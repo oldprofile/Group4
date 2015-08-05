@@ -1,149 +1,170 @@
-<div class="row">
-    <div class="col-xs-1"></div>
-    <div class="col-xs-10">
-        
-        <div class="row">
-                <center><h3>{{header}} course</h3></center>
-        </div>
+<div class="row courseinfo-div">
+	<div class="col-xs-12">
+		<form class="form-course form-horizontal" name="courseForm" novalidate>
+			<div class="row">
 
-        <div class="row">
-            <div class="col-xs-1"></div>
-            <div class="col-xs-10">
-                <div class="col-xs-3"></div>
-                <div class="col-xs-9" ng-controller="UploadController">
-                    <div class="row" id="imgPlaceholder">
-                        <i ng-hide="temp.pictureHolder">No image choosed</i>
-                        <img ng-src="{{temp.pictureHolder}}" preloadable /><br/>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-3">
-                            <span class="btn btn-primary btn-file default-btn default-blue">
-                                Browse
-                                <input type="file" ng-file-select="onFileSelect($files)" ng-click="nullProgress()">
-                            </span>
-                        </div>
-                        <div class="col-xs-4">
-                            <progressbar class="progress-striped active" value="progress" type="success" max="1">
-                                <p ng-show="progress==1">Image loaded!</p>
-                            </progressbar>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="row">
-                <form class="form-course form-horizontal" name="courseForm" novalidate>
-                    
-                    <div class="form-group">
-                        <label for="name" class="col-xs-3 control-label" align="left">Course name: </label>
-                        <div class="col-xs-9">
-                            <input class="form-control" type="text" name="name" id="name" placeholder="Course name" ng-model="courseInfo.name" ng-disabled="isEdited" required>
-                            <span style="color:red" ng-show="courseForm.name.$dirty && courseForm.name.$invalid">
-                                <span ng-show="courseForm.name.$error.required">Course name is required.</span>
-                            </span>
-                        </div>
-                    </div>
-                    
-                    
-                    <div class="form-group">
-                        <label for="description" class="col-xs-3 control-label">Course description: </label>
-                        <div class="col-xs-9">
-                            <textarea class="form-control" name="description" id="description" rows="3" placeholder="Course description" ng-model="courseInfo.description" required></textarea>
-                            <span style="color:red" ng-show="courseForm.description.$dirty && courseForm.description.$invalid">
-                                <span ng-show="courseForm.description.$error.required">Course description is required.</span>
-                            </span>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="audience" class="col-xs-3 control-label">Target audience: </label>
-                        <div class="col-xs-9">
-                            <input class="form-control" name="audience" id="audience" type="text" placeholder="Target audience" ng-model="courseInfo.audience" required>
-                            <span style="color:red" ng-show="courseForm.audience.$dirty && courseForm.audience.$invalid">
-                                <span ng-show="courseForm.audience.$error.required">Target audience is required.</span>
-                            </span>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="category" class="col-xs-3 control-label">Category: </label>
-                        <div class="col-xs-9">
-                            <select class="form-control" id="category" ng-model="courseInfo.idCategory" ng-options="category.id as category.name for category in categoriesObj">
-                                <option value="">Select category</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div ng-if="isAdmin" class="form-group">
-                        <label for="name" class="col-xs-3 control-label">Course type: </label>
-                        <div class="col-xs-9">
-                            <select class="form-control" ng-model="courseInfo.isInternal" ng-options="type.isInternal as type.name for type in types">
-                                <option value="">Select course type</option>
-                            </select>
-                        </div>
-                    </div>
+				<div class="col-xs-12 col-sm-6">
 
-                    <div class="form-group">
-                        <label for="language" class="col-xs-3 control-label">Language: </label>
-                        <div class="col-xs-9">
-                            <select class="form-control"  id="language" ng-model="courseInfo.language" ng-options="lang for lang in languages" ng-disabled="isEdited">
-                                <option value="">Select course language</option>
-                            </select>
-                        </div>
-                    </div>
+					<div class="row courseinfo-h1">
+						<input class="material-input" type="text" name="name" id="name" placeholder="Enter course name"
+							   ng-model="courseInfo.name" ng-disabled="isEdited" required>
+					</div>
 
-                    <div class="form-group">
-                        <label for="participantsNumber" class="col-xs-3 control-label">Number of participants: </label>
-                        <div class="col-xs-9">
-                            <input class="form-control" name="participantsNumber" id="participantsNumber" type="number" placeholder="Desirable number of participants" ng-model="courseInfo.participantsNumber" required>
-                            <span style="color:red" ng-show="courseForm.participantsNumber.$dirty && courseForm.participantsNumber.$invalid">
-                                <span ng-show="courseForm.participantsNumber.$error.required">Desirable number of participants is required.</span>
-                                <span ng-show="courseForm.participantsNumber.$error.number">Invalid number of participants.</span>
-                            </span>
-                        </div>
-                    </div>
-                    
-                    <div ng-if="isAdmin" class="form-group">
-                        <label for="place" class="col-xs-3 control-label">Place: </label>
-                        <div class="col-xs-9">
-                            <input class="form-control" name="place" id="place" type="text" placeholder="Place" ng-model="temp.place" required>
-                            <span style="color:red" ng-show="courseForm.place.$dirty && courseForm.place.$invalid">
-                                <span ng-show="courseForm.place.$error.required">Place is required.</span>
-                            </span>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="dates" class="col-xs-3 control-label">Dates: </label>
-                        <div class="col-xs-9">
-                            <datepicker1 id="dates" ng-model="courseInfo.dateTime"></datepicker1>
-                       </div>
-                    </div>
-                    
-                    <div ng-if="!isAdmin" class="form-group">
-                        <label for="additional" class="col-xs-3 control-label">Info for admin: </label>
-                        <div class="col-xs-9">
-                            <textarea class="form-control" name="additional" id="additional" rows="3" placeholder="Additional info (optional)" ng-model="courseInfo.additional"></textarea>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <div class="col-xs-3"></div>
-                        <div class="col-xs-9">
-                            <input ng-if="!isAdmin && !isEdited" type="submit" ng-click="saveData()" class="btn btn-lg accent-btn accent-green" value="Create course!">
-                            <input ng-if="isAdmin && !isEdited" type="submit" ng-click="saveData()" class="btn btn-lg accent-btn accent-green" value="Create course!">
-                            
-                            <input ng-if="isAdmin && isEdited" type="submit" ng-click="editCourse()" class="btn btn-lg accent-btn accent-green" value="Approve course">
-                            <input ng-if="!isAdmin && isEdited" type="submit" ng-click="editCourse()" class="btn btn-lg default-btn default-blue" value="Edit course">
-                        </div>
-                    </div>
-                </form>
-                </div>
-            </div>
+					<p class="courseinfo-h5 big-margin">Starts on: {{temp.tempDates[0] | date:"dd MMMM"}}</p>
 
-        <!-- ng-disabled="courseForm.name.$dirty && courseForm.name.$invalid ||
-                        courseForm.description.$dirty && courseForm.description.$invalid || courseForm.audience.$dirty && courseForm.audience.$invalid ||
-                        courseForm.participantsNumber.$dirty && courseForm.participantsNumber.$invalid" -->
-        </div>
-    </div>
-<div class="col-xs-1"></div>
+					<p class="courseinfo-h5 color-gray">{{temp.tempDates.length}} lessons</p>
+
+					<p class="courseinfo-h5 top-margin">Coach: {{course.coachName}}</p>
+
+					<div class="row">
+						<div class="col-xs-12">
+							<p class="courseinfo-h5 float-left">Category: </p>
+
+							<div class="dropdown float-left">
+								<p class="courseinfo-h5 dropdown-toggle" id="categoryPopover" type="button"
+								   popover-placement="bottom" popover-trigger="click"
+								   popover-template="'/page_createcourse/categoryPopover.html'">
+									<a href="" class="link-select" ng-if="!courseInfo.idCategory">select</a>
+									<a href="" class="link-select" ng-if="courseInfo.idCategory">{{categoriesObj[courseInfo.idCategory-1].name}}</a>
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<p class="info-small color-gray">Recommended for:
+						<input class="material-input" name="audience" id="audience" type="text"
+							   placeholder="click to enter" ng-model="courseInfo.audience" required>
+					</p>
+
+				</div>
+
+				<div class="col-xs-12 col-sm-6" ng-controller="UploadController">
+					<div class="row margin-32">
+						<div ng-show="!temp.pictureHolder">
+							<div class="courseinfo-img-container">
+								<span class="btn btn-primary btn-file default-btn default-gray">
+									Click to add picture
+									<input type="file" ng-file-select="onFileSelect($files)" ng-click="nullProgress()">
+								</span>
+							</div>
+
+						</div>
+
+						<div ng-show="temp.pictureHolder">
+							<div class="courseinfo-img-container">
+								<img class="courseinfo-img" ng-src="{{temp.pictureHolder}}" preloadable/><br/>
+							</div>
+							<div class="courseinfo-photoicon">
+								<span class="btn btn-primary btn-file round-btn default-gray">
+									<i class="fa fa-camera"></i>
+									<input type="file" ng-file-select="onFileSelect($files)" ng-click="nullProgress()">
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row top-margin">
+				<div class="col-xs-12">
+					<textarea class="material-input scroll" name="description" id="description" rows="5"
+							  placeholder="Write your course description here..." ng-model="courseInfo.description"
+							  required></textarea>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-12">
+
+					<div ng-if="isAdmin">
+						<div class="row">
+							<div class="col-xs-12">
+								<p class="info-small float-left">Course type: </p>
+
+								<div class="dropdown float-left">
+									<p class="info-small dropdown-toggle" type="button" id="typePopover"
+									   popover-placement="bottom" popover-trigger="click"
+									   popover-template="'/page_createcourse/typePopover.html'">
+										<a href="" class="link-select" ng-if="!courseInfo.isInternal">select</a>
+										<a href="" class="link-select" ng-if="courseInfo.isInternal">{{courseInfo.isInternal
+											? 'Internal' : 'External'}}</a>
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-xs-12">
+							<p class="info-small float-left">Language: </p>
+
+							<div class="dropdown float-left">
+								<p class="info-small dropdown-toggle" type="button" id="langPopover"
+								   popover-placement="bottom" popover-trigger="click"
+								   popover-template="'/page_createcourse/langPopover.html'">
+									<a href="" class="link-select" ng-if="!courseInfo.language">select</a>
+									<a href="" class="link-select"
+									   ng-if="courseInfo.language">{{courseInfo.language}}</a>
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<div>
+						<input class="material-input" name="participantsNumber" id="participantsNumber" type="number"
+							   placeholder="Desirable number of participants" ng-model="courseInfo.participantsNumber"
+							   required>
+					</div>
+
+					<div ng-if="isAdmin">
+						<label for="place">Place: </label>
+						<input class="material-input" name="place" id="place" type="text" placeholder="Place"
+							   ng-model="temp.place" required>
+					</div>
+
+				</div>
+			</div>
+
+			<div class="row">
+
+				<div class="col-xs-12">
+					<v-accordion class="vAccordion--default" multiple>
+
+						<!-- add expanded attribute to open the section -->
+						<v-pane>
+							<v-pane-header>
+								<span class="glyphicon glyphicon-time"></span>Manage dates
+							</v-pane-header>
+
+							<v-pane-content>
+
+								<datepicker1 id="dates" ng-model="courseInfo.dateTime"></datepicker1>
+
+							</v-pane-content>
+						</v-pane>
+
+					</v-accordion>
+				</div>
+
+			</div>
+
+			<div class="row">
+
+				<div ng-if="!isAdmin" class="form-group">
+					<textarea class="material-input" name="additional" id="additional" rows="3" placeholder="Additional info (optional)" ng-model="courseInfo.additional"></textarea>
+				</div>
+
+			</div>
+
+			<div class="row">
+
+				<input ng-if="!isAdmin && !isEdited" ng-disabled="{{disabled}}" type="submit" ng-click="saveData()" class="btn btn-lg accent-btn accent-green" value="Create course!">
+				<input ng-if="isAdmin && !isEdited" ng-disabled="{{disabled}}" type="submit" ng-click="saveData()" class="btn btn-lg accent-btn accent-green" value="Create course!">
+				<input ng-if="isAdmin && isEdited" ng-disabled="{{disabled}}" type="submit" ng-click="editCourse()" class="btn btn-lg accent-btn accent-green" value="Approve course">
+				<input ng-if="!isAdmin && isEdited" ng-disabled="{{disabled}}"  type="submit" ng-click="editCourse()" class="btn btn-lg default-btn default-blue" value="Edit course">
+
+			</div>
+
+		</form>
+	</div>
 </div>

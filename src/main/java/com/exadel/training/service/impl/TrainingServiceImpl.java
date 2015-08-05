@@ -145,7 +145,7 @@ public class TrainingServiceImpl implements TrainingService {
         int state;
         String place = null;
         if (userRepository.whoIsUser(trainingForCreation.getUserLogin(), 1)) {
-            if(dateTimes.size() == 0)
+            if (dateTimes.size() == 0)
                 state = StateTraining.parseToInt("Canceled");
             else {
                 state = StateTraining.parseToInt("Ahead");
@@ -160,7 +160,7 @@ public class TrainingServiceImpl implements TrainingService {
         mainTraining.setState(state);
 
         List<Training> trainings = trainingRepository.findTrainingsByName(trainingForCreation.getName());
-        for(int i = 0; i < dateTimes.size(); ++i) {
+        for (int i = 0; i < dateTimes.size(); ++i) {
             Training training;
             if (i < trainings.size())
                 training = trainings.get(i);
@@ -173,7 +173,7 @@ public class TrainingServiceImpl implements TrainingService {
             training.setDateTime(dateTimes.get(i));
             training.setCategory(category);
             training.setState(state);
-            if(place != null)
+            if (place != null)
                 training.setPlace(place);
             trainingRepository.saveAndFlush(training);
         }
@@ -206,12 +206,12 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Override
     public Training approveEditTraining(TrainingForCreation trainingForCreation) throws NoSuchFieldException {
-        Training parentTraining = trainingRepository.findTrainingByName(trainingForCreation.getName());
+        List<Training> trainings = trainingRepository.findTrainingsWithParentByName(trainingForCreation.getName());
+        for (Training training: trainings)
+            training.fillTraining(trainingForCreation);
         Training editedTraining = trainingRepository.findEditedTrainingByName(trainingForCreation.getName());
-        parentTraining.fillTraining(trainingForCreation);
-        parentTraining.setState(StateTraining.parseToInt("Ahead"));
         trainingRepository.deleteTrainingsById(editedTraining.getId());
-        return parentTraining;
+        return trainings.get(0);
     }
 
     @Override
@@ -275,6 +275,25 @@ public class TrainingServiceImpl implements TrainingService {
         training.setPlace(lessonData.getNewPlace());
         updateParentTraining(training.getName());
         return training;
+    }
+
+    @Override
+    public Training deleteLessonDate(LessonData lessonData) throws ParseException {
+        List<Training> trainings = trainingRepository.findTrainingsWithParentByName(lessonData.getTrainingName());
+        Training training = trainings.get(lessonData.getLessonNumber());
+        trainingRepository.deleteTrainingsById(training.getId());
+        return trainings.get(0);
+    }
+
+    @Override
+    public Training addLessonDate(LessonData lessonData) throws ParseException, NoSuchFieldException {
+        Training parent = trainingRepository.findByName(lessonData.getTrainingName());
+        Training newLesson = new Training(parent);
+        newLesson.setDateTime(sdf.parse(lessonData.getNewDate()));
+        newLesson.setPlace(lessonData.getNewPlace());
+        newLesson.setState(StateTraining.parseToInt("Ahead"));
+        trainingRepository.saveAndFlush(newLesson);
+        return newLesson;
     }
 
     @Override

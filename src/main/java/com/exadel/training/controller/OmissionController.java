@@ -53,7 +53,12 @@ public class OmissionController {
     public @ResponseBody void addOmissions(@RequestBody List<OmissionADDModel> omissionADDModels, HttpServletResponse response) {
         try {
             for (OmissionADDModel omissionADDModel : omissionADDModels) {
-                omissionService.addOmission(omissionADDModel);
+                Omission omission = omissionService.findByTrainingAndUserLogin(omissionADDModel.getTrainingName(), omissionADDModel.getUserLogin(), omissionADDModel.getDate());
+                if(omission.equals(null)) {
+                    omissionService.addOmission(omissionADDModel);
+                } else {
+                    omission.setOmission(omissionADDModel.isOmission());
+                }
             }
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

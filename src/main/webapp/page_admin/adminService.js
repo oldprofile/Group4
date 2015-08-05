@@ -1,4 +1,5 @@
 angular.module('myApp.admin')
+
 .factory('adminService', ['$http', '$q', function($http, $q) {
     var adminService = {};
     adminService.getApproveList = function() {
@@ -33,6 +34,14 @@ angular.module('myApp.admin')
 		 deferred.resolve(window.open(url, '_blank'));
 		 return deferred.promise;
 		 };
+
+
+adminService.getNewsNumber = function() {
+	return $http.get('http://localhost:8080/news_controller/count_of_news')
+	.then(function(results) {
+	return results.data;
+	});
+	};
     
     return adminService;
 }]);

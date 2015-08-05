@@ -51,8 +51,9 @@ public class OmissionServiceImpl implements OmissionService{
     }
 
     @Override
-    public List<Omission> findByTrainingNameAndUserLogin(String trainingName, String userLogin) {
-        return omissionRepository.findByTrainingNameAndUserLogin(trainingName, userLogin);
+    public Omission findByTrainingAndUserLogin(String trainingName, String userLogin, String date) throws ParseException {
+
+        return omissionRepository.findByTrainingAndUserLogin(trainingName, userLogin, SDF.parse(date));
     }
 
     @Override

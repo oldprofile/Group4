@@ -13,7 +13,7 @@ import java.util.List;
 public interface OmissionService {
     void addOmission(OmissionADDModel omissionADDModel) throws ParseException;
     List<Omission> getOmissionsByTrainingName(String trainingName);
-    List<Omission> findByTrainingNameAndUserLogin(String trainingName, String userLogin);
+    Omission findByTrainingAndUserLogin(String trainingName, String userLogin, String date) throws ParseException;
     List<Omission> findByUserLogin(String userLogin);
     List<Omission> findByTrainingNameAndUserLoginType(String trainingName, String userLogin, Boolean type);
     List<Omission> findByUserLoginAndType(String login, Boolean type);
