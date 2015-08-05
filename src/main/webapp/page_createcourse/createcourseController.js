@@ -3,8 +3,9 @@ angular.module('myApp.createcourse').controller('CreateCourseController', [
 	'$filter',
 	'createcourse',
 	'initCourseService',
+	'categoriesLocal',
 	'$timeout',
-	function ($scope, $filter, createcourse, initCourseService, $timeout) {
+	function ($scope, $filter, createcourse, initCourseService, categoriesLocal, $timeout) {
 		$scope.isEdited = false;
 		$scope.header = 'Create';
 		$scope.disabled = 'courseForm.name.$dirty && courseForm.name.$invalid || courseForm.description.$dirty && courseForm.description.$invalid || courseForm.audience.$dirty && courseForm.audience.$invalid || courseForm.participantsNumber.$dirty && courseForm.participantsNumber.$invalid || courseForm.place.$dirty && courseForm.place.$invalid';

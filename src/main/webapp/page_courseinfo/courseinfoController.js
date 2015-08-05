@@ -1,16 +1,27 @@
 angular.module('myApp.courseinfo')
-	.controller('CourseInfoController', ['$scope', '$routeParams', '$filter', '$location', 'courseInfoService', 'userService', '$modal', 'feedbacksService', function ($scope, $routeParams, $filter, $location, courseInfoService, userService, $modal, feedbacksService) {
+	.controller('CourseInfoController', ['$scope', '$routeParams', '$filter', '$location', 'courseInfoService', 'userService', 'categoriesLocal', '$modal', 'feedbacksService', function ($scope, $routeParams, $filter, $location, courseInfoService, userService, categoriesLocal, $modal, feedbacksService) {
 		$scope.isAdmin = userService.isAdmin();
 
 		$scope.courseName = $routeParams.coursename;
 		$scope.subButtonText = "Subscribe";
 		$scope.isContentLoaded = false;
 		$scope.course = {};
+		$scope.courseCategory = "";
 
 		$scope.goTo = function (path) {
 			console.log(path);
 			$location.path(path);
 		};
+
+		$scope.getCategory = function(id) {
+			categoriesLocal.getCategoryNameById(id).then(
+				function(result) {
+					console.log(result);
+					$scope.courseCategory = result;
+				}
+			);
+		}
+
 
 		var courseInfoData1 = {
 			login: userService.getUser().login,
@@ -49,9 +60,11 @@ angular.module('myApp.courseinfo')
 			console.log(JSON.stringify(data));
 			$scope.courseName = $routeParams.coursename;
 
+
 			data.courseImg = "assets/angular_bg1.png";
 			data.promtText = courseInfoService.getPromtText(data);
 			$scope.course = data;
+			$scope.getCategory($scope.course.idCategory);
 
 			$scope.isSubscriber = data.isSubscriber;
 			$scope.isContentLoaded = true;
