@@ -1382,7 +1382,7 @@ margin-right: 4px;
   }
 
 .login-card {
-  padding: 40px 0px;
+  padding: 64px 0px;
   width: 420px !important;
   background-color: white;
   margin: auto;
@@ -1400,6 +1400,12 @@ margin-right: 4px;
 }
 .login-card .form-inline input{
   padding-bottom: 8px;
+  width: 144px;
+  border-bottom: 1px solid rgba(0,0,0,0.15) !important;
+  border-radius: 0;
+  padding: 0;
+  margin-left: 12px; 
+  
   
 }
 .login-card div.checkbox{
@@ -1407,9 +1413,35 @@ margin-right: 4px;
   margin-left: 1px;
 }
 .login-card div.checkbox span{
-  margin-left: 12px;
+  margin-left: 7px;
 }
-
+.login-card button{
+  margin-top: 16px;
+  margin-left: 26px;
+  width: 92px;
+  }
+@media  (max-width: 768px){
+  .form-inline label{
+   display: none;
+  }
+  
+  .login-card form{
+  margin: auto;
+    
+}
+  .login-card{
+    padding: 64px 40px;
+    width: 240px !important;
+  }
+  .checkbox{
+    margin-left: 12px !important;
+  }
+  .checkbox span{
+    margin-left: 0 !important;
+  }
+  
+  
+}
 
 
 
