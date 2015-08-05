@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -52,5 +53,10 @@ public class TrainingFeedbackServiceImpl implements TrainingFeedbackService {
     @Override
     public  Boolean hasFeedback(String login, String name) {
         return trainingFeedbackRepository.checkFeedbackByLoginAndName(login, name);
+    }
+
+    @Override
+    public TrainingFeedback getTrainingFeedbackByNameLoginAndDate(String trainingName, String feedbackerLogin, Date date) {
+        return trainingFeedbackRepository.findFeedbackByTrainingrAndDateAndFeedbacker(trainingName, feedbackerLogin, date);
     }
 }

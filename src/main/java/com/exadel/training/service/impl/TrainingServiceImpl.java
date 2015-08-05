@@ -273,6 +273,7 @@ public class TrainingServiceImpl implements TrainingService {
         Training training = trainings.get(lessonData.getLessonNumber());
         training.setDateTime(sdf.parse(lessonData.getNewDate()));
         training.setPlace(lessonData.getNewPlace());
+        trainingRepository.saveAndFlush(training);
         updateParentTraining(training.getName());
         return training;
     }
