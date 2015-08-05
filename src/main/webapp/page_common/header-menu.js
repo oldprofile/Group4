@@ -40,6 +40,7 @@ menuApp.controller("HeaderMenuController",['$scope','$location',"getCategories",
       if(userService.isAdmin()){
           polling($scope.notifications);
       }
+      
     });
     $scope.isActive = function (viewLocation) {
      var viewLocationArray = viewLocation.split("/");
