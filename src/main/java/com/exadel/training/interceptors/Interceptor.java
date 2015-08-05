@@ -24,12 +24,12 @@ public class Interceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         String uri = httpServletRequest.getRequestURI();
-        if(this.isAuthentication(uri)) {
+        if(this.isAuthentication(uri) || uri.equalsIgnoreCase("/")) {
             return true;
         } else {
             if (!sessionToken.isEmpty()) {
                 String header = httpServletRequest.getHeader("authorization");
-                if (sessionToken.containsToken(header)) {
+                if (header != null && sessionToken.containsToken(header)) {
                     httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
                     return true;
                 } else {
@@ -43,7 +43,7 @@ public class Interceptor implements HandlerInterceptor {
     }
 
     private boolean isAuthentication(String uri) {
-        return uri == "/authentication/log_password" ? false : true;
+        return uri.equalsIgnoreCase("/authentication/log_password");
     }
 
     @Override

@@ -1,7 +1,8 @@
 div.repeating-container {
-    max-height: 245px;
+	min-height: 200px;
     margin-top: 15px;
     margin-bottom: 15px;
+	overflow: auto;
 }
 
 div.repeating-row {

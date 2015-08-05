@@ -343,7 +343,7 @@ public class TrainingController {
         ArrayList<String> list = new ArrayList<>();
         list.add("1-1-2015 23:23:23");
         list.add("2-2-2015 23:23:23");
-        trainingForCreation.setDateTimes(list);
+        //trainingForCreation.setDateTimes(list);
         trainingForCreation.setDescription("training");
         trainingForCreation.setIdCategory(1);
         trainingForCreation.setIsInternal(true);
@@ -381,5 +381,12 @@ public class TrainingController {
         String userLogin = "1";
         List<Training> list = trainingService.getTrainingsByCoach(userLogin);
         return ShortTrainingInfo.parseList(list);
+    }
+
+    @RequestMapping(value = "/test_trainings_number", method = RequestMethod.GET/*consumes = "application/json"*/)
+    public @ResponseBody
+    Integer testTrainingNumber () throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
+        Integer number = trainingService.getNextTrainingNumber("batman forever");
+        return number;
     }
 }

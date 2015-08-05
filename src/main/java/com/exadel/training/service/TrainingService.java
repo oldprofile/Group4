@@ -28,11 +28,13 @@ public interface TrainingService {
     Training addSpareUser(String trainingName, String userLogin);
     Training changeLessonDate(LessonData lessonData) throws ParseException;
     Training getEditedTrainingByName(String trainingName);
+    Training getNextTraining(String trainingName);
 
     List<Training> getAllTrainings();
     List<Training> getTrainingsByName(String trainingName);
     List<Training> getValidTrainingsByCategoryId(int id);
     List<Training> getValidTrainings();
+    List<Training> getValidTrainingsExceptParent();
     List<Training> getTrainingsByNearestDate();
     List<Training> getTrainingForApprove();
     List<Training> getTrainingsByCoach(String coachLogin);
@@ -46,11 +48,13 @@ public interface TrainingService {
     List<Date> getDatesByTrainingNameBetweenDates(String trainingName, Date firstDate, Date secondDate);
 
     List<String> getPlacesByTrainingName(String trainingName);
+    List<String> getTrainingsNames();
 
-    Integer getTrainingNumber(String trainingName, Date date);
+    Integer getNextTrainingNumber(String trainingName);
+    Integer getTrainingNumberByDate(String trainingName, Date date);
+    Integer getTrainingsCount(String trainingName);
     Integer getValidTrainingsNumberByCategory(Category category);
     Long getParentTrainingId(String trainingName);
     Boolean isSubscriber(String trainingName, String userLogin);
-
 
 }

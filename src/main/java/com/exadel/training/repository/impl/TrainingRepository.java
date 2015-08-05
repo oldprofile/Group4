@@ -40,7 +40,7 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
     @Query(value =  "select tr from Training tr where tr.category.id = ?1 and tr.state in (2,3) and tr.parent = 0")
     List<Training> findValidTrainingsByCategoryId(int id);
 
-    @Query(value = "select tr from Training tr where tr.name = ?1 and tr.parent > 0")
+    @Query("select tr from Training tr where tr.name = ?1 and tr.parent > 0 order by tr.dateTime asc")
     List<Training> findTrainingsByName(String name);
 
     @Query("select tr from Training tr where tr.name = ?1 and tr.parent > 0")
@@ -50,8 +50,8 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
     List<Training> findValidTrainings();
 
     //@Query("select  tr from Training as tr where tr.name = ?1 and tr.state in (2,3) and tr.dateTime = (select min(tr.dateTime) from tr where tr.name = ?1 and tr.state in (2,3))")
-    @Query("select  tr from Training as tr where tr.name = ?1 and tr.state in (2,3) and tr.parent > 0 order by tr.dateTime asc")
-    List<Training> findNearestTrainingsByName(String trainingName);
+    @Query("select  tr from Training as tr where tr.state in (2,3) and tr.parent > 0 order by tr.dateTime asc")
+    List<Training> findValidTrainingsExceptParent();
 
     @Query("select  tr from Training as tr where tr.state in (2,3) and tr.parent = 0 order by tr.dateTime asc")
     List<Training> findNearestTrainings();
@@ -94,11 +94,17 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
     @Query("select tr.place from Training as tr where tr.name= ?1 and tr.parent > 0 order by tr.dateTime asc")
     List<String> findPlacesByTrainingName(String trainingName);
 
+    @Query("select tr.name from Training as tr where tr.parent = 0")
+    List<String> findTrainingsNames();
+
     @Query("select tr.id from Training as tr where tr.name = ?1 and tr.parent = 0")
     Long findParentTrainingIdByName(String trainingName);
 
-    @Query("select count(tr.dateTime) from Training as tr where tr.name = ?1 and  tr.dateTime <= ?2 and tr.parent > 0")
+    @Query("select count(tr.dateTime) from Training as tr where tr.name = ?1 and  tr.dateTime <= ?2 and tr.parent > 0 order by tr.dateTime asc")
     Integer findTrainingNumber(String trainingName, Date date);
+
+    @Query("select count(tr.dateTime) from Training as tr where tr.name = ?1 and tr.parent > 0")
+    Integer findTrainingsCount(String trainingName);
 
     @Query("select count(tr) from Training as tr where tr.category = ?1 and tr.parent = 0")
     Integer findValidTrainingsNumberByCategory(Category category);

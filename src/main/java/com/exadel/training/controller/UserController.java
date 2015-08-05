@@ -4,6 +4,7 @@ import com.exadel.training.common.RoleType;
 import com.exadel.training.controller.model.User.*;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
+import com.exadel.training.notification.MessageFabric;
 import com.exadel.training.notification.Notification;
 import com.exadel.training.notification.news.NotificationNews;
 import com.exadel.training.service.TrainingService;
@@ -96,7 +97,7 @@ public class UserController {
                     allTrainingUserShort.setIsCoach(false);
                 }
 
-                allTrainingUserShort.setNumberOfTraining(trainingService.getTrainingNumber(training.getName(),training.getDateTime()));
+                allTrainingUserShort.setNumberOfTraining(trainingService.getNextTrainingNumber(training.getName()));
                 allTrainingUserShorts.add(allTrainingUserShort);
             }
 
@@ -125,7 +126,7 @@ public class UserController {
                     allTrainingUserShort.setIsCoach(true);
                 }
 
-                allTrainingUserShort.setNumberOfTraining(trainingService.getTrainingNumber(training.getName(),training.getDateTime()));
+                allTrainingUserShort.setNumberOfTraining(trainingService.getNextTrainingNumber(training.getName()));
                 allTrainingUserShorts.add(allTrainingUserShort);
             }
 
@@ -153,7 +154,7 @@ public class UserController {
                     allTrainingUserShort.setIsCoach(true);
                 }
 
-                allTrainingUserShort.setNumberOfTraining(trainingService.getTrainingNumber(training.getName(),training.getDateTime()));
+                allTrainingUserShort.setNumberOfTraining(trainingService.getNextTrainingNumber(training.getName()));
                 allTrainingUserShorts.add(allTrainingUserShort);
             }
 
@@ -203,7 +204,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/join_training", method = RequestMethod.POST, consumes = "application/json")
-    public void joinTraining(@RequestBody UserLeaveAndJoinTraining userLeaveAndJoinTraining,
+    public @ResponseBody void joinTraining(@RequestBody UserLeaveAndJoinTraining userLeaveAndJoinTraining,
                              HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException {
 
         String login = httpServletRequest.getHeader("login");
@@ -218,16 +219,17 @@ public class UserController {
                         if (training.getListeners().size() < training.getAmount()) {
                             userService.insertUserTrainingRelationShip(userLogin, trainingName);
 
-                            notificationNews.sendNews(userLogin + " has subscribed to " + trainingName, user, training);
-                            notificationMail.send(user.getEmail(), userLogin + ",you have subscribed to " + trainingName);
+                            notificationNews.sendNews(" has subscribed to ", user, training);
+                            notificationMail.send(user.getEmail(), MessageFabric.getMessage(MessageFabric.messageType.Subscribe,trainingName));
 
                             httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
                         } else {
                             trainingService.addSpareUser(trainingName, login);
 
+                            notificationNews.sendNews(" are in spare list ", user, training);
                             notificationMail.send(user.getEmail(), userLogin + ",you are in reserve " + trainingName);
 
-                            httpServletResponse.setStatus(HttpServletResponse.SC_CONTINUE);
+                            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_GATEWAY);
                         }
                     }
                 }
@@ -245,7 +247,6 @@ public class UserController {
                                                                                HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
 
         List<AllTrainingUserShort> allTrainingUserShorts = new ArrayList<>();
-
             List<Training> trainings = userService.selectAllTrainingSortedByDate(loginAndState.getLogin(), loginAndState.getState());
             User user = userService.findUserByLogin(loginAndState.getLogin());
 
@@ -257,6 +258,7 @@ public class UserController {
                         allTrainingUserShort.setIsCoach(false);
                     }
 
+                    allTrainingUserShort.setNumberOfTraining(trainingService.getNextTrainingNumber(allTrainingUserShort.getTrainingName()));
                     allTrainingUserShorts.add(allTrainingUserShort);
                 }
 
@@ -313,6 +315,11 @@ public class UserController {
         userService.insertExEmploee(user);
     }
 
+    @RequestMapping(value = "/select_all_users_login", method = RequestMethod.GET)
+    public @ResponseBody List<String> selectAllLoginOfUser() {
+       return userService.selectAllLoginOfUsers();
+    }
+
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public @ResponseBody List<AllTrainingUserShort> t(HttpServletResponse httpServletResponse) throws NoSuchFieldException {
 
@@ -341,7 +348,7 @@ public class UserController {
             } else {
                 allTrainingUserShort.setIsCoach(false);
             }
-            allTrainingUserShort.setNumberOfTraining(trainingService.getTrainingNumber(training.getName(),training.getDateTime()));
+            allTrainingUserShort.setNumberOfTraining(trainingService.getNextTrainingNumber(training.getName()));
             allTrainingUserShorts.add(allTrainingUserShort);
         }
 

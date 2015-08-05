@@ -1,10 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `testdb` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `testdb`;
--- MySQL dump 10.13  Distrib 5.6.13, for Win32 (x86)
+-- MySQL dump 10.13  Distrib 5.6.24, for Win64 (x86_64)
 --
 -- Host: localhost    Database: testdb
 -- ------------------------------------------------------
--- Server version	5.6.15
+-- Server version	5.6.21
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -25,11 +23,11 @@ DROP TABLE IF EXISTS `trainings_spare_users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `trainings_spare_users` (
-  `trainings` bigint(20) NOT NULL,
+  `spare_trainings` bigint(20) NOT NULL,
   `spare_users` bigint(20) NOT NULL,
-  UNIQUE KEY `UK_mwcklpfq5mgpgaeutwp8g3q98` (`spare_users`),
-  KEY `FK_5bppy4omtnn23bqjy6edfbtbk` (`trainings`),
-  CONSTRAINT `FK_5bppy4omtnn23bqjy6edfbtbk` FOREIGN KEY (`trainings`) REFERENCES `trainings` (`id`),
+  KEY `FK_mwcklpfq5mgpgaeutwp8g3q98` (`spare_users`),
+  KEY `FK_7qn3so14bvmo3ocjn588bxr1x` (`spare_trainings`),
+  CONSTRAINT `FK_7qn3so14bvmo3ocjn588bxr1x` FOREIGN KEY (`spare_trainings`) REFERENCES `trainings` (`id`),
   CONSTRAINT `FK_mwcklpfq5mgpgaeutwp8g3q98` FOREIGN KEY (`spare_users`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -52,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-07-15 19:27:44
+-- Dump completed on 2015-08-03 11:03:27
