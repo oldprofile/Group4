@@ -1,41 +1,46 @@
 <div class="row courseinfo-div">
-    <div class="col-xs-12">
-        <form class="form-course form-horizontal" name="courseForm" novalidate>
-            <div class="row">
+	<div class="col-xs-12">
+		<form class="form-course form-horizontal" name="courseForm" novalidate>
+			<div class="row">
 
-                <div class="col-xs-12 col-sm-6">
+				<div class="col-xs-12 col-sm-6">
 
-                    <div class="row courseinfo-h1">
-                        <input class="material-input" type="text" name="name" id="name" placeholder="Enter course name" ng-model="courseInfo.name" ng-disabled="isEdited" required>
-                    </div>
+					<div class="row courseinfo-h1">
+						<input class="material-input" type="text" name="name" id="name" placeholder="Enter course name"
+							   ng-model="courseInfo.name" ng-disabled="isEdited" required>
+					</div>
 
-                    <p class="courseinfo-h5 big-margin">Starts on: {{temp.tempDates[0] | date:"dd MMMM"}}</p>
+					<p class="courseinfo-h5 big-margin">Starts on: {{temp.tempDates[0] | date:"dd MMMM"}}</p>
 
-                    <p class="courseinfo-h5 color-gray">{{temp.tempDates.length}} lessons</p>
+					<p class="courseinfo-h5 color-gray">{{temp.tempDates.length}} lessons</p>
 
-                    <p class="courseinfo-h5 top-margin">Coach: {{course.coachName}}</p>
+					<p class="courseinfo-h5 top-margin">Coach: {{course.coachName}}</p>
 
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <p class="courseinfo-h5 float-left">Category: </p>
-                            <div class="dropdown float-left">
-                                <p class="courseinfo-h5 dropdown-toggle" id="categoryPopover" type="button" popover-placement="bottom" popover-trigger="click" popover-template="'/page_createcourse/categoryPopover.html'">
-                                    <a href="" class="link-select"  ng-if="!courseInfo.idCategory">select</a>
-                                    <a href="" class="link-select"  ng-if="courseInfo.idCategory">{{categoriesObj[courseInfo.idCategory-1].name}}</a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+					<div class="row">
+						<div class="col-xs-12">
+							<p class="courseinfo-h5 float-left">Category: </p>
 
-                    <p class="info-small color-gray">Recommended for:
-                        <input class="material-input" name="audience" id="audience" type="text" placeholder="click to enter" ng-model="courseInfo.audience" required>
-                    </p>
+							<div class="dropdown float-left">
+								<p class="courseinfo-h5 dropdown-toggle" id="categoryPopover" type="button"
+								   popover-placement="bottom" popover-trigger="click"
+								   popover-template="'/page_createcourse/categoryPopover.html'">
+									<a href="" class="link-select" ng-if="!courseInfo.idCategory">select</a>
+									<a href="" class="link-select" ng-if="courseInfo.idCategory">{{categoriesObj[courseInfo.idCategory-1].name}}</a>
+								</p>
+							</div>
+						</div>
+					</div>
 
-                </div>
+					<p class="info-small color-gray">Recommended for:
+						<input class="material-input" name="audience" id="audience" type="text"
+							   placeholder="click to enter" ng-model="courseInfo.audience" required>
+					</p>
 
-                <div class="col-xs-12 col-sm-6" ng-controller="UploadController">
-                    <div class="row margin-32">
-                        <div ng-if="!temp.pictureHolder">
+				</div>
+
+				<div class="col-xs-12 col-sm-6" ng-controller="UploadController">
+					<div class="row margin-32">
+						<div ng-show="!temp.pictureHolder">
 							<div class="courseinfo-img-container">
 								<span class="btn btn-primary btn-file default-btn default-gray">
 									Click to add picture
@@ -45,9 +50,9 @@
 
 						</div>
 
-						<div ng-if="temp.pictureHolder">
+						<div ng-show="temp.pictureHolder">
 							<div class="courseinfo-img-container">
-								<img class="courseinfo-img" ng-src="{{temp.pictureHolder}}" preloadable /><br/>
+								<img class="courseinfo-img" ng-src="{{temp.pictureHolder}}" preloadable/><br/>
 							</div>
 							<div class="courseinfo-photoicon">
 								<span class="btn btn-primary btn-file round-btn default-gray">
@@ -56,80 +61,110 @@
 								</span>
 							</div>
 						</div>
-                    </div>
-                </div>
-            </div>
+					</div>
+				</div>
+			</div>
 
-            <div class="row top-margin">
-                <div class="col-xs-12">
-                    <textarea class="material-input scroll" name="description" id="description" rows="5" placeholder="Write your course description here..." ng-model="courseInfo.description" required></textarea>
-                </div>
-            </div>
+			<div class="row top-margin">
+				<div class="col-xs-12">
+					<textarea class="material-input scroll" name="description" id="description" rows="5"
+							  placeholder="Write your course description here..." ng-model="courseInfo.description"
+							  required></textarea>
+				</div>
+			</div>
 
-            <div class="row">
-                <div class="col-xs-12">
+			<div class="row">
+				<div class="col-xs-12">
 
-                    <div ng-if="isAdmin">
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <p class="info-small float-left">Course type: </p>
-                                <div class="dropdown float-left">
-                                    <p class="info-small dropdown-toggle" type="button" id="typePopover" popover-placement="bottom" popover-trigger="click" popover-template="'/page_createcourse/typePopover.html'">
-                                        <a href="" class="link-select" ng-if="!courseInfo.isInternal">select</a>
-                                        <a href="" class="link-select" ng-if="courseInfo.isInternal">{{courseInfo.isInternal ? 'Internal' : 'External'}}</a>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+					<div ng-if="isAdmin">
+						<div class="row">
+							<div class="col-xs-12">
+								<p class="info-small float-left">Course type: </p>
 
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <p class="info-small float-left">Language: </p>
-                            <div class="dropdown float-left">
-                                <p class="info-small dropdown-toggle" type="button" id="langPopover" popover-placement="bottom" popover-trigger="click" popover-template="'/page_createcourse/langPopover.html'">
-                                    <a href="" class="link-select" ng-if="!courseInfo.language">select</a>
-                                    <a href="" class="link-select" ng-if="courseInfo.language">{{courseInfo.language}}</a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+								<div class="dropdown float-left">
+									<p class="info-small dropdown-toggle" type="button" id="typePopover"
+									   popover-placement="bottom" popover-trigger="click"
+									   popover-template="'/page_createcourse/typePopover.html'">
+										<a href="" class="link-select" ng-if="!courseInfo.isInternal">select</a>
+										<a href="" class="link-select" ng-if="courseInfo.isInternal">{{courseInfo.isInternal
+											? 'Internal' : 'External'}}</a>
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
 
-                    <div ng-if="!isAdmin">
-                        <input class="material-input" name="participantsNumber" id="participantsNumber" type="number" placeholder="Desirable number of participants" ng-model="courseInfo.participantsNumber" required>
-                    </div>
+					<div class="row">
+						<div class="col-xs-12">
+							<p class="info-small float-left">Language: </p>
 
-                    <div ng-if="isAdmin">
-                        <label for="place">Place: </label>
-                        <input class="material-input" name="place" id="place" type="text" placeholder="Place" ng-model="temp.place" required>
-                    </div>
+							<div class="dropdown float-left">
+								<p class="info-small dropdown-toggle" type="button" id="langPopover"
+								   popover-placement="bottom" popover-trigger="click"
+								   popover-template="'/page_createcourse/langPopover.html'">
+									<a href="" class="link-select" ng-if="!courseInfo.language">select</a>
+									<a href="" class="link-select"
+									   ng-if="courseInfo.language">{{courseInfo.language}}</a>
+								</p>
+							</div>
+						</div>
+					</div>
 
-                </div>
-            </div>
+					<div>
+						<input class="material-input" name="participantsNumber" id="participantsNumber" type="number"
+							   placeholder="Desirable number of participants" ng-model="courseInfo.participantsNumber"
+							   required>
+					</div>
 
-            <div class="row">
+					<div ng-if="isAdmin">
+						<label for="place">Place: </label>
+						<input class="material-input" name="place" id="place" type="text" placeholder="Place"
+							   ng-model="temp.place" required>
+					</div>
 
-                <div class="col-xs-12">
-                    <v-accordion class="vAccordion--default" multiple>
+				</div>
+			</div>
 
-                        <!-- add expanded attribute to open the section -->
-                        <v-pane>
-                            <v-pane-header>
-                                <span class="glyphicon glyphicon-time"></span>Manage dates
-                            </v-pane-header>
+			<div class="row">
 
-                            <v-pane-content>
+				<div class="col-xs-12">
+					<v-accordion class="vAccordion--default" multiple>
 
-                                <datepicker1 id="dates" ng-model="courseInfo.dateTime"></datepicker1>
+						<!-- add expanded attribute to open the section -->
+						<v-pane>
+							<v-pane-header>
+								<span class="glyphicon glyphicon-time"></span>Manage dates
+							</v-pane-header>
 
-                            </v-pane-content>
-                        </v-pane>
+							<v-pane-content>
 
-                    </v-accordion>
-                </div>
+								<datepicker1 id="dates" ng-model="courseInfo.dateTime"></datepicker1>
 
-            </div>
+							</v-pane-content>
+						</v-pane>
 
-        </form>
-    </div>
+					</v-accordion>
+				</div>
+
+			</div>
+
+			<div class="row">
+
+				<div ng-if="!isAdmin" class="form-group">
+					<textarea class="material-input" name="additional" id="additional" rows="3" placeholder="Additional info (optional)" ng-model="courseInfo.additional"></textarea>
+				</div>
+
+			</div>
+
+			<div class="row">
+
+				<input ng-if="!isAdmin && !isEdited" ng-disabled="{{disabled}}" type="submit" ng-click="saveData()" class="btn btn-lg accent-btn accent-green" value="Create course!">
+				<input ng-if="isAdmin && !isEdited" ng-disabled="{{disabled}}" type="submit" ng-click="saveData()" class="btn btn-lg accent-btn accent-green" value="Create course!">
+				<input ng-if="isAdmin && isEdited" ng-disabled="{{disabled}}" type="submit" ng-click="editCourse()" class="btn btn-lg accent-btn accent-green" value="Approve course">
+				<input ng-if="!isAdmin && isEdited" ng-disabled="{{disabled}}"  type="submit" ng-click="editCourse()" class="btn btn-lg default-btn default-blue" value="Edit course">
+
+			</div>
+
+		</form>
+	</div>
 </div>

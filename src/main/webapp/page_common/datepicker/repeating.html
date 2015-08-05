@@ -1,85 +1,46 @@
-<form class="form-horizontal repeating-container">
-    
-    <!--Repeats-->
-    <div class="form-group form-group-md row repeating-row">
-        <label class="col-xs-3 control-label" for="repeats">Repeats:</label>
-        <div class="col-xs-6">
-            <select class="form-control" id="repeats" ng-model="repeatType">
-                <option value="">No repeat</option>
-                <option value="days">Daily</option>
-                <option value="weeks">Weekly</option>
-                <option value="months">Monthly</option>
-            </select>
-        </div>
-        <div class="col-xs-3"></div>
-    </div>
-    
-    <!--Repeats every-->
-    <div class="form-group form-group-md row repeating-row">
-        <label class="col-xs-3 control-label" for="repeats">Repeat every:</label>
-        <div class="col-xs-3">
-            <select class="form-control" ng-model="test "id="repeatsEvery" ng-options="n for n in [] | range:1:30">
-            </select>
-        </div>
-        <div class="col-xs-3">
-             <label class="col-md-1 control-label" for="repeats" align="left">{{repeatType}}</label>
-        </div>
-        <div class="col-xs-3"></div>
-    </div>
-    
-    <!--Repeat on-->
-    <div class="form-group form-group-md row repeating-row" ng-show="repeatType == 'weeks'">
-        <label class="col-xs-3 control-label" for="repeats">Repeat on:</label>
-        <div class="col-xs-9">
-            <label class="checkbox-inline" ng-model="day" ng-repeat="day in ['M', 'T', 'W', 'Th', 'F', 'Sa', 'S']">
-                <input type="checkbox" value="">{{day}}
-            </label>
-        </div>
-    </div>
-    
-    <!--Repeat by-->
-    <div class="form-group form-group-md row repeating-row" ng-show="repeatType == 'months'">
-        <label class="col-xs-3 control-label" for="repeats">Repeat on:</label>
-        <div class="col-xs-9">
-            <label class="checkbox-inline" ng-model="monthRepeat">
-                <label class="radio-inline"><input type="radio">day of the month</label>
-                <label class="radio-inline"><input type="radio">day of the week</label>
-            </label>
-        </div>
-    </div>
-    
-    <!--Starts on-->
-    <div class="row">
-        <label class="col-xs-3 control-label" for="repeats">Starts on:</label>
-        
-        <div class="dropdown col-xs-9">
-            <a class="dropdown-toggle" id="dropdownRepeat" role="button" data-toggle="dropdown">
-                <div class="input-group">
-                    <input type="text" class="form-control calendar" ng-value="temp.startDate | date: 'medium'" disabled>
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                </div>
-            </a>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                <datetimepicker ng-model="temp.startDate" data-datetimepicker-config="{ dropdownSelector: '#dropdownRepeat', minuteStep: 15 }"/>
-            </ul>
-        </div>
-    </div>
-    
-    <!--Ends on-->
-    <div class="form-group form-group-md row repeating-row">
-        <label class="col-xs-3 control-label" for="repeats">Ends on:</label>
-        
-        <div class="dropdown col-xs-9">
-            <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown">
-                <div class="input-group">
-                    <input type="text" class="form-control calendar" data-ng-model="temp.endDate" disabled>
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-                </div>
-            </a>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                <datetimepicker data-ng-model="temp.endDate" data-datetimepicker-config="{ dropdownSelector: '#dropdown2', minuteStep: 15 }"/>
-            </ul>
-        </div>
-    </div>
-    
-</form>
+<div class="row">
+	<div class="col-xs-12 repeating-container">
+		<form class="form-horizontal scroll">
+			<!--Repeat on-->
+			<div class="form-group form-group-md row repeating-row">
+				<label class="col-xs-3 control-label">Repeat on:</label>
+
+				<div class="col-xs-9">
+					<label class="checkbox-inline" ng-repeat="day in ['M', 'T', 'W', 'Th', 'F', 'Sa', 'S'] track by $index">
+						<input type="checkbox" ng-model="temp.repeatOn[$index]">{{day}}
+					</label>
+				</div>
+			</div>
+
+			<!--Starts on-->
+			<div class="row">
+				<label class="col-xs-3 control-label" for="dropdown1">Starts on:</label>
+
+				<div class="dropdown col-xs-9">
+					<a class="dropdown-toggle" id="dropdown1" role="button" data-toggle="dropdown">
+						<div class="input-group">
+							<input type="text" class="form-control calendar" ng-value="temp.startDate | date: 'medium'"
+								   disabled>
+							<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+						</div>
+					</a>
+					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+						<datetimepicker ng-model="temp.startDate"
+										data-datetimepicker-config="{ dropdownSelector: '#dropdown1', minuteStep: 15 }"/>
+					</ul>
+				</div>
+			</div>
+
+			<!--Lessons number-->
+			<div class="row repeating-row">
+				<label class="col-xs-3 control-label" for="lessonsNumber">Number of lessons:</label>
+
+				<div class="col-xs-9">
+					<input class="material-input" name="lessonsNumber" id="lessonsNumber" type="number"
+						   placeholder="How many lessons will there be?" ng-model="temp.lessonsNumber" required>
+				</div>
+			</div>
+
+		</form>
+	</div>
+</div>

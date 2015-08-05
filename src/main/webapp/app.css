@@ -543,8 +543,6 @@ font-weight: 500;
     margin-left: 0;
 }
 
-
-
 .glyphicon-calendar,
 .glyphicon-delete {
     margin: 0;
@@ -622,6 +620,12 @@ font-weight: 500;
   max-width: 900px;
   margin: auto;
 
+}
+
+/* NEWS */
+
+.bg-color-gray {
+	background-color: #f9f9f9;
 }
 
 /* ACCORDION!!!!
