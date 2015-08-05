@@ -27,6 +27,8 @@ public interface TrainingService {
     Training deleteTrainingsByName(String trainingName);
     Training addSpareUser(String trainingName, String userLogin);
     Training changeLessonDate(LessonData lessonData) throws ParseException;
+    Training deleteLessonDate(LessonData lessonData) throws ParseException;
+    Training addLessonDate(LessonData lessonData) throws ParseException, NoSuchFieldException;
     Training getEditedTrainingByName(String trainingName);
     Training getNextTraining(String trainingName);
 

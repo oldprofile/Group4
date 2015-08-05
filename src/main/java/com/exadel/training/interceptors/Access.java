@@ -9,6 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Access {
 
+    private final static String TRAINING_CONTROLLER = "/training_controller";
     private final static String USER_CONTROLLER = "/user_controller";
     private final static String SEARCH_CONTROLLER = "/search_controller";
     private final static String NEWS_CONTROLLER = "/news_controller";
@@ -56,6 +57,24 @@ public class Access {
         admin.add(FEEDBACK_CONTROLLER + "/create_training_feedback");
         admin.add(FEEDBACK_CONTROLLER + "/request_user_feedback");
 
+        admin.add(TRAINING_CONTROLLER + "/training_info/{trainingName}");
+        admin.add(TRAINING_CONTROLLER + "/list");
+        admin.add(TRAINING_CONTROLLER + "/create_training");
+        admin.add(TRAINING_CONTROLLER + "/edit_training");
+        admin.add(TRAINING_CONTROLLER + "/list_by_category/{categoryId}");
+        admin.add(TRAINING_CONTROLLER + "/search_training/{trainingName}");
+        admin.add(TRAINING_CONTROLLER + "/latest_trainings");
+        admin.add(TRAINING_CONTROLLER + "/featured_trainings");
+        admin.add(TRAINING_CONTROLLER + "/date_info/{trainingName}");
+        admin.add(TRAINING_CONTROLLER + "/edited_training_info/{trainingName}");
+        admin.add(TRAINING_CONTROLLER + "/approve_create_training");
+        admin.add(TRAINING_CONTROLLER + "/approve_edit_training");
+        admin.add(TRAINING_CONTROLLER + "/delete_training/{trainingName}");
+        admin.add(TRAINING_CONTROLLER + "/trainings_for_approve");
+        admin.add(TRAINING_CONTROLLER + "/change_date");
+        admin.add(TRAINING_CONTROLLER + "/delete_date");
+        admin.add(TRAINING_CONTROLLER + "/add_date");
+
         return admin;
     }
 
@@ -87,6 +106,16 @@ public class Access {
         employee.add(FEEDBACK_CONTROLLER + "/training_feedback");
         employee.add(FEEDBACK_CONTROLLER + "/create_training_feedback");
 
+        employee.add(TRAINING_CONTROLLER + "/training_info/{trainingName}");
+        employee.add(TRAINING_CONTROLLER + "/list");
+        employee.add(TRAINING_CONTROLLER + "/create_training");
+        employee.add(TRAINING_CONTROLLER + "/edit_training");
+        employee.add(TRAINING_CONTROLLER + "/list_by_category/{categoryId}");
+        employee.add(TRAINING_CONTROLLER + "/search_training/{trainingName}");
+        employee.add(TRAINING_CONTROLLER + "/latest_trainings");
+        employee.add(TRAINING_CONTROLLER + "/featured_trainings");
+        employee.add(TRAINING_CONTROLLER + "/date_info/{trainingName}");
+
         return employee;
     }
     private List<String> excoachAccess() {
@@ -94,6 +123,10 @@ public class Access {
 
         excoach.add(OMISSION_CONTROLLER + "/get_omissions");
         excoach.add(OMISSION_CONTROLLER + "/add_omissions");
+
+        excoach.add(TRAINING_CONTROLLER + "/training_info/{trainingName}");
+        excoach.add(TRAINING_CONTROLLER + "/edit_training");
+        excoach.add(TRAINING_CONTROLLER + "/date_info/{trainingName}");
 
         return excoach;
     }
