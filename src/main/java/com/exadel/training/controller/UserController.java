@@ -210,36 +210,40 @@ public class UserController {
         String login = httpServletRequest.getHeader("login");
         String userLogin = userLeaveAndJoinTraining.getLogin();
         String trainingName = userLeaveAndJoinTraining.getNameTraining();
+        Training training = trainingService.getTrainingByName(trainingName);
 
-            try {
-                Training training = trainingService.getTrainingByName(trainingName);
-                User user = userService.findUserByLogin(login);
-                if(!userService.checkSubscribeToTraining(training.getId(), user.getId())) {
-                   synchronized(object) {
-                        if (training.getListeners().size() < training.getAmount()) {
-                            userService.insertUserTrainingRelationShip(userLogin, trainingName);
+          if(!userService.isMyTraining(userLogin, trainingName)) {
+              try {
+                  User user = userService.findUserByLogin(login);
+                  if (!userService.checkSubscribeToTraining(training.getId(), user.getId())) {
+                      synchronized (object) {
+                          if (training.getListeners().size() < training.getAmount()) {
+                              userService.insertUserTrainingRelationShip(userLogin, trainingName);
 
-                            notificationNews.sendNews(" has subscribed to ", user, training);
-                            notificationMail.send(user.getEmail(), MessageFabric.getMessage(MessageFabric.messageType.Subscribe,trainingName));
+                              notificationNews.sendNews(" has subscribed to ", user, training);
+                              notificationMail.send(user.getEmail(), MessageFabric.getMessage(MessageFabric.messageType.Subscribe, trainingName));
 
-                            httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
-                        } else {
-                            trainingService.addSpareUser(trainingName, login);
+                              httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+                          } else {
+                              trainingService.addSpareUser(trainingName, login);
 
-                            notificationNews.sendNews(" are in spare list ", user, training);
-                            notificationMail.send(user.getEmail(), userLogin + ",you are in reserve " + trainingName);
+                              notificationNews.sendNews(" are in spare list ", user, training);
+                              notificationMail.send(user.getEmail(), userLogin + ",you are in reserve " + trainingName);
 
-                            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_GATEWAY);
-                        }
-                    }
-                }
-            } catch (NullPointerException e) {
-                httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
-            } catch (TwilioRestException | MessagingException e) {
-                httpServletResponse.setStatus(HttpServletResponse.SC_CONFLICT);
-            } catch (NoSuchFieldException e) {
-                e.printStackTrace();
-            }
+                              httpServletResponse.setStatus(HttpServletResponse.SC_BAD_GATEWAY);
+                          }
+                      }
+                  }
+              } catch (NullPointerException e) {
+                  httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
+              } catch (TwilioRestException | MessagingException e) {
+                  httpServletResponse.setStatus(HttpServletResponse.SC_CONFLICT);
+              } catch (NoSuchFieldException e) {
+                  e.printStackTrace();
+              }
+          } else {
+              httpServletResponse.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+          }
     }
 
     @RequestMapping(value = "/all_trainings_sorted_by_date", method = RequestMethod.POST, consumes = "application/json")
@@ -268,6 +272,7 @@ public class UserController {
                 httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
             }
 
+        
         return  allTrainingUserShorts;
     }
 

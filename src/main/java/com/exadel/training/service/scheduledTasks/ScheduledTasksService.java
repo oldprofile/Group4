@@ -68,6 +68,7 @@ public class ScheduledTasksService {
 
     private void cancelTraining(NotificationTrainingModel notificationTrainingModel, List<UserShort> listeners) throws MessagingException, NoSuchFieldException {
         Training training = trainingService.getTrainingByName(notificationTrainingModel.getName());
+        // can't set state
         training.setState(StateTraining.parseToInt("Canceled"));
         trainingRepository.save(training);
         for (UserShort listener : listeners) {
@@ -106,7 +107,9 @@ public class ScheduledTasksService {
         Training training = trainingService.getTrainingByNameAndDate(notificationTrainingModel.getName(), notificationTrainingModel.getDate());
         int state = training.getState();
         if (getHoursBeforeTraining(notificationTrainingModel) < 0 &&  (state == StateTraining.parseToInt("InProcess") || state == StateTraining.parseToInt("Ahead"))) {
+            // can't set state
             training.setState(StateTraining.parseToInt("Finished"));
+<<<<<<< HEAD
             trainingRepository.save(training);
             long trainingNumber = trainingService.getTrainingNumberByDate(notificationTrainingModel.getName(), notificationTrainingModel.getDate());
             long trainingsCount = trainingService.getTrainingsCount(notificationTrainingModel.getName());
@@ -114,6 +117,14 @@ public class ScheduledTasksService {
                 Training parent = trainingService.getTrainingByName(notificationTrainingModel.getName());
                 parent.setState(StateTraining.parseToInt("Finished"));
                 trainingRepository.save(parent);
+=======
+            long trainingNumber = trainingService.getTrainingNumberByDate(notificationTrainingModel.getName(), notificationTrainingModel.getDate());
+            long trainingsCount = trainingService.getTrainingsCount(notificationTrainingModel.getName());
+            if ( trainingNumber == trainingsCount){
+                // can't set state
+                Training parent = trainingService.getTrainingByName(notificationTrainingModel.getName());
+                parent.setState(StateTraining.parseToInt("Finished"));
+>>>>>>> ffb8f5ebdf69123db5b4c120d9ce725ccde00664
             }
         }
     }

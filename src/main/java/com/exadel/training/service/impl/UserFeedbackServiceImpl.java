@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -51,5 +52,10 @@ public class UserFeedbackServiceImpl implements UserFeedbackService {
     @Override
     public List<UserFeedback> getUserFeedbacksOrderByDate(User user) {
         return userFeedbackRepository.findFeedbackByUserOrderByDateAsc(user);
+    }
+
+    @Override
+    public UserFeedback getUserFeedbackByLoginsAndDate(String userLogin, String feedbackerLogin, Date date) {
+        return userFeedbackRepository.findFeedbackByUserAndDateAndFeedbacker(userLogin, feedbackerLogin, date);
     }
 }

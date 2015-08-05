@@ -1,33 +1,42 @@
 <div>
     
-    <dos-head-tool ng-model="dosFilter"></dos-head-tool>
-    <div ng-show="isNoCourses">
-        <h2>No Courses, browse them</h2>
+    <dos-head-tool ng-model="dosFilter" ng-show="isContentLoaded && !isNoCourses"></dos-head-tool>
+    <a style="display:block" ng-href="/#/browse" ng-show="isNoCourses">
+    <div class="no-courses"  ng-show="isNoCourses">
+        <p>You haven't got any courses soon.<p>
+        <p>Try to find the perfect One...</p>
     </div>    
-
-    <div class="card-layout-mycourses" ng-class="{ 'waiting-for-angular': !isContentLoaded }">
-        <div ng-repeat="c in mycourses | filter: dosFilter.filterObject">
+    </a>
+    <div class="card-layout-mycourses clearfix" ng-class="{ 'waiting-for-angular': !isContentLoaded }">
+        <div ng-repeat="c in mycourses | filter: dosFilter.filterObject" >
           
-            <div class="col-md-6 col-sm-12 col-xs-12 card">
-              <div class="card-bg">
+            <div class="col-md-6 col-sm-12 col-xs-12 card ">
+              
+              <div class="card-bg" ng-click="goto('/courseinfo/'+c.trainingName)">
                 
-                  <div class="col-xs-7 card-image">
+                  <div class="col-xs-7 col-lg-8 card-image">
                     <img ng-src="{{c.trainingImage}}">
                   </div>
-                  <div class="col-xs-5">
-                    <h1>{{c.trainingName}}</h1>
-                    
-                    <h2>Lesson #1</h2>
-                    <div class="coach-label" ng-if="c.isCoach">
-                      <span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;You're the Master!
+                  <div class="col-xs-5 col-lg-4 content ">
+                    <div class="main">
+                      <h1>{{c.trainingName}}</h1>
+                      <h2>Lesson #1</h2>
+                      <div class="coach-label" ng-if="c.isCoach">
+                        <span class="glyphicon glyphicon-exclamation-sign"></span>You're the Master!
+                      </div>
                     </div>  
-                    <h3>When: {{c.dateTraining | date:"dd MMM, HH.mm" }}</h3>
-                    <h3>Where: {{c.trainingPlace}}</h3>
-                    <a ng-href="#/courseinfo/{{c.trainingName}}">more</a>
+                    <div class="additional">
+                        
+                      <h3><span class="glyphicon glyphicon-time"></span>{{c.dateTraining | date:"dd MMM, HH.mm" }}</h3>
+                      <h3><span class="glyphicon glyphicon-map-marker"></span>{{c.trainingPlace}}</h3>
+                      <a ng-href="#/courseinfo/{{c.trainingName}}">Countinue To Info</a>
+                    </div>
+                    
                   </div>  
 
                   
                 </div>
+              
             </div>
             
             

@@ -3,6 +3,7 @@ package com.exadel.training.repository.impl;
 import com.exadel.training.model.Role;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -29,6 +30,9 @@ public interface UserRepository extends JpaRepository<User,Long>{
 
     @Query("select case when (count(c)>0) then true else false end from User as u inner join u.trainings as t inner join t.coach as c where u.login = ?1 and c.login = ?2")
     Boolean isCoach(String login, String coachName);
+
+    @Query("select case when (count(t)>0) then true else false end from User as u inner join u.ownTrainings as t where u.login = ?1 and t.name = ?2")
+    Boolean isMyTraining(String login, String trainingName);
 
     @Query(value = "select count(*) > 0 from users_trainings u where :trainingID = trainings and :userID = listeners",nativeQuery = true)
     int checkSubscribeToTraining(@Param("trainingID")Long trainingID,@Param("userID") Long userID);
@@ -88,4 +92,7 @@ public interface UserRepository extends JpaRepository<User,Long>{
 
     @Query("select distinct t.name from User as u inner join u.trainings as t where t.parent = 0 and t.state in (?2) and u.login = ?1")
     List<String> selectAllTrainingNameActual(String login, List<Integer> state);
+
+    @Query("select distinct t.name from User as u inner join u.ownTrainings as t where t.parent = 0 and t.state in (?2) and u.login = ?1")
+    List<String> selectAllTrainingCoachNameActual(String login, List<Integer> state);
 }

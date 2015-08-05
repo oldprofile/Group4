@@ -12,12 +12,14 @@
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
+<!--
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="true" style="border:none; padding-top:16px;">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
+-->
       <a class="navbar-brand medium-brand" href="#/mycourses">
         <img alt="Exadel" ng-src="images/ExadelLogo.png" >
       </a>
@@ -27,7 +29,7 @@
     <div class="collapse navbar-collapse medium-navbar" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav medium-navbar-nav">
         
-        <li ng-class="{ active: isActive('/mycourses') }"><a href="#/mycourses">My Courses</a></li>
+        <li ng-class="{ active: isActive('/mycourses') }"><a href="#/mycourses"><span style="white-space: pre;">My Courses</span></a></li>
         <!-- browse dropdown -->
           
 <!--
@@ -49,7 +51,9 @@
         <li ng-class="{ active: isActive('/browse') }"><a href="#/browse">Browse</a></li>
           
         <li ng-class="{ active: isActive('/profile') }"><a href="#/profile">Profile</a></li>
-        <li ng-show="isAdmin()" ng-class="{ active: isActive('/admin') }"><a href="#/admin">Admin</a></li>  
+        <li ng-show="isAdmin()" ng-class="{ active: isActive('/admin') }"><a href="#/admin">Admin</a>
+        <div class="notification-number" ng-class="{'bounce-notif':anim}" ng-show="notifications > 0"><span>{{notifications}}</span></div>
+        </li>  
         
       </ul>
         
@@ -62,14 +66,15 @@
       </form> -->
       <ul class="nav navbar-nav navbar-right medium-navbar-nav">
         
-        <li><a href="#/createcourse">Create course!</a></li>
-        <li><a href="#/Search"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a></li>
-        <li><a href="#/Lang">en</a></li>
+        <li><button class="btn btn-default default-btn default-blue" ng-click="createcourse()" aria-expanded="true"><span>Create Course</span></button></li>
+        <li><a href="" ng-click="openSearch()"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a></li>
+        <li><a href="#/Lang"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span></a></li>
 <!--        <li><a href="" ng-click="logoutFunction()">Logout</a></li>-->
           
         <li class="dropdown">
-          <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{username}}</a>
+          <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a>
           <ul class="dropdown-menu">
+            <li class="dropdown-header">{{username}}</li>
             <li><a href="#/profile">Profile</a></li>
             <li><a href="" ng-click="logoutFunction()">Logout</a></li>
           </ul>
