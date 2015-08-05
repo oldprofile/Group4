@@ -1,9 +1,12 @@
 /* app css stylesheet */
 
 /*@import url(assets/SanFranciscoFont/usesf.css)*/
+.ng-hide {
+  display: none !important;
+}
 
 body{
-    font-family: 'San Francisco Text' sans-serif;   
+    font-family: 'San Francisco Text', sans-serif;
     padding-top: 80px; 
     height: 100vh !important;
     
@@ -521,19 +524,19 @@ DOS-HEAD-TOOL
 
 .dos-head-tool {
     margin: 0;
-    width: 240;
+    width: 240px;
     height: 44px;
     padding-bottom: 16px;
     
 }
-.dos-head-tool input.form-control{
+.dos-head-tool input.form-control {
   border: 1px solid #ccc !important;
 }
 
 /*
 course-info
 */
-; 
+
 
 .course-info-content
 {

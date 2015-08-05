@@ -82,6 +82,7 @@ public class Training {
         category = parent.getCategory();
         coach = parent.getCoach();
         rating = parent.getRating();
+        this.parent = parent.getId();
     }
 
     public void fillTraining(TrainingForCreation trainingForCreation) throws NoSuchFieldException {

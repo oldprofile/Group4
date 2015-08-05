@@ -248,7 +248,7 @@ angular.module('myApp.courseinfo')
 					for (var i = 0; i < $scope.courseinfo.dateTime.length; i++) {
 						$scope.courseinfo.dateTime[i] = $filter('date')($scope.courseinfo.dateTime[i], 'medium');
 					}
-					$scope.courseinfo.places = angular.copy(result.places);
+					$scope.courseinfo.places = angular.copy(result.data.places);
 				});
 			});
 			$modalInstance.close();
@@ -264,8 +264,18 @@ angular.module('myApp.courseinfo')
 		$scope.index = index;
 
 		$scope.deleteLesson = function() {
-
-		}
+			courseInfoService.deleteLesson($scope.index + 1, $scope.courseinfo.name).then(function(data) {
+				courseInfoService.updateDates($scope.courseinfo.name).then(
+					function(result) {
+						$scope.courseinfo.dateTime = angular.copy(result.data.dateTimes);
+						for (var i = 0; i < $scope.courseinfo.dateTime.length; i++) {
+							$scope.courseinfo.dateTime[i] = $filter('date')($scope.courseinfo.dateTime[i], 'medium');
+						}
+						$scope.courseinfo.places = angular.copy(result.data.places);
+					});
+			});
+			$modalInstance.dismiss();
+		};
 
 		$scope.ok = function () {
 			$scope.courseinfo.dateTime[$scope.index] = $filter('date')($scope.courseinfo.dateTime[$scope.index], 'yyyy-MM-dd HH:mm');
@@ -275,7 +285,7 @@ angular.module('myApp.courseinfo')
 					for (var i = 0; i < $scope.courseinfo.dateTime.length; i++) {
 						$scope.courseinfo.dateTime[i] = $filter('date')($scope.courseinfo.dateTime[i], 'medium');
 					}
-					$scope.courseinfo.places = angular.copy(result.places);
+					$scope.courseinfo.places = angular.copy(result.data.places);
 				});
 			});
 			$modalInstance.close($scope.courseinfo.dateTime[$scope.index], $scope.index);

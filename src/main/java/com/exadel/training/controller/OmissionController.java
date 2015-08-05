@@ -7,6 +7,7 @@ import com.exadel.training.controller.model.Training.TrainingNameAndDate;
 import com.exadel.training.model.Omission;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
+import com.exadel.training.repository.impl.OmissionRepository;
 import com.exadel.training.service.OmissionService;
 import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
@@ -48,15 +49,20 @@ public class OmissionController {
     @Autowired
     ExcelFileGenerator excelFileGenerator;
 
+    @Autowired
+    OmissionRepository omissionRepository;
+
     @RequestMapping(value = "/add_omissions", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody void addOmissions(@RequestBody List<OmissionADDModel> omissionADDModels, HttpServletResponse response) {
         try {
             for (OmissionADDModel omissionADDModel : omissionADDModels) {
                 Omission omission = omissionService.findByTrainingAndUserLogin(omissionADDModel.getTrainingName(), omissionADDModel.getUserLogin(), omissionADDModel.getDate());
-                if(omission.equals(null)) {
+                if(omission == null) {
                     omissionService.addOmission(omissionADDModel);
                 } else {
                     omission.setOmission(omissionADDModel.isOmission());
+                    omissionRepository.save(omission);
+
                 }
             }
         } catch (Exception e) {

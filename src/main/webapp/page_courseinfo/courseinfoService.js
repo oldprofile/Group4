@@ -118,6 +118,22 @@ angular.module('myApp.courseinfo')
 			});
 		};
 
+		courseInfoService.deleteLesson = function (lessonNumber, courseName) {
+			var lessonData = {
+				trainingName: courseName,
+				lessonNumber: lessonNumber,
+				newDate: "",
+				newPlace: ""
+			};
+			return $http.post('/training_controller/delete_date', lessonData).then(function (result) {
+				console.log("Lesson deleted successfully");
+				return result.data;
+			}, function (err) {
+				console.log("Delete lesson error: " + err.statusCode);
+				return err;
+			});
+		};
+
 		courseInfoService.addOmissions = function (omissionData) {
 			return $http.post('/omission_controller/add_omissions', omissionData).then(function (result) {
 				console.log("Omissions added successfully");
