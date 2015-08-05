@@ -17,15 +17,23 @@ angular.module('myApp.createcourse').controller('CreateCourseController', [
 		$scope.courseInfo.pictureLink = "";
 
 		$scope.saveData = function () {
-			$scope.courseInfo.dateTime = angular.copy($scope.temp.tempDates); //TEMP
-			$scope.courseInfo.repeatOn = angular.copy($scope.temp.repeatOn);
-			$scope.courseInfo.startsOn = $scope.temp.startDate;
-			$scope.courseInfo.lessonsNumber = $scope.temp.lessonsNumber;
-			for (var i = 0; i < $scope.courseInfo.dateTime.length; i++) {
-				$scope.courseInfo.dateTime[i] = $filter('date')($scope.courseInfo.dateTime[i], 'yyyy-MM-dd HH:mm');
-				$scope.courseInfo.places.push($scope.temp.place);
+			if($scope.isRepeating) {
+				$scope.courseInfo.repeatOn = angular.copy($scope.temp.repeatOn);
+				$scope.courseInfo.startsOn = $scope.temp.startDate;
+				$scope.courseInfo.startsOn = $filter('date')($scope.courseInfo.startsOn, 'yyyy-MM-dd HH:mm');
+				$scope.courseInfo.lessonsNumber = $scope.temp.lessonsNumber;
+				for (var i = 0; i < $scope.courseInfo.lessonsNumber; i++) {
+					$scope.courseInfo.places.push($scope.temp.place);
+				}
 			}
-			$scope.courseInfo.startsOn = $filter('date')($scope.courseInfo.startsOn, 'yyyy-MM-dd HH:mm');
+			else {
+				$scope.courseInfo.dateTime = angular.copy($scope.temp.tempDates); //TEMP
+				for (var i = 0; i < $scope.courseInfo.dateTime.length; i++) {
+					$scope.courseInfo.dateTime[i] = $filter('date')($scope.courseInfo.dateTime[i], 'yyyy-MM-dd HH:mm');
+					$scope.courseInfo.places.push($scope.temp.place);
+				}
+			}
+
 			console.log($scope.courseInfo);
 			createcourse.createCourse($scope.courseInfo); //! ? some then() with alert...?
 		};

@@ -12,7 +12,7 @@
 
 					<p class="courseinfo-h5 big-margin">Starts on: {{temp.tempDates[0] | date:"dd MMMM"}}</p>
 
-					<p class="courseinfo-h5 color-gray">{{temp.tempDates.length}} lessons</p>
+					<p class="courseinfo-h5 color-gray">{{isRepeating ? temp.lessonsNumber : temp.tempDates.length}} lessons</p>
 
 					<p class="courseinfo-h5 top-margin">Coach: {{course.coachName}}</p>
 
