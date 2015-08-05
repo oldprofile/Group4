@@ -94,7 +94,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Training> selectAllTrainingSortedByDate(String login, List<Integer> state) {
         List<String> allName = userRepository.selectAllTrainingNameActual(login, state);
+        List<String> allCoachName = userRepository.selectAllTrainingCoachNameActual(login, state);
         List<Training> firstLessons = new ArrayList<>();
+
+        allName.addAll(allCoachName);
 
         for(String name : allName) {
             Training training = trainingService.getNextTraining(name);
