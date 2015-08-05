@@ -5,7 +5,7 @@ angular.module('myApp.profile')
     profileService.getUserInfo = function(userlogin){
         return $http.get('/user_controller/user_info/' + userlogin).success(function(data) {
           
-          
+              console.log("Getting user info: " + JSON.stringify(data));
               return data;
             })
             .error(function(err) {
@@ -25,11 +25,15 @@ angular.module('myApp.profile')
       return data;
     }).error(function(err){
       return err;});
-  }
+  };
   
   profileService.saveSettings = function(data){
-    return $http.post("",data);
-  }
+    return $http.post("user_controller/insert_phone",data);
+  };
+  
+  
+  
+  
      
     
   return profileService

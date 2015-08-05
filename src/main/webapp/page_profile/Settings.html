@@ -14,13 +14,13 @@
             </div>
             
             <div ng-if="isPhoneOn" class="other-textarea" >
-              <input type="tel" class="form-control" placeholder="Phone Number" ng-model="phoneNumber" name="mobile" ng-pattern="phoneNumberPattern" required />
+              <input type="tel" class="form-control" placeholder="Phone Number" ng-model="$parent.phoneNumber" name="phoneNumber" ng-pattern="phoneNumberPattern" required />
             </div>
            
           </form>
           
         </div>
 <div class="modal-footer">
-    <button class="btn btn-default modal-btn" ng-click="ok()" ng-disabled="telForm.$invalid || telForm.$pristine" >Apply</button>
-    <button class="btn btn-default modal-btn" ng-click="cancel()">Cancel</button>
+    <button class="btn btn-default default-btn default-blue" ng-click="ok()" ng-disabled="telForm.$invalid || telForm.$pristine" >Apply</button>
+    <button class="btn btn-default default-btn default-gray" ng-click="cancel()">Cancel</button>
 </div>

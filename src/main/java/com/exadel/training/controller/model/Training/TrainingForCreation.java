@@ -68,14 +68,13 @@ public class TrainingForCreation {
 
     public TrainingForCreation(JSONObject json) throws NoSuchFieldException, IOException, ParseException {
         dateTimes = new ArrayList<>();
-        /*isRepeating = (Boolean)json.get("isRepeating");
-        isRepeating = true;
+        isRepeating = (Boolean)json.get("isRepeating");
+        //isRepeating = true;
         if (isRepeating){
-            //DateParser dateParser = new DateParser(json);
+            DateParser dateParser = new DateParser(json);
 
-            DateParser dateParser = new DateParser();
-            dateParser.setRepeats(2);
-            dateParser.setRepeatEvery(10);
+            /*DateParser dateParser = new DateParser();
+            dateParser.setLessonsNumber(10);
             List<Boolean> list = new ArrayList<>();
             list.add(true);
             list.add(false);
@@ -85,15 +84,15 @@ public class TrainingForCreation {
             list.add(false);
             list.add(false);
             dateParser.setRepeatOn(list);
-            dateParser.setStartsOn("2015-09-10T12:00");
-            dateParser.parseDateTimes();
+            dateParser.setStartsOn("2015-09-10T12:00");*/
 
+            dateParser.parseDateTimes();
             dateTimes = dateParser.getDateTimes();
-        } else {*/
+        } else {
             JSONArray jsonDates = (JSONArray) json.get("dateTime");
             for (Object jsonDate : jsonDates)
                 dateTimes.add(sdf.parse((String) jsonDate));
-        //}
+        }
 
         JSONArray jsonPlaces = (JSONArray) json.get("places");
         places = new ArrayList<>();

@@ -68,6 +68,7 @@ public class ScheduledTasksService {
 
     private void cancelTraining(NotificationTrainingModel notificationTrainingModel, List<UserShort> listeners) throws MessagingException, NoSuchFieldException {
         Training training = trainingService.getTrainingByName(notificationTrainingModel.getName());
+        // can't set state
         training.setState(StateTraining.parseToInt("Canceled"));
         trainingRepository.save(training);
         for (UserShort listener : listeners) {
@@ -106,6 +107,7 @@ public class ScheduledTasksService {
         Training training = trainingService.getTrainingByNameAndDate(notificationTrainingModel.getName(), notificationTrainingModel.getDate());
         int state = training.getState();
         if (getHoursBeforeTraining(notificationTrainingModel) < 0 &&  (state == StateTraining.parseToInt("InProcess") || state == StateTraining.parseToInt("Ahead"))) {
+            // can't set state
             training.setState(StateTraining.parseToInt("Finished"));
             trainingRepository.save(training);
             long trainingNumber = trainingService.getTrainingNumberByDate(notificationTrainingModel.getName(), notificationTrainingModel.getDate());

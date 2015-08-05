@@ -1,4 +1,4 @@
-angular.module('myApp.browse')
+angular.module('myApp.profile')
 .controller('ProfileController',['$scope','userService','$routeParams','profileService','$modal','feedbacksService',"$location", function($scope,userService,$routeParams,profileService,$modal,feedbacksService,$location){
     $scope.isContentLoaded = false;
     var userlogin;  
@@ -18,6 +18,11 @@ angular.module('myApp.browse')
     } else {
         userlogin = $routeParams.userLogin;
     }
+  
+    $scope.isCanLeaveCoachFeedback = false;
+    $scope.isCanLeaveStudentFeedback = false;
+  
+    
                                    
                                    
        var gettingUserProfileData = function(rights){
@@ -45,19 +50,35 @@ angular.module('myApp.browse')
             $scope.coachArchive = coachArchive;
           });
          
+         
+         
        
        }                            
                                    
     profileService.getUserInfo(userlogin).success(function(data){
-      //alert("User" + JSON.stringify(data));
+      ////alert("User" + JSON.stringify(data));
       $scope.user = data;
       $scope.isContentLoaded = true;
+      //alert(userService.getUser().login + userlogin);
+      feedbacksService.isCanLeaveCoachFeedback(userService.getUser().login,userlogin)
+       .success(function(data){
+       $scope.isCanLeaveCoachFeedback = data;
+    });
+         
+     feedbacksService.isCanLeaveStudentFeedback(userService.getUser().login,userlogin)
+       .success(function(data){
+       $scope.isCanLeaveStudentFeedback = data;
+     });
+      
+      
       gettingUserProfileData();
+      
+      
 
 
     }).error(function(err,status){
-      alert(status);
-      alert("Can't get user " + userlogin);
+      
+      //alert("Can't get user " + userlogin);
     });    
   
   
@@ -80,7 +101,7 @@ angular.module('myApp.browse')
     });
     
     feedbackModalInstance.result.then(function (feedback) {
-      alert("Creating User Feedback" + JSON.stringify(feedback))   
+      //alert("Creating User Feedback" + JSON.stringify(feedback))   
       feedbacksService.createUserFeedback(feedback).success(function(){
         gettingUserProfileData();
       });
@@ -109,7 +130,7 @@ angular.module('myApp.browse')
     });
     
     feedbackModalInstance.result.then(function (feedback) {
-      alert("Creating Coach Feedback" + JSON.stringify(feedback))   
+     // //alert("Creating Coach Feedback" + JSON.stringify(feedback))   
       feedbacksService.createCoachFeedback(feedback).success(function(){
         gettingUserProfileData();
       });
@@ -140,6 +161,41 @@ angular.module('myApp.browse')
       profileService.saveSettings(data);
       
     }, function () {
+      
+      //cancel feedback
+    });
+    
+    };
+  
+  $scope.requestFeedback = function(){
+    
+      var requestModalInstance = $modal.open({
+      animation: true,
+      templateUrl: 'page_profile/Request.html',
+      controller: 'RequestController',
+      size: "lg",
+      resolve: {
+        user : function () {
+          return $scope.user;
+        },
+        archive : function () {
+          return $scope.studentArchive;
+        }
+      }
+    });
+    
+    requestModalInstance.result.then(function (data) {
+         ////alert(JSON.stringify(data));
+      //sending new settings
+         for(var i = 0; i < data.length ; i++){
+           feedbacksService.requestFeedback(data[i]).success(function(data){
+             // successfull request
+           });
+         }
+        
+      
+      
+    }, function () {
       //cancel feedback
     });
     
@@ -152,7 +208,7 @@ angular.module('myApp.browse')
   $scope.isEnglish = false;
   
   if(feedback === undefined){
-    alert("Creating feedback");
+    //alert("Creating feedback");
     $scope.isView = false;
     
     
@@ -173,7 +229,7 @@ angular.module('myApp.browse')
     };
     
   } else{
-    alert("Viewing: " + JSON.stringify(feedback));
+    ////alert("Viewing: " + JSON.stringify(feedback));
     $scope.isView = true;
     $scope.feedback = feedback;
   }
@@ -195,7 +251,7 @@ angular.module('myApp.browse')
   
   
   if(feedback === undefined){
-    alert("Creating feedback");
+    //////alert("Creating feedback");
     $scope.isView = false;
     
     
@@ -220,7 +276,7 @@ angular.module('myApp.browse')
     };
     
   } else {
-    alert("Viewing: " + JSON.stringify(feedback));
+    //alert("Viewing: " + JSON.stringify(feedback));
     $scope.isView = true;
     $scope.feedback = feedback;
   }
@@ -257,8 +313,44 @@ angular.module('myApp.browse')
   
   $scope.ok = function () {
     var data = {};
-    data.numberPhone = $scope.phoneNumber;
-    alert("saving " + JSON.stringify(data));
+    data.login = user.login;
+    
+    if(!$scope.isPhoneOn){
+      data.numberPhone = "";
+    } else {
+      data.numberPhone = $scope.phoneNumber;
+    }
+    
+    
+    $modalInstance.close(data);
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
+}])
+.controller('RequestController',['$scope', '$modalInstance','user','archive','userService',function($scope,$modalInstance,user,archive,userService){
+  $scope.user = user;
+  $scope.archive = angular.copy(archive);
+  for(var i = 0; i < $scope.archive.length; i++){
+    $scope.archive[i].request = false;
+  }
+  
+    
+    
+  $scope.check = function(index){
+    $scope.archive[index].request = !$scope.archive[index].request;
+  }  
+  
+  $scope.ok = function () {
+    var data = [];
+    for(var i = 0; i < $scope.archive.length; i++){
+      if ($scope.archive[i].request === true){
+        data.push({login:user.login, trainingName:$scope.archive[i].trainingName});
+      } 
+    }
+    
+    
     $modalInstance.close(data);
   };
 

@@ -1,0 +1,29 @@
+<div class="modal-header">
+
+  <h3 class="modal-title">Request Feedback on {{user.name}}</h3>
+  <h4 class="modal-title">Choose training:</h4>
+  
+</div>
+  <div style="padding:16px; overflow:auto;">
+    <table class="table table-striped">
+        <thead>
+          <tr>
+              <th>#</th>
+              <th>Course</th>
+              <th>Coach</th>
+              <th>Request</th>
+          </tr>
+        </thead>
+        <tr ng-repeat="f in archive" class="link-cursor"  ng-click="check($index)">
+          <td>{{$index + 1}}</td>
+          <td>{{ f.trainingName}}</td>
+          <td>{{f.trainingCoach}}</td>
+          <td><input type="checkbox" name="request"  ng-model="f.request" ng-click="check($index)"></td>
+        </tr>
+      </table>
+    </div>
+        
+<div class="modal-footer">
+    <button class="btn btn-default default-btn default-blue" ng-click="ok()">Requst</button>
+    <button class="btn btn-default default-btn default-gray" ng-click="cancel()">Cancel</button>
+</div>
