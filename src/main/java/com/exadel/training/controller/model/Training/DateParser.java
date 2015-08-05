@@ -15,11 +15,9 @@ import java.util.List;
  */
 public class DateParser {
 
-    private int repeats;
-    private int repeatEvery;
     private List<Boolean> repeatOn;
     private String startsOn;
-    private String endsOn;
+    private int lessonsNumber;
     private List<Date> dateTimes;
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
 
@@ -29,10 +27,8 @@ public class DateParser {
     }
 
     public DateParser(JSONObject json) {
-        repeats = (Integer)json.get("repeats");
-        repeatEvery = (Integer)json.get("repeatEvery");
+        lessonsNumber = (Integer)json.get("lessonsNumber");
         startsOn = (String)json.get("startsOn");
-        endsOn = (String)json.get("endsOn");
 
         repeatOn = new ArrayList<>();
         dateTimes = new ArrayList<>();
@@ -43,48 +39,15 @@ public class DateParser {
     }
 
     public void parseDateTimes() throws ParseException {
-        switch (repeats) {
-            case 1: {
-                Date date = sdf.parse(startsOn);
-                for(int i = 0; i < repeatEvery; ++i) {
-                    dateTimes.add(date);
-                    date = DateUtil.addDays(date, 1);
-                }
-                return;
-            }
-            case 2: {
-                Date date = sdf.parse(startsOn);
-                date = DateUtil.setFirstDayOfWeek(date);
-                for(int i = 0; i < repeatEvery; ++i) {
-                    for(int j = 0; j < repeatOn.size(); ++j) {
-                        if (repeatOn.get(j))
-                            dateTimes.add(DateUtil.addDays(date, j));
-                    }
-                    date = DateUtil.addDays(date, 7);
-                }
-                return;
-            }
-            case 3: {
-
-                return;
-            }
+        Date date = sdf.parse(startsOn);
+        int startDay = DateUtil.getDayOfWeek(date);
+        int day = startDay;
+        for (int i = 0; i < lessonsNumber; ++i) {
+            while(!repeatOn.get(day % 7))
+                day++;
+            dateTimes.add(DateUtil.addDays(date, day - startDay));
+            day++;
         }
-    }
-
-    public int getRepeats() {
-        return repeats;
-    }
-
-    public void setRepeats(int repeats) {
-        this.repeats = repeats;
-    }
-
-    public int getRepeatEvery() {
-        return repeatEvery;
-    }
-
-    public void setRepeatEvery(int repeatEvery) {
-        this.repeatEvery = repeatEvery;
     }
 
     public List<Boolean> getRepeatOn() {
@@ -103,12 +66,12 @@ public class DateParser {
         this.startsOn = startsOn;
     }
 
-    public String getEndsOn() {
-        return endsOn;
+    public int getLessonsNumber() {
+        return lessonsNumber;
     }
 
-    public void setEndsOn(String endsOn) {
-        this.endsOn = endsOn;
+    public void setLessonsNumber(int lessonsNumber) {
+        this.lessonsNumber = lessonsNumber;
     }
 
     public List<Date> getDateTimes() {
@@ -117,6 +80,14 @@ public class DateParser {
 
     public void setDateTimes(List<Date> dateTimes) {
         this.dateTimes = dateTimes;
+    }
+
+    public static SimpleDateFormat getSdf() {
+        return sdf;
+    }
+
+    public static void setSdf(SimpleDateFormat sdf) {
+        DateParser.sdf = sdf;
     }
 
     private static class DateUtil {
@@ -147,6 +118,12 @@ public class DateParser {
             cal.setTime(date);
             cal.set(Calendar.DAY_OF_WEEK, 2);
             return cal.getTime();
+        }
+
+        public static int getDayOfWeek(Date date) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            return (cal.get(Calendar.DAY_OF_WEEK) + 5) % 7;
         }
     }
 }
