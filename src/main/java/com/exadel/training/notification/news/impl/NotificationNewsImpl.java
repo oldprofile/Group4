@@ -2,8 +2,10 @@ package com.exadel.training.notification.news.impl;
 
 import com.exadel.training.model.News;
 import com.exadel.training.model.Training;
+import com.exadel.training.model.TrainingFeedback;
 import com.exadel.training.model.User;
 import com.exadel.training.notification.news.NotificationNews;
+import com.exadel.training.notification.news.util.NotificationNewsUtil;
 import com.exadel.training.service.NewsService;
 import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
@@ -44,6 +46,18 @@ public class NotificationNewsImpl implements NotificationNews {
         news.setUser(user);
         news.setAction(action);
         news.setType(TRAINING_TYPE);
+
+        newsService.insertNews(news);
+    }
+
+    @Override
+    public void sendNews(String action, User user, TrainingFeedback trainingFeedback) throws NoSuchFieldException {
+        News news = new News();
+
+        news.setTrainingFeedback(trainingFeedback);
+        news.setUser(user);
+        news.setAction(action);
+        news.setType(NotificationNewsUtil.TRAINING_FEEDBACK);
 
         newsService.insertNews(news);
     }

@@ -55,7 +55,7 @@ public class CoachFeedback {
     public CoachFeedback() {
     }
 
-    public CoachFeedback(boolean howEnounceMaterial, boolean explainHardness, boolean highlightMain, boolean interesting, boolean askingQuestions, boolean explainHowToUseNew, boolean creativity, boolean kindness, boolean patience, boolean erudition, boolean styleOfTeaching, String other, User feedbacker, User coach) {
+    public CoachFeedback(boolean howEnounceMaterial, boolean explainHardness, boolean highlightMain, boolean interesting, boolean askingQuestions, boolean explainHowToUseNew, boolean creativity, boolean kindness, boolean patience, boolean erudition, boolean styleOfTeaching, String other, User feedbacker, User coach, Date date) {
         this.howEnounceMaterial = howEnounceMaterial;
         this.explainHardness = explainHardness;
         this.highlightMain = highlightMain;
@@ -70,7 +70,7 @@ public class CoachFeedback {
         this.feedbacker = feedbacker;
         this.coach = coach;
         this.other = other;
-        this.date = new Date();
+        this.date = date;
     }
 
     public boolean isHowEnounceMaterial() {

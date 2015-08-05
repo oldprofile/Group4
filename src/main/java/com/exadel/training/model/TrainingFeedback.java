@@ -42,11 +42,10 @@ public class TrainingFeedback{
     private Training training;
 
     public TrainingFeedback() {
-        this.date = new Date();
     }
 
     public TrainingFeedback(boolean clear, boolean interesting, boolean newMaterial, int effective, boolean recommendation,
-                            String other, User feedbacker, Training training, int type) {
+                            String other, User feedbacker, Training training, int type, Date date) {
         this.clear = clear;
         this.interesting = interesting;
         this.newMaterial = newMaterial;
@@ -55,11 +54,11 @@ public class TrainingFeedback{
         this.other = other;
         this.feedbacker = feedbacker;
         this.training = training;
-        this.date = new Date();
+        this.date = date;
         this.type = type;
     }
 
-    public TrainingFeedback(boolean clear, boolean interesting, boolean newMaterial, int effective, boolean recommendation, String other, User feedbacker, Training training) {
+    public TrainingFeedback(boolean clear, boolean interesting, boolean newMaterial, int effective, boolean recommendation, String other, User feedbacker, Training training, Date date) {
         this.clear = clear;
         this.interesting = interesting;
         this.newMaterial = newMaterial;
@@ -67,7 +66,7 @@ public class TrainingFeedback{
         this.recommendation = recommendation;
         this.other = other;
         this.feedbacker = feedbacker;
-        this.date = new Date();
+        this.date = date;
         this.training = training;
     }
 
