@@ -77,6 +77,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findUserByEmail(String email) {
+        return userRepository.findUserByEmail(email);
+    }
+
+    @Override
     public Training findMyTraining(String login, String trainingName) {
         return userRepository.findMyTraining(login, trainingName);
     }
@@ -201,7 +206,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void insertExEmploee(User user) {
+    public void insertExEmployee(User user) {
         userRepository.save(user);
     }
 }

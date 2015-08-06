@@ -42,6 +42,8 @@ public interface UserRepository extends JpaRepository<User,Long>{
 
     User findUserByLogin(String login);
 
+    User findUserByEmail(String email);
+
     @Query("select u.name from User as u")
     List<String> selectAllLoginOfUser();
 
@@ -95,4 +97,6 @@ public interface UserRepository extends JpaRepository<User,Long>{
 
     @Query("select distinct t.name from User as u inner join u.ownTrainings as t where t.parent = 0 and t.state in (?2) and u.login = ?1")
     List<String> selectAllTrainingCoachNameActual(String login, List<Integer> state);
+
+
 }

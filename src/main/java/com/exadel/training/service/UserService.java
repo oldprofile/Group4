@@ -22,6 +22,7 @@ public interface UserService {
     User getUserByID(long id);
     User findUserByLoginAndPassword(String name, long password);
     User findUserByLogin(String Login);
+    User findUserByEmail(String email);
     Training findMyTraining(String login, String trainingName);
 
     List<Training> selectAllTraining(String login);
@@ -42,5 +43,5 @@ public interface UserService {
     void deleteUserTrainingRelationShip(String login, String trainingName);
     void insertUserTrainingRelationShip(String login, String trainingName);
     void insertNumberOfTelephone(String login, String number);
-    void insertExEmploee(User user);
+    void insertExEmployee(User user);
 }
