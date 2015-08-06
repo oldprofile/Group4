@@ -230,7 +230,7 @@ public class UserController {
                               notificationNews.sendNews(" are in spare list ", user, training);
                               notificationMail.send(user.getEmail(), userLogin + ",you are in reserve " + trainingName);
 
-                              httpServletResponse.setStatus(HttpServletResponse.SC_BAD_GATEWAY);
+                              httpServletResponse.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
                           }
                       }
                   }
