@@ -106,7 +106,7 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
     @Query("select count(tr.dateTime) from Training as tr where tr.name = ?1 and tr.parent > 0")
     Integer findTrainingsCount(String trainingName);
 
-    @Query("select count(tr) from Training as tr where tr.category = ?1 and tr.parent = 0")
+    @Query("select count(tr) from Training as tr where tr.category = ?1 and tr.state in (2,3) and tr.parent = 0")
     Integer findValidTrainingsNumberByCategory(Category category);
 
     @Query(value = "SELECT * FROM trainings WHERE MATCH (name) AGAINST (:search in boolean mode) and trainings.parent = 0", nativeQuery = true)
