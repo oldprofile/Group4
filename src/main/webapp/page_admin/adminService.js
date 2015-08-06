@@ -17,6 +17,8 @@ angular.module('myApp.admin')
     };
 
 	adminService.sendStatistics = function(statData) {
+		var copy = angular.copy(statData);
+		copy.type = +copy.type;
 		return $http.post('/omission_controller/statistics', angular.copy(statData))
 			.then(function(response) {
 				adminService.download(response.data);

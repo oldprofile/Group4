@@ -28,6 +28,9 @@ angular.module('myApp.admin')
 			if (userselect.dateFrom>userselect.dateTo){
 				alert ('You are wrong! Check the second date!');
 			}
+			if (userselect.dateTo =="" || userselect.dateFrom == ""){
+				alert ('Check dates!');
+			}
 			if (userselect.type==='Full statistic'){
 				userselect.type='1';
 			}
