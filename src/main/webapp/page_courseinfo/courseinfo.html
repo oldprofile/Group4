@@ -72,7 +72,7 @@
 								</v-pane-header>
 
 								<v-pane-content>
-									<button class="btn btn-default default-btn default-gray" ng-click="addLesson()">Add
+									<button ng-if="isAdmin" class="btn btn-default default-btn default-gray" ng-click="addLesson()">Add
 										lesson
 									</button>
 									<table class="table courseinfo-table" ng-if="course.dateTime.length != 0">
@@ -82,7 +82,7 @@
 											<th>When</th>
 											<th>Where</th>
 											<th ng-if="isAdmin">Edit date & place</th>
-											<th ng-if="isAdmin">Omissions</th>
+											<th ng-if="isAdmin || course.isCoach">Omissions</th>
 											<!--OR isCoach! -->
 										</tr>
 										</thead>
@@ -101,13 +101,13 @@
 							</v-pane>
 
 							<!-- add expanded attribute to open the section -->
-							<v-pane ng-if="isAdmin">
+							<v-pane ng-if="isAdmin || course.isCoach">
 								<v-pane-header>
 									<span class="glyphicon glyphicon-user"></span>Participants
 								</v-pane-header>
 
 								<v-pane-content>
-									<button class="btn btn-default default-btn default-gray"
+									<button ng-if="isAdmin" class="btn btn-default default-btn default-gray"
 											ng-click="addParticipant()">Add participant
 									</button>
 									<table class="table courseinfo-table"
