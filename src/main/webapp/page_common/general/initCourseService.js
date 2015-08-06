@@ -41,8 +41,7 @@ angular.module('myApp')
 			scope.courseInfo.userLogin = userService.getUser().login;
 
 			categoriesLocal.getCategories().then(function (data) {
-				scope.categoriesObj = data;
-				scope.categoriesObj.shift();
+				scope.categoriesObj = data.slice(1);
 			});
 		};
 	}]);
