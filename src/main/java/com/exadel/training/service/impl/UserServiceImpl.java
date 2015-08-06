@@ -1,6 +1,7 @@
 package com.exadel.training.service.impl;
 
 import com.exadel.training.common.RoleType;
+import com.exadel.training.comparator.ComparatorDateTraining;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
 import com.exadel.training.repository.impl.TrainingRepository;
@@ -11,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import javax.validation.constraints.Null;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by HP on 08.07.2015.
@@ -92,6 +90,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> findUsersByRole(Long type) {
+        return userRepository.findUsersByRole(type);
+    }
+
+    @Override
     public List<User> findAllCoachOfUser(String login) {
         return userRepository.findAllCoachOfUser(login);
     }
@@ -103,17 +106,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Training> selectAllTrainingSortedByDate(String login, List<Integer> state) {
-        List<String> allName = userRepository.selectAllTrainingNameActual(login, state);
-        List<String> allCoachName = userRepository.selectAllTrainingCoachNameActual(login, state);
+        List<Training> allTrainingNameActual = userRepository.selectAllTrainingNameActual(login, state);
+        List<Training> allTrainingCoachNameActual = userRepository.selectAllTrainingCoachNameActual(login, state);
         List<Training> firstLessons = new ArrayList<>();
 
-        allName.addAll(allCoachName);
+        allTrainingNameActual.addAll(allTrainingCoachNameActual);
+        Collections.sort(allTrainingNameActual, new ComparatorDateTraining());
 
-        for(String name : allName) {
-            Training training = trainingService.getNextTraining(name);
+        for(Training training : allTrainingNameActual) {
+            Training nextTraining = trainingService.getNextTraining(training.getName());
 
-            if(training != null) {
-                firstLessons.add(training);
+            if(nextTraining != null) {
+                firstLessons.add(nextTraining);
             }
         }
 
@@ -206,7 +210,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void insertExEmployee(User user) {
+    public void insertUser(User user) {
         userRepository.save(user);
     }
 }
