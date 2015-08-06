@@ -32,12 +32,22 @@ angular.module('myApp.createcourse')
             $scope.temp.place = (($scope.courseInfo.places != null) ? $scope.courseInfo.places[0] : "");
 
             $scope.temp.pictureHolder = $scope.courseInfo.pictureLink;
+
+
             console.log($scope.courseInfo);
         });
     }
     
     $scope.editCourse = function() {
-        console.log($scope.courseInfo);
+
+		//edited 06.08.2015
+		for(var i = 0; i < $scope.temp.tempDates.length; i++) {
+			$scope.courseInfo.dateTime[i] = $filter('date')($scope.temp.tempDates[i], 'yyyy-MM-dd HH:mm');
+			$scope.courseInfo.places[i] = $scope.temp.place;
+		}
+
+
+		console.log($scope.courseInfo);
         editcourse.editCourse($scope.courseInfo, $scope.isDraft, $scope.justEdit); //! ? some then()...?
     };
 }]);

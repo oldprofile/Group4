@@ -18,8 +18,10 @@ div.inputs-container > * {
 }
 
 .addon-calendar {
+	padding-right: 4px !important;
 	background-color: white !important;
 	border: none !important;
+	font-size: 18px !important;
 	box-shadow: none !important;
 }
 
@@ -28,7 +30,8 @@ div.inputs-container > * {
 }
 
 #delete-btn {
-    margin-left: 8px;
+    border: none !important;
+	font-size: 20px !important;
 }
 
 .scroll::-webkit-scrollbar-track {
