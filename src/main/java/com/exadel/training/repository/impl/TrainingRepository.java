@@ -34,7 +34,7 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
     @Query("select tr from Training as tr  where tr.name = ?1 and tr.dateTime = ?2 and tr.parent > 0")
     Training findTrainingByNameAndDate(String trainingName, Date date);
 
-    @Query("select tr from Training as tr  where tr.name = ?1 and tr.state = 4")
+    @Query("select tr from Training as tr  where tr.name = ?1 and tr.state = 4 and tr.parent = 0")
     Training findEditedTrainingByName(String trainingName);
 
     @Query(value =  "select tr from Training tr where tr.category.id = ?1 and tr.state in (2,3) and tr.parent = 0")
