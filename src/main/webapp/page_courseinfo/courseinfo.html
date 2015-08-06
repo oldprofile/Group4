@@ -92,7 +92,7 @@
 											<td>{{ course.places[$index] }}</td>
 											<td ng-if="isAdmin"><a href="" ng-click="editDatePlace($index)">edit</a>
 											</td>
-											<td ng-if="isAdmin"><a href="" ng-click="manageOmissions($index)">edit</a>
+											<td ng-if="isAdmin || course.isCoach"><a href="" ng-click="manageOmissions($index)">edit</a>
 											</td>
 										</tr>
 									</table>
