@@ -15,6 +15,7 @@ public class NewsPage {
 
     private Long id;
     private String name;
+    private String login;
     private String description;
     private int type;
     private AllTrainingUserShort training;
@@ -25,6 +26,15 @@ public class NewsPage {
 
     public NewsPage(){
     }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
 
     public int getType() {
         return type;
@@ -121,6 +131,7 @@ public class NewsPage {
 
         newsPage.setType(news.getType());
         newsPage.setIsRead(news.isRead());
+        newsPage.setLogin(news.getUser().getLogin());
         newsPage.setId(news.getId());
 
 
