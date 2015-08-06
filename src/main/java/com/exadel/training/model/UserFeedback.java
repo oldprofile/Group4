@@ -48,7 +48,7 @@ public class UserFeedback{
         this.date = new Date();
     }
 
-    public UserFeedback(boolean attendance, boolean attitude, boolean commSkills, boolean questions, boolean motivation, boolean focusOnResult, String other, User feedbacker, User user) {
+    public UserFeedback(boolean attendance, boolean attitude, boolean commSkills, boolean questions, boolean motivation, boolean focusOnResult, String other, User feedbacker, User user, Date date) {
         this.attendance = attendance;
         this.attitude = attitude;
         this.commSkills = commSkills;
@@ -56,12 +56,12 @@ public class UserFeedback{
         this.motivation = motivation;
         this.focusOnResult = focusOnResult;
         this.other = other;
-        this.date = new Date();
+        this.date = date;
         this.feedbacker = feedbacker;
         this.user = user;
     }
 
-    public UserFeedback(boolean attendance, boolean attitude, boolean commSkills, boolean questions, boolean motivation, boolean focusOnResult, String other, User feedbacker, User user, int assessment, int level) {
+    public UserFeedback(boolean attendance, boolean attitude, boolean commSkills, boolean questions, boolean motivation, boolean focusOnResult, String other, User feedbacker, User user, int assessment, int level, Date date) {
         this.attendance = attendance;
         this.attitude = attitude;
         this.commSkills = commSkills;
@@ -69,7 +69,7 @@ public class UserFeedback{
         this.motivation = motivation;
         this.focusOnResult = focusOnResult;
         this.other = other;
-        this.date = new Date();
+        this.date = date;
         this.feedbacker = feedbacker;
         this.user = user;
         this.assessment = assessment;

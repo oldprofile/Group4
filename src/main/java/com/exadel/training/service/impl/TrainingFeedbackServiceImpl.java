@@ -9,10 +9,13 @@ import com.exadel.training.repository.impl.TrainingFeedbackRepository;
 import com.exadel.training.service.TrainingFeedbackService;
 import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -23,6 +26,7 @@ import java.util.List;
 @Service
 public class TrainingFeedbackServiceImpl implements TrainingFeedbackService {
 
+    private static final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
     @Autowired
     TrainingFeedbackRepository trainingFeedbackRepository;
 
@@ -34,13 +38,13 @@ public class TrainingFeedbackServiceImpl implements TrainingFeedbackService {
 
     @Override
     @Transactional
-    public void addTrainingFeedback(TrainingFeedbackADDModel trainingFeedbackADDModel) {
+    public void addTrainingFeedback(TrainingFeedbackADDModel trainingFeedbackADDModel, Date date) {
         String login = trainingFeedbackADDModel.getFeedbackerLogin();
         User feedbacker = userService.findUserByLogin(login);
         String name = trainingFeedbackADDModel.getTrainingName();
         Training training = trainingService.getTrainingByName(name);
         TrainingFeedback tfeedback = new TrainingFeedback(trainingFeedbackADDModel.getClear(), trainingFeedbackADDModel.getInteresting(), trainingFeedbackADDModel.getNewMaterial(),
-                Integer.valueOf(trainingFeedbackADDModel.getEffective()), trainingFeedbackADDModel.getRecommendation(), trainingFeedbackADDModel.getOther(), feedbacker, training);
+                Integer.valueOf(trainingFeedbackADDModel.getEffective()), trainingFeedbackADDModel.getRecommendation(), trainingFeedbackADDModel.getOther(), feedbacker, training, date);
         tfeedback.setType(FeedbackType.getFeedbackType(tfeedback));
         trainingFeedbackRepository.save(tfeedback);
     }
@@ -56,7 +60,7 @@ public class TrainingFeedbackServiceImpl implements TrainingFeedbackService {
     }
 
     @Override
-    public TrainingFeedback getTrainingFeedbackByNameLoginAndDate(String trainingName, String feedbackerLogin, Date date) {
+    public TrainingFeedback getTrainingFeedbackByNameLoginAndDate(String trainingName, String feedbackerLogin, Date date) throws ParseException {
         return trainingFeedbackRepository.findFeedbackByTrainingrAndDateAndFeedbacker(trainingName, feedbackerLogin, date);
     }
 }

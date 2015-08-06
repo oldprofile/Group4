@@ -1,5 +1,8 @@
 package com.exadel.training.controller.model.News;
 
+import com.exadel.training.controller.model.Feedback.CoachFeedbackGETModel;
+import com.exadel.training.controller.model.Feedback.TrainingFeedbackGETModel;
+import com.exadel.training.controller.model.Feedback.UserFeedbackGETModel;
 import com.exadel.training.controller.model.User.AllTrainingUserShort;
 import com.exadel.training.model.News;
 
@@ -15,6 +18,9 @@ public class NewsPage {
     private String description;
     private int type;
     private AllTrainingUserShort training;
+    private TrainingFeedbackGETModel trainingFeedbackGETModel;
+    private CoachFeedbackGETModel coachFeedbackGETModel;
+    private UserFeedbackGETModel userFeedbackGETModel;
     private Boolean isRead;
 
     public NewsPage(){
@@ -68,6 +74,31 @@ public class NewsPage {
         this.isRead = isRead;
     }
 
+    public TrainingFeedbackGETModel getTrainingFeedbackGETModel() {
+        return trainingFeedbackGETModel;
+    }
+
+    public void setTrainingFeedbackGETModel(TrainingFeedbackGETModel trainingFeedbackGETModel) {
+        this.trainingFeedbackGETModel = trainingFeedbackGETModel;
+    }
+
+    public UserFeedbackGETModel getUserFeedbackGETModel() {
+        return userFeedbackGETModel;
+    }
+
+    public void setUserFeedbackGETModel(UserFeedbackGETModel userFeedbackGETModel) {
+        this.userFeedbackGETModel = userFeedbackGETModel;
+    }
+
+    public CoachFeedbackGETModel getCoachFeedbackGETModel() {
+        return coachFeedbackGETModel;
+    }
+
+    public void setCoachFeedbackGETModel(CoachFeedbackGETModel coachFeedbackGETModel) {
+        this.coachFeedbackGETModel = coachFeedbackGETModel;
+    }
+
+
 
     public static NewsPage parseNewsPage(News news) throws NoSuchFieldException {
         NewsPage newsPage = new NewsPage();
@@ -78,9 +109,20 @@ public class NewsPage {
         if(news.getTraining() != EMPTY) {
          newsPage.setTraining(AllTrainingUserShort.parseAllTrainingUserShort(news.getTraining()));
         }
+        if(news.getTrainingFeedback() != EMPTY) {
+            newsPage.setTrainingFeedbackGETModel(TrainingFeedbackGETModel.parseTrainingFeedback(news.getTrainingFeedback()));
+        }
+        if(news.getCoachFeedback() != EMPTY) {
+            newsPage.setCoachFeedbackGETModel(CoachFeedbackGETModel.parseCoachFeedback(news.getCoachFeedback()));
+        }
+        if(news.getCoachFeedback() != EMPTY) {
+            newsPage.setUserFeedbackGETModel(UserFeedbackGETModel.parseToUserFeedbackModel(news.getUserFeedback()));
+        }
+
         newsPage.setType(news.getType());
         newsPage.setIsRead(news.isRead());
         newsPage.setId(news.getId());
+
 
         return newsPage;
     }

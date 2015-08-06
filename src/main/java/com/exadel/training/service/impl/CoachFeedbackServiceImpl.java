@@ -27,14 +27,14 @@ public class CoachFeedbackServiceImpl implements CoachFeedbackService {
 
     @Override
     @Transactional
-    public void addCoachFeedback(CoachFeedbackADDModel coachFeedbackModel) {
+    public void addCoachFeedback(CoachFeedbackADDModel coachFeedbackModel, Date date) {
         String coachLogin = coachFeedbackModel.getCoachLogin();
         User coach = userService.findUserByLogin(coachLogin);
         String feedbackerLogin = coachFeedbackModel.getFeedbackerLogin();
         User feedbacker = userService.findUserByLogin(feedbackerLogin);
         CoachFeedback cfeedback = new CoachFeedback(coachFeedbackModel.isHowEnounceMaterial(), coachFeedbackModel.isExplainHardness(), coachFeedbackModel.isHighlightMain(), coachFeedbackModel.isInteresting(), coachFeedbackModel.isAskingQuestions(),
                 coachFeedbackModel.isExplainHowToUseNew(), coachFeedbackModel.isCreativity(), coachFeedbackModel.isKindness(), coachFeedbackModel.isPatience(), coachFeedbackModel.isErudition(), coachFeedbackModel.isStyleOfTeaching(), coachFeedbackModel.getOther(),
-                feedbacker, coach);
+                feedbacker, coach, date);
         cfeedback.setType(FeedbackType.getFeedbackType(cfeedback));
         coachFeedbackRepository.save(cfeedback);
     }
