@@ -187,6 +187,7 @@ angular.module('myApp.profile')
     requestModalInstance.result.then(function (data) {
          ////alert(JSON.stringify(data));
       //sending new settings
+      
          for(var i = 0; i < data.length ; i++){
            feedbacksService.requestFeedback(data[i]).success(function(data){
              // successfull request

@@ -7,6 +7,12 @@ angular.module('myApp.mycourses')
     $scope.mycourses = [];
     $scope.isContentLoaded = false;
     
+    $scope.showDosHeadTool = function(){
+      
+      return $scope.isContentLoaded && !$scope.isNoCourses
+      
+    }
+  
     mycourses.getAllActualUserCourses().success(function(data,status) {
        // alert("mycourses success")
         console.log("Getting courses: " + JSON.stringify(data));
