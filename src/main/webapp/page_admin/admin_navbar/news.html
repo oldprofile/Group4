@@ -3,7 +3,7 @@
     <thead>
     </thead>
     <tr ng-repeat="news in newsList track by $index">
-      <td ng-class="{'bg-color-gray': !news.isRead}"><a href="">{{news.name}}</a> {{news.description}} <a href="">{{news.training.trainingName}}</a></td>
+      <td ng-class="{'bg-color-gray': !news.isRead}"><a href="#/profile/{{news.login}}">{{news.name}}</a> {{news.description}} <a href="">{{news.training.trainingName}}</a></td>
     </tr>
   </table>
   

@@ -107,6 +107,7 @@ public class OmissionController {
                         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     }
                 }
+                break;
             case 2:
                 if(!StringUtils.isBlank(userLogin)) {
                     if (!StringUtils.isBlank(trainingName)) {
@@ -121,6 +122,7 @@ public class OmissionController {
                         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     }
                 }
+                break;
             case 3:
                 if(!StringUtils.isBlank(userLogin)) {
                     if (!StringUtils.isBlank(trainingName)) {
@@ -135,6 +137,7 @@ public class OmissionController {
                         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     }
                 }
+                break;
         }
         PathToStatistics pathToStatistics = new PathToStatistics(filePath);
         return pathToStatistics;

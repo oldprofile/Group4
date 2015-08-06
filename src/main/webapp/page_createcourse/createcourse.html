@@ -10,9 +10,9 @@
 							   ng-model="courseInfo.name" ng-disabled="isEdited" required>
 					</div>
 
-					<p class="info-small color-gray"><span class="courseinfo-label">Coach:</span> {{course.coachName}}</p>
+					<p class="info-small color-gray"><span class="courseinfo-label">Coach:</span> {{courseInfo.coachName}}</p>
 
-					<p class="courseinfo-h5 really-big-margin">Starts on: {{temp.tempDates[0] | date:"dd MMMM"}}</p>
+					<p class="courseinfo-h5 really-big-margin">Starts on: {{isRepeating ? (temp.startsOn | date:"dd MMMM") : (temp.tempDates[0] | date:"dd MMMM")}}</p>
 
 					<p class="courseinfo-h5 color-gray small-space">{{isRepeating ? temp.lessonsNumber : temp.tempDates.length}} lessons</p>
 

@@ -13,7 +13,7 @@ angular.module('myApp.createcourse')
 				},
 				transformRequest: angular.identity
 			}).then(function (results) {
-				alert('Course created successfully!');
+				console.log('Course created successfully!');
 				$location.path("/mycourses");
 				return results.data;
 			});
@@ -30,7 +30,7 @@ angular.module('myApp.createcourse')
 		editcourse.editCourse = function (courseData, isDraft, justEdit) {
 			var fd = new FormData();
 			if (isDraft) {
-				alert("Course just created");
+				console.log("Course just created");
 				if (justEdit) {
 					fd.append('courseInfo', JSON.stringify(courseData));
 					return $http.post('/training_controller/edit_training', fd, {
@@ -40,13 +40,13 @@ angular.module('myApp.createcourse')
 						transformRequest: angular.identity
 					})
 						.then(function (results) {
-							alert('Course edited successfully!');
+							console.log('Course edited successfully!');
 							$location.path("/mycourses");
 							return results.data;
 						});
 				}
 				else {
-					alert("admin approves course!");
+					console.log("admin approves course!");
 					for (var i = 0; i < courseData.dateTime.length; i++) {
 						courseData.dateTime[i] = $filter('date')(courseData.dateTime[i], 'yyyy-MM-dd HH:mm');
 					}
@@ -58,7 +58,7 @@ angular.module('myApp.createcourse')
 						transformRequest: angular.identity
 					})
 						.then(function (results) {
-							alert('Course edited successfully!');
+							console.log('Course edited successfully!');
 							$location.path("/mycourses");
 							return results.data;
 						});
@@ -66,7 +66,7 @@ angular.module('myApp.createcourse')
 
 			}
 			else {
-				alert("isnt draft");
+				console.log("isnt draft");
 				courseData.additional = "";
 				courseData.dateTime = [""];
 				courseData.places = [""];
@@ -82,7 +82,7 @@ angular.module('myApp.createcourse')
 						transformRequest: angular.identity
 					})
 						.then(function (results) {
-							alert('Course edited successfully!');
+							console.log('Course edited successfully!');
 							$location.path("/mycourses");
 							return results.data;
 						});
@@ -95,7 +95,7 @@ angular.module('myApp.createcourse')
 						transformRequest: angular.identity
 					})
 						.then(function (results) {
-							alert('Course approved successfully!');
+							console.log('Course approved successfully!');
 							$location.path("/mycourses");
 							return results.data;
 						});
