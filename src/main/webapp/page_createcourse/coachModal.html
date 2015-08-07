@@ -1,0 +1,70 @@
+<div class="modal-header">
+	<h3 class="modal-title">Add external coach</h3>
+</div>
+<div class="modal-body">
+
+	<form name="coachForm">
+
+		<div class="row">
+			<div class="col-xs-12">
+				<p class="info-small courseinfo-label float-left no-bottom-margin">Coach name:
+					<input class="material-input" name="name" id="coachName" type="text"
+						   placeholder="click to enter" ng-model="coachInfo.name"
+						   required>
+				</p>
+			</div>
+
+		</div>
+
+
+		<div class="row">
+			<div class="col-xs-12">
+				<p class="info-small courseinfo-label float-left no-bottom-margin">Coach login:
+					<input class="material-input" name="login" id="coachLogin" type="text"
+						   placeholder="click to enter" ng-model="coachInfo.login"
+						   required>
+				</p>
+			</div>
+
+		</div>
+
+		<div class="row">
+			<div class="col-xs-12">
+				<p class="info-small courseinfo-label float-left no-bottom-margin">Coach password:
+					<input class="material-input" name="password" id="coachPassword" type="password"
+						   placeholder="click to enter" ng-model="coachInfo.password"
+						   required>
+				</p>
+			</div>
+
+		</div>
+
+		<div class="row">
+			<div class="col-xs-12">
+				<p class="info-small courseinfo-label float-left no-bottom-margin">Coach email:
+					<input class="material-input" name="email" id="coachEmail" type="email"
+						   placeholder="click to enter" ng-model="coachInfo.email"
+						   required>
+				</p>
+			</div>
+
+		</div>
+
+		<div class="row">
+			<div class="col-xs-12">
+				<p class="info-small courseinfo-label float-left no-bottom-margin">Coach phone number:
+					<input class="material-input" name="phone" id="coachPhone" type="text"
+						   placeholder="click to enter" ng-model="coachInfo.numberPhone"
+						   required>
+				</p>
+			</div>
+
+		</div>
+
+	</form>
+
+</div>
+<div class="modal-footer">
+	<button class="btn btn-default default-btn default-blue" ng-click="ok()">OK</button>
+	<button class="btn btn-default default-btn default-gray" ng-click="cancel()">Cancel</button>
+</div>
