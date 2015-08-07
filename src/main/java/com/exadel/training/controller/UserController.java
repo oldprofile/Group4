@@ -331,6 +331,7 @@ public class UserController {
         user.setLogin(userExEmployee.getLogin());
         user.setEmail(userExEmployee.getEmail());
         user.setPassword("Exadel".hashCode());
+        user.setNumberPhone(userExEmployee.getNumberPhone());
 
         userService.insertUser(user);
         userService.insertUserTrainingRelationShip(userExEmployee.getLogin(),userExEmployee.getTraining());
@@ -346,6 +347,7 @@ public class UserController {
         user.setLogin(userExCoach.getLogin());
         user.setEmail(userExCoach.getEmail());
         user.setPassword(userExCoach.getPassword());
+        user.setNumberPhone(userExCoach.getNumberPhone());
 
         userService.insertUser(user);
     }
