@@ -15,6 +15,7 @@ import com.exadel.training.service.UserService;
 import com.exadel.training.statistics.ExcelFileGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpRequest;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -77,67 +78,52 @@ public class OmissionController {
         return omissions;
     }
 
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public @ResponseBody String generate(@RequestBody StatisticsRequestModel statisticsRequestModel, HttpServletResponse response){
-        //response.setStatus(HttpServletResponse.SC_OK);
-        return "string";
-    }
-
     @RequestMapping(value = "/statistics", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody
-    PathToStatistics generateStatistics(@RequestBody StatisticsRequestModel statisticsRequestModel, HttpServletResponse response) throws IOException {
+    PathToStatistics generateStatistics(@RequestBody StatisticsRequestModel statisticsRequestModel, HttpServletResponse response) throws IOException, NoSuchFieldException {
 
         String filePath = "";
+        XSSFWorkbook workbook;
         String userLogin = statisticsRequestModel.getUserLogin();
         String trainingName = statisticsRequestModel.getTrainingName();
         Date dateFrom = Date.valueOf(statisticsRequestModel.getDateFrom());
         Date dateTo = Date.valueOf(statisticsRequestModel.getDateTo());
-        switch (statisticsRequestModel.getType()) {
-            case 1:
-                if(!StringUtils.isBlank(userLogin)) {
-                    if (!StringUtils.isBlank(trainingName)) {
-                        filePath = excelFileGenerator.generateForUserAndTrainingFull(dateFrom, dateTo, userLogin, trainingName);
-                    } else {
-                        filePath = excelFileGenerator.generateForUserFull(dateFrom, dateTo, userLogin);
-                    }
-                } else {
-                    if (!StringUtils.isBlank(trainingName)) {
-                        filePath = excelFileGenerator.generateForTrainingFull(dateFrom, dateTo, trainingName);
-                    } else {
-                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                    }
-                }
-                break;
-            case 2:
-                if(!StringUtils.isBlank(userLogin)) {
-                    if (!StringUtils.isBlank(trainingName)) {
-                        filePath = excelFileGenerator.generateForUserAndTrainingDates(dateFrom, dateTo, userLogin, trainingName);
-                    } else {
-                        filePath = excelFileGenerator.generateForUserDates(dateFrom, dateTo, userLogin);
-                    }
-                } else {
-                    if (!StringUtils.isBlank(trainingName)) {
-                        filePath = excelFileGenerator.generateForTrainingDates(dateFrom, dateTo, trainingName);
-                    } else {
-                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                    }
-                }
-                break;
-            case 3:
-                if(!StringUtils.isBlank(userLogin)) {
-                    if (!StringUtils.isBlank(trainingName)) {
-                        filePath = excelFileGenerator.generateForUserAndTrainingAmount(dateFrom, dateTo, userLogin, trainingName);
-                    } else {
-                        filePath = excelFileGenerator.generateForUserAmount(dateFrom, dateTo, userLogin);
-                    }
-                } else {
-                    if (!StringUtils.isBlank(trainingName)) {
-                        filePath = excelFileGenerator.generateForTrainingAmount(dateFrom, dateTo, trainingName);
-                    } else {
-                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                    }
-                }
-                break;
+        if(!StringUtils.isBlank(userLogin)) {
+            switch (statisticsRequestModel.getType()) {
+                case 1:
+                    workbook = excelFileGenerator.generateTrainingsList(dateFrom, dateTo, userLogin);
+                    filePath = excelFileGenerator.generateFile(workbook, userLogin + " trainings statistics.xlsx");
+                    break;
+                case 2:
+                    workbook = excelFileGenerator.generateForUserDates(dateFrom, dateTo, userLogin);
+                    filePath = excelFileGenerator.generateFile(workbook, userLogin + " omission's dates statistics.xlsx");
+                    break;
+                case 3:
+                    workbook = excelFileGenerator.generateUserDatesAndFeedbacks(dateFrom, dateTo, userLogin);
+                    filePath = excelFileGenerator.generateFile(workbook, userLogin + " omission's dates and feedbacks statistics.xlsx");
+                    break;
+                case 4:
+                    workbook = excelFileGenerator.generateForUserAmount(dateFrom, dateTo, userLogin);
+                    filePath = excelFileGenerator.generateFile(workbook, userLogin + " omission's amount statistics.xlsx");
+                    break;
+            }
+        } else if (!StringUtils.isBlank(trainingName)) {
+            switch (statisticsRequestModel.getType()) {
+                case 1:
+                    workbook = excelFileGenerator.generateUserList(dateFrom, dateTo, trainingName);
+                    filePath = excelFileGenerator.generateFile(workbook, trainingName + " listeners statistics.xlsx");
+                    break;
+                case 2:
+                    workbook = excelFileGenerator.generateForTrainingDates(dateFrom, dateTo, trainingName);
+                    filePath = excelFileGenerator.generateFile(workbook, trainingName + " omission's dates statistics.xlsx");
+                    break;
+                case 3:
+                    workbook = excelFileGenerator.generateForTrainingAmount(dateFrom, dateTo, trainingName);
+                    filePath = excelFileGenerator.generateFile(workbook, trainingName + " omission's amount statistics.xlsx");
+                    break;
+            }
+        } else {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
         PathToStatistics pathToStatistics = new PathToStatistics(filePath);
         return pathToStatistics;

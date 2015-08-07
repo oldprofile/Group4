@@ -21,13 +21,16 @@ public class Omission {
 
     private boolean isOmission;
 
+    private String reason;
+
     public Omission() {
     }
 
-    public Omission(Training training, User user, boolean isOmission) {
+    public Omission(Training training, User user, boolean isOmission, String reason) {
         this.training = training;
         this.user = user;
         this.isOmission = isOmission;
+        this.reason = reason;
     }
 
     public long getId() {
@@ -60,5 +63,13 @@ public class Omission {
 
     public void setOmission(boolean isOmission) {
         this.isOmission = isOmission;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }
