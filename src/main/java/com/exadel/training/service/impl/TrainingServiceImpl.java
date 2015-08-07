@@ -7,7 +7,7 @@ import com.exadel.training.model.Category;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
 import com.exadel.training.repository.impl.CategoryRepository;
-import com.exadel.training.repository.impl.model.TrainingNumber;
+import com.exadel.training.repository.impl.model.ShortParentTraining;
 import com.exadel.training.repository.impl.TrainingRepository;
 import com.exadel.training.repository.impl.UserRepository;
 import com.exadel.training.service.TrainingService;
@@ -34,7 +34,9 @@ public class TrainingServiceImpl implements TrainingService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+    private static final int MAX_SIZE = 4;
 
 
     @Override
@@ -361,8 +363,33 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
-    public List<TrainingNumber> getTrainingsCounts() {
-        return trainingRepository.findTrainingsCounts();
+    public List<ShortParentTraining> getShortTrainingsSortedByDate(String userLogin) {
+        List<ShortParentTraining> trainings = trainingRepository.findShortTrainingsSortByDate();
+        List<ShortParentTraining> shortList = new ArrayList<>();
+        for(int i = 0; (i < trainings.size()) && (shortList.size() < MAX_SIZE); ++i) {
+            ShortParentTraining training = trainings.get(i);
+            String state = training.getState();
+            if((state.equals("Ahead") || state.equals("InProcess"))
+                        && !userRepository.checkSubscribeToTraining(training.getTrainingName(), userLogin)) {
+                shortList.add(training);
+            }
+        }
+        return shortList;
+    }
+
+    @Override
+    public List<ShortParentTraining> getShortTrainingsSortedByRating(String userLogin) {
+        List<ShortParentTraining> trainings = trainingRepository.findShortTrainingsSortByRating();
+        List<ShortParentTraining> shortList = new ArrayList<>();
+        for(int i = 0; (i < trainings.size()) && (shortList.size() < MAX_SIZE); ++i) {
+            String state = trainings.get(i).getState();
+            if(state.equals("Ahead") || state.equals("InProcess")) {
+                ShortParentTraining training = trainings.get(i);
+                training.setIsSubscriber(userRepository.checkSubscribeToTraining(training.getTrainingName(), userLogin));
+                shortList.add(training);
+            }
+        }
+        return shortList;
     }
 
     @Override
