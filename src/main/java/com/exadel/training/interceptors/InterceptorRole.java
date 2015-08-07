@@ -2,6 +2,7 @@ package com.exadel.training.interceptors;
 
 import com.exadel.training.interceptors.access.Access;
 import com.exadel.training.interceptors.access.AccessRole;
+import org.hibernate.jpa.criteria.expression.function.AggregationFunction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -18,6 +19,7 @@ public class InterceptorRole implements HandlerInterceptor {
 
     @Autowired
     private AccessRole accessRole;
+    private static final int COUNT_SLASH = 3;
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
@@ -34,7 +36,7 @@ public class InterceptorRole implements HandlerInterceptor {
 
     private String mySubString(String uri) {
         String findUri;
-        if(uri.split("/").length-1 == 3) {
+        if(uri.split("/").length-1 == COUNT_SLASH) {
             int first = uri.indexOf('/');
             int last = uri.lastIndexOf('/');
             return findUri = uri.substring(first, last);
