@@ -50,6 +50,10 @@ public class AccessImpl implements Access{
         admin.add(USER_CONTROLLER + "/find_coach_of_user");
         admin.add(USER_CONTROLLER + "/insert_phone");
         admin.add(USER_CONTROLLER + "/insert_external_employee");
+        admin.add(USER_CONTROLLER + "/select_all_users_login");
+        admin.add(USER_CONTROLLER + "/select_all_users_exemployee");
+        admin.add(USER_CONTROLLER + "/select_all_users_excoach");
+        admin.add(USER_CONTROLLER + "/insert_external_coach");
 
         admin.add(SEARCH_CONTROLLER + "/search_users");
         admin.add(SEARCH_CONTROLLER + "/search_trainings");
@@ -109,6 +113,9 @@ public class AccessImpl implements Access{
         employee.add(USER_CONTROLLER + "/find_my_training");
         employee.add(USER_CONTROLLER + "/find_coach_of_user");
         employee.add(USER_CONTROLLER + "/insert_phone");
+        employee.add(USER_CONTROLLER + "/select_all_users_login");
+        employee.add(USER_CONTROLLER + "/select_all_users_exemployee");
+        employee.add(USER_CONTROLLER + "/select_all_users_excoach");
 
         employee.add(SEARCH_CONTROLLER + "/search_trainings");
 
