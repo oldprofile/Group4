@@ -3,7 +3,7 @@ package com.exadel.training.repository.impl;
 import com.exadel.training.model.Category;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
-import com.exadel.training.repository.impl.model.TrainingNumber;
+import com.exadel.training.repository.impl.model.ShortParentTraining;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -100,7 +100,7 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
     @Query("select tr.place from Training as tr where tr.name= ?1 and tr.parent > 0 order by tr.dateTime asc")
     List<String> findPlacesByTrainingName(String trainingName);
 
-    @Query("select tr.name from Training as tr where tr.parent = 0")
+    @Query("select tr.name from Training as tr where tr.parent = 0 order by tr.name asc")
     List<String> findTrainingsNames();
 
     @Query("select tr.id from Training as tr where tr.name = ?1 and tr.parent = 0")
@@ -121,6 +121,9 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
     @Query("select case when (count(tr)>0) then true else false end from Training as tr inner join tr.listeners as trus where tr.name = ?1 and tr.parent = 0 and trus.login = ?2")
     Boolean isSubscriber(String trainingName, String userLogin);
 
-    @Query("select new TrainingNumber(tr.name,count(tr.name)) from Training as tr where tr.parent > 0 group by tr.name")
-    List<TrainingNumber> findTrainingsCounts();
+    @Query("select new ShortParentTraining(tr.name,count(tr.name),tr.pictureLink,tr.state,tr.coach,tr.rating,tr.dateTime,tr.place) from Training as tr group by tr.name order by tr.dateTime asc")
+    List<ShortParentTraining> findShortTrainingsSortByDate();
+
+    @Query("select new ShortParentTraining(tr.name,count(tr.name),tr.pictureLink,tr.state,tr.coach,tr.rating,tr.dateTime,tr.place) from Training as tr group by tr.name order by tr.rating desc")
+    List<ShortParentTraining> findShortTrainingsSortByRating();
 }

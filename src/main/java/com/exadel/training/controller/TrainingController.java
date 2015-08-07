@@ -4,7 +4,7 @@ import com.exadel.training.controller.model.Training.*;
 import com.exadel.training.controller.model.User.UserShort;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
-import com.exadel.training.repository.impl.model.TrainingNumber;
+import com.exadel.training.repository.impl.model.ShortParentTraining;
 import com.exadel.training.service.TrainingFeedbackService;
 import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
@@ -304,13 +304,13 @@ public class TrainingController {
 
     @RequestMapping(value = "/latest_trainings", method = RequestMethod.GET)
     public @ResponseBody
-    List<ShortTrainingInfo> getNearestTrainings(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
+    List<ShortParentTraining> getNearestTrainings(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
         String header = httpServletRequest.getHeader("authorization");
         String userLogin = cryptService.decrypt(header);
         if(userService.checkUserByLogin(userLogin)) {
-            List<Training> trainings = trainingService.getTrainingsByNearestDate();
-            List<TrainingNumber> trainingsCounts = trainingService.getTrainingsCounts();
-            return ShortTrainingInfo.parseList(trainings);
+            //List<Training> trainings = trainingService.getTrainingsByNearestDate();
+            List<ShortParentTraining> shortTrainings = trainingService.getShortTrainingsSortedByDate(userLogin);
+            return shortTrainings;
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;

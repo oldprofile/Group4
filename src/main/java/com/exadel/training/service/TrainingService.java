@@ -6,7 +6,7 @@ import com.exadel.training.controller.model.Training.TrainingForCreation;
 import com.exadel.training.model.Category;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
-import com.exadel.training.repository.impl.model.TrainingNumber;
+import com.exadel.training.repository.impl.model.ShortParentTraining;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -61,6 +61,7 @@ public interface TrainingService {
     Long getParentTrainingId(String trainingName);
     Boolean isSubscriber(String trainingName, String userLogin);
 
-    List<TrainingNumber> getTrainingsCounts();
+    List<ShortParentTraining> getShortTrainingsSortedByDate(String userLogin);
+    List<ShortParentTraining> getShortTrainingsSortedByRating(String userLogin);
 
 }
