@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -88,6 +89,16 @@ public class FeedbackController {
             }
     }
 
+    @RequestMapping(value = "/delete_user_feedback", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody void deleteUserFeedbacks(@RequestBody UserFeedbackGETModel userFeedbackGETModel, HttpServletResponse response) throws ParseException {
+        try {
+            userFeedbackService.deleteFeedback(userFeedbackGETModel.getUserLogin(), userFeedbackGETModel.getFeedbackerLogin(), SDF.parse(userFeedbackGETModel.getDate()));
+            response.setStatus(HttpServletResponse.SC_OK);
+        } catch (Exception ex) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
+    }
+
     @RequestMapping(value = "/coach_feedback", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody List<CoachFeedbackGETModel> getCoachFeedbacks(@RequestBody String login) throws NoSuchFieldException {
         User user = userService.findUserByLogin(login);
@@ -111,7 +122,7 @@ public class FeedbackController {
                 coachFeedbackService.addCoachFeedback(coachFeedbackModel, new Date());
 
                 User user = userService.findUserByLogin(coachFeedbackModel.getFeedbackerLogin());
-                CoachFeedback coachFeedback = coachFeedbackService.getCoachFeeddbackByLoginsAndDate(coachFeedbackModel.getCoachLogin(), coachFeedbackModel.getFeedbackerLogin(), date);
+                CoachFeedback coachFeedback = coachFeedbackService.getCoachFeedbackByLoginsAndDate(coachFeedbackModel.getCoachLogin(), coachFeedbackModel.getFeedbackerLogin(), date);
 
                 notificationNews.sendNews("has written feedback", user, coachFeedback);
 
@@ -119,6 +130,16 @@ public class FeedbackController {
             } catch (Exception e) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }
+    }
+
+    @RequestMapping(value = "/delete_coach_feedback", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody void deleteCoachFeedbacks(@RequestBody CoachFeedbackGETModel coachFeedbackGETModel, HttpServletResponse response) throws ParseException {
+        try {
+            coachFeedbackService.deleteFeedback(coachFeedbackGETModel.getCoachLogin(), coachFeedbackGETModel.getFeedbackerLogin(), SDF.parse(coachFeedbackGETModel.getDate()));
+            response.setStatus(HttpServletResponse.SC_OK);
+        } catch (Exception ex) {
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+    }
     }
 
     @RequestMapping(value = "/training_feedback", method = RequestMethod.POST, consumes = "application/json")
@@ -151,6 +172,16 @@ public class FeedbackController {
             } catch (Exception e) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }
+    }
+
+    @RequestMapping(value = "/delete_training_feedback", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody void deleteTrainingFeedbacks(@RequestBody TrainingFeedbackGETModel trainingFeedbackGETModel, HttpServletResponse response) throws ParseException {
+        try {
+            trainingFeedbackService.deleteFeedback(trainingFeedbackGETModel.getTrainingName(), trainingFeedbackGETModel.getFeedbackerLogin(), SDF.parse(trainingFeedbackGETModel.getDate()));
+            response.setStatus(HttpServletResponse.SC_OK);
+        } catch (Exception ex) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        }
     }
 
     @RequestMapping(value = "/request_user_feedback", method = RequestMethod.POST, consumes = "application/json")

@@ -45,7 +45,15 @@ public class CoachFeedbackServiceImpl implements CoachFeedbackService {
     }
 
     @Override
-    public CoachFeedback getCoachFeeddbackByLoginsAndDate(String coachLogin, String feedbackerLogin, Date date) {
-        return coachFeedbackRepository.findFeedbackByTrainingAndDateAndFeedbacker(coachLogin, feedbackerLogin, date);
+    public CoachFeedback getCoachFeedbackByLoginsAndDate(String coachLogin, String feedbackerLogin, Date date) {
+        return coachFeedbackRepository.findFeedbackByCoachAndDateAndFeedbacker(coachLogin, feedbackerLogin, date);
     }
+
+    @Override
+    public void deleteFeedback(String coachLogin, String feedbackerLogin, Date date) {
+        CoachFeedback coachFeedback = coachFeedbackRepository.findFeedbackByCoachAndDateAndFeedbacker(coachLogin, feedbackerLogin, date);
+        coachFeedbackRepository.delete(coachFeedback);
+    }
+
+
 }
