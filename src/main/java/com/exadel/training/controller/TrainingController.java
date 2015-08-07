@@ -4,6 +4,7 @@ import com.exadel.training.controller.model.Training.*;
 import com.exadel.training.controller.model.User.UserShort;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
+import com.exadel.training.repository.impl.TrainingNumber;
 import com.exadel.training.service.TrainingFeedbackService;
 import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
@@ -22,7 +23,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -309,7 +309,7 @@ public class TrainingController {
         String userLogin = cryptService.decrypt(header);
         if(userService.checkUserByLogin(userLogin)) {
             List<Training> trainings = trainingService.getTrainingsByNearestDate();
-            //HashMap<String, Integer> trainungCounts;
+            List<TrainingNumber> trainingsCounts = trainingService.getTrainingsCounts();
             return ShortTrainingInfo.parseList(trainings);
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
