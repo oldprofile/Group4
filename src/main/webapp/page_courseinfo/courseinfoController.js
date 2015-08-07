@@ -168,8 +168,22 @@ angular.module('myApp.courseinfo')
 
 
 		$scope.addParticipant = function() {
+			var participantModalInstance = $modal.open({
+				animation: true,
+				templateUrl: "page_courseinfo/participantModal.html",
+				controller: "ParticipantsModalInstanceController",
+				size: "lg",
+				resolve: {
+					courseinfo: function () {
+						return $scope.course;
+					}
+				},
+			});
 
-		}
+			omissionsModalInstance.result.then(function (data) {
+			}, function () {
+			});
+		};
 
 		$scope.manageOmissions = function (index) {
 			var omissionsModalInstance = $modal.open({
@@ -333,6 +347,26 @@ angular.module('myApp.courseinfo')
 			console.log($scope.omissionData);
 			courseInfoService.addOmissions($scope.omissionData);
 			$modalInstance.close($scope.course, $scope.index);
+		};
+
+		$scope.cancel = function () {
+			$modalInstance.dismiss('cancel');
+		};
+	}])
+
+	.controller('ParticipantsModalInstanceController', ['$scope', '$modalInstance', 'courseInfoService', 'courseinfo', function ($scope, $modalInstance, courseInfoService, courseinfo) {
+
+		$scope.participantInfo = {
+			numberPhone: ""
+		};
+
+		$scope.ok = function () {
+			console.log($scope.participantInfo);
+			courseInfoService.addParticipant($scope.participantData).then(
+				function(result) {
+
+				});
+			$modalInstance.close(courseinfo);
 		};
 
 		$scope.cancel = function () {

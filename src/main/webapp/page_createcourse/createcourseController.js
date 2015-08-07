@@ -70,7 +70,10 @@ angular.module('myApp.createcourse').controller('CreateCourseController', [
 
 	.controller('CoachModalInstanceController', ['$scope', '$modalInstance', 'coachService', 'externalCoaches', function($scope, $modalInstance, coachService, externalCoaches) {
 
-		$scope.coachInfo = {};
+		$scope.coachInfo = {
+			numberPhone: ""
+		};
+
 
 		$scope.ok = function() {
 			console.log($scope.coachInfo);
