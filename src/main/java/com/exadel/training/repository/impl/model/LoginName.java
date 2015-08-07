@@ -20,7 +20,7 @@ public class LoginName {
     public LoginName(){
     }
 
-    public LoginName(String name, String login) {
+    public LoginName(String login, String name) {
         this.name = name;
         this.login = login;
     }
