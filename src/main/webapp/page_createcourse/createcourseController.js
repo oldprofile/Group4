@@ -1,11 +1,10 @@
 angular.module('myApp.createcourse').controller('CreateCourseController', [
 	'$scope',
 	'$filter',
+	'$modal',
 	'createcourse',
 	'initCourseService',
-	'categoriesLocal',
-	'$timeout',
-	function ($scope, $filter, createcourse, initCourseService, categoriesLocal, $timeout) {
+	function ($scope, $filter, $modal, createcourse, initCourseService) {
 		$scope.isEdited = false;
 		$scope.header = 'Create';
 		$scope.disabled = 'courseForm.name.$dirty && courseForm.name.$invalid || courseForm.description.$dirty && courseForm.description.$invalid || courseForm.audience.$dirty && courseForm.audience.$invalid || courseForm.participantsNumber.$dirty && courseForm.participantsNumber.$invalid || courseForm.place.$dirty && courseForm.place.$invalid';
@@ -18,7 +17,7 @@ angular.module('myApp.createcourse').controller('CreateCourseController', [
 		$scope.courseInfo.pictureLink = "";
 
 		$scope.saveData = function () {
-			if($scope.courseInfo.isRepeating) {
+			if ($scope.courseInfo.isRepeating) {
 				$scope.courseInfo.repeatOn = angular.copy($scope.temp.repeatOn);
 				$scope.courseInfo.startsOn = $scope.temp.startsOn;
 				$scope.courseInfo.startsOn = $filter('date')($scope.courseInfo.startsOn, 'yyyy-MM-dd HH:mm');
@@ -47,8 +46,43 @@ angular.module('myApp.createcourse').controller('CreateCourseController', [
 			$scope.courseInfo.isInternal = type;
 		};
 
-		$scope.setLanguage = function(lang) {
+		$scope.setLanguage = function (lang) {
 			$scope.courseInfo.language = lang;
 		}
 
+		$scope.addCoach = function () {
+			var coachModalInstance = $modal.open({
+				animation: true,
+				templateUrl: "page_createcourse/coachModal.html",
+				controller: "CoachModalInstanceController",
+				size: "lg",
+				resolve: {
+					externalCoaches: $scope.externalCoaches,
+				}
+			});
+
+			coachModalInstance.result.then(function (data) {
+			}, function () {
+			});
+		}
+
+	}])
+
+	.controller('CoachModalInstanceController', ['$scope', '$modalInstance', 'coachService', 'externalCoaches', function($scope, $modalInstance, coachService, externalCoaches) {
+
+		$scope.coachInfo = {};
+
+		$scope.ok = function() {
+			console.log($scope.coachInfo);
+			coachService.addCoach($scope.coachInfo).then(function(data) {
+				coachService.getCoaches().then(function(result) {
+					externalCoaches = angular.copy(result);
+					$modalInstance.close(externalCoaches);
+				});
+			});
+		};
+
+		$scope.cancel = function() {
+			$modalInstance.dismiss('cancel');
+		};
 	}]);
