@@ -20,5 +20,5 @@ public interface OmissionService {
     List<Omission> getOmisssionsByTraining(String trainingName, Date dateFrom, Date dateTo);
     List<Omission> getOmisssionsByUser(String userLogin, Date dateFrom, Date dateTo);
     List<Omission> getOmisssionsByTrainingAndUser(String trainingName, String userLogin, Date dateFrom, Date dateTo);
-    List<Boolean> getAllOmissions(String trainingName, Date date);
+    List<Omission> getAllOmissions(String trainingName, Date date);
 }

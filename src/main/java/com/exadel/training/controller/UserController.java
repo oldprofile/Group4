@@ -8,6 +8,7 @@ import com.exadel.training.model.User;
 import com.exadel.training.notification.MessageFabric;
 import com.exadel.training.notification.Notification;
 import com.exadel.training.notification.news.NotificationNews;
+import com.exadel.training.repository.impl.model.LoginName;
 import com.exadel.training.service.RoleService;
 import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
@@ -374,7 +375,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/select_all_users_login", method = RequestMethod.GET)
-    public @ResponseBody List<String> selectAllLoginOfUser() {
+    public @ResponseBody List<LoginName> selectAllLoginOfUser() {
        return userService.selectAllLoginOfUsers();
     }
 

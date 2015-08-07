@@ -88,7 +88,7 @@ public class OmissionServiceImpl implements OmissionService{
    }
 
     @Override
-    public List<Boolean> getAllOmissions(String trainingName, Date date) {
+    public List<Omission> getAllOmissions(String trainingName, Date date) {
         return omissionRepository.getAllOmissions(trainingName, date);
     }
 
