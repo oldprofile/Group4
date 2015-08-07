@@ -22,12 +22,14 @@ public class ShortTrainingInfo {
     private String state;
     private int lessonNumber;
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-    @Autowired
-    private static TrainingService trainingService;
 
     public ShortTrainingInfo() {
     }
 
+    public ShortTrainingInfo(String name, int lessonNumber) {
+        this.trainingName = name;
+        this.lessonNumber = lessonNumber;
+    }
     public ShortTrainingInfo(Training training) throws NoSuchFieldException {
         trainingName = training.getName();
         trainingCoach = training.getCoach().getName();
@@ -40,7 +42,6 @@ public class ShortTrainingInfo {
         }
         trainingPlace = training.getPlace();
         state = StateTraining.parseToString(training.getState());
-        lessonNumber = trainingService.getTrainingsByName(trainingName).size();
     }
 
     public static List<ShortTrainingInfo> parseList(List<Training> trainings) throws NoSuchFieldException {

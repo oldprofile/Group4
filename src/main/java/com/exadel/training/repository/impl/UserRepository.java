@@ -3,6 +3,7 @@ package com.exadel.training.repository.impl;
 import com.exadel.training.model.Role;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
+import com.exadel.training.repository.impl.model.LoginName;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -11,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -47,8 +49,8 @@ public interface UserRepository extends JpaRepository<User,Long>{
     @Query("select r from User as u inner join u.roles as r where u.login = ?1")
     List<Role> findRolesOfUser(String login);
 
-    @Query("select u.name from User as u order by u.name asc")
-    List<String> selectAllLoginOfUser();
+    @Query("select new LoginName(u.login, u.name) from User as u order by u.name asc")
+    List<LoginName> selectAllLoginOfUser();
 
     @Query(value = "SELECT * FROM users WHERE MATCH (name,login,email,number_phone) AGAINST (:search in boolean mode)", nativeQuery = true)
     List<User> searchUsers(@Param("search")String search);
