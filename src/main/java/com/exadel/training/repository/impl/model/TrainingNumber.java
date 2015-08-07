@@ -1,4 +1,4 @@
-package com.exadel.training.repository.impl;
+package com.exadel.training.repository.impl.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

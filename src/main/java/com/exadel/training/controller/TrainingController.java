@@ -4,7 +4,7 @@ import com.exadel.training.controller.model.Training.*;
 import com.exadel.training.controller.model.User.UserShort;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
-import com.exadel.training.repository.impl.TrainingNumber;
+import com.exadel.training.repository.impl.model.TrainingNumber;
 import com.exadel.training.service.TrainingFeedbackService;
 import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
