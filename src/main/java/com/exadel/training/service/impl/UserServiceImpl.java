@@ -7,6 +7,7 @@ import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
 import com.exadel.training.repository.impl.TrainingRepository;
 import com.exadel.training.repository.impl.UserRepository;
+import com.exadel.training.repository.impl.model.LoginName;
 import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -168,7 +169,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<String> selectAllLoginOfUsers() {
+    public List<LoginName> selectAllLoginOfUsers() {
         return userRepository.selectAllLoginOfUser();
     }
 
