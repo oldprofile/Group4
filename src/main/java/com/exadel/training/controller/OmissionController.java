@@ -1,20 +1,17 @@
 package com.exadel.training.controller;
 
-import com.exadel.training.controller.model.Omission.JournalOmissionModel;
 import com.exadel.training.controller.model.Omission.OmissionADDModel;
+import com.exadel.training.controller.model.Omission.OmissionGETModel;
 import com.exadel.training.controller.model.Omission.PathToStatistics;
 import com.exadel.training.controller.model.Omission.StatisticsRequestModel;
 import com.exadel.training.controller.model.Training.TrainingNameAndDate;
 import com.exadel.training.model.Omission;
-import com.exadel.training.model.Training;
-import com.exadel.training.model.User;
 import com.exadel.training.repository.impl.OmissionRepository;
 import com.exadel.training.service.OmissionService;
 import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
-import com.exadel.training.statistics.ExcelFileGenerator;
+import com.exadel.training.service.statistics.ExcelFileGenerator;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpRequest;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,10 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Клим on 13.07.2015.
@@ -73,9 +67,10 @@ public class OmissionController {
     }
 
     @RequestMapping(value = "/get_omissions", method = RequestMethod.POST, consumes = "application/json")
-    public @ResponseBody List<Boolean> getOmissions(@RequestBody TrainingNameAndDate trainingNameAndDate) throws ParseException {
-        List<Boolean> omissions = omissionService.getAllOmissions(trainingNameAndDate.getTrainingName(), trainingNameAndDate.parseToDate());
-        return omissions;
+    public @ResponseBody List<OmissionGETModel> getOmissions(@RequestBody TrainingNameAndDate trainingNameAndDate) throws ParseException {
+        List<Omission> omissions = omissionService.getAllOmissions(trainingNameAndDate.getTrainingName(), trainingNameAndDate.parseToDate());
+        List<OmissionGETModel> omissionGETModels = OmissionGETModel.parseOmissionList(omissions);
+        return omissionGETModels;
     }
 
     @RequestMapping(value = "/statistics", method = RequestMethod.POST, consumes = "application/json")

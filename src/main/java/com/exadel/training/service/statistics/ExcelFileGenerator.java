@@ -1,4 +1,4 @@
-package com.exadel.training.statistics;
+package com.exadel.training.service.statistics;
 
 import com.exadel.training.controller.model.Feedback.UserFeedbackGETModel;
 import com.exadel.training.controller.model.Omission.JournalOmissionModel;
