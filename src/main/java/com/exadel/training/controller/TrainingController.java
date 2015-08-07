@@ -91,6 +91,22 @@ public class TrainingController {
         }
     }
 
+    @RequestMapping(value = "/listeners/{trainingName}", method = RequestMethod.GET)
+    @ResponseBody
+    List<UserShort> getListeners(@PathVariable("trainingName") String trainingName,
+                     HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
+
+        String header = httpServletRequest.getHeader("authorization");
+        String userLogin = cryptService.decrypt(header);
+
+        if (userService.checkUserByLogin(userLogin)) {
+            return UserShort.parseUserShortList(trainingService.getListenersByTrainingNameSortByName(trainingName));
+        } else {
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return null;
+        }
+    }
+
     @RequestMapping(value = "/list_by_states/{states}", method = RequestMethod.GET)
     @ResponseBody
     List<ShortTrainingInfo> listByStates(@PathVariable("states") List<Integer> states,
