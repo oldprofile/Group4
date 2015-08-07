@@ -14,6 +14,7 @@ public class JournalOmissionModel {
 
     private String date;
     private boolean isOmission;
+    private String reason;
 
     public JournalOmissionModel() {
     }
@@ -35,10 +36,19 @@ public class JournalOmissionModel {
         this.isOmission = isOmission;
     }
 
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
     public static JournalOmissionModel parseJournalOmissionUserByTraining(Omission omission) {
         JournalOmissionModel journalOmissionModel = new JournalOmissionModel();
         journalOmissionModel.setIsOmission(omission.isOmission());
         journalOmissionModel.setDate(omission.getTraining().getDateTime());
+        journalOmissionModel.setReason(omission.getReason());
 
         return journalOmissionModel;
     }

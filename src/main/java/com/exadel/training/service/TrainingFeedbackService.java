@@ -16,4 +16,5 @@ public interface TrainingFeedbackService {
     public List<TrainingFeedback> getTrainingFeedbacksOrderByDate(Training training);
     public  Boolean hasFeedback(String login, String name);
     public TrainingFeedback getTrainingFeedbackByNameLoginAndDate(String trainingName, String feedbackerLogin, Date date) throws ParseException;
+    public void deleteFeedback(String trainingName, String feedbackerLogin, Date date);
 }

@@ -65,4 +65,5 @@ public class StatisticsRequestModel {
     public void setType(int type) {
         this.type = type;
     }
+
 }

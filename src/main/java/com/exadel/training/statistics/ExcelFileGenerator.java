@@ -1,17 +1,21 @@
 package com.exadel.training.statistics;
 
+import com.exadel.training.controller.model.Feedback.UserFeedbackGETModel;
 import com.exadel.training.controller.model.Omission.JournalOmissionModel;
+import com.exadel.training.controller.model.Omission.StatisticsRequestModel;
 import com.exadel.training.controller.model.Training.TrainingName;
 import com.exadel.training.controller.model.User.UserLoginAndName;
 import com.exadel.training.model.Omission;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
+import com.exadel.training.model.UserFeedback;
 import com.exadel.training.service.OmissionService;
 import com.exadel.training.service.TrainingService;
+import com.exadel.training.service.UserFeedbackService;
 import com.exadel.training.service.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
-import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +43,10 @@ public class ExcelFileGenerator {
     @Autowired
     OmissionService omissionService;
 
-    private static final int DEFAULT_COLUMN_WIDTH = 11;
+    @Autowired
+    UserFeedbackService userFeedbackService;
+
+    private static final int DEFAULT_COLUMN_WIDTH = 20;
     private static final int NAMES_COLUMN_WIDTH = 23*256;
     private static final int TITLE_HEIGHT = 12;
 
@@ -49,332 +56,30 @@ public class ExcelFileGenerator {
     public ExcelFileGenerator() {
     }
 
-    public static String createFilePath(String fileName) throws IOException {
+    private String createFilePath(String fileName) throws IOException {
         String destination = System.getProperty("user.dir") + "\\src\\main\\webapp\\statistics\\" + fileName;
         if(!SystemUtils.IS_OS_WINDOWS)
             destination = destination.replace("\\", "/");
         return destination;
     }
 
-    public static String returnFilePath(String fileName) {
+    private String returnFilePath(String fileName) {
         String destination = "statistics\\" + fileName;
         if(!SystemUtils.IS_OS_WINDOWS)
             destination = destination.replace("\\", "/");
         return destination;
     }
 
-    public String generateForTrainingFull(Date dateFrom, Date dateTo, String trainingName) throws IOException {
-        String fileName = trainingName + "_full_statistics.xlsx";
-
-        List<User> listeners = trainingService.getListenersByTrainingNameSortByName(trainingName);
-        List<Date> dates = trainingService.getDatesByTrainingNameBetweenDates(trainingName, dateFrom, dateTo);
-        List<UserLoginAndName> userLoginAndNames = UserLoginAndName.parseUserLoginAndName(listeners);
-
-        XSSFWorkbook workbook = new XSSFWorkbook();
-        XSSFSheet sheet = workbook.createSheet(trainingName + " full statistics");
-
-        XSSFCellStyle titleStyle = workbook.createCellStyle();
-        XSSFCellStyle headersStyle = workbook.createCellStyle();
-        XSSFCellStyle dataStyle = workbook.createCellStyle();
-
-        XSSFFont titleFont = workbook.createFont();
-        titleFont.setColor(IndexedColors.ROYAL_BLUE.getIndex());
-        titleFont.setBold(true);
-        titleFont.setFontHeight(TITLE_HEIGHT);
-        titleStyle.setFont(titleFont);
-
-        XSSFFont headersFont = workbook.createFont();
-        headersFont.setColor(IndexedColors.WHITE.getIndex());
-        headersFont.setBold(true);
-        headersStyle.setFont(headersFont);
-        headersStyle.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
-        headersStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        headersStyle.setLeftBorderColor(IndexedColors.WHITE.getIndex());
-        headersStyle.setRightBorderColor(IndexedColors.WHITE.getIndex());
-
-        XSSFFont dataFont = workbook.createFont();
-        dataFont.setBold(true);
-        dataStyle.setFont(dataFont);
-
-        sheet.setDefaultColumnWidth(DEFAULT_COLUMN_WIDTH);
-        sheet.setColumnWidth(0, NAMES_COLUMN_WIDTH);
-
-        XSSFRow title = sheet.createRow(0);
-        XSSFRow headers = sheet.createRow(2);
-        XSSFRow datesRow = sheet.createRow(sheet.getLastRowNum() + 1);
-
-        for(int datesIndex = 0; datesIndex < dates.size(); datesIndex++) {
-            int columnIndex = datesIndex + 1;
-            datesRow.createCell(columnIndex).setCellValue(SDF.format(dates.get(datesIndex)));
-            title.createCell(datesIndex).setCellStyle(titleStyle);
-            headers.createCell(datesIndex).setCellStyle(headersStyle);
-        }
-
-        title.createCell(0).setCellValue(trainingName + " training's full statistics by period: " + TITLE_DATE_FORMAT.format(dateFrom) + " - " + TITLE_DATE_FORMAT.format(dateTo));
-        title.getCell(0).setCellStyle(titleStyle);
-        headers.createCell(0).setCellValue("Listeners");
-        headers.getCell(0).setCellStyle(headersStyle);
-        headers.createCell(1).setCellValue("Dates");
-        headers.getCell(1).setCellStyle(headersStyle);
-
-        sheet.addMergedRegion(new CellRangeAddress(0, 0, title.getFirstCellNum(), title.getLastCellNum()));
-        sheet.addMergedRegion(new CellRangeAddress(2, 2, headers.getFirstCellNum() + 1, headers.getLastCellNum()));
-
-        for(int usersIndex = 0; usersIndex < userLoginAndNames.size(); usersIndex++) {
-            int rowIndex = usersIndex + 4;
-
-            List<Omission> omissions = omissionService.getOmisssionsByTrainingAndUser(trainingName,userLoginAndNames.get(usersIndex).getLogin(), dateFrom, dateTo);
-            List<JournalOmissionModel> journalOmissionModels = JournalOmissionModel.parseListOfOmissions(omissions);
-
-            XSSFRow row = sheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(userLoginAndNames.get(usersIndex).getName());
-            for(int omissionsIndex = 0; omissionsIndex < journalOmissionModels.size(); omissionsIndex++) {
-                int columnIndex = omissionsIndex + 1;
-                if(datesRow.getCell(columnIndex).getStringCellValue().compareTo(journalOmissionModels.get(omissionsIndex).getDate()) == 0) {
-                    if(journalOmissionModels.get(omissionsIndex).getIsOmission()) {
-                        row.createCell(columnIndex).setCellValue("X");
-                        row.getCell(columnIndex).setCellStyle(dataStyle);
-                    }
-                }
-            }
-        }
-
-        String filePath = createFilePath(fileName);
-        FileOutputStream fileOut = new FileOutputStream(filePath);
-        workbook.write(fileOut);
-        fileOut.close();
-        return returnFilePath(fileName);
-    }
-
-    public String generateForUserFull(Date dateFrom, Date dateTo, String userLogin) throws IOException {
-        String fileName = userLogin + "_full_statistics.xlsx";
-
-        List<Training> trainings = userService.selectAllTrainingBetweenDatesAndSortedByName(userLogin, dateFrom, dateTo);
-        List<Date> dates = userService.selectAllDateOfTrainingsBetweenDates(userLogin, dateFrom, dateTo);
-        List<TrainingName> trainingNameAndDates = TrainingName.parseTrainingList(trainings);
-
-        XSSFWorkbook workbook = new XSSFWorkbook();
-        XSSFSheet sheet = workbook.createSheet(userLogin + " full statistics");
-
-        XSSFCellStyle titleStyle = workbook.createCellStyle();
-        XSSFCellStyle headersStyle = workbook.createCellStyle();
-        XSSFCellStyle dataStyle = workbook.createCellStyle();
-
-        XSSFFont titleFont = workbook.createFont();
-        titleFont.setColor(IndexedColors.ROYAL_BLUE.getIndex());
-        titleFont.setBold(true);
-        titleFont.setFontHeight(TITLE_HEIGHT);
-        titleStyle.setFont(titleFont);
-
-        XSSFFont headersFont = workbook.createFont();
-        headersFont.setColor(IndexedColors.WHITE.getIndex());
-        headersFont.setBold(true);
-        headersStyle.setFont(headersFont);
-        headersStyle.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
-        headersStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        headersStyle.setLeftBorderColor(IndexedColors.WHITE.getIndex());
-        headersStyle.setRightBorderColor(IndexedColors.WHITE.getIndex());
-
-        XSSFFont dataFont = workbook.createFont();
-        dataFont.setBold(true);
-        dataStyle.setFont(dataFont);
-
-        sheet.setDefaultColumnWidth(DEFAULT_COLUMN_WIDTH);
-        sheet.setColumnWidth(0, NAMES_COLUMN_WIDTH);
-
-        XSSFRow title = sheet.createRow(0);
-        XSSFRow headers = sheet.createRow(2);
-        XSSFRow datesRow = sheet.createRow(sheet.getLastRowNum() + 1);
-
-        for(int datesIndex = 0; datesIndex < dates.size(); datesIndex++) {
-            int columnIndex = datesIndex + 1;
-            datesRow.createCell(columnIndex).setCellValue(SDF.format(dates.get(datesIndex)));
-            title.createCell(datesIndex).setCellStyle(titleStyle);
-            headers.createCell(datesIndex).setCellStyle(headersStyle);
-        }
-
-        title.createCell(0).setCellValue(userLogin + "'s full statistics by period: " + TITLE_DATE_FORMAT.format(dateFrom) + " - " + TITLE_DATE_FORMAT.format(dateTo));
-        title.getCell(0).setCellStyle(titleStyle);
-        headers.createCell(0).setCellValue("Trainings");
-        headers.getCell(0).setCellStyle(headersStyle);
-        headers.createCell(1).setCellValue("Dates");
-        headers.getCell(1).setCellStyle(headersStyle);
-
-        sheet.addMergedRegion(new CellRangeAddress(0, 0, title.getFirstCellNum(), title.getLastCellNum()));
-        sheet.addMergedRegion(new CellRangeAddress(2, 2, headers.getFirstCellNum() + 1, headers.getLastCellNum()));
-
-        for(int trainingsIndex = 0; trainingsIndex < trainingNameAndDates.size(); trainingsIndex++) {
-            int rowIndex = trainingsIndex + 4;
-            List<Omission> omissions = omissionService.getOmisssionsByTrainingAndUser(trainingNameAndDates.get(trainingsIndex).getTrainingName(),userLogin, dateFrom, dateTo);
-            List<JournalOmissionModel> journalOmissionModels = JournalOmissionModel.parseListOfOmissions(omissions);
-            XSSFRow row = sheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(trainingNameAndDates.get(trainingsIndex).getTrainingName());
-            for(int omissionsIndex = 0; omissionsIndex < journalOmissionModels.size(); omissionsIndex++) {
-                int columnIndex = omissionsIndex + 1;
-                if(datesRow.getCell(columnIndex).getStringCellValue().compareTo(journalOmissionModels.get(omissionsIndex).getDate()) == 0) {
-                    if(journalOmissionModels.get(omissionsIndex).getIsOmission()) {
-                        row.createCell(columnIndex).setCellValue("X");
-                        row.getCell(columnIndex).setCellStyle(dataStyle);
-                    }
-                }
-            }
-        }
-        String filePath = createFilePath(fileName);
-        FileOutputStream fileOut = new FileOutputStream(filePath);
-        workbook.write(fileOut);
-        fileOut.close();
-        return returnFilePath(fileName);
-    }
-
-    public String generateForUserAndTrainingFull(Date dateFrom, Date dateTo, String userLogin, String trainingName) throws IOException {
-        String fileName = userLogin + "_on_" + trainingName + "_training_full_statistics.xlsx";
-
-        List<Omission> omissions = omissionService.getOmisssionsByTrainingAndUser(trainingName, userLogin, dateFrom, dateTo);
-        List<Date> dates = trainingService.getDatesByTrainingNameBetweenDates(trainingName, dateFrom, dateTo);
-        List<JournalOmissionModel> journalOmissionModels = JournalOmissionModel.parseListOfOmissions(omissions);
-
-        XSSFWorkbook workbook = new XSSFWorkbook();
-        XSSFSheet sheet = workbook.createSheet(userLogin + " on " + trainingName + " full statistics");
-
-        XSSFCellStyle titleStyle = workbook.createCellStyle();
-        XSSFCellStyle headersStyle = workbook.createCellStyle();
-        XSSFCellStyle dataStyle = workbook.createCellStyle();
-
-        XSSFFont titleFont = workbook.createFont();
-        titleFont.setColor(IndexedColors.ROYAL_BLUE.getIndex());
-        titleFont.setBold(true);
-        titleFont.setFontHeight(TITLE_HEIGHT);
-        titleStyle.setFont(titleFont);
-
-        XSSFFont headersFont = workbook.createFont();
-        headersFont.setColor(IndexedColors.WHITE.getIndex());
-        headersFont.setBold(true);
-        headersStyle.setFont(headersFont);
-        headersStyle.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
-        headersStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        headersStyle.setLeftBorderColor(IndexedColors.WHITE.getIndex());
-        headersStyle.setRightBorderColor(IndexedColors.WHITE.getIndex());
-
-        XSSFFont dataFont = workbook.createFont();
-        dataFont.setBold(true);
-        dataStyle.setFont(dataFont);
-
-        sheet.setDefaultColumnWidth(DEFAULT_COLUMN_WIDTH);
-        sheet.setColumnWidth(0, NAMES_COLUMN_WIDTH);
-
-        XSSFRow title = sheet.createRow(0);
-        XSSFRow headers = sheet.createRow(2);
-        XSSFRow datesRow = sheet.createRow(sheet.getLastRowNum() + 1);
-
-        for(int datesIndex = 0; datesIndex < dates.size(); datesIndex++) {
-            int columnIndex = datesIndex + 1;
-            datesRow.createCell(columnIndex).setCellValue(SDF.format(dates.get(datesIndex)));
-            title.createCell(datesIndex).setCellStyle(titleStyle);
-            headers.createCell(datesIndex).setCellStyle(headersStyle);
-        }
-
-        title.createCell(0).setCellValue(userLogin + " on " + trainingName + " full statistics by period: " + TITLE_DATE_FORMAT.format(dateFrom) + " - " + TITLE_DATE_FORMAT.format(dateTo));
-        title.getCell(0).setCellStyle(titleStyle);
-        headers.createCell(0).setCellValue("Training");
-        headers.getCell(0).setCellStyle(headersStyle);
-        headers.createCell(1).setCellValue("Dates");
-        headers.getCell(1).setCellStyle(headersStyle);
-
-        sheet.addMergedRegion(new CellRangeAddress(0, 0, title.getFirstCellNum(), title.getLastCellNum()));
-        sheet.addMergedRegion(new CellRangeAddress(2, 2, headers.getFirstCellNum() + 1, headers.getLastCellNum()));
-
-        XSSFRow row = sheet.createRow(4);
-        row.createCell(0).setCellValue(trainingName);
-        for (int omissionsIndex = 0; omissionsIndex < journalOmissionModels.size(); omissionsIndex++) {
-            int columnIndex = omissionsIndex + 1;
-            if (datesRow.getCell(columnIndex).getStringCellValue().compareTo(journalOmissionModels.get(omissionsIndex).getDate()) == 0) {
-                if (journalOmissionModels.get(omissionsIndex).getIsOmission()) {
-                    row.createCell(columnIndex).setCellValue("X");
-                    row.getCell(columnIndex).setCellStyle(dataStyle);
-                }
-            }
-        }
-        String filePath = createFilePath(fileName);
-        FileOutputStream fileOut = new FileOutputStream(filePath);
-        workbook.write(fileOut);
-        fileOut.close();
-        return returnFilePath(fileName);
-    }
-
-    public String generateForTrainingDates(Date dateFrom, Date dateTo, String trainingName) throws IOException {
-        String fileName = trainingName + "_omissions_dates.xlsx";
-
-        List<User> users = trainingService.getListenersByTrainingNameSortByName(trainingName);
-        List<UserLoginAndName> userLoginAndNames = UserLoginAndName.parseUserLoginAndName(users);
-
-        XSSFWorkbook workbook = new XSSFWorkbook();
-        XSSFSheet sheet = workbook.createSheet(trainingName + " omissions dates");
-
-        XSSFCellStyle titleStyle = workbook.createCellStyle();
-        XSSFCellStyle headersStyle = workbook.createCellStyle();
-
-        XSSFFont titleFont = workbook.createFont();
-        titleFont.setColor(IndexedColors.ROYAL_BLUE.getIndex());
-        titleFont.setBold(true);
-        titleFont.setFontHeight(TITLE_HEIGHT);
-        titleStyle.setFont(titleFont);
-
-        XSSFFont headersFont = workbook.createFont();
-        headersFont.setColor(IndexedColors.WHITE.getIndex());
-        headersFont.setBold(true);
-        headersStyle.setFont(headersFont);
-        headersStyle.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
-        headersStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        headersStyle.setLeftBorderColor(IndexedColors.WHITE.getIndex());
-        headersStyle.setRightBorderColor(IndexedColors.WHITE.getIndex());
-
-        sheet.setDefaultColumnWidth(DEFAULT_COLUMN_WIDTH);
-        sheet.setColumnWidth(0, NAMES_COLUMN_WIDTH);
-
-        XSSFRow title = sheet.createRow(0);
-        title.createCell(0).setCellStyle(titleStyle);
-        title.createCell(1).setCellStyle(titleStyle);
-        title.getCell(0).setCellValue(trainingName + " omissions dates by period: " + TITLE_DATE_FORMAT.format(dateFrom) + " - " + TITLE_DATE_FORMAT.format(dateTo));
-        XSSFRow headers = sheet.createRow(2);
-        headers.createCell(0).setCellValue("Listeners");
-        headers.getCell(0).setCellStyle(headersStyle);
-        headers.createCell(1).setCellValue("Dates");
-        headers.getCell(1).setCellStyle(headersStyle);
-
-        sheet.addMergedRegion(new CellRangeAddress(0, 0, title.getFirstCellNum(), title.getLastCellNum()));
-
-        for(int usersIndex = 0; usersIndex < userLoginAndNames.size(); usersIndex++) {
-            int rowIndex = usersIndex + 3;
-            List<Omission> omissions = omissionService.getOmisssionsByTrainingAndUser(trainingName,userLoginAndNames.get(usersIndex).getLogin(), dateFrom, dateTo);
-            List<JournalOmissionModel> journalOmissionModels = JournalOmissionModel.parseListOfOmissions(omissions);
-            XSSFRow row = sheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(userLoginAndNames.get(usersIndex).getName());
-            for(int omissionsIndex = 0; omissionsIndex < journalOmissionModels.size(); omissionsIndex++) {
-                int columnIndex = omissionsIndex + 1;
-                if(journalOmissionModels.get(omissionsIndex).getIsOmission()) {
-                    row.createCell(columnIndex).setCellValue(journalOmissionModels.get(omissionsIndex).getDate());
-                }
-            }
-        }
-        String filePath = createFilePath(fileName);
-        FileOutputStream fileOut = new FileOutputStream(filePath);
-        workbook.write(fileOut);
-        fileOut.close();
-        return returnFilePath(fileName);
-    }
-
-    public String generateForUserDates(Date dateFrom, Date dateTo, String userLogin) throws IOException {
-        String fileName = userLogin + "_omissions_dates.xlsx";
-
+    public XSSFWorkbook generateTrainingsList(Date dateFrom, Date dateTo, String userLogin) {
         List<Training> trainings = userService.selectAllTrainingBetweenDatesAndSortedByName(userLogin, dateFrom, dateTo);
         List<TrainingName> trainingNameAndDates = TrainingName.parseTrainingList(trainings);
 
-
         XSSFWorkbook workbook = new XSSFWorkbook();
-        XSSFSheet sheet = workbook.createSheet(userLogin + " omissions dates");
+        XSSFSheet sheet = workbook.createSheet(userLogin + " trainings statistics");
 
         XSSFCellStyle titleStyle = workbook.createCellStyle();
         XSSFCellStyle headersStyle = workbook.createCellStyle();
+        XSSFCellStyle dataStyle = workbook.createCellStyle();
 
         XSSFFont titleFont = workbook.createFont();
         titleFont.setColor(IndexedColors.ROYAL_BLUE.getIndex());
@@ -391,283 +96,241 @@ public class ExcelFileGenerator {
         headersStyle.setLeftBorderColor(IndexedColors.WHITE.getIndex());
         headersStyle.setRightBorderColor(IndexedColors.WHITE.getIndex());
 
+        XSSFFont dataFont = workbook.createFont();
+        dataFont.setBold(true);
+        dataStyle.setFont(dataFont);
+
         sheet.setDefaultColumnWidth(DEFAULT_COLUMN_WIDTH);
         sheet.setColumnWidth(0, NAMES_COLUMN_WIDTH);
 
         XSSFRow title = sheet.createRow(0);
-        title.createCell(0).setCellStyle(titleStyle);
-        title.createCell(1).setCellStyle(titleStyle);
-        title.getCell(0).setCellValue(userLogin + " omissions dates by period: " + TITLE_DATE_FORMAT.format(dateFrom) + " - " + TITLE_DATE_FORMAT.format(dateTo));
         XSSFRow headers = sheet.createRow(2);
+
+        title.createCell(0).setCellValue(userLogin + "'s trainings statistics by period: " + TITLE_DATE_FORMAT.format(dateFrom) + " - " + TITLE_DATE_FORMAT.format(dateTo));
+        title.getCell(0).setCellStyle(titleStyle);
         headers.createCell(0).setCellValue("Trainings");
         headers.getCell(0).setCellStyle(headersStyle);
-        headers.createCell(1).setCellValue("Dates");
-        headers.getCell(1).setCellStyle(headersStyle);
 
         sheet.addMergedRegion(new CellRangeAddress(0, 0, title.getFirstCellNum(), title.getLastCellNum()));
 
         for(int trainingsIndex = 0; trainingsIndex < trainingNameAndDates.size(); trainingsIndex++) {
             int rowIndex = trainingsIndex + 3;
-            List<Omission> omissions = omissionService.getOmisssionsByTrainingAndUser(trainingNameAndDates.get(trainingsIndex).getTrainingName(),userLogin, dateFrom, dateTo);
-            List<JournalOmissionModel> journalOmissionModels = JournalOmissionModel.parseListOfOmissions(omissions);
             XSSFRow row = sheet.createRow(rowIndex);
             row.createCell(0).setCellValue(trainingNameAndDates.get(trainingsIndex).getTrainingName());
+        }
+
+        return workbook;
+    }
+
+    public XSSFWorkbook generateUserList(Date dateFrom, Date dateTo, String trainingName) {
+        List<User> listeners = trainingService.getListenersByTrainingNameSortByName(trainingName);
+        List<UserLoginAndName> userLoginAndNames = UserLoginAndName.parseUserLoginAndName(listeners);
+
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet sheet = workbook.createSheet(trainingName + " users statistics");
+
+        XSSFCellStyle titleStyle = workbook.createCellStyle();
+        XSSFCellStyle headersStyle = workbook.createCellStyle();
+        XSSFCellStyle dataStyle = workbook.createCellStyle();
+
+        XSSFFont titleFont = workbook.createFont();
+        titleFont.setColor(IndexedColors.ROYAL_BLUE.getIndex());
+        titleFont.setBold(true);
+        titleFont.setFontHeight(TITLE_HEIGHT);
+        titleStyle.setFont(titleFont);
+
+        XSSFFont headersFont = workbook.createFont();
+        headersFont.setColor(IndexedColors.WHITE.getIndex());
+        headersFont.setBold(true);
+        headersStyle.setFont(headersFont);
+        headersStyle.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
+        headersStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        headersStyle.setLeftBorderColor(IndexedColors.WHITE.getIndex());
+        headersStyle.setRightBorderColor(IndexedColors.WHITE.getIndex());
+
+        XSSFFont dataFont = workbook.createFont();
+        dataFont.setBold(true);
+        dataStyle.setFont(dataFont);
+
+        sheet.setDefaultColumnWidth(DEFAULT_COLUMN_WIDTH);
+        sheet.setColumnWidth(0, NAMES_COLUMN_WIDTH);
+
+        XSSFRow title = sheet.createRow(0);
+        XSSFRow headers = sheet.createRow(2);
+
+        title.createCell(0).setCellValue(trainingName + " training's users statistics by period: " + TITLE_DATE_FORMAT.format(dateFrom) + " - " + TITLE_DATE_FORMAT.format(dateTo));
+        title.getCell(0).setCellStyle(titleStyle);
+        headers.createCell(0).setCellValue("Listeners");
+        headers.getCell(0).setCellStyle(headersStyle);
+
+        sheet.addMergedRegion(new CellRangeAddress(0, 0, title.getFirstCellNum(), title.getLastCellNum()));
+
+        for(int usersIndex = 0; usersIndex < userLoginAndNames.size(); usersIndex++) {
+            int rowIndex = usersIndex + 3;
+            XSSFRow row = sheet.createRow(rowIndex);
+            row.createCell(0).setCellValue(userLoginAndNames.get(usersIndex).getName());
+        }
+
+        return workbook;
+    }
+
+    public XSSFWorkbook generateForTrainingDates(Date dateFrom, Date dateTo, String trainingName) {
+
+        List<User> listeners = trainingService.getListenersByTrainingNameSortByName(trainingName);
+        List<UserLoginAndName> userLoginAndNames = UserLoginAndName.parseUserLoginAndName(listeners);
+
+        XSSFWorkbook workbook = generateUserList(dateFrom, dateTo, trainingName);
+        XSSFSheet sheet = workbook.getSheetAt(0);
+        sheet.getRow(2).createCell(1).setCellValue("Dates");
+        sheet.getRow(2).getCell(1).setCellStyle(sheet.getRow(2).getCell(0).getCellStyle());
+
+        for(int usersIndex = 0; usersIndex < userLoginAndNames.size(); usersIndex++) {
+            int rowIndex = usersIndex + 3;
+            List<Omission> omissions = omissionService.getOmisssionsByTrainingAndUser(trainingName,userLoginAndNames.get(usersIndex).getLogin(), dateFrom, dateTo);
+            List<JournalOmissionModel> journalOmissionModels = JournalOmissionModel.parseListOfOmissions(omissions);
+            XSSFRow row = sheet.getRow(rowIndex);
             for(int omissionsIndex = 0; omissionsIndex < journalOmissionModels.size(); omissionsIndex++) {
                 int columnIndex = omissionsIndex + 1;
                 if(journalOmissionModels.get(omissionsIndex).getIsOmission()) {
-                    row.createCell(columnIndex).setCellValue(journalOmissionModels.get(omissionsIndex).getDate());
+                    row.createCell(columnIndex).setCellValue( journalOmissionModels.get(omissionsIndex).getDate() + " " + journalOmissionModels.get(omissionsIndex).getReason());
                 }
             }
         }
-        String filePath = createFilePath(fileName);
-        FileOutputStream fileOut = new FileOutputStream(filePath);
-        workbook.write(fileOut);
-        fileOut.close();
-        return returnFilePath(fileName);
+        return workbook;
     }
 
-    // for user and training
-    public String generateForUserAndTrainingDates(Date dateFrom, Date dateTo, String userLogin, String trainingName) throws IOException {
-        String fileName = userLogin + "_omissions_dates_on_" + trainingName + ".xlsx";
+    public XSSFWorkbook generateForUserDates(Date dateFrom, Date dateTo, String userLogin) {
+        List<Training> trainings = userService.selectAllTrainingBetweenDatesAndSortedByName(userLogin, dateFrom, dateTo);
+        List<TrainingName> trainingNameAndDates = TrainingName.parseTrainingList(trainings);
 
-        List<Omission> omissions = omissionService.getOmisssionsByTrainingAndUser(trainingName, userLogin, dateFrom, dateTo);
-        List<JournalOmissionModel> journalOmissionModels = JournalOmissionModel.parseListOfOmissions(omissions);
+        XSSFWorkbook workbook = generateTrainingsList(dateFrom, dateTo, userLogin);
+        XSSFSheet sheet = workbook.getSheetAt(0);
+        sheet.getRow(2).createCell(1).setCellValue("Dates");
+        sheet.getRow(2).getCell(1).setCellStyle(sheet.getRow(2).getCell(0).getCellStyle());
 
-        XSSFWorkbook workbook = new XSSFWorkbook();
-        XSSFSheet sheet = workbook.createSheet(userLogin + " omission dates on" + trainingName);
-
-        XSSFCellStyle titleStyle = workbook.createCellStyle();
-        XSSFCellStyle headersStyle = workbook.createCellStyle();
-
-        XSSFFont titleFont = workbook.createFont();
-        titleFont.setColor(IndexedColors.ROYAL_BLUE.getIndex());
-        titleFont.setBold(true);
-        titleFont.setFontHeight(TITLE_HEIGHT);
-        titleStyle.setFont(titleFont);
-
-        XSSFFont headersFont = workbook.createFont();
-        headersFont.setColor(IndexedColors.WHITE.getIndex());
-        headersFont.setBold(true);
-        headersStyle.setFont(headersFont);
-        headersStyle.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
-        headersStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        headersStyle.setLeftBorderColor(IndexedColors.WHITE.getIndex());
-        headersStyle.setRightBorderColor(IndexedColors.WHITE.getIndex());
-
-        sheet.setDefaultColumnWidth(DEFAULT_COLUMN_WIDTH);
-        sheet.setColumnWidth(0, NAMES_COLUMN_WIDTH);
-
-        XSSFRow title = sheet.createRow(0);
-        title.createCell(0).setCellStyle(titleStyle);
-        title.createCell(1).setCellStyle(titleStyle);
-        title.getCell(0).setCellValue(userLogin + " omissions dates on " + trainingName + " by period: " + TITLE_DATE_FORMAT.format(dateFrom) + " - " + TITLE_DATE_FORMAT.format(dateTo));
-        XSSFRow headers = sheet.createRow(2);
-        headers.createCell(0).setCellValue("Training");
-        headers.getCell(0).setCellStyle(headersStyle);
-        headers.createCell(1).setCellValue("Dates");
-        headers.getCell(1).setCellStyle(headersStyle);
-
-        sheet.addMergedRegion(new CellRangeAddress(0, 0, title.getFirstCellNum(), title.getLastCellNum()));
-
-        XSSFRow row = sheet.createRow(3);
-        row.createCell(0).setCellValue(trainingName);
-        for (int omissionsIndex = 0; omissionsIndex < journalOmissionModels.size(); omissionsIndex++) {
-            int columnIndex = omissionsIndex + 1;
-            if (journalOmissionModels.get(omissionsIndex).getIsOmission()) {
-                row.createCell(columnIndex).setCellValue(journalOmissionModels.get(omissionsIndex).getDate());
+        for(int trainingsIndex = 0; trainingsIndex < trainingNameAndDates.size(); trainingsIndex++) {
+            int rowIndex = trainingsIndex + 3;
+            List<Omission> omissions = omissionService.getOmisssionsByTrainingAndUser(trainingNameAndDates.get(trainingsIndex).getTrainingName(), userLogin, dateFrom, dateTo);
+            List<JournalOmissionModel> journalOmissionModels = JournalOmissionModel.parseListOfOmissions(omissions);
+            XSSFRow row = sheet.getRow(rowIndex);
+            for(int omissionsIndex = 0; omissionsIndex < journalOmissionModels.size(); omissionsIndex++) {
+                int columnIndex = omissionsIndex + 1;
+                if(journalOmissionModels.get(omissionsIndex).getIsOmission()) {
+                    row.createCell(columnIndex).setCellValue(journalOmissionModels.get(omissionsIndex).getDate() + " " + journalOmissionModels.get(omissionsIndex).getReason());
+                }
             }
         }
-        String filePath = createFilePath(fileName);
-        FileOutputStream fileOut = new FileOutputStream(filePath);
-        workbook.write(fileOut);
-        fileOut.close();
-        return returnFilePath(fileName);
+        return workbook;
     }
 
-    public String generateForTrainingAmount(Date dateFrom, Date dateTo, String trainingName) throws IOException {
-        String fileName = trainingName + "_omissions_amount.xlsx";
+    public XSSFWorkbook generateUserDatesAndFeedbacks (Date dateFrom, Date dateTo, String userLogin) throws NoSuchFieldException {
+        XSSFWorkbook workbook = generateForUserDates(dateFrom, dateTo, userLogin);
+        XSSFSheet sheet = workbook.getSheetAt(0);
 
-        List<User> users = trainingService.getListenersByTrainingNameSortByName(trainingName);
+        List<UserFeedback> userFeedbacks = userFeedbackService.getUserFeedbacksOrderByDate(userService.findUserByLogin(userLogin));
+        List<UserFeedbackGETModel> userFeedbackGETModels = UserFeedbackGETModel.parseUserFeedbacks(userFeedbacks);
+
+        for(int rowIndex = 3; rowIndex <= sheet.getLastRowNum(); rowIndex ++) {
+            Training training = trainingService.getTrainingByName(sheet.getRow(rowIndex).getCell(0).getStringCellValue());
+            String feedbackerLogin = training.getCoach().getLogin();
+            StringBuilder stringBuilder = new StringBuilder();
+            for (UserFeedbackGETModel userFeedbackGETModel : userFeedbackGETModels) {
+                if(feedbackerLogin.equals(userFeedbackGETModel.getFeedbackerLogin())) {
+                    stringBuilder.append(userFeedbackGETModel.toString() + "\n");
+                }
+            }
+            if(stringBuilder.length() != 0) {
+                Drawing drawing = sheet.createDrawingPatriarch();
+                ClientAnchor anchor = workbook.getCreationHelper().createClientAnchor();
+                anchor.setAnchorType(ClientAnchor.MOVE_AND_RESIZE);
+                Comment comment = drawing.createCellComment(anchor);
+                RichTextString textString = workbook.getCreationHelper().createRichTextString(stringBuilder.toString());
+                comment.setString(textString);
+                sheet.getRow(rowIndex).getCell(0).setCellComment(comment);
+            }
+        }
+
+        return workbook;
+    }
+
+    public XSSFWorkbook generateForTrainingAmount(Date dateFrom, Date dateTo, String trainingName) {
+        List<User> listeners = trainingService.getListenersByTrainingNameSortByName(trainingName);
+        List<UserLoginAndName> userLoginAndNames = UserLoginAndName.parseUserLoginAndName(listeners);
         List<Date> dates = trainingService.getDatesByTrainingNameBetweenDates(trainingName, dateFrom, dateTo);
-        List<UserLoginAndName> userLoginAndNames = UserLoginAndName.parseUserLoginAndName(users);
         int amountOfTrainings = dates.size();
 
-        XSSFWorkbook workbook = new XSSFWorkbook();
-        XSSFSheet sheet = workbook.createSheet(trainingName + " omissions amount");
-
-        XSSFCellStyle titleStyle = workbook.createCellStyle();
-        XSSFCellStyle headersStyle = workbook.createCellStyle();
-
-        XSSFFont titleFont = workbook.createFont();
-        titleFont.setColor(IndexedColors.ROYAL_BLUE.getIndex());
-        titleFont.setBold(true);
-        titleFont.setFontHeight(TITLE_HEIGHT);
-        titleStyle.setFont(titleFont);
-
-        XSSFFont headersFont = workbook.createFont();
-        headersFont.setColor(IndexedColors.WHITE.getIndex());
-        headersFont.setBold(true);
-        headersStyle.setFont(headersFont);
-        headersStyle.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
-        headersStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        headersStyle.setLeftBorderColor(IndexedColors.WHITE.getIndex());
-        headersStyle.setRightBorderColor(IndexedColors.WHITE.getIndex());
-
-        sheet.setDefaultColumnWidth(DEFAULT_COLUMN_WIDTH);
-        sheet.setColumnWidth(0, NAMES_COLUMN_WIDTH);
-
-        XSSFRow title = sheet.createRow(0);
-        title.createCell(0).setCellStyle(titleStyle);
-        title.createCell(1).setCellStyle(titleStyle);
-        title.getCell(0).setCellValue(trainingName + " omissions amount by period: " + TITLE_DATE_FORMAT.format(dateFrom) + " - " + TITLE_DATE_FORMAT.format(dateTo));
-        XSSFRow headers = sheet.createRow(2);
-        headers.createCell(0).setCellValue("Listeners");
-        headers.getCell(0).setCellStyle(headersStyle);
-        headers.createCell(1).setCellValue("Amount");
-        headers.getCell(1).setCellStyle(headersStyle);
-
-        sheet.addMergedRegion(new CellRangeAddress(0, 0, title.getFirstCellNum(), title.getLastCellNum()));
+        XSSFWorkbook workbook = generateUserList(dateFrom, dateTo, trainingName);
+        XSSFSheet sheet = workbook.getSheetAt(0);
+        sheet.getRow(2).createCell(1).setCellValue("Amount");
+        sheet.getRow(2).getCell(1).setCellStyle(sheet.getRow(2).getCell(0).getCellStyle());
 
         for(int usersIndex = 0; usersIndex < userLoginAndNames.size(); usersIndex++) {
             int rowIndex = usersIndex + 3;
             List<Omission> omissions = omissionService.getOmisssionsByTrainingAndUser(trainingName, userLoginAndNames.get(usersIndex).getLogin(), dateFrom, dateTo);
             List<JournalOmissionModel> journalOmissionModels = JournalOmissionModel.parseListOfOmissions(omissions);
 
-            XSSFRow row = sheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(userLoginAndNames.get(usersIndex).getName());
-            int omissionCount = 0;
-            for(int omissionsIndex = 0; omissionsIndex < journalOmissionModels.size(); omissionsIndex++) {
-                if(journalOmissionModels.get(omissionsIndex).getIsOmission()) {
-                    omissionCount++;
-                }
-            }
-            row.createCell(1).setCellValue(Integer.valueOf(omissionCount).toString() + "/" + Integer.valueOf(amountOfTrainings));
-        }
-        String filePath = createFilePath(fileName);
-        FileOutputStream fileOut = new FileOutputStream(filePath);
-        workbook.write(fileOut);
-        fileOut.close();
-        return returnFilePath(fileName);
-    }
-
-    public String generateForUserAmount(Date dateFrom, Date dateTo, String userLogin) throws IOException {
-        String fileName = userLogin + "_omission_amount.xlsx";
-
-        List<Training> trainings = userService.selectAllTrainingBetweenDatesAndSortedByName(userLogin, dateFrom, dateTo);
-        List<TrainingName> trainingNameAndDates = TrainingName.parseTrainingList(trainings);
-
-        XSSFWorkbook workbook = new XSSFWorkbook();
-        XSSFSheet sheet = workbook.createSheet(userLogin + " omissions amount");
-
-        XSSFCellStyle titleStyle = workbook.createCellStyle();
-        XSSFCellStyle headersStyle = workbook.createCellStyle();
-
-        XSSFFont titleFont = workbook.createFont();
-        titleFont.setColor(IndexedColors.ROYAL_BLUE.getIndex());
-        titleFont.setBold(true);
-        titleFont.setFontHeight(TITLE_HEIGHT);
-        titleStyle.setFont(titleFont);
-
-        XSSFFont headersFont = workbook.createFont();
-        headersFont.setColor(IndexedColors.WHITE.getIndex());
-        headersFont.setBold(true);
-        headersStyle.setFont(headersFont);
-        headersStyle.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
-        headersStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        headersStyle.setLeftBorderColor(IndexedColors.WHITE.getIndex());
-        headersStyle.setRightBorderColor(IndexedColors.WHITE.getIndex());
-
-        sheet.setDefaultColumnWidth(DEFAULT_COLUMN_WIDTH);
-        sheet.setColumnWidth(0, NAMES_COLUMN_WIDTH);
-
-        XSSFRow title = sheet.createRow(0);
-        title.createCell(0).setCellStyle(titleStyle);
-        title.createCell(1).setCellStyle(titleStyle);
-        title.getCell(0).setCellValue(userLogin + " omissions amount by period: " + TITLE_DATE_FORMAT.format(dateFrom) + " - " + TITLE_DATE_FORMAT.format(dateTo));
-        XSSFRow headers = sheet.createRow(2);
-        headers.createCell(0).setCellValue("Trainings");
-        headers.getCell(0).setCellStyle(headersStyle);
-        headers.createCell(1).setCellValue("Amount");
-        headers.getCell(1).setCellStyle(headersStyle);
-
-        sheet.addMergedRegion(new CellRangeAddress(0, 0, title.getFirstCellNum(), title.getLastCellNum()));
-
-        for(int trainingsIndex = 0; trainingsIndex < trainingNameAndDates.size(); trainingsIndex++) {
-            int rowIndex = trainingsIndex + 3;
-            List<Omission> omissions = omissionService.getOmisssionsByTrainingAndUser(trainingNameAndDates.get(trainingsIndex).getTrainingName(),userLogin, dateFrom, dateTo);
-            List<JournalOmissionModel> journalOmissionModels = JournalOmissionModel.parseListOfOmissions(omissions);
-            List<Date> dates = trainingService.getDatesByTrainingNameBetweenDates(trainingNameAndDates.get(trainingsIndex).getTrainingName(), dateFrom, dateTo);
-            int amountOfTrainings = dates.size();
-            XSSFRow row = sheet.createRow(rowIndex);
-            row.createCell(0).setCellValue(trainingNameAndDates.get(trainingsIndex).getTrainingName());
+            XSSFRow row = sheet.getRow(rowIndex);
+            StringBuilder stringBuilder = new StringBuilder();
             int omissionAmount = 0;
             for(int omissionsIndex = 0; omissionsIndex < journalOmissionModels.size(); omissionsIndex++) {
                 if(journalOmissionModels.get(omissionsIndex).getIsOmission()) {
-                        omissionAmount++;
+                    omissionAmount++;
+                    stringBuilder.append(journalOmissionModels.get(omissionsIndex).getDate() + "-" + journalOmissionModels.get(omissionsIndex).getReason() + "\n");
                 }
             }
             row.createCell(1).setCellValue(Integer.valueOf(omissionAmount).toString() + "/" + Integer.valueOf(amountOfTrainings).toString());
-        }
-        String filePath = createFilePath(fileName);
-        FileOutputStream fileOut = new FileOutputStream(filePath);
-        workbook.write(fileOut);
-        fileOut.close();
-        return returnFilePath(fileName);
-    }
-
-    public String generateForUserAndTrainingAmount(Date dateFrom, Date dateTo, String userLogin, String trainingName) throws IOException {
-        String fileName = userLogin + "_omission_amount_on_" + trainingName + ".xlsx";
-
-        List<Omission> omissions = omissionService.getOmisssionsByTrainingAndUser(trainingName, userLogin, dateFrom, dateTo);
-        List<Date> dates = trainingService.getDatesByTrainingNameBetweenDates(trainingName, dateFrom, dateTo);
-        List<JournalOmissionModel> journalOmissionModels = JournalOmissionModel.parseListOfOmissions(omissions);
-        int amountOfTrainings = dates.size();
-
-        XSSFWorkbook workbook = new XSSFWorkbook();
-        XSSFSheet sheet = workbook.createSheet(userLogin + " omissions amount on " + trainingName);
-
-        XSSFCellStyle titleStyle = workbook.createCellStyle();
-        XSSFCellStyle headersStyle = workbook.createCellStyle();
-
-        XSSFFont titleFont = workbook.createFont();
-        titleFont.setColor(IndexedColors.ROYAL_BLUE.getIndex());
-        titleFont.setBold(true);
-        titleFont.setFontHeight(TITLE_HEIGHT);
-        titleStyle.setFont(titleFont);
-
-        XSSFFont headersFont = workbook.createFont();
-        headersFont.setColor(IndexedColors.WHITE.getIndex());
-        headersFont.setBold(true);
-        headersStyle.setFont(headersFont);
-        headersStyle.setFillForegroundColor(IndexedColors.ROYAL_BLUE.getIndex());
-        headersStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-        headersStyle.setLeftBorderColor(IndexedColors.WHITE.getIndex());
-        headersStyle.setRightBorderColor(IndexedColors.WHITE.getIndex());
-
-        sheet.setDefaultColumnWidth(DEFAULT_COLUMN_WIDTH);
-        sheet.setColumnWidth(0, NAMES_COLUMN_WIDTH);
-
-        XSSFRow title = sheet.createRow(0);
-        title.createCell(0).setCellStyle(titleStyle);
-        title.createCell(1).setCellStyle(titleStyle);
-        title.getCell(0).setCellValue(userLogin + " omissions amount on " + trainingName + " by period: " + TITLE_DATE_FORMAT.format(dateFrom) + " - " + TITLE_DATE_FORMAT.format(dateTo));
-        XSSFRow headers = sheet.createRow(2);
-        headers.createCell(0).setCellValue("Training");
-        headers.getCell(0).setCellStyle(headersStyle);
-        headers.createCell(1).setCellValue("Amount");
-        headers.getCell(1).setCellStyle(headersStyle);
-
-        sheet.addMergedRegion(new CellRangeAddress(0, 0, title.getFirstCellNum(), title.getLastCellNum()));
-
-        XSSFRow row = sheet.createRow(3);
-        row.createCell(0).setCellValue(trainingName);
-        int omissionAmount = 0;
-        for(int omissionsIndex = 0; omissionsIndex < journalOmissionModels.size(); omissionsIndex++) {
-            if(journalOmissionModels.get(omissionsIndex).getIsOmission()) {
-                omissionAmount++;
+            if (stringBuilder.length() != 0) {
+                Drawing drawing = sheet.createDrawingPatriarch();
+                ClientAnchor anchor = workbook.getCreationHelper().createClientAnchor();
+                anchor.setAnchorType(ClientAnchor.MOVE_AND_RESIZE);
+                Comment comment = drawing.createCellComment(anchor);
+                RichTextString textString = workbook.getCreationHelper().createRichTextString(stringBuilder.toString());
+                comment.setString(textString);
+                row.getCell(1).setCellComment(comment);
             }
         }
-        row.createCell(1).setCellValue(Integer.valueOf(omissionAmount).toString() + "/" + Integer.valueOf(amountOfTrainings).toString());
+        return workbook;
+    }
+
+    public XSSFWorkbook generateForUserAmount(Date dateFrom, Date dateTo, String userLogin){
+        List<Training> trainings = userService.selectAllTrainingBetweenDatesAndSortedByName(userLogin, dateFrom, dateTo);
+        List<TrainingName> trainingNameAndDates = TrainingName.parseTrainingList(trainings);
+
+        XSSFWorkbook workbook = generateTrainingsList(dateFrom, dateTo, userLogin);
+        XSSFSheet sheet = workbook.getSheetAt(0);
+        sheet.getRow(2).createCell(1).setCellValue("Amount");
+        sheet.getRow(2).getCell(1).setCellStyle(sheet.getRow(2).getCell(0).getCellStyle());
+
+        for(int trainingsIndex = 0; trainingsIndex < trainingNameAndDates.size(); trainingsIndex++) {
+            int rowIndex = trainingsIndex + 3;
+            List<Omission> omissions = omissionService.getOmisssionsByTrainingAndUser(trainingNameAndDates.get(trainingsIndex).getTrainingName(), userLogin, dateFrom, dateTo);
+            List<JournalOmissionModel> journalOmissionModels = JournalOmissionModel.parseListOfOmissions(omissions);
+            List<Date> dates = trainingService.getDatesByTrainingNameBetweenDates(trainingNameAndDates.get(trainingsIndex).getTrainingName(), dateFrom, dateTo);
+            int amountOfTrainings = dates.size();
+            XSSFRow row = sheet.getRow(rowIndex);
+            StringBuilder stringBuilder = new StringBuilder();
+            int omissionAmount = 0;
+            for(int omissionsIndex = 0; omissionsIndex < journalOmissionModels.size(); omissionsIndex++) {
+                if(journalOmissionModels.get(omissionsIndex).getIsOmission()) {
+                    omissionAmount++;
+                    stringBuilder.append(journalOmissionModels.get(omissionsIndex).getDate() + "-" + journalOmissionModels.get(omissionsIndex).getReason() + "\n");
+                }
+            }
+            row.createCell(1).setCellValue(Integer.valueOf(omissionAmount).toString() + "/" + Integer.valueOf(amountOfTrainings).toString());
+            if (stringBuilder.length() != 0) {
+                Drawing drawing = sheet.createDrawingPatriarch();
+                ClientAnchor anchor = workbook.getCreationHelper().createClientAnchor();
+                anchor.setAnchorType(ClientAnchor.MOVE_AND_RESIZE);
+                Comment comment = drawing.createCellComment(anchor);
+                RichTextString textString = workbook.getCreationHelper().createRichTextString(stringBuilder.toString());
+                comment.setString(textString);
+                row.getCell(1).setCellComment(comment);
+            }
+        }
+        return workbook;
+    }
+
+    public String generateFile(XSSFWorkbook workbook, String fileName) throws IOException {
 
         String filePath = createFilePath(fileName);
         FileOutputStream fileOut = new FileOutputStream(filePath);

@@ -16,5 +16,5 @@ import java.util.List;
 public interface CoachFeedbackRepository extends JpaRepository<CoachFeedback, Long> {
     List<CoachFeedback> findFeedbackByCoachOrderByDateAsc(User coach);
     @Query("select cf from CoachFeedback as cf where cf.coach.login = ?1 and cf.feedbacker.login = ?2 and cf.date = ?3")
-    CoachFeedback findFeedbackByTrainingAndDateAndFeedbacker(String coach, String feedbacker, Date date);
+    CoachFeedback findFeedbackByCoachAndDateAndFeedbacker(String coach, String feedbacker, Date date);
 }
