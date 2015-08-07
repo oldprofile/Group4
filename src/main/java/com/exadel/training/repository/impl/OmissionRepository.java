@@ -14,8 +14,8 @@ public interface OmissionRepository extends JpaRepository<Omission, Long> {
     @Query(" select o from Omission as o where o.training.name = ?1 order by o.training.dateTime asc ")
     List<Omission> findByTrainingName(String name);
 
-    @Query(" select o from Omission as o where o.training.name = ?1 and o.user.login = ?2 order by o.training.dateTime asc ")
-    List<Omission> findByTrainingNameAndUserLogin(String trainingName, String userLogin);
+    @Query(" select o from Omission as o where o.training.name = ?1 and o.user.login = ?2 and o.training.dateTime = ?3")
+    Omission findByTrainingAndUserLogin(String trainingName, String userLogin, Date trainingDate);
 
     @Query(" select o from Omission as o where o.user.login = ?1 order by o.training.dateTime asc ")
     List<Omission> findByUserLogin(String userLogin);
@@ -35,6 +35,6 @@ public interface OmissionRepository extends JpaRepository<Omission, Long> {
     @Query("select o from Omission as o where o.user.login = ?1 and o.training.name = ?2 and o.training.dateTime >= ?3 and o.training.dateTime <= ?4 order by o.training.dateTime asc ")
     List<Omission> findByTrainingNameAndUserLoginSortedByDate(String userLogin, String trainingName, Date dateFrom, Date dateTo);
 
-    @Query("select o.isOmission from Omission as o where o.training.name = ?1 and o.training.dateTime = ?2 order by o.user.login asc")
-    List<Boolean> getAllOmissions(String trainingName, Date date);
+    @Query("select o from Omission as o where o.training.name = ?1 and o.training.dateTime = ?2 order by o.user.name asc")
+    List<Omission> getAllOmissions(String trainingName, Date date);
 }

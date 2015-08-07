@@ -1,18 +1,18 @@
 package com.exadel.training.controller;
 
-import com.exadel.training.controller.model.Omission.JournalOmissionModel;
 import com.exadel.training.controller.model.Omission.OmissionADDModel;
+import com.exadel.training.controller.model.Omission.OmissionGETModel;
+import com.exadel.training.controller.model.Omission.PathToStatistics;
 import com.exadel.training.controller.model.Omission.StatisticsRequestModel;
 import com.exadel.training.controller.model.Training.TrainingNameAndDate;
 import com.exadel.training.model.Omission;
-import com.exadel.training.model.Training;
-import com.exadel.training.model.User;
+import com.exadel.training.repository.impl.OmissionRepository;
 import com.exadel.training.service.OmissionService;
 import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
-import com.exadel.training.statistics.ExcelFileGenerator;
+import com.exadel.training.service.statistics.ExcelFileGenerator;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpRequest;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,15 +24,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Клим on 13.07.2015.
  */
 @Controller
+@ResponseBody
 @RequestMapping("/omission_controller")
 public class OmissionController {
     @Autowired
@@ -47,11 +45,22 @@ public class OmissionController {
     @Autowired
     ExcelFileGenerator excelFileGenerator;
 
+    @Autowired
+    OmissionRepository omissionRepository;
+
     @RequestMapping(value = "/add_omissions", method = RequestMethod.POST, consumes = "application/json")
-    @ResponseBody void addOmissions(@RequestBody List<OmissionADDModel> omissionADDModels, HttpServletResponse response) {
+    public @ResponseBody void addOmissions(@RequestBody List<OmissionADDModel> omissionADDModels, HttpServletResponse response) {
         try {
             for (OmissionADDModel omissionADDModel : omissionADDModels) {
-                omissionService.addOmission(omissionADDModel);
+                Omission omission = omissionService.findByTrainingAndUserLogin(omissionADDModel.getTrainingName(), omissionADDModel.getUserLogin(), omissionADDModel.getDate());
+                if(omission == null) {
+                    omissionService.addOmission(omissionADDModel);
+                } else {
+                    omission.setOmission(omissionADDModel.isOmission());
+                    omission.setReason(omissionADDModel.getReason());
+                    omissionRepository.save(omission);
+
+                }
             }
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -59,63 +68,60 @@ public class OmissionController {
     }
 
     @RequestMapping(value = "/get_omissions", method = RequestMethod.POST, consumes = "application/json")
-    @ResponseBody List<Boolean> getOmissions(@RequestBody TrainingNameAndDate trainingNameAndDate) throws ParseException {
-        List<Boolean> omissions = omissionService.getAllOmissions(trainingNameAndDate.getTrainingName(), trainingNameAndDate.parseToDate());
-        return omissions;
+    public @ResponseBody List<OmissionGETModel> getOmissions(@RequestBody TrainingNameAndDate trainingNameAndDate) throws ParseException {
+        List<Omission> omissions = omissionService.getAllOmissions(trainingNameAndDate.getTrainingName(), trainingNameAndDate.parseToDate());
+        List<OmissionGETModel> omissionGETModels = OmissionGETModel.parseOmissionList(omissions);
+        return omissionGETModels;
     }
 
     @RequestMapping(value = "/statistics", method = RequestMethod.POST, consumes = "application/json")
-    @ResponseBody String generateStatistics(@RequestBody StatisticsRequestModel statisticsRequestModel, HttpServletResponse response) throws IOException {
+    public @ResponseBody
+    PathToStatistics generateStatistics(@RequestBody StatisticsRequestModel statisticsRequestModel, HttpServletResponse response) throws IOException, NoSuchFieldException {
 
         String filePath = "";
+        XSSFWorkbook workbook;
         String userLogin = statisticsRequestModel.getUserLogin();
         String trainingName = statisticsRequestModel.getTrainingName();
         Date dateFrom = Date.valueOf(statisticsRequestModel.getDateFrom());
         Date dateTo = Date.valueOf(statisticsRequestModel.getDateTo());
-        switch (statisticsRequestModel.getType()) {
-            case 1:
-                if(!StringUtils.isBlank(userLogin)) {
-                    if (!StringUtils.isBlank(trainingName)) {
-                        filePath = excelFileGenerator.generateForUserAndTrainingFull(dateFrom, dateTo, userLogin, trainingName);
-                    } else {
-                        filePath = excelFileGenerator.generateForUserFull(dateFrom, dateTo, userLogin);
-                    }
-                } else {
-                    if (!StringUtils.isBlank(trainingName)) {
-                        filePath = excelFileGenerator.generateForTrainingFull(dateFrom, dateTo, trainingName);
-                    } else {
-                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                    }
-                }
-            case 2:
-                if(!StringUtils.isBlank(userLogin)) {
-                    if (!StringUtils.isBlank(trainingName)) {
-                        filePath = excelFileGenerator.generateForUserAndTrainingDates(dateFrom, dateTo, userLogin, trainingName);
-                    } else {
-                        filePath = excelFileGenerator.generateForUserDates(dateFrom, dateTo, userLogin);
-                    }
-                } else {
-                    if (!StringUtils.isBlank(trainingName)) {
-                        filePath = excelFileGenerator.generateForTrainingDates(dateFrom, dateTo, trainingName);
-                    } else {
-                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                    }
-                }
-            case 3:
-                if(!StringUtils.isBlank(userLogin)) {
-                    if (!StringUtils.isBlank(trainingName)) {
-                        filePath = excelFileGenerator.generateForUserAndTrainingAmount(dateFrom, dateTo, userLogin, trainingName);
-                    } else {
-                        filePath = excelFileGenerator.generateForUserAmount(dateFrom, dateTo, userLogin);
-                    }
-                } else {
-                    if (!StringUtils.isBlank(trainingName)) {
-                        filePath = excelFileGenerator.generateForTrainingAmount(dateFrom, dateTo, trainingName);
-                    } else {
-                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                    }
-                }
+        if(!StringUtils.isBlank(userLogin)) {
+            switch (statisticsRequestModel.getType()) {
+                case 1:
+                    workbook = excelFileGenerator.generateTrainingsList(dateFrom, dateTo, userLogin);
+                    filePath = excelFileGenerator.generateFile(workbook, userLogin + " trainings statistics.xlsx");
+                    break;
+                case 2:
+                    workbook = excelFileGenerator.generateForUserDates(dateFrom, dateTo, userLogin);
+                    filePath = excelFileGenerator.generateFile(workbook, userLogin + " omission's dates statistics.xlsx");
+                    break;
+                case 3:
+                    workbook = excelFileGenerator.generateUserDatesAndFeedbacks(dateFrom, dateTo, userLogin);
+                    filePath = excelFileGenerator.generateFile(workbook, userLogin + " omission's dates and feedbacks statistics.xlsx");
+                    break;
+                case 4:
+                    workbook = excelFileGenerator.generateForUserAmount(dateFrom, dateTo, userLogin);
+                    filePath = excelFileGenerator.generateFile(workbook, userLogin + " omission's amount statistics.xlsx");
+                    break;
+            }
+        } else if (!StringUtils.isBlank(trainingName)) {
+            switch (statisticsRequestModel.getType()) {
+                case 1:
+                    workbook = excelFileGenerator.generateUserList(dateFrom, dateTo, trainingName);
+                    filePath = excelFileGenerator.generateFile(workbook, trainingName + " listeners statistics.xlsx");
+                    break;
+                case 2:
+                    workbook = excelFileGenerator.generateForTrainingDates(dateFrom, dateTo, trainingName);
+                    filePath = excelFileGenerator.generateFile(workbook, trainingName + " omission's dates statistics.xlsx");
+                    break;
+                case 3:
+                    workbook = excelFileGenerator.generateForTrainingAmount(dateFrom, dateTo, trainingName);
+                    filePath = excelFileGenerator.generateFile(workbook, trainingName + " omission's amount statistics.xlsx");
+                    break;
+            }
+        } else {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
-        return filePath;
+        PathToStatistics pathToStatistics = new PathToStatistics(filePath);
+        return pathToStatistics;
     }
 }

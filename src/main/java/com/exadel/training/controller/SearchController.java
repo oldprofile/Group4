@@ -46,4 +46,17 @@ public class SearchController {
         return ShortTrainingInfo.parseList(searchTrainings);
     }
 
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public @ResponseBody List<UserShort> searchUser() {
+        List<User> searchUsers = searchService.searchUsers("art");
+        List<Training> searchTrainings = searchService.searchTrainings("angu");
+        List<UserShort> userShorts = new ArrayList<>();
+
+        for(User user : searchUsers) {
+            userShorts.add(UserShort.parseUserShort(user));
+        }
+
+        return userShorts;
+    }
+
 }

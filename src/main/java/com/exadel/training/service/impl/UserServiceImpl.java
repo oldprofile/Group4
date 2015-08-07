@@ -1,18 +1,20 @@
 package com.exadel.training.service.impl;
 
 import com.exadel.training.common.RoleType;
+import com.exadel.training.comparator.ComparatorDateTraining;
+import com.exadel.training.model.Role;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
 import com.exadel.training.repository.impl.TrainingRepository;
 import com.exadel.training.repository.impl.UserRepository;
+import com.exadel.training.repository.impl.model.LoginName;
+import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by HP on 08.07.2015.
@@ -25,10 +27,17 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     @Autowired
     private TrainingRepository trainingRepository;
+    @Autowired
+    private TrainingService trainingService;
 
     @Override
     public Boolean checkUserByLogin(String login) {
         return userRepository.checkUserByLogin(login);
+    }
+
+    @Override
+    public Boolean checkUserByEmail(String email) {
+        return userRepository.checkUserByEmail(email);
     }
 
     @Override
@@ -43,12 +52,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean checkSubscribeToTraining(String trainingName, String login) {
-        return userRepository.checkSubscribeToTraining(trainingName,login);
+        return userRepository.checkSubscribeToTraining(trainingName, login);
     }
 
     @Override
     public Boolean whoIsUser(String login, long roleId) {
         return userRepository.whoIsUser(login, roleId);
+    }
+
+    @Override
+    public Boolean isMyTraining(String login, String trainingName) {
+        return userRepository.isMyTraining(login, trainingName);
     }
 
     @Override
@@ -68,13 +82,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findUserByEmail(String email) {
+        return userRepository.findUserByEmail(email);
+    }
+
+    @Override
     public Training findMyTraining(String login, String trainingName) {
         return userRepository.findMyTraining(login, trainingName);
     }
 
     @Override
+    public List<Role> findRolesOfUser(String login) {
+        return userRepository.findRolesOfUser(login);
+    }
+
+    @Override
     public List<User> findUsersByRole(RoleType type) throws NoSuchFieldException {
         return userRepository.findUsersByRole(RoleType.parseRoleTypeToLong(type));
+    }
+
+    @Override
+    public List<User> findUsersByRole(Long type) {
+        return userRepository.findUsersByRole(type);
     }
 
     @Override
@@ -89,7 +118,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Training> selectAllTrainingSortedByDate(String login, List<Integer> state) {
-        return userRepository.selectAllTrainingSortedByDate(login, state);
+        List<Training> allTrainingNameActual = userRepository.selectAllTrainingNameActual(login, state);
+        List<Training> allTrainingCoachNameActual = userRepository.selectAllTrainingCoachNameActual(login, state);
+        List<Training> firstLessons = new ArrayList<>();
+
+        allTrainingNameActual.addAll(allTrainingCoachNameActual);
+        Collections.sort(allTrainingNameActual, new ComparatorDateTraining());
+
+        for(Training training : allTrainingNameActual) {
+            Training nextTraining = trainingService.getNextTraining(training.getName());
+
+            if(nextTraining != null) {
+                firstLessons.add(nextTraining);
+            }
+        }
+
+        return firstLessons;
     }
 
     @Override
@@ -127,6 +171,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Date> selectAllDateOfTrainings(String login) {
         return userRepository.selectAllDateOfTrainings(login);
+    }
+
+    @Override
+    public List<LoginName> selectAllLoginOfUsers() {
+        return userRepository.selectAllLoginOfUser();
     }
 
     @Override
@@ -173,7 +222,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void insertExEmploee(User user) {
+    public void insertUser(User user) {
         userRepository.save(user);
     }
 }

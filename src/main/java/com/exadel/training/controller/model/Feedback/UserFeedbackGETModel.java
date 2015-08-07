@@ -3,6 +3,7 @@ package com.exadel.training.controller.model.Feedback;
 import com.exadel.training.common.FeedbackType;
 import com.exadel.training.common.UserEnglishLevel;
 import com.exadel.training.model.UserFeedback;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -188,5 +189,22 @@ public class UserFeedbackGETModel implements Serializable{
             userFeedbackModels.add(UserFeedbackGETModel.parseToUserFeedbackModel(userFeedback));
         }
         return userFeedbackModels;
+    }
+
+    @Override
+    public String toString() {
+    StringBuilder stringBuilder = new StringBuilder( SDF.format(date) +
+                "attendance=" + attendance +
+                ", attitude=" + attitude +
+                ", commSkills=" + commSkills +
+                ", questions=" + questions +
+                ", motivation=" + motivation +
+                ", focusOnResult=" + focusOnResult +
+                ", other=" + other);
+        if(!StringUtils.isBlank(level) || !StringUtils.isBlank(assessment)) {
+            stringBuilder.append(",level=" + level +
+                                    ",assesment=" + assessment);
+        }
+        return stringBuilder.toString();
     }
 }

@@ -1,0 +1,89 @@
+<link rel="stylesheet" href="page_admin/admin_navbar/statistics.css">
+<div ng-controller="StatisticsController">
+	<div class="statistics-container">
+
+		<form class="form-horizontal" novalidate>
+			<div class="form-group">
+				<label class="control-label col-sm-2">Start date:</label>
+
+				<div class="col-sm-8">
+					<a class="dropdown-toggle" id="dropdown0" role="button" data-toggle="dropdown">
+						<div class="input-group">
+							<input type="text" class="form-control" ng-value="temp.tempDates[0] | date: 'mediumDate'">
+                        <span class="input-group-addon addon-calendar">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                        </span>
+						</div>
+					</a>
+
+					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+						<datetimepicker ng-model="temp.tempDates[0]" data-datetimepicker-config="{ dropdownSelector: '#dropdown0', minView: 'day' }"/>
+					</ul>
+
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-sm-2" >End date:</label>
+
+				<div class="col-sm-8">
+					<a class="dropdown-toggle" id="dropdown1" role="button" data-toggle="dropdown">
+						<div class="input-group">
+							<input type="text" class="form-control" ng-value="temp.tempDates[1] | date: 'mediumDate'">
+                        <span class="input-group-addon addon-calendar">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                        </span>
+						</div>
+					</a>
+
+					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+						<datetimepicker ng-model="temp.tempDates[1]" data-datetimepicker-config="{ dropdownSelector: '#dropdown1', minView: 'day' }"/>
+					</ul>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-sm-2">Select type:</label>
+				<div class="col-sm-8" id="trLis">
+					<label class="checkbox-inline"><input type="checkbox" name="one" ng-model="currentType" ng-click="one()">Training</label>
+					<label class="checkbox-inline"><input type="checkbox" name="one" ng-model="currentType2" ng-click="two()">Listener</label>
+				</div>
+			</div>
+			<div class="form-group" data-ng-show="currentType2">
+				<label class="control-label col-sm-2">Select person:</label>
+				<div class="col-sm-8">
+					<select class="form-control" data-ng-model="userSelect.userLogin" ng-options="userName.login as userName.name+'(' +userName.login+')' for userName in users">
+						<option value="">Please select user</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group" data-ng-show="currentType">
+				<label class="control-label col-sm-2">Select training:</label>
+				<div class="col-sm-8">
+					<select class="form-control" data-ng-model="userSelect.trainingName" ng-options="trainingName for trainingName in trainings">
+						<option value="">Please select training</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group" data-ng-show="currentType2">
+				<label class="control-label col-sm-2">Select type</label>
+				<div class="col-sm-8">
+					<select class="form-control" data-ng-model="userSelect.type" ng-options="statLType for statLType in statisticListType">
+						<option value="" >Please select type</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group" data-ng-show="currentType">
+				<label class="control-label col-sm-2">Select type</label>
+				<div class="col-sm-8">
+					<select class="form-control" data-ng-model="userSelect.type" ng-options="statTType for statTType in statisticTrainType">
+						<option value="" >Please select type</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-8">
+					<button ng-click="save(userSelect)" type="button" class="btn btn-default default-btn default-green">Download statistics</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

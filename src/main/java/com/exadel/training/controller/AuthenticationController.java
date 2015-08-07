@@ -1,6 +1,8 @@
 package com.exadel.training.controller;
 
 import com.exadel.training.controller.model.Authentication;
+import com.exadel.training.interceptors.access.Access;
+import com.exadel.training.interceptors.access.AccessRole;
 import com.exadel.training.model.User;
 import com.exadel.training.service.RoleService;
 import com.exadel.training.service.UserService;
@@ -35,6 +37,8 @@ public class AuthenticationController {
     private CryptService cryptService;
     @Autowired
     private SessionToken sessionToken;
+    @Autowired
+    private AccessRole accessRole;
 
 
     @RequestMapping(value = "/log_password", method = RequestMethod.POST, consumes = "application/json")
@@ -42,19 +46,29 @@ public class AuthenticationController {
         String login = project.getLogin();
         Long password = project.getPassword();
         User user = new User();
-         try {
+
+        try {
              user = userService.findUserByLoginAndPassword(login, password);
          }catch (NullPointerException e){
              httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
          }
-         httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
-            try {
-                String token = cryptService.encrypt(login);
-                httpServletResponse.setHeader("token", token);
-                sessionToken.addToken(login,token);
-            } catch (UnsupportedEncodingException | BadPaddingException | IllegalBlockSizeException e) {
-                e.printStackTrace();
-            }
+
+         if(user != EMPTY) {
+             httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+
+             try {
+                 String token = cryptService.encrypt(login);
+                 httpServletResponse.setHeader("token", token);
+                 sessionToken.addToken(login, token);
+                 accessRole.addUser(login);
+             } catch (UnsupportedEncodingException | BadPaddingException | IllegalBlockSizeException e) {
+                 e.printStackTrace();
+             }
+         } else {
+             httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
+             return new Authentication();
+         }
+
         return Authentication.parseAuthentication(user);
     }
 
@@ -65,6 +79,7 @@ public class AuthenticationController {
 
         if(sessionToken.containsToken(header)) {
             sessionToken.deleteToken(login, header);
+            accessRole.deleteUser(login);
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);

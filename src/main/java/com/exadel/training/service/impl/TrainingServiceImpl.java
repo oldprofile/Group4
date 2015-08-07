@@ -7,6 +7,7 @@ import com.exadel.training.model.Category;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
 import com.exadel.training.repository.impl.CategoryRepository;
+import com.exadel.training.repository.impl.model.ShortParentTraining;
 import com.exadel.training.repository.impl.TrainingRepository;
 import com.exadel.training.repository.impl.UserRepository;
 import com.exadel.training.service.TrainingService;
@@ -16,9 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Клим on 10.07.2015.
@@ -35,7 +34,9 @@ public class TrainingServiceImpl implements TrainingService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+    private static final int MAX_SIZE = 4;
 
 
     @Override
@@ -78,20 +79,25 @@ public class TrainingServiceImpl implements TrainingService {
         return trainingRepository.findValidTrainings();
     }
 
+    @Override
+    public List<Training> getValidTrainingsExceptParent() {
+        return trainingRepository.findValidTrainingsExceptParent();
+    }
+
     @Transactional
     @Override
-    public Training addTraining(TrainingForCreation trainingForCreation) throws NoSuchFieldException, ParseException {
+    public Training addTraining(TrainingForCreation trainingForCreation, String creatorLogin) throws NoSuchFieldException, ParseException {
 
-        List<String> dates = trainingForCreation.getDateTimes();
-        List<Date> dateTimes = new ArrayList<>();
-        for (String date : dates) {
+        //List<String> dates = trainingForCreation.getDateTimes();
+        List<Date> dateTimes = trainingForCreation.getDateTimes();
+        /*for (String date : dates) {
             dateTimes.add(sdf.parse(date));
-        }
-        User coach = userRepository.findUserByLogin(trainingForCreation.getUserLogin());
+        }*/
+        User coach = userRepository.findUserByLogin(trainingForCreation.getCoachLogin());
         Category category = categoryRepository.findById(trainingForCreation.getIdCategory());
         int state;
         String place;
-        if (userRepository.whoIsUser(trainingForCreation.getUserLogin(), 1)) {
+        if (userRepository.whoIsUser(creatorLogin, 1)) {
             state = StateTraining.parseToInt("Ahead");
             place = trainingForCreation.getPlaces().get(0);
         } else {
@@ -108,7 +114,7 @@ public class TrainingServiceImpl implements TrainingService {
         mainTraining.setState(state);
         mainTraining.setParent(0);
         trainingRepository.saveAndFlush(mainTraining);
-        List<Training> trainings = new ArrayList<>(dates.size());
+        List<Training> trainings = new ArrayList<>(dateTimes.size());
         for (int i = 0; i < dateTimes.size(); ++i) {
             Training newTraining = new Training();
             newTraining.fillTraining(trainingForCreation);
@@ -127,25 +133,18 @@ public class TrainingServiceImpl implements TrainingService {
     @Override
     @Transactional
     public Training approveCreateTraining(TrainingForCreation trainingForCreation) throws ParseException, NoSuchFieldException {
-        List<String> dates = trainingForCreation.getDateTimes();
-        List<Date> dateTimes = new ArrayList<>();
-        for (String date : dates)
-            dateTimes.add(sdf.parse(date));
+        List<Date> dateTimes = trainingForCreation.getDateTimes();
         Training mainTraining = trainingRepository.findByName(trainingForCreation.getName());
         Category category = categoryRepository.findById(trainingForCreation.getIdCategory());
         User coach = mainTraining.getCoach();
 
         int state;
         String place = null;
-        if (userRepository.whoIsUser(trainingForCreation.getUserLogin(), 1)) {
-            if(dateTimes.size() == 0)
-                state = StateTraining.parseToInt("Canceled");
-            else {
-                state = StateTraining.parseToInt("Ahead");
-                place = trainingForCreation.getPlaces().get(0);
-            }
+        if (dateTimes.size() == 0) {
+            state = StateTraining.parseToInt("Canceled");
         } else {
-            state = StateTraining.parseToInt("Edited");
+            state = StateTraining.parseToInt("Ahead");
+            place = trainingForCreation.getPlaces().get(0);
         }
 
         mainTraining.fillTraining(trainingForCreation);
@@ -153,7 +152,7 @@ public class TrainingServiceImpl implements TrainingService {
         mainTraining.setState(state);
 
         List<Training> trainings = trainingRepository.findTrainingsByName(trainingForCreation.getName());
-        for(int i = 0; i < dateTimes.size(); ++i) {
+        for (int i = 0; i < dateTimes.size(); ++i) {
             Training training;
             if (i < trainings.size())
                 training = trainings.get(i);
@@ -166,11 +165,11 @@ public class TrainingServiceImpl implements TrainingService {
             training.setDateTime(dateTimes.get(i));
             training.setCategory(category);
             training.setState(state);
-            if(place != null)
+            if (place != null)
                 training.setPlace(place);
             trainingRepository.saveAndFlush(training);
         }
-        for(int i = dateTimes.size(); i < trainings.size(); ++i) {
+        for (int i = dateTimes.size(); i < trainings.size(); ++i) {
             trainingRepository.deleteTrainingsById(trainings.get(i).getId());
         }
         return updateParentTraining(trainingForCreation.getName());
@@ -178,9 +177,9 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Override
     @Transactional
-    public Training editTraining(TrainingForCreation trainingForCreation) throws ParseException, NoSuchFieldException {
+    public Training editTraining(TrainingForCreation trainingForCreation, String creatorLogin) throws ParseException, NoSuchFieldException {
         Training mainTraining = trainingRepository.findByName(trainingForCreation.getName());
-        if (userRepository.whoIsUser(trainingForCreation.getUserLogin(), 1)) {
+        if (userRepository.whoIsUser(creatorLogin, 1)) {
             mainTraining.fillTraining(trainingForCreation);
             mainTraining.setCategory(categoryRepository.findById(trainingForCreation.getIdCategory()));
             return mainTraining;
@@ -199,12 +198,12 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Override
     public Training approveEditTraining(TrainingForCreation trainingForCreation) throws NoSuchFieldException {
-        Training parentTraining = trainingRepository.findTrainingByName(trainingForCreation.getName());
+        List<Training> trainings = trainingRepository.findTrainingsWithParentByName(trainingForCreation.getName());
+        for (Training training: trainings)
+            training.fillTraining(trainingForCreation);
         Training editedTraining = trainingRepository.findEditedTrainingByName(trainingForCreation.getName());
-        parentTraining.fillTraining(trainingForCreation);
-        parentTraining.setState(StateTraining.parseToInt("Ahead"));
         trainingRepository.deleteTrainingsById(editedTraining.getId());
-        return parentTraining;
+        return trainings.get(0);
     }
 
     @Override
@@ -242,6 +241,16 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
+    public List<Training> getFinishedTrainings() {
+        return trainingRepository.findFinishedTrainings();
+    }
+
+    @Override
+    public List<Training> getTrainingsByStates(List<Integer> states) {
+        return trainingRepository.findTrainingsByStates(states);
+    }
+
+    @Override
     public List<User> getUsersByTrainingName(String trainingName) {
         return trainingRepository.findListenersByTrainingName(trainingName);
     }
@@ -266,8 +275,30 @@ public class TrainingServiceImpl implements TrainingService {
         Training training = trainings.get(lessonData.getLessonNumber());
         training.setDateTime(sdf.parse(lessonData.getNewDate()));
         training.setPlace(lessonData.getNewPlace());
+        //trainingRepository.saveAndFlush(training);
         updateParentTraining(training.getName());
         return training;
+    }
+
+    @Override
+    public Training deleteLessonDate(LessonData lessonData) throws ParseException {
+        List<Training> trainings = trainingRepository.findTrainingsWithParentByName(lessonData.getTrainingName());
+        Training training = trainings.get(lessonData.getLessonNumber());
+        trainingRepository.deleteTrainingsById(training.getId());
+        updateParentTraining(training.getName());
+        return trainings.get(0);
+    }
+
+    @Override
+    public Training addLessonDate(LessonData lessonData) throws ParseException, NoSuchFieldException {
+        Training parent = trainingRepository.findByName(lessonData.getTrainingName());
+        Training newLesson = new Training(parent);
+        newLesson.setDateTime(sdf.parse(lessonData.getNewDate()));
+        newLesson.setPlace(lessonData.getNewPlace());
+        newLesson.setState(StateTraining.parseToInt("Ahead"));
+        trainingRepository.saveAndFlush(newLesson);
+        updateParentTraining(parent.getName());
+        return newLesson;
     }
 
     @Override
@@ -275,11 +306,22 @@ public class TrainingServiceImpl implements TrainingService {
         return trainingRepository.findEditedTrainingByName(trainingName);
     }
 
+    @Override
+    public Training getNextTraining(String trainingName) {
+        try {
+            Integer numberTraining = getNextTrainingNumber(trainingName);
+            List<Training> trainings = trainingRepository.findTrainingsByName(trainingName);
+            return trainings.get(numberTraining - 1);
+        } catch (IndexOutOfBoundsException | NullPointerException ex) {
+            return null;
+        }
+    }
+
     private Training updateParentTraining(String trainingName) {
-        List<Training> trainings = trainingRepository.findTrainingsWithParentByName(trainingName);
-        Training parent = trainings.get(0);
-        if(trainings.size() > 1) {
-            Training firstLesson = trainings.get(1);
+        Training parent = trainingRepository.findByName(trainingName);
+        List<Training> lessons = trainingRepository.findTrainingsByName(trainingName);
+        if(lessons.size() > 0) {
+            Training firstLesson = lessons.get(0);
             parent.setDateTime(firstLesson.getDateTime());
             parent.setPlace(firstLesson.getPlace());
         }
@@ -288,8 +330,21 @@ public class TrainingServiceImpl implements TrainingService {
 
 
     @Override
-    public Integer getTrainingNumber(String trainingName, Date date) {
-        return trainingRepository.findTrainingNumber(trainingName, date);
+    public Integer getNextTrainingNumber(String trainingName) {
+        Integer trainingNumber =  trainingRepository.findTrainingNumber(trainingName, new Date());
+        return (trainingNumber + 1);
+    }
+
+    @Override
+    public Integer getTrainingNumberByDate(String trainingName, Date date) {
+        Integer trainingNumber =  trainingRepository.findTrainingNumber(trainingName, date);
+        return trainingNumber;
+    }
+
+    @Override
+    public Integer getTrainingsCount(String trainingName) {
+        Integer trainingNumber =  trainingRepository.findTrainingsCount(trainingName);
+        return trainingNumber;
     }
 
     @Override
@@ -308,6 +363,36 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
+    public List<ShortParentTraining> getShortTrainingsSortedByDate(String userLogin) {
+        List<ShortParentTraining> trainings = trainingRepository.findShortTrainingsSortByDate();
+        List<ShortParentTraining> shortList = new ArrayList<>();
+        for(int i = 0; (i < trainings.size()) && (shortList.size() < MAX_SIZE); ++i) {
+            ShortParentTraining training = trainings.get(i);
+            String state = training.getState();
+            if((state.equals("Ahead") || state.equals("InProcess"))
+                        && !userRepository.checkSubscribeToTraining(training.getTrainingName(), userLogin)) {
+                shortList.add(training);
+            }
+        }
+        return shortList;
+    }
+
+    @Override
+    public List<ShortParentTraining> getShortTrainingsSortedByRating(String userLogin) {
+        List<ShortParentTraining> trainings = trainingRepository.findShortTrainingsSortByRating();
+        List<ShortParentTraining> shortList = new ArrayList<>();
+        for(int i = 0; (i < trainings.size()) && (shortList.size() < MAX_SIZE); ++i) {
+            String state = trainings.get(i).getState();
+            if(state.equals("Ahead") || state.equals("InProcess")) {
+                ShortParentTraining training = trainings.get(i);
+                training.setIsSubscriber(userRepository.checkSubscribeToTraining(training.getTrainingName(), userLogin));
+                shortList.add(training);
+            }
+        }
+        return shortList;
+    }
+
+    @Override
     public List<Date> getDatesByTrainingNameBetweenDates(String trainingName, Date firstDate, Date secondDate) {
         return trainingRepository.findDatesByTrainingNameBetweenDates(trainingName, firstDate, secondDate);
     }
@@ -321,6 +406,12 @@ public class TrainingServiceImpl implements TrainingService {
     public List<String> getPlacesByTrainingName(String trainingName) {
         return trainingRepository.findPlacesByTrainingName(trainingName);
     }
+
+    @Override
+    public List<String> getTrainingsNames() {
+        return trainingRepository.findTrainingsNames();
+    }
+
 
 
 }

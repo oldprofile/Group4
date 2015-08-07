@@ -6,7 +6,10 @@ import org.json.simple.JSONObject;
 
 import java.io.*;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.codec.binary.Base64;
@@ -17,7 +20,7 @@ import org.apache.commons.codec.binary.Base64;
 public class TrainingForCreation {
 
     private String name;
-    private String userLogin;
+    private String coachLogin;
     private String description;
     private int idCategory;
     private int participantsNumber;
@@ -27,8 +30,10 @@ public class TrainingForCreation {
     private String language;
     private boolean isInternal;
     private List<String> places;
-    private List<String> dateTimes;
+    private List<Date> dateTimes;
     private String additional;
+    private boolean isRepeating;
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     public TrainingForCreation() {
     }
@@ -61,11 +66,18 @@ public class TrainingForCreation {
         return fileLink;
     }
 
-    public TrainingForCreation(JSONObject json) throws NoSuchFieldException, IOException {
-        JSONArray jsonDates = (JSONArray) json.get("dateTime");
+    public TrainingForCreation(JSONObject json) throws NoSuchFieldException, IOException, ParseException {
         dateTimes = new ArrayList<>();
-        for (Object jsonDate : jsonDates) {
-            dateTimes.add((String) jsonDate);
+        isRepeating = (Boolean)json.get("isRepeating");
+        //isRepeating = true;
+        if (isRepeating){
+            DateParser dateParser = new DateParser(json);
+            dateParser.parseDateTimes();
+            dateTimes = dateParser.getDateTimes();
+        } else {
+            JSONArray jsonDates = (JSONArray) json.get("dateTime");
+            for (Object jsonDate : jsonDates)
+                dateTimes.add(sdf.parse((String) jsonDate));
         }
 
         JSONArray jsonPlaces = (JSONArray) json.get("places");
@@ -73,6 +85,7 @@ public class TrainingForCreation {
         for (Object jsonPlace : jsonPlaces) {
             places.add((String) jsonPlace);
         }
+        coachLogin = (String)json.get("coach");
         isInternal = (Boolean)json.get("isInternal");
         audience = (String)json.get("audience");
         additional = (String)json.get("additional");
@@ -96,12 +109,12 @@ public class TrainingForCreation {
         this.name = name;
     }
 
-    public String getUserLogin() {
-        return userLogin;
+    public String getCoachLogin() {
+        return coachLogin;
     }
 
-    public void setUserLogin(String userLogin) {
-        this.userLogin = userLogin;
+    public void setCoachLogin(String coachLogin) {
+        this.coachLogin = coachLogin;
     }
 
     public String getDescription() {
@@ -152,11 +165,11 @@ public class TrainingForCreation {
         this.isInternal = isInternal;
     }
 
-    public List<String> getDateTimes() {
+    public List<Date> getDateTimes() {
         return dateTimes;
     }
 
-    public void setDateTimes(List<String> dateTimes) {
+    public void setDateTimes(List<Date> dateTimes) {
         this.dateTimes = dateTimes;
     }
 
@@ -190,5 +203,13 @@ public class TrainingForCreation {
 
     public void setAdditional(String additional) {
         this.additional = additional;
+    }
+
+    public boolean getIsRepeating() {
+        return isRepeating;
+    }
+
+    public void setIsRepeating(boolean isRepeating) {
+        this.isRepeating = isRepeating;
     }
 }

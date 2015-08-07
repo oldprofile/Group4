@@ -1,17 +1,23 @@
 
 <div ng-controller="LoginController"  class="login-card" id="login-card" >
-        <h1><img src="images/ex.jpg" alt="Exadel" style="width:194px;" /></h1>
+        
         <form ng-submit="submit()" role="form">
-            <input type="text"  placeholder="Username" ng-model="login">
-            <input type="password" placeholder="Password"  ng-model="password">
-          
+          <div class="form-inline">
+            <label><span class="glyphicon glyphicon-user"></span></label>
+            <input type="text" class="form-control" placeholder="Username" ng-model="login">
+          </div>  
+          <div class="form-inline">
+            <label ><span class="glyphicon glyphicon-lock"></span></label>
+            <input type="password" class="form-control" placeholder="Password"  ng-model="password">
+          </div>
             <div class="checkbox">
               <label>
                 <input type="checkbox" name="remember"  ng-model="isRemember">
-                Rememder Me
+                <span>Remember Me</span>
               </label>
             </div>
           
-            <input type="submit" class="login login-submit" value="Log in" >
+          <button type="submit" class="btn btn-default default-btn default-gray">Log in</button>
         </form>
+          
 </div>

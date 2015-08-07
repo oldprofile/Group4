@@ -35,10 +35,10 @@ angular.module('myApp.browse')
    }));}
     
     browseAPI.getRecommended = function(){
-      return $http.get("training_controller/list");
+      return $http.get("training_controller/latest_trainings");
     }
     browseAPI.getFeatured = function(){
-      return $http.get("training_controller/list");
+      return $http.get("training_controller/featured_trainings");
     }
     
      return browseAPI;

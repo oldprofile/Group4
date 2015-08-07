@@ -1,42 +1,52 @@
-    <div class="card-layout-browse clearfix ">
+<div ng-class="{ 'waiting-for-angular': !isContentLoaded }">
+<div ng-show="isContentLoaded" class="clearfix">   
+<div class="card-layout-browse course clearfix ">
       <h1>The Realest Courses</h1>
         <div ng-repeat="t in featured | limitTo: 4">
+          
+             
             <div class="col-sm-3 col-xs-6 card">
+              <a class="block-link" ng-href="#/courseinfo/{{t.trainingName}}">
               <div class="card-bg">
                 <div class="card-image">
                   <img ng-src="{{t.trainingImage}}">
                 </div>
                 <h1>{{t.trainingName}}</h1>
-                <h2>1 Lesson</h2>
                 <h4>Coach: {{t.trainingCoach}}</h4>
                 <div class="additional">
                   <h3>Start Date: {{t.dateTraining | date:'dd MMMM' }}</h3>
-                  <a ng-href="#/courseinfo/{{t.trainingName}}">more</a>
+                  <h4>1 Lesson</h4>
+                  <a ng-href="#/courseinfo/{{t.trainingName}}">Countinue To Info</a>
                 </div>  
-              </div>  
-            </div>    
-        </div>  
+              </div>
+                </a>
+            </div>
+            
+        </div> 
+          
     </div>
 
     
 
-    <div class="card-layout-browse clearfix">
+    <div class="card-layout-browse course clearfix">
       <h1>Just For You</h1>
         <div ng-repeat="t in recommended | limitTo: 4">
             <div class="col-sm-3 col-xs-6 card">
-              <div class="card-bg">
-                <div class="card-image">
-                  <img ng-src="{{t.trainingImage}}">
-                </div>
-                <h1>{{t.trainingName}}</h1>
-                <h2>1 Lesson</h2>
-                <h4>Coach: {{t.trainingCoach}}</h4>
-                <div class="additional">
-                  <h3>Start Date: {{t.dateTraining | date:'dd MMMM'}}</h3>
-                  <a ng-href="#/courseinfo/{{t.trainingName}}">more</a>
-                </div>  
-              </div>  
-            </div>    
+              <a class="block-link" ng-href="#/courseinfo/{{t.trainingName}}">
+                <div class="card-bg">
+                  <div class="card-image">
+                    <img ng-src="{{t.trainingImage}}">
+                  </div>
+                  <h1>{{t.trainingName}}</h1>
+                  <h4>Coach: {{t.trainingCoach}}</h4>
+                  <div class="additional">
+                    <h3>Start Date: {{t.dateTraining | date:'dd MMMM' }}</h3>
+                    <h4>1 Lesson</h4>
+                    <a ng-href="#/courseinfo/{{t.trainingName}}">Countinue To Info</a>
+                  </div>  
+                </div> 
+              </a>
+            </div>   
         </div>  
     </div>
 
@@ -50,6 +60,7 @@
                 
                 <div class="category-content">
                   <h2>{{c.name}}</h2>
+                  <h3>{{c.trainingsNumber}} Courses</h3>
                   
                 </div>
               </div>  
@@ -57,6 +68,7 @@
             </a>
         </div>  
     </div>
+</div>   
 
 <!--
 <div ng-init="limit = 2">

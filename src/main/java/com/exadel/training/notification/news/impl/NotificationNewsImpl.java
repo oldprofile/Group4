@@ -1,9 +1,8 @@
 package com.exadel.training.notification.news.impl;
 
-import com.exadel.training.model.News;
-import com.exadel.training.model.Training;
-import com.exadel.training.model.User;
+import com.exadel.training.model.*;
 import com.exadel.training.notification.news.NotificationNews;
+import com.exadel.training.notification.news.util.NotificationNewsUtil;
 import com.exadel.training.service.NewsService;
 import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
@@ -16,6 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class NotificationNewsImpl implements NotificationNews {
 
+    private final static int TRAINING_TYPE = 0;
     @Autowired
     NewsService newsService;
     @Autowired
@@ -42,6 +42,43 @@ public class NotificationNewsImpl implements NotificationNews {
         news.setTraining(training);
         news.setUser(user);
         news.setAction(action);
+        news.setType(TRAINING_TYPE);
+
+        newsService.insertNews(news);
+    }
+
+    @Override
+    public void sendNews(String action, User user, TrainingFeedback trainingFeedback) throws NoSuchFieldException {
+        News news = new News();
+
+        news.setTrainingFeedback(trainingFeedback);
+        news.setUser(user);
+        news.setAction(action);
+        news.setType(NotificationNewsUtil.TRAINING_FEEDBACK);
+
+        newsService.insertNews(news);
+    }
+
+    @Override
+    public void sendNews(String action, User user, CoachFeedback coachFeedback) throws NoSuchFieldException {
+        News news = new News();
+
+        news.setCoachFeedback(coachFeedback);
+        news.setUser(user);
+        news.setAction(action);
+        news.setType(NotificationNewsUtil.COACH_FEEDBACK);
+
+        newsService.insertNews(news);
+    }
+
+    @Override
+    public void sendNews(String action, User user, UserFeedback userFeedback) throws NoSuchFieldException {
+        News news = new News();
+
+        news.setUserFeedback(userFeedback);
+        news.setUser(user);
+        news.setAction(action);
+        news.setType(NotificationNewsUtil.USER_FEEDBACK);
 
         newsService.insertNews(news);
     }

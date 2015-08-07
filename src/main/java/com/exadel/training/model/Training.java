@@ -67,7 +67,25 @@ public class Training {
     @OneToMany(mappedBy = "training")
     private  List<TrainingFeedback> feedbacks;
 
+    @OneToMany(mappedBy = "training")
+    private List<File> files;
+
     public Training() {
+    }
+
+    public Training(Training parent) {
+        name = parent.getName();
+        description = parent.getDescription();
+        language = parent.getLanguage();
+        isInternal = parent.isInternal();
+        amount = parent.getAmount();
+        audience = parent.getAudience();
+        pictureLink = parent.getPictureLink();
+        additional = parent.getAdditional();
+        category = parent.getCategory();
+        coach = parent.getCoach();
+        rating = parent.getRating();
+        this.parent = parent.getId();
     }
 
     public void fillTraining(TrainingForCreation trainingForCreation) throws NoSuchFieldException {
@@ -261,4 +279,11 @@ public class Training {
         this.rating = rating;
     }
 
+    public List<File> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<File> files) {
+        this.files = files;
+    }
 }

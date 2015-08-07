@@ -1,10 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `testdb` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `testdb`;
--- MySQL dump 10.13  Distrib 5.6.13, for Win32 (x86)
+-- MySQL dump 10.13  Distrib 5.6.24, for Win64 (x86_64)
 --
 -- Host: localhost    Database: testdb
 -- ------------------------------------------------------
--- Server version	5.6.15
+-- Server version	5.6.21
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -29,8 +27,8 @@ CREATE TABLE `users_roles` (
   `roles` bigint(20) NOT NULL,
   PRIMARY KEY (`list_user`,`roles`),
   KEY `FK_akos9oduijg8ig3wqp81bafb3` (`roles`),
-  CONSTRAINT `FK_hpgxh8u3f17lkutb00ldee5wq` FOREIGN KEY (`list_user`) REFERENCES `users` (`id`),
-  CONSTRAINT `FK_akos9oduijg8ig3wqp81bafb3` FOREIGN KEY (`roles`) REFERENCES `roles` (`id`)
+  CONSTRAINT `FK_akos9oduijg8ig3wqp81bafb3` FOREIGN KEY (`roles`) REFERENCES `roles` (`id`),
+  CONSTRAINT `FK_hpgxh8u3f17lkutb00ldee5wq` FOREIGN KEY (`list_user`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -40,7 +38,7 @@ CREATE TABLE `users_roles` (
 
 LOCK TABLES `users_roles` WRITE;
 /*!40000 ALTER TABLE `users_roles` DISABLE KEYS */;
-INSERT INTO `users_roles` VALUES (1,1),(1,2),(2,2),(3,3);
+INSERT INTO `users_roles` VALUES (33,1),(1,2),(2,2),(3,2),(4,2),(5,2),(6,2),(7,2),(8,2),(9,2),(10,2),(11,2),(12,2),(13,2),(14,2),(15,2),(16,2),(17,2),(18,2),(19,2),(20,2),(21,2),(22,2),(23,2),(24,2),(25,2),(26,2),(27,2),(28,2),(29,2),(30,2),(31,2),(32,2),(33,2),(34,3),(35,3),(36,3),(37,3);
 /*!40000 ALTER TABLE `users_roles` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -53,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-07-15 19:27:45
+-- Dump completed on 2015-08-03 11:03:28

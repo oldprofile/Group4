@@ -41,7 +41,7 @@ public class OmissionServiceImpl implements OmissionService{
         Date date = SDF.parse(omissionADDModel.getDate());
         Training training = trainingService.getTrainingByNameAndDate(omissionADDModel.getTrainingName(), date);
         User user = userService.findUserByLogin(omissionADDModel.getUserLogin());
-        Omission omission = new Omission(training, user, omissionADDModel.isOmission());
+        Omission omission = new Omission(training, user, omissionADDModel.isOmission(), omissionADDModel.getReason());
         omissionRepository.save(omission);
     }
 
@@ -51,8 +51,9 @@ public class OmissionServiceImpl implements OmissionService{
     }
 
     @Override
-    public List<Omission> findByTrainingNameAndUserLogin(String trainingName, String userLogin) {
-        return omissionRepository.findByTrainingNameAndUserLogin(trainingName, userLogin);
+    public Omission findByTrainingAndUserLogin(String trainingName, String userLogin, String date) throws ParseException {
+
+        return omissionRepository.findByTrainingAndUserLogin(trainingName, userLogin, SDF.parse(date));
     }
 
     @Override
@@ -87,7 +88,7 @@ public class OmissionServiceImpl implements OmissionService{
    }
 
     @Override
-    public List<Boolean> getAllOmissions(String trainingName, Date date) {
+    public List<Omission> getAllOmissions(String trainingName, Date date) {
         return omissionRepository.getAllOmissions(trainingName, date);
     }
 

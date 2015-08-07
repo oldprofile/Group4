@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,13 +32,13 @@ public class UserFeedbackServiceImpl implements UserFeedbackService {
 
     @Override
     @Transactional
-    public void addUserFeedback(UserFeedbackADDModel userFeedbackModel) throws NoSuchFieldException {
+    public void addUserFeedback(UserFeedbackADDModel userFeedbackModel, Date date) throws NoSuchFieldException {
         String userLogin = userFeedbackModel.getUserLogin();
         User user = userService.findUserByLogin(userLogin);
         String feedbackerLogin = userFeedbackModel.getFeedbackerLogin();
         User feedbacker = userService.findUserByLogin(feedbackerLogin);
         UserFeedback ufeedback = new UserFeedback(userFeedbackModel.isAttendance(), userFeedbackModel.isAttitude(), userFeedbackModel.isCommSkills(),
-                userFeedbackModel.isQuestions(), userFeedbackModel.isMotivation(),userFeedbackModel.isFocusOnResult(), userFeedbackModel.getOther(), feedbacker, user);
+                userFeedbackModel.isQuestions(), userFeedbackModel.isMotivation(),userFeedbackModel.isFocusOnResult(), userFeedbackModel.getOther(), feedbacker, user, date);
         String assessment = userFeedbackModel.getAssessment();
         String level = userFeedbackModel.getLevel();
         if(!StringUtils.isBlank(level) && !StringUtils.isBlank(assessment)) {
@@ -51,5 +52,16 @@ public class UserFeedbackServiceImpl implements UserFeedbackService {
     @Override
     public List<UserFeedback> getUserFeedbacksOrderByDate(User user) {
         return userFeedbackRepository.findFeedbackByUserOrderByDateAsc(user);
+    }
+
+    @Override
+    public UserFeedback getUserFeedbackByLoginsAndDate(String userLogin, String feedbackerLogin, Date date) {
+        return userFeedbackRepository.findFeedbackByUserAndDateAndFeedbacker(userLogin, feedbackerLogin, date);
+    }
+
+    @Override
+    public void deleteFeedback(String userLogin, String feedbackerLogin, Date date) {
+        UserFeedback userFeedback = userFeedbackRepository.findFeedbackByUserAndDateAndFeedbacker(userLogin, feedbackerLogin, date);
+        userFeedbackRepository.delete(userFeedback);
     }
 }

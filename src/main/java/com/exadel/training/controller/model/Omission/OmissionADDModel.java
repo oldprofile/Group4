@@ -13,14 +13,17 @@ public class OmissionADDModel {
 
     private boolean isOmission;
 
+    private String reason;
+
     public OmissionADDModel() {
     }
 
-    public OmissionADDModel(String userLogin, String trainingName, String date, boolean isOmission) {
+    public OmissionADDModel(String userLogin, String trainingName, String date, boolean isOmission, String reason) {
         this.userLogin = userLogin;
         this.trainingName = trainingName;
         this.date = date;
         this.isOmission = isOmission;
+        this.reason = reason;
     }
 
     public String getUserLogin() {
@@ -53,5 +56,13 @@ public class OmissionADDModel {
 
     public void setIsOmission(boolean isOmission) {
         this.isOmission = isOmission;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }
