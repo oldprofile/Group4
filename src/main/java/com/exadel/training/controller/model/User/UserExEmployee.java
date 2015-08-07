@@ -1,6 +1,7 @@
 package com.exadel.training.controller.model.User;
 
 import com.exadel.training.model.User;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by HP on 30.07.2015.
@@ -63,7 +64,7 @@ public class UserExEmployee {
         userExEmployee.setLogin(user.getLogin());
         userExEmployee.setEmail(user.getLogin());
 
-        if(!user.getNumberPhone().isEmpty()) {
+        if(StringUtils.isNoneBlank(user.getNumberPhone())) {
             userExEmployee.setNumberPhone(user.getNumberPhone());
         }
 

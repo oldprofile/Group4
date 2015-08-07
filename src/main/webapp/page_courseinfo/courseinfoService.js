@@ -145,5 +145,16 @@ angular.module('myApp.courseinfo')
 			});
 		};
 
+		courseInfoService.addParticipant = function(participantData) {
+			return $http.post('/user_controller/insert_external_employee', participantData).then(function(result) {
+				console.log("Participant added successfully");
+				return result.data;
+			}, function (err) {
+				console.log("Participant adding error: " + err.statusCode);
+				return err;
+			});
+
+		};
+
 		return courseInfoService;
 	}]);
