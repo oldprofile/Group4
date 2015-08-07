@@ -65,7 +65,7 @@ public class UserController {
     public @ResponseBody List<UserShort> findByRole(@PathVariable("type") int type,
                                                     HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws NoSuchFieldException, BadPaddingException, IOException, IllegalBlockSizeException {
 
-        List<UserShort> userShortList = new ArrayList<UserShort>();
+             List<UserShort> userShortList = new ArrayList<UserShort>();
 
             List<User> userList = userService.findUsersByRole(RoleType.parseIntToRoleType(type));
 
@@ -303,13 +303,18 @@ public class UserController {
     public @ResponseBody List<UserShort> findCoachOfUser(@PathVariable("login") String login,
                                                          HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws BadPaddingException, IOException, IllegalBlockSizeException {
 
-        List<UserShort> userShorts = new ArrayList<>();
+            List<UserShort> userShorts = new ArrayList<>();
+            List<User> allCoachofUser = userService.findAllCoachOfUser(login);
 
-            for (User user : userService.findAllCoachOfUser(login)) {
-                userShorts.add(UserShort.parseUserShort(user));
+            if(allCoachofUser != EMPTY) {
+                for (User user : userService.findAllCoachOfUser(login)) {
+                    userShorts.add(UserShort.parseUserShort(user));
+                }
+
+                httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+            } else {
+                httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
             }
-
-            httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
 
         return userShorts;
     }
@@ -322,58 +327,83 @@ public class UserController {
     }
 
     @RequestMapping(value = "/insert_external_employee", method = RequestMethod.POST,  consumes = "application/json")
-    public void insertExternalEmployee(@RequestBody UserExEmployee userExEmployee) {
+    public void insertExternalEmployee(@RequestBody UserExEmployee userExEmployee, HttpServletResponse httpServletResponse) {
         User user = new User();
         Role role = roleService.getRoleByID(EX_EMPLOYEE);
+        String login = userExEmployee.getLogin();
+        String email = userExEmployee.getEmail();
 
-        user.addRole(role);
-        user.setName(userExEmployee.getName());
-        user.setLogin(userExEmployee.getLogin());
-        user.setEmail(userExEmployee.getEmail());
-        user.setPassword("Exadel".hashCode());
-        user.setNumberPhone(userExEmployee.getNumberPhone());
+        if (!userService.checkUserByEmail(email) && !userService.checkUserByLogin(login)) {
 
-        userService.insertUser(user);
-        userService.insertUserTrainingRelationShip(userExEmployee.getLogin(),userExEmployee.getTraining());
+            user.addRole(role);
+            user.setName(userExEmployee.getName());
+            user.setEmail(email);
+            user.setLogin(login);
+            user.setPassword("Exadel".hashCode());
+            user.setNumberPhone(userExEmployee.getNumberPhone());
+
+            userService.insertUser(user);
+            userService.insertUserTrainingRelationShip(userExEmployee.getLogin(), userExEmployee.getTraining());
+            httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+        } else {
+            httpServletResponse.setStatus(HttpServletResponse.SC_SEE_OTHER);
+        }
     }
 
     @RequestMapping(value = "/insert_external_coach", method = RequestMethod.POST, consumes = "application/json")
-    public void insertExternalEmployee(@RequestBody UserExCoach userExCoach) {
+    public void insertExternalEmployee(@RequestBody UserExCoach userExCoach, HttpServletResponse httpServletResponse) {
         User user = new User();
         Role role = roleService.getRoleByID(EX_COACH);
+        String login = userExCoach.getLogin();
+        String email = userExCoach.getEmail();
 
-        user.addRole(role);
-        user.setName(userExCoach.getName());
-        user.setLogin(userExCoach.getLogin());
-        user.setEmail(userExCoach.getEmail());
-        user.setPassword(userExCoach.getPassword());
-        user.setNumberPhone(userExCoach.getNumberPhone());
+        if(!userService.checkUserByLogin(login) && !userService.checkUserByEmail(email)) {
 
-        userService.insertUser(user);
+            user.addRole(role);
+            user.setName(userExCoach.getName());
+            user.setLogin(login);
+            user.setEmail(userExCoach.getEmail());
+            user.setPassword(userExCoach.getPassword());
+            user.setNumberPhone(userExCoach.getNumberPhone());
+
+            userService.insertUser(user);
+            httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+        } else {
+            httpServletResponse.setStatus(HttpServletResponse.SC_SEE_OTHER);
+        }
     }
 
     @RequestMapping(value = "/select_all_users_excoach", method = RequestMethod.GET)
-    public @ResponseBody List<UserExCoach> selectAllUsersExCoach() {
+    public @ResponseBody List<UserExCoach> selectAllUsersExCoach(HttpServletResponse httpServletResponse) {
          List<User> userList = userService.findUsersByRole(EX_COACH);
          List<UserExCoach> userExCoachList = new ArrayList<>();
 
-        for(User user : userList) {
-         userExCoachList.add(UserExCoach.parseUserExCoach(user));
+        if(userList != EMPTY) {
+            for (User user : userList) {
+                userExCoachList.add(UserExCoach.parseUserExCoach(user));
+            }
+            httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+        } else {
+            httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
         }
-
         return userExCoachList;
     }
 
     @RequestMapping(value = "/select_all_users_exemployee", method = RequestMethod.GET)
-    public @ResponseBody List<UserExEmployee> selectAllUsersExEmployee() {
+    public @ResponseBody List<UserExEmployee> selectAllUsersExEmployee(HttpServletResponse httpServletResponse) {
         List<User> userList = userService.findUsersByRole(EX_EMPLOYEE);
         List<UserExEmployee> userExEmployeeList = new ArrayList<>();
 
-        for(User user: userList) {
-            userExEmployeeList.add(UserExEmployee.parseUserExEmployee(user));
+        if(userList != EMPTY) {
+            for (User user : userList) {
+                userExEmployeeList.add(UserExEmployee.parseUserExEmployee(user));
+            }
+            httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+        } else {
+            httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
         }
-
         return userExEmployeeList;
+
     }
 
     @RequestMapping(value = "/select_all_users_login", method = RequestMethod.GET)
