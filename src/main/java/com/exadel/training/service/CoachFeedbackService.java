@@ -13,5 +13,6 @@ import java.util.List;
 public interface CoachFeedbackService {
     public void addCoachFeedback(CoachFeedbackADDModel coachFeedbackModel, Date date);
     public List<CoachFeedback> getCoachFeedbacksOrderByDate(User coach);
-    public CoachFeedback getCoachFeeddbackByLoginsAndDate(String coachLogin, String feedbackerLogin, Date date);
+    public CoachFeedback getCoachFeedbackByLoginsAndDate(String coachLogin, String feedbackerLogin, Date date);
+    public void deleteFeedback(String coachLogin, String feedbackerLogin, Date date);
 }

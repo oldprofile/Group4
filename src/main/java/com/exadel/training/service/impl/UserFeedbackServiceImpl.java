@@ -58,4 +58,10 @@ public class UserFeedbackServiceImpl implements UserFeedbackService {
     public UserFeedback getUserFeedbackByLoginsAndDate(String userLogin, String feedbackerLogin, Date date) {
         return userFeedbackRepository.findFeedbackByUserAndDateAndFeedbacker(userLogin, feedbackerLogin, date);
     }
+
+    @Override
+    public void deleteFeedback(String userLogin, String feedbackerLogin, Date date) {
+        UserFeedback userFeedback = userFeedbackRepository.findFeedbackByUserAndDateAndFeedbacker(userLogin, feedbackerLogin, date);
+        userFeedbackRepository.delete(userFeedback);
+    }
 }
