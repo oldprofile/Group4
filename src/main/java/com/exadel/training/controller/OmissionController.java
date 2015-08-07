@@ -1,6 +1,7 @@
 package com.exadel.training.controller;
 
 import com.exadel.training.controller.model.Omission.OmissionADDModel;
+import com.exadel.training.controller.model.Omission.OmissionGETModel;
 import com.exadel.training.controller.model.Omission.PathToStatistics;
 import com.exadel.training.controller.model.Omission.StatisticsRequestModel;
 import com.exadel.training.controller.model.Training.TrainingNameAndDate;
@@ -66,9 +67,10 @@ public class OmissionController {
     }
 
     @RequestMapping(value = "/get_omissions", method = RequestMethod.POST, consumes = "application/json")
-    public @ResponseBody List<Boolean> getOmissions(@RequestBody TrainingNameAndDate trainingNameAndDate) throws ParseException {
-        List<Boolean> omissions = omissionService.getAllOmissions(trainingNameAndDate.getTrainingName(), trainingNameAndDate.parseToDate());
-        return omissions;
+    public @ResponseBody List<OmissionGETModel> getOmissions(@RequestBody TrainingNameAndDate trainingNameAndDate) throws ParseException {
+        List<Omission> omissions = omissionService.getAllOmissions(trainingNameAndDate.getTrainingName(), trainingNameAndDate.parseToDate());
+        List<OmissionGETModel> omissionGETModels = OmissionGETModel.parseOmissionList(omissions);
+        return omissionGETModels;
     }
 
     @RequestMapping(value = "/statistics", method = RequestMethod.POST, consumes = "application/json")
