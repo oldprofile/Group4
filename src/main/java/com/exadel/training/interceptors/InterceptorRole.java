@@ -1,6 +1,7 @@
 package com.exadel.training.interceptors;
 
-import com.exadel.training.tokenAuthentification.SessionToken;
+import com.exadel.training.interceptors.access.Access;
+import com.exadel.training.interceptors.access.AccessRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -10,35 +11,36 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Created by HP on 31.07.2015.
+ * Created by HP on 06.08.2015.
  */
 @Component
-public class Interceptor implements HandlerInterceptor {
+public class InterceptorRole implements HandlerInterceptor {
 
     @Autowired
-    private SessionToken sessionToken;
+    private AccessRole accessRole;
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         String uri = httpServletRequest.getRequestURI();
-        if(this.isAuthentication(uri) || uri.equalsIgnoreCase("/")) {
-            return true;
+        if(!this.isAuthentication(uri) && !uri.equalsIgnoreCase("/")) {
+
+            String login = httpServletRequest.getHeader("login");
+
+            return accessRole.allowMethod(login, mySubString(uri));
         } else {
-            if (!sessionToken.isEmpty()) {
-                String header = httpServletRequest.getHeader("authorization");
-
-
-                if (header != null && sessionToken.containsToken(header)) {
-                    httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
-                    return true;
-                } else {
-                    httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                    return false;
-                }
-            }
+            return true;
         }
-        httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        return false;
+    }
+
+    private String mySubString(String uri) {
+        String findUri;
+        if(uri.split("/").length-1 == 3) {
+            int first = uri.indexOf('/');
+            int last = uri.lastIndexOf('/');
+            return findUri = uri.substring(first, last);
+        } else {
+            return uri;
+        }
     }
 
     private boolean isAuthentication(String uri) {
