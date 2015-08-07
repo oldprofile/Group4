@@ -187,8 +187,9 @@ public class FeedbackController {
     @RequestMapping(value = "/request_user_feedback", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody void addTrainingFeedback(@RequestBody TrainingNameAndUserLogin trainingNameAndUserLogin, HttpServletResponse response) {
         User coach = trainingService.getTrainingByName(trainingNameAndUserLogin.getTrainingName()).getCoach();
+        User user = userService.findUserByLogin(trainingNameAndUserLogin.getLogin());
       try {
-                wrapperNotificationMail.send(coach.getEmail(), MessageFabric.getMessage(trainingNameAndUserLogin.getTrainingName(), trainingNameAndUserLogin.getLogin()));
+                wrapperNotificationMail.send(coach.getEmail(), MessageFabric.getMessage(trainingNameAndUserLogin.getTrainingName(), user.getName(), user.getLogin()));
                 response.setStatus(HttpServletResponse.SC_OK);
             } catch (Exception e) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
