@@ -180,7 +180,7 @@ angular.module('myApp.courseinfo')
 				},
 			});
 
-			omissionsModalInstance.result.then(function (data) {
+			participantModalInstance.result.then(function (data) {
 			}, function () {
 			});
 		};
@@ -362,7 +362,7 @@ angular.module('myApp.courseinfo')
 
 		$scope.ok = function () {
 			console.log($scope.participantInfo);
-			courseInfoService.addParticipant($scope.participantData).then(
+			courseInfoService.addParticipant($scope.participantInfo).then(
 				function(result) {
 
 				});
