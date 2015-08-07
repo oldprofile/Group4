@@ -1,6 +1,7 @@
 package com.exadel.training.service;
 
 import com.exadel.training.common.RoleType;
+import com.exadel.training.model.Role;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
 
@@ -24,6 +25,8 @@ public interface UserService {
     User findUserByLogin(String Login);
     User findUserByEmail(String email);
     Training findMyTraining(String login, String trainingName);
+
+    List<Role> findRolesOfUser(String login);
 
     List<Training> selectAllTraining(String login);
     List<Training> selectAllTrainingSortedByDate(String login, List<Integer> state);

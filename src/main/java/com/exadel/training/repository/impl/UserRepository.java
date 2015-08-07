@@ -44,6 +44,9 @@ public interface UserRepository extends JpaRepository<User,Long>{
 
     User findUserByEmail(String email);
 
+    @Query("select r from User as u inner join u.roles as r where u.login = ?1")
+    List<Role> findRolesOfUser(String login);
+
     @Query("select u.name from User as u order by u.name asc")
     List<String> selectAllLoginOfUser();
 

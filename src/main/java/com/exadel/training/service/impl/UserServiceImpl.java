@@ -2,6 +2,7 @@ package com.exadel.training.service.impl;
 
 import com.exadel.training.common.RoleType;
 import com.exadel.training.comparator.ComparatorDateTraining;
+import com.exadel.training.model.Role;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
 import com.exadel.training.repository.impl.TrainingRepository;
@@ -82,6 +83,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public Training findMyTraining(String login, String trainingName) {
         return userRepository.findMyTraining(login, trainingName);
+    }
+
+    @Override
+    public List<Role> findRolesOfUser(String login) {
+        return userRepository.findRolesOfUser(login);
     }
 
     @Override
