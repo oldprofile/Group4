@@ -357,7 +357,8 @@ angular.module('myApp.courseinfo')
 	.controller('ParticipantsModalInstanceController', ['$scope', '$modalInstance', 'courseInfoService', 'courseinfo', function ($scope, $modalInstance, courseInfoService, courseinfo) {
 
 		$scope.participantInfo = {
-			numberPhone: ""
+			numberPhone: "",
+			training: courseinfo.name
 		};
 
 		$scope.ok = function () {
