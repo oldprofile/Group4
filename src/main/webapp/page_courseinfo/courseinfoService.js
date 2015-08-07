@@ -29,6 +29,7 @@ angular.module('myApp.courseinfo')
 			};
 			return $http.post('/omission_controller/get_omissions/', lessonData)
 				.success(function (result) {
+					console.log(result);
 					return result.data;
 				})
 				.error(function (err) {

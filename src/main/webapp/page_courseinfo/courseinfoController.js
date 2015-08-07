@@ -141,7 +141,6 @@ angular.module('myApp.courseinfo')
 
 			dateModalInstance.result.then(function (data) {
 				$scope.course.dateTime[index] = $filter('date')(data, 'medium');
-				;
 			}, function () {
 			});
 		};
@@ -314,7 +313,7 @@ angular.module('myApp.courseinfo')
 						trainingName: courseinfo.name,
 						date: courseinfo.dateTime[index],
 						userLogin: courseinfo.listeners[i].login,
-						isOmission: $scope.existingOmissions[i],
+						isOmission: ($scope.existingOmissions ? $scope.existingOmissions[i] : false)
 					};
 					$scope.omissionData.push(info);
 				}

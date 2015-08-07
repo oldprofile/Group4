@@ -28,6 +28,11 @@ angular.module('myApp')
 
 			scope.isAdmin = userService.isAdmin();
 
+			if(scope.isAdmin) {
+				scope.externalCoaches = [];
+
+			}
+
 			scope.courseInfo = {};
 			scope.courseInfo.dateTime = [];
 			scope.courseInfo.places = [];
