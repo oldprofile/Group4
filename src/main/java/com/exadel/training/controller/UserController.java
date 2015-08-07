@@ -2,11 +2,13 @@ package com.exadel.training.controller;
 
 import com.exadel.training.common.RoleType;
 import com.exadel.training.controller.model.User.*;
+import com.exadel.training.model.Role;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
 import com.exadel.training.notification.MessageFabric;
 import com.exadel.training.notification.Notification;
 import com.exadel.training.notification.news.NotificationNews;
+import com.exadel.training.service.RoleService;
 import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
 import com.exadel.training.tokenAuthentification.SessionToken;
@@ -35,6 +37,12 @@ import java.util.List;
 public class UserController {
 
     private static final Object EMPTY = null;
+    private static final long ADMIN = 1;
+    private static final long EMPLOYEE = 2;
+    private static final long EX_COACH = 3;
+    private static final long EX_EMPLOYEE = 4;
+
+    private Object object = new Object();
 
     @Autowired
     private UserService userService;
@@ -47,7 +55,9 @@ public class UserController {
     private Notification notificationMail;
     @Autowired
     private NotificationNews notificationNews;
-    private Object object = new Object();
+    @Autowired
+    private RoleService roleService;
+
 
 
     @RequestMapping(value = "/find_by_role/{type}", method = RequestMethod.GET)
@@ -230,7 +240,7 @@ public class UserController {
                               notificationNews.sendNews(" are in spare list ", user, training);
                               notificationMail.send(user.getEmail(), userLogin + ",you are in reserve " + trainingName);
 
-                              httpServletResponse.setStatus(HttpServletResponse.SC_BAD_GATEWAY);
+                              httpServletResponse.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
                           }
                       }
                   }
@@ -309,14 +319,58 @@ public class UserController {
             userService.insertNumberOfTelephone(phoneUser.getLogin(), phoneUser.getNumberPhone());
             httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
     }
+
     @RequestMapping(value = "/insert_external_employee", method = RequestMethod.POST,  consumes = "application/json")
     public void insertExternalEmployee(@RequestBody UserExEmployee userExEmployee) {
         User user = new User();
+        Role role = roleService.getRoleByID(EX_EMPLOYEE);
+
+        user.addRole(role);
         user.setName(userExEmployee.getName());
         user.setLogin(userExEmployee.getLogin());
         user.setEmail(userExEmployee.getEmail());
+        user.setPassword("Exadel".hashCode());
 
-        userService.insertExEmploee(user);
+        userService.insertUser(user);
+        userService.insertUserTrainingRelationShip(userExEmployee.getLogin(),userExEmployee.getTraining());
+    }
+
+    @RequestMapping(value = "/insert_external_coach", method = RequestMethod.POST, consumes = "application/json")
+    public void insertExternalEmployee(@RequestBody UserExCoach userExCoach) {
+        User user = new User();
+        Role role = roleService.getRoleByID(EX_COACH);
+
+        user.addRole(role);
+        user.setName(userExCoach.getName());
+        user.setLogin(userExCoach.getLogin());
+        user.setEmail(userExCoach.getEmail());
+        user.setPassword(userExCoach.getPassword());
+
+        userService.insertUser(user);
+    }
+
+    @RequestMapping(value = "/select_all_users_excoach", method = RequestMethod.GET)
+    public @ResponseBody List<UserExCoach> selectAllUsersExCoach() {
+         List<User> userList = userService.findUsersByRole(EX_COACH);
+         List<UserExCoach> userExCoachList = new ArrayList<>();
+
+        for(User user : userList) {
+         userExCoachList.add(UserExCoach.parseUserExCoach(user));
+        }
+
+        return userExCoachList;
+    }
+
+    @RequestMapping(value = "/select_all_users_exemployee", method = RequestMethod.GET)
+    public @ResponseBody List<UserExEmployee> selectAllUsersExEmployee() {
+        List<User> userList = userService.findUsersByRole(EX_EMPLOYEE);
+        List<UserExEmployee> userExEmployeeList = new ArrayList<>();
+
+        for(User user: userList) {
+            userExEmployeeList.add(UserExEmployee.parseUserExEmployee(user));
+        }
+
+        return userExEmployeeList;
     }
 
     @RequestMapping(value = "/select_all_users_login", method = RequestMethod.GET)

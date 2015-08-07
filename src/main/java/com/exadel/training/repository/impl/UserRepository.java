@@ -42,10 +42,15 @@ public interface UserRepository extends JpaRepository<User,Long>{
 
     User findUserByLogin(String login);
 
-    @Query("select u.name from User as u")
+    User findUserByEmail(String email);
+
+    @Query("select r from User as u inner join u.roles as r where u.login = ?1")
+    List<Role> findRolesOfUser(String login);
+
+    @Query("select u.name from User as u order by u.name asc")
     List<String> selectAllLoginOfUser();
 
-    @Query(value = "SELECT * FROM users WHERE MATCH (name,login,email) AGAINST (:search in boolean mode)", nativeQuery = true)
+    @Query(value = "SELECT * FROM users WHERE MATCH (name,login,email,number_phone) AGAINST (:search in boolean mode)", nativeQuery = true)
     List<User> searchUsers(@Param("search")String search);
 
     @Query("select u from User as u inner join u.roles as r where r.id = ?1 ")
@@ -90,9 +95,11 @@ public interface UserRepository extends JpaRepository<User,Long>{
     @Query("select distinct t.dateTime from User as u inner  join u.trainings as t where u.login = ?1 and t.id > 0  order by t.dateTime asc")
     List<Date> selectAllDateOfTrainings(String login);
 
-    @Query("select distinct t.name from User as u inner join u.trainings as t where t.parent = 0 and t.state in (?2) and u.login = ?1")
-    List<String> selectAllTrainingNameActual(String login, List<Integer> state);
+    @Query("select distinct t from User as u inner join u.trainings as t where t.parent = 0 and t.state in (?2) and u.login = ?1")
+    List<Training> selectAllTrainingNameActual(String login, List<Integer> state);
 
-    @Query("select distinct t.name from User as u inner join u.ownTrainings as t where t.parent = 0 and t.state in (?2) and u.login = ?1")
-    List<String> selectAllTrainingCoachNameActual(String login, List<Integer> state);
+    @Query("select distinct t from User as u inner join u.ownTrainings as t where t.parent = 0 and t.state in (?2) and u.login = ?1")
+    List<Training> selectAllTrainingCoachNameActual(String login, List<Integer> state);
+
+
 }
