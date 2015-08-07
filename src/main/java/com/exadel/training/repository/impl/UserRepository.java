@@ -47,7 +47,7 @@ public interface UserRepository extends JpaRepository<User,Long>{
     @Query("select r from User as u inner join u.roles as r where u.login = ?1")
     List<Role> findRolesOfUser(String login);
 
-    @Query("select u.name from User as u order by u.name asc")
+    @Query("select u.login from User as u order by u.login asc")
     List<String> selectAllLoginOfUser();
 
     @Query(value = "SELECT * FROM users WHERE MATCH (name,login,email,number_phone) AGAINST (:search in boolean mode)", nativeQuery = true)
