@@ -57,6 +57,7 @@ public class OmissionController {
                     omissionService.addOmission(omissionADDModel);
                 } else {
                     omission.setOmission(omissionADDModel.isOmission());
+                    omission.setReason(omissionADDModel.getReason());
                     omissionRepository.save(omission);
 
                 }

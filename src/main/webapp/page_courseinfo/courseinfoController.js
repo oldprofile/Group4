@@ -313,7 +313,8 @@ angular.module('myApp.courseinfo')
 						trainingName: courseinfo.name,
 						date: courseinfo.dateTime[index],
 						userLogin: courseinfo.listeners[i].login,
-						isOmission: ($scope.existingOmissions ? $scope.existingOmissions[i] : false)
+						isOmission: ($scope.existingOmissions.length != 0 ? $scope.existingOmissions[i].omission : false),
+						reason: ($scope.existingOmissions.length != 0 ? $scope.existingOmissions[i].reason : "")
 					};
 					$scope.omissionData.push(info);
 				}

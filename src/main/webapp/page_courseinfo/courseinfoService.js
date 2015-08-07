@@ -27,10 +27,10 @@ angular.module('myApp.courseinfo')
 				trainingName: courseName,
 				date: lessonDate
 			};
-			return $http.post('/omission_controller/get_omissions/', lessonData)
+			return $http.post('/omission_controller/get_omissions', lessonData)
 				.success(function (result) {
 					console.log(result);
-					return result.data;
+					return result;
 				})
 				.error(function (err) {
 					return err;

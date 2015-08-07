@@ -1,5 +1,5 @@
 angular.module('myApp')
-	.factory('initCourseService', ['$http', 'categoriesLocal', 'userService', function ($http, categoriesLocal, userService) {
+	.factory('initCourseService', ['$http', 'categoriesLocal', 'userService', 'coachesService', function ($http, categoriesLocal, userService, coachesService) {
 		return function (scope) {
 			scope.categoriesObj = [];
 			scope.types = [
@@ -30,7 +30,10 @@ angular.module('myApp')
 
 			if(scope.isAdmin) {
 				scope.externalCoaches = [];
-
+				coachesService.getCoaches().then(function(data) {
+					scope.externalCoaches = data;
+					console.log(scope.externalCoaches);
+				});
 			}
 
 			scope.courseInfo = {};
