@@ -1,5 +1,6 @@
 package com.exadel.training.controller.model.User;
 
+import com.exadel.training.model.Role;
 import com.exadel.training.model.User;
 
 import java.util.ArrayList;
@@ -14,8 +15,7 @@ public class UserShort {
     private String email;
     private String login;
     private String numberPhone;
-
-
+    private List<Role> roles;
 
     public UserShort() {
     }
@@ -50,6 +50,14 @@ public class UserShort {
 
     public void setNumberPhone(String numberPhone) {
         this.numberPhone = numberPhone;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
     public static UserShort parseUserShort(User user) {

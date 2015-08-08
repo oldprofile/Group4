@@ -15,6 +15,7 @@ import java.util.List;
 public interface UserService {
 
     Boolean checkUserByLogin(String login);
+    Boolean checkUserByEmail(String email);
     Boolean checkSubscribeToTraining(Long trainingID, Long userID);
     Boolean isCoach(String login, String coachName);
     Boolean checkSubscribeToTraining(String trainingName, String login);

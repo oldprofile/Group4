@@ -1,5 +1,6 @@
 package com.exadel.training.service.statistics;
 
+import com.dropbox.core.DbxException;
 import com.exadel.training.controller.model.Feedback.UserFeedbackGETModel;
 import com.exadel.training.controller.model.Omission.JournalOmissionModel;
 import com.exadel.training.controller.model.Omission.StatisticsRequestModel;
@@ -21,6 +22,7 @@ import org.apache.poi.xssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -46,6 +48,9 @@ public class ExcelFileGenerator {
     @Autowired
     UserFeedbackService userFeedbackService;
 
+    @Autowired
+    DropboxIntegration dropboxIntegration;
+
     private static final int DEFAULT_COLUMN_WIDTH = 20;
     private static final int NAMES_COLUMN_WIDTH = 23*256;
     private static final int TITLE_HEIGHT = 12;
@@ -63,7 +68,7 @@ public class ExcelFileGenerator {
         return destination;
     }
 
-    private String returnFilePath(String fileName) {
+    public String returnFilePath(String fileName) {
         String destination = "statistics\\" + fileName;
         if(!SystemUtils.IS_OS_WINDOWS)
             destination = destination.replace("\\", "/");
@@ -330,12 +335,13 @@ public class ExcelFileGenerator {
         return workbook;
     }
 
-    public String generateFile(XSSFWorkbook workbook, String fileName) throws IOException {
+    public String generateFile(XSSFWorkbook workbook, String fileName) throws IOException, DbxException {
 
         String filePath = createFilePath(fileName);
         FileOutputStream fileOut = new FileOutputStream(filePath);
         workbook.write(fileOut);
         fileOut.close();
-        return returnFilePath(fileName);
+        String sharebleURL = dropboxIntegration.uploadFile(new File(filePath), fileName);
+        return sharebleURL;
     }
 }

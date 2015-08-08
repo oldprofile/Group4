@@ -5,13 +5,15 @@ package com.exadel.training.controller.model.Omission;
  */
 public class PathToStatistics {
     String path;
+    String dropboxLink;
 
     public PathToStatistics() {
 
     }
 
-    public PathToStatistics(String path) {
+    public PathToStatistics(String path, String dropboxLink) {
         this.path = path;
+        this.dropboxLink = dropboxLink;
     }
 
     public String getPath() {
@@ -20,5 +22,13 @@ public class PathToStatistics {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public String getDropboxLink() {
+        return dropboxLink;
+    }
+
+    public void setDropboxLink(String dropboxLink) {
+        this.dropboxLink = dropboxLink;
     }
 }

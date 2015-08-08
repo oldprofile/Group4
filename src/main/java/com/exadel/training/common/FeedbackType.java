@@ -53,11 +53,11 @@ public enum FeedbackType {
             isPositive++;
         }
         if(isPositive/4 < 0.5) {
-            return 1;
+            return 3;
         } else if (isPositive/4 == 0.5) {
             return 2;
         } else
-            return 3;
+            return 1;
     }
 
     public static int getFeedbackType(UserFeedback userFeedback) {
@@ -81,11 +81,11 @@ public enum FeedbackType {
             isPositive++;
         }
         if(isPositive/6 < 0.5) {
-            return 1;
+            return 3;
         } else if (isPositive/6 == 0.5) {
             return 2;
         } else
-            return 3;
+            return 1;
     }
 
     public static int getFeedbackType(CoachFeedback coachFeedback) {
@@ -124,10 +124,10 @@ public enum FeedbackType {
             isPositive++;
         }
         if(isPositive/11 < 0.5) {
-            return 1;
+            return 3;
         } else if (isPositive/11 == 0.5) {
             return 2;
         } else
-            return 3;
+            return 1;
     }
 }

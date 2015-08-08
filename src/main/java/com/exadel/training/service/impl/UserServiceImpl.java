@@ -36,6 +36,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Boolean checkUserByEmail(String email) {
+        return userRepository.checkUserByEmail(email);
+    }
+
+    @Override
     public Boolean checkSubscribeToTraining(Long trainingName, Long login) {
         return userRepository.checkSubscribeToTraining(trainingName, login) == 1 ? true : false;
     }

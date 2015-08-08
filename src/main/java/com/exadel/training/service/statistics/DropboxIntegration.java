@@ -1,6 +1,7 @@
 package com.exadel.training.service.statistics;
 
 import com.dropbox.core.*;
+import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.util.Locale;
@@ -8,11 +9,12 @@ import java.util.Locale;
 /**
  * Created by asd on 07.08.2015.
  */
+@Service
 public class DropboxIntegration {
     private final static String APP_KEY = "dix6ykfcwrl406d";
     private final static String APP_SECRET = "dix6ykfcwrl406d";
     private final static String accessToken = "h5opKpPw0GMAAAAAAAADezEiVXRSW7bFSQAVhFmfWyUFzQIC36ct9i89yv2CCKAO";
-    DbxClient client;
+    private DbxClient client;
 
     public DropboxIntegration() {
         DbxRequestConfig config = new DbxRequestConfig(
@@ -27,7 +29,7 @@ public class DropboxIntegration {
                     DbxWriteMode.add(), uploadingFile.length(), inputStream);
         } finally {
             inputStream.close();
-            return fileName;
+            return client.createShareableUrl("/" + fileName);
         }
     }
 
