@@ -50,8 +50,9 @@ angular.module('myApp.createcourse').controller('CreateCourseController', [
 			$scope.courseInfo.language = lang;
 		}
 
-		$scope.setCoach = function(login) {
-			$scope.courseInfo.coachLogin = login;
+		$scope.setCoach = function(coach) {
+			$scope.temp.coach = coach;
+			$scope.courseInfo.coachLogin = coach.login;
 		}
 
 		$scope.addCoach = function () {
@@ -61,15 +62,16 @@ angular.module('myApp.createcourse').controller('CreateCourseController', [
 				controller: "CoachModalInstanceController",
 				size: "lg",
 				resolve: {
-					externalCoaches: $scope.externalCoaches,
+					externalCoaches: function() {
+						return $scope.externalCoaches;
+					}
 				}
 			});
 
 			coachModalInstance.result.then(function (data) {
 			}, function () {
 			});
-		}
-
+		};
 	}])
 
 	.controller('CoachModalInstanceController', ['$scope', '$modalInstance', 'coachService', 'externalCoaches', function($scope, $modalInstance, coachService, externalCoaches) {

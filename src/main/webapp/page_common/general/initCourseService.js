@@ -19,12 +19,14 @@ angular.module('myApp')
 			scope.temp.place = "";
 			scope.temp.startsOn = "";
 			scope.temp.repeatOn = [];
+			scope.temp.coach = {};
 
 			for(var i = 0; i <7; i++) {
 				scope.temp.repeatOn.push(false);
 			}
 
 			scope.temp.pictureHolder = "";  //pictureLink or pictureData
+			scope.temp.fileHolder = [];
 
 			scope.isAdmin = userService.isAdmin();
 
@@ -32,7 +34,6 @@ angular.module('myApp')
 				scope.externalCoaches = [];
 				coachService.getCoaches().then(function(data) {
 					scope.externalCoaches = data;
-					console.log(scope.externalCoaches);
 				});
 			}
 
@@ -41,12 +42,14 @@ angular.module('myApp')
 			scope.courseInfo.places = [];
 			scope.courseInfo.additional = "";
 			scope.courseInfo.isRepeating = false;
+			scope.courseInfo.files = [];
+
+			scope.courseInfo.userLogin = userService.getUser().login;
 
 			if (!scope.isAdmin) {
 				scope.courseInfo.isInternal = true;
+				scope.courseInfo.coachLogin = scope.courseInfo.userLogin;
 			}
-
-			scope.courseInfo.userLogin = userService.getUser().login;
 
 			categoriesLocal.getCategories().then(function (data) {
 				scope.categoriesObj = data.slice(1);

@@ -58,7 +58,8 @@ img[preloadable] {
 	display: block;
 }
 
-#addPictureBtn {
+#addPictureBtn,
+#uploadFileBtn {
 	margin-left: auto;
 	margin-right: auto;
 }
