@@ -27,9 +27,10 @@ angular.module('myApp.courseinfo')
 				trainingName: courseName,
 				date: lessonDate
 			};
-			return $http.post('/omission_controller/get_omissions/', lessonData)
+			return $http.post('/omission_controller/get_omissions', lessonData)
 				.success(function (result) {
-					return result.data;
+					console.log(result);
+					return result;
 				})
 				.error(function (err) {
 					return err;
@@ -142,6 +143,17 @@ angular.module('myApp.courseinfo')
 				console.log("Omissions adding error: " + err.statusCode);
 				return err;
 			});
+		};
+
+		courseInfoService.addParticipant = function(participantData) {
+			return $http.post('/user_controller/insert_external_employee', participantData).then(function(result) {
+				console.log("Participant added successfully");
+				return result.data;
+			}, function (err) {
+				console.log("Participant adding error: " + err.statusCode);
+				return err;
+			});
+
 		};
 
 		return courseInfoService;

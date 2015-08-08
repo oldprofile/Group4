@@ -1,18 +1,23 @@
-package com.exadel.training.controller.model.Training;
+package com.exadel.training.repository.impl.model;
 
 import com.exadel.training.common.StateTraining;
-import com.exadel.training.model.Training;
-import com.exadel.training.service.TrainingService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.exadel.training.model.User;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 /**
- * Created by Клим on 16.07.2015.
+ * Created by Клим on 07.08.2015.
  */
-public class ShortTrainingInfo {
+@Entity
+public class ShortParentTraining {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
     private String trainingName;
     private String trainingCoach;
     private String trainingImage;
@@ -20,38 +25,31 @@ public class ShortTrainingInfo {
     private String trainingPlace;
     private boolean isSubscriber;
     private String state;
-    private int lessonNumber;
+    private long lessonNumber;
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
 
-    public ShortTrainingInfo() {
+
+    public ShortParentTraining() {
     }
 
-    public ShortTrainingInfo(String name, int lessonNumber) {
+    public ShortParentTraining(String name, long count, String link, int state, User coach, double rating, Date date, String place) throws NoSuchFieldException {
         this.trainingName = name;
-        this.lessonNumber = lessonNumber;
-    }
-    public ShortTrainingInfo(Training training) throws NoSuchFieldException {
-        trainingName = training.getName();
-        trainingCoach = training.getCoach().getName();
-        trainingImage = training.getPictureLink();
-        if(training.getDateTime() == null) {
-            dateTraining = null;
-        }
-        else {
-            dateTraining = sdf.format(training.getDateTime());
-        }
-        trainingPlace = training.getPlace();
-        state = StateTraining.parseToString(training.getState());
+        this.trainingCoach = coach.getName();
+        this.trainingImage = link;
+        if (date != null)
+            this.dateTraining = sdf.format(date);
+        this.lessonNumber = count - 1;
+        this.trainingPlace = place;
+        this.state = StateTraining.parseToString( state);
     }
 
-    public static List<ShortTrainingInfo> parseList(List<Training> trainings) throws NoSuchFieldException {
-        List <ShortTrainingInfo> shortTrainings = new ArrayList<>();
-        for (Training training : trainings) {
-            shortTrainings.add(new ShortTrainingInfo(training));
-        }
-        return shortTrainings;
+    public long getId() {
+        return id;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getTrainingName() {
         return trainingName;
@@ -109,11 +107,19 @@ public class ShortTrainingInfo {
         this.state = state;
     }
 
-    public int getLessonNumber() {
+    public long getLessonNumber() {
         return lessonNumber;
     }
 
-    public void setLessonNumber(int lessonNumber) {
+    public void setLessonNumber(long lessonNumber) {
         this.lessonNumber = lessonNumber;
+    }
+
+    public static SimpleDateFormat getSdf() {
+        return sdf;
+    }
+
+    public static void setSdf(SimpleDateFormat sdf) {
+        ShortParentTraining.sdf = sdf;
     }
 }

@@ -67,6 +67,9 @@ public class Training {
     @OneToMany(mappedBy = "training")
     private  List<TrainingFeedback> feedbacks;
 
+    @OneToMany(mappedBy = "training")
+    private List<File> files;
+
     public Training() {
     }
 
@@ -276,4 +279,11 @@ public class Training {
         this.rating = rating;
     }
 
+    public List<File> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<File> files) {
+        this.files = files;
+    }
 }

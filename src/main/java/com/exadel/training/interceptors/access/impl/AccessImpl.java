@@ -24,6 +24,7 @@ public class AccessImpl implements Access{
     private final static String OMISSION_CONTROLLER = "/omission_controller";
     private final static String FEEDBACK_CONTROLLER = "/feedbacks";
     private final static String AUTHENTIFICATION_CONTROLLER = "/authentication";
+    private final static String CATEGORY_CONTROLLER = "";
 
     private ConcurrentHashMap<Long,List<String>> access = new ConcurrentHashMap<>();
 
@@ -33,7 +34,9 @@ public class AccessImpl implements Access{
         access.put(RoleUtil.EMPLOYEE, this.adminAccess());
         access.put(RoleUtil.EX_COACH, this.excoachAccess());
         access.put(RoleUtil.EX_EMPLOYEE, new ArrayList<>());
+
     }
+
     private List<String> adminAccess() {
         List<String> admin = new LinkedList<>();
 
@@ -76,6 +79,8 @@ public class AccessImpl implements Access{
 
         admin.add(TRAINING_CONTROLLER + "/training_info");
         admin.add(TRAINING_CONTROLLER + "/list");
+        admin.add(TRAINING_CONTROLLER + "/names_list");
+        admin.add(TRAINING_CONTROLLER + "/list_by_states");
         admin.add(TRAINING_CONTROLLER + "/create_training");
         admin.add(TRAINING_CONTROLLER + "/edit_training");
         admin.add(TRAINING_CONTROLLER + "/list_by_category");
@@ -91,9 +96,12 @@ public class AccessImpl implements Access{
         admin.add(TRAINING_CONTROLLER + "/change_date");
         admin.add(TRAINING_CONTROLLER + "/delete_date");
         admin.add(TRAINING_CONTROLLER + "/add_date");
+        admin.add(TRAINING_CONTROLLER + "/listeners");
 
         admin.add(AUTHENTIFICATION_CONTROLLER + "/logout");
         admin.add(AUTHENTIFICATION_CONTROLLER + "/log_password");
+
+        admin.add(CATEGORY_CONTROLLER + "/allCategories");
 
         return admin;
     }
@@ -131,9 +139,10 @@ public class AccessImpl implements Access{
 
         employee.add(TRAINING_CONTROLLER + "/training_info");
         employee.add(TRAINING_CONTROLLER + "/list");
+        employee.add(TRAINING_CONTROLLER + "/list_by_states");
+        employee.add(TRAINING_CONTROLLER + "/list_by_category");
         employee.add(TRAINING_CONTROLLER + "/create_training");
         employee.add(TRAINING_CONTROLLER + "/edit_training");
-        employee.add(TRAINING_CONTROLLER + "/list_by_category");
         employee.add(TRAINING_CONTROLLER + "/search_training");
         employee.add(TRAINING_CONTROLLER + "/latest_trainings");
         employee.add(TRAINING_CONTROLLER + "/featured_trainings");
@@ -141,6 +150,8 @@ public class AccessImpl implements Access{
 
         employee.add(AUTHENTIFICATION_CONTROLLER + "/logout");
         employee.add(AUTHENTIFICATION_CONTROLLER + "/log_password");
+
+        employee.add(CATEGORY_CONTROLLER + "/allCategories");
 
         return employee;
     }

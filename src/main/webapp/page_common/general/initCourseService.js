@@ -1,5 +1,5 @@
 angular.module('myApp')
-	.factory('initCourseService', ['$http', 'categoriesLocal', 'userService', function ($http, categoriesLocal, userService) {
+	.factory('initCourseService', ['$http', 'categoriesLocal', 'userService', 'coachService', function ($http, categoriesLocal, userService, coachService) {
 		return function (scope) {
 			scope.categoriesObj = [];
 			scope.types = [
@@ -27,6 +27,14 @@ angular.module('myApp')
 			scope.temp.pictureHolder = "";  //pictureLink or pictureData
 
 			scope.isAdmin = userService.isAdmin();
+
+			if(scope.isAdmin) {
+				scope.externalCoaches = [];
+				coachService.getCoaches().then(function(data) {
+					scope.externalCoaches = data;
+					console.log(scope.externalCoaches);
+				});
+			}
 
 			scope.courseInfo = {};
 			scope.courseInfo.dateTime = [];

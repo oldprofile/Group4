@@ -4,6 +4,7 @@ import com.exadel.training.common.RoleType;
 import com.exadel.training.model.Role;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
+import com.exadel.training.repository.impl.model.LoginName;
 
 import java.util.Date;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 public interface UserService {
 
     Boolean checkUserByLogin(String login);
+    Boolean checkUserByEmail(String email);
     Boolean checkSubscribeToTraining(Long trainingID, Long userID);
     Boolean isCoach(String login, String coachName);
     Boolean checkSubscribeToTraining(String trainingName, String login);
@@ -38,7 +40,7 @@ public interface UserService {
     List<Date> selectAllDateOfTrainingsBetweenDates(String login, Date from, Date to);
     List<Date> selectAllDateOfTrainings(String login);
 
-    List<String> selectAllLoginOfUsers();
+    List<LoginName> selectAllLoginOfUsers();
     List<User> findUsersByRole(RoleType type) throws NoSuchFieldException;
     List<User> findUsersByRole(Long type);
     List<User> findAllCoachOfUser(String login);

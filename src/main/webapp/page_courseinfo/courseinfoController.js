@@ -141,7 +141,6 @@ angular.module('myApp.courseinfo')
 
 			dateModalInstance.result.then(function (data) {
 				$scope.course.dateTime[index] = $filter('date')(data, 'medium');
-				;
 			}, function () {
 			});
 		};
@@ -169,8 +168,22 @@ angular.module('myApp.courseinfo')
 
 
 		$scope.addParticipant = function() {
+			var participantModalInstance = $modal.open({
+				animation: true,
+				templateUrl: "page_courseinfo/participantModal.html",
+				controller: "ParticipantsModalInstanceController",
+				size: "lg",
+				resolve: {
+					courseinfo: function () {
+						return $scope.course;
+					}
+				},
+			});
 
-		}
+			participantModalInstance.result.then(function (data) {
+			}, function () {
+			});
+		};
 
 		$scope.manageOmissions = function (index) {
 			var omissionsModalInstance = $modal.open({
@@ -314,7 +327,8 @@ angular.module('myApp.courseinfo')
 						trainingName: courseinfo.name,
 						date: courseinfo.dateTime[index],
 						userLogin: courseinfo.listeners[i].login,
-						isOmission: $scope.existingOmissions[i],
+						isOmission: ($scope.existingOmissions.length != 0 ? $scope.existingOmissions[i].omission : false),
+						reason: ($scope.existingOmissions.length != 0 ? $scope.existingOmissions[i].reason : "")
 					};
 					$scope.omissionData.push(info);
 				}
@@ -333,6 +347,27 @@ angular.module('myApp.courseinfo')
 			console.log($scope.omissionData);
 			courseInfoService.addOmissions($scope.omissionData);
 			$modalInstance.close($scope.course, $scope.index);
+		};
+
+		$scope.cancel = function () {
+			$modalInstance.dismiss('cancel');
+		};
+	}])
+
+	.controller('ParticipantsModalInstanceController', ['$scope', '$modalInstance', 'courseInfoService', 'courseinfo', function ($scope, $modalInstance, courseInfoService, courseinfo) {
+
+		$scope.participantInfo = {
+			numberPhone: "",
+			training: courseinfo.name
+		};
+
+		$scope.ok = function () {
+			console.log($scope.participantInfo);
+			courseInfoService.addParticipant($scope.participantInfo).then(
+				function(result) {
+
+				});
+			$modalInstance.close(courseinfo);
 		};
 
 		$scope.cancel = function () {

@@ -10,7 +10,6 @@ import java.util.List;
  */
 public class OmissionGETModel {
 
-    private String userName;
 
     private String reason;
 
@@ -19,20 +18,10 @@ public class OmissionGETModel {
     public OmissionGETModel() {
     }
 
-    public OmissionGETModel(String userName, String reason, boolean isOmission) {
-        this.userName = userName;
+    public OmissionGETModel(String reason, boolean isOmission) {
         this.reason = reason;
         this.isOmission = isOmission;
     }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
     public String getReason() {
         return reason;
     }
@@ -50,7 +39,7 @@ public class OmissionGETModel {
     }
 
     public static OmissionGETModel parseOmission(Omission omission) {
-        return new OmissionGETModel(omission.getUser().getName(), omission.getReason(), omission.isOmission());
+        return new OmissionGETModel(omission.getReason(), omission.isOmission());
     }
 
     public static List<OmissionGETModel> parseOmissionList(List<Omission> omissions) {
