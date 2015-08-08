@@ -4,35 +4,41 @@
 <div class="modal-body">
 	<form name="lessonForm">
 		<div class="row">
-			<label class="col-xs-3 control-label" for="dropdown2">Date:</label>
+			<div class="col-xs-12">
+				<p class="info-small courseinfo-label float-left no-bottom-margin" id="pAddDate">Date:
+				</p>
 
-			<div class="dropdown col-xs-9">
-				<a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown">
-					<div class="input-group">
-						<input type="text" class="form-control calendar"
-							   ng-value="newDate | date: 'medium'" disabled>
-						<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-					</div>
-				</a>
-				<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-					<datetimepicker ng-model="newDate"
-									data-datetimepicker-config="{ dropdownSelector: '#dropdown2', minuteStep: 15 }"/>
-				</ul>
+				<div class="calendar">
+					<a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown">
+						<div class="input-group">
+							<input type="text" class="form-control calendar"
+								   ng-value="newDate | date: 'medium'" placeholder="click to enter" disabled>
+							<span class="input-group-addon addon-calendar">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+						</div>
+					</a>
+					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+						<datetimepicker ng-model="newDate"
+										data-datetimepicker-config="{ dropdownSelector: '#dropdown2', minuteStep: 15 }"/>
+					</ul>
+				</div>
 			</div>
 		</div>
 
 		<div class="row">
-			<label for="place" class="col-xs-3 control-label">Place: </label>
-
-			<div class="col-xs-9">
-				<input class="form-control" name="place" id="place" type="text" placeholder="Place"
-					   ng-model="newPlace" required>
+			<div class="col-xs-12">
+				<p class="info-small courseinfo-label float-left no-bottom-margin">Place:
+					<input class="material-input" name="place" type="text"
+						   placeholder="click to enter" ng-model="newPlace"
+						   required>
+				</p>
 			</div>
 		</div>
 
 	</form>
 </div>
 <div class="modal-footer">
-	<button class="btn btn-default default-btn default-green" ng-click="ok()">OK</button>
-	<button class="btn btn-default default-btn default-blue" ng-click="cancel()">Cancel</button>
+	<button class="btn btn-default default-btn default-blue" ng-click="ok()">OK</button>
+	<button class="btn btn-default default-btn default-gray" ng-click="cancel()">Cancel</button>
 </div>

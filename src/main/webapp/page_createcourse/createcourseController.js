@@ -50,6 +50,10 @@ angular.module('myApp.createcourse').controller('CreateCourseController', [
 			$scope.courseInfo.language = lang;
 		}
 
+		$scope.setCoach = function(login) {
+			$scope.courseInfo.coachLogin = login;
+		}
+
 		$scope.addCoach = function () {
 			var coachModalInstance = $modal.open({
 				animation: true,

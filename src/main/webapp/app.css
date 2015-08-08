@@ -626,6 +626,11 @@ course-info
 	overflow: auto;
 }
 
+.scrollable-popover {
+	max-height: 120px;
+	overflow: auto;
+}
+
 /*mycourses*/
 .no-courses{
 	width: 300px;
@@ -1439,12 +1444,13 @@ textarea.form-control{
 	padding-right: 20px;
 }
 
-.courseinfo-table {
-	padding-top: 20px;
+.courseinfo-div .fa {
+	margin-right: 5px;
 }
 
-.courseinfo-table > thead {
-	font-style: normal !important;
+.courseinfo-table {
+	width: 100%;
+	padding-top: 20px;
 }
 
 .courseinfo-photoicon {
@@ -1460,6 +1466,11 @@ textarea.form-control{
 .glyphicon-calendar,
 .glyphicon-delete {
 	margin: 0;
+}
+
+#pEditDate,
+#pAddDate {
+	margin-top: 8px !important;
 }
 
 /* text*/
@@ -1498,7 +1509,6 @@ textarea.form-control{
 	margin-top: 16px;
 	margin-bottom: 0 !important;
 	line-height: 58px;
-	width: 60%;
 }
 
 .courseinfo-h5 {
@@ -1538,6 +1548,7 @@ textarea.form-control{
 
 .courseinfo-btn {
 	margin: 3px;
+	width: 130px;
 }
 
 .courseinfo-btn:hover{
@@ -1548,6 +1559,26 @@ textarea.form-control{
 
 .bg-color-gray {
 	background-color: #f9f9f9;
+}
+
+/* TABLES */
+
+table.strikeable {
+	border-collapse: collapse;
+}
+
+.strikeable td.strike {
+	position: relative;
+	padding: 5px 10px;
+}
+
+.strikeable tr.strikeout td.strike:before {
+	content: " ";
+	position: absolute;
+	top: 50%;
+	left: 0;
+	border-bottom: 1px solid #d9d9d9;
+	width: 100%;
 }
 
 .login-card {
