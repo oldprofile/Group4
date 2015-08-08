@@ -3,6 +3,7 @@ package com.exadel.training.repository.impl;
 import com.exadel.training.model.Role;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
+import com.exadel.training.repository.impl.model.LoginName;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -11,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -21,6 +23,9 @@ public interface UserRepository extends JpaRepository<User,Long>{
 
     @Query("select case when (count(u)>0) then true else false end from User as u where u.login = ?1")
     Boolean checkUserByLogin(String login);
+
+    @Query("select case when (count(u)>0) then true else false end from User as u where u.email = ?1")
+    Boolean checkUserByEmail(String email);
 
     @Query("select case when (count(u)>0) then true else false end from User as u inner join u.trainings as t where u.login = ?2 and t.name = ?1 ")
     Boolean checkSubscribeToTraining(String trainingName, String login);
@@ -42,10 +47,15 @@ public interface UserRepository extends JpaRepository<User,Long>{
 
     User findUserByLogin(String login);
 
-    @Query("select u.name from User as u")
-    List<String> selectAllLoginOfUser();
+    User findUserByEmail(String email);
 
-    @Query(value = "SELECT * FROM users WHERE MATCH (name,login,email) AGAINST (:search in boolean mode)", nativeQuery = true)
+    @Query("select r from User as u inner join u.roles as r where u.login = ?1")
+    List<Role> findRolesOfUser(String login);
+
+    @Query("select new LoginName(u.login, u.name) from User as u order by u.name asc")
+    List<LoginName> selectAllLoginOfUser();
+
+    @Query(value = "SELECT * FROM users WHERE MATCH (name,login,email,number_phone) AGAINST (:search in boolean mode)", nativeQuery = true)
     List<User> searchUsers(@Param("search")String search);
 
     @Query("select u from User as u inner join u.roles as r where r.id = ?1 ")
@@ -90,9 +100,11 @@ public interface UserRepository extends JpaRepository<User,Long>{
     @Query("select distinct t.dateTime from User as u inner  join u.trainings as t where u.login = ?1 and t.id > 0  order by t.dateTime asc")
     List<Date> selectAllDateOfTrainings(String login);
 
-    @Query("select distinct t.name from User as u inner join u.trainings as t where t.parent = 0 and t.state in (?2) and u.login = ?1")
-    List<String> selectAllTrainingNameActual(String login, List<Integer> state);
+    @Query("select distinct t from User as u inner join u.trainings as t where t.parent = 0 and t.state in (?2) and u.login = ?1")
+    List<Training> selectAllTrainingNameActual(String login, List<Integer> state);
 
-    @Query("select distinct t.name from User as u inner join u.ownTrainings as t where t.parent = 0 and t.state in (?2) and u.login = ?1")
-    List<String> selectAllTrainingCoachNameActual(String login, List<Integer> state);
+    @Query("select distinct t from User as u inner join u.ownTrainings as t where t.parent = 0 and t.state in (?2) and u.login = ?1")
+    List<Training> selectAllTrainingCoachNameActual(String login, List<Integer> state);
+
+
 }

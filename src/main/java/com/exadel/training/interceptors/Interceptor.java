@@ -2,13 +2,10 @@ package com.exadel.training.interceptors;
 
 import com.exadel.training.tokenAuthentification.SessionToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.interceptor.Interceptors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -29,6 +26,7 @@ public class Interceptor implements HandlerInterceptor {
         } else {
             if (!sessionToken.isEmpty()) {
                 String header = httpServletRequest.getHeader("authorization");
+
                 if (header != null && sessionToken.containsToken(header)) {
                     httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
                     return true;

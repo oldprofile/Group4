@@ -6,6 +6,7 @@ import org.hibernate.search.annotations.Index;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -133,6 +134,9 @@ public class User {
     }
 
     public void addRole(Role role) {
+        if(roles == null) {
+            roles = new HashSet<>();
+        }
         this.roles.add(role);
     }
 

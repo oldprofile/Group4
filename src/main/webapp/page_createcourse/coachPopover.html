@@ -1,0 +1,11 @@
+<div class="popover-container">
+	<div class="row">
+		<a href="" ng-click="addCoach()">Add coach</a>
+	</div>
+	<hr>
+	<div class="row" ng-repeat="coach in externalCoaches">
+		<div class="col-xs-12 select-dropdown">
+			<a href="" ng-click="setCoach()" close-on-click="coachPopover">{{coach.name}}</a>
+		</div>
+	</div>
+</div>

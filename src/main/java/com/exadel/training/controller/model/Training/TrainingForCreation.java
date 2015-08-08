@@ -20,7 +20,7 @@ import org.apache.commons.codec.binary.Base64;
 public class TrainingForCreation {
 
     private String name;
-    private String userLogin;
+    private String coachLogin;
     private String description;
     private int idCategory;
     private int participantsNumber;
@@ -72,20 +72,6 @@ public class TrainingForCreation {
         //isRepeating = true;
         if (isRepeating){
             DateParser dateParser = new DateParser(json);
-
-            /*DateParser dateParser = new DateParser();
-            dateParser.setLessonsNumber(10);
-            List<Boolean> list = new ArrayList<>();
-            list.add(true);
-            list.add(false);
-            list.add(true);
-            list.add(false);
-            list.add(true);
-            list.add(false);
-            list.add(false);
-            dateParser.setRepeatOn(list);
-            dateParser.setStartsOn("2015-09-10T12:00");*/
-
             dateParser.parseDateTimes();
             dateTimes = dateParser.getDateTimes();
         } else {
@@ -99,6 +85,7 @@ public class TrainingForCreation {
         for (Object jsonPlace : jsonPlaces) {
             places.add((String) jsonPlace);
         }
+        coachLogin = (String)json.get("coach");
         isInternal = (Boolean)json.get("isInternal");
         audience = (String)json.get("audience");
         additional = (String)json.get("additional");
@@ -122,12 +109,12 @@ public class TrainingForCreation {
         this.name = name;
     }
 
-    public String getUserLogin() {
-        return userLogin;
+    public String getCoachLogin() {
+        return coachLogin;
     }
 
-    public void setUserLogin(String userLogin) {
-        this.userLogin = userLogin;
+    public void setCoachLogin(String coachLogin) {
+        this.coachLogin = coachLogin;
     }
 
     public String getDescription() {

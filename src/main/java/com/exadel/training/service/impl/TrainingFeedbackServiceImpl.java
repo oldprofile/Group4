@@ -63,4 +63,10 @@ public class TrainingFeedbackServiceImpl implements TrainingFeedbackService {
     public TrainingFeedback getTrainingFeedbackByNameLoginAndDate(String trainingName, String feedbackerLogin, Date date) throws ParseException {
         return trainingFeedbackRepository.findFeedbackByTrainingrAndDateAndFeedbacker(trainingName, feedbackerLogin, date);
     }
+
+    @Override
+    public void deleteFeedback(String trainingName, String feedbackerLogin, Date date) {
+        TrainingFeedback trainingFeedback = trainingFeedbackRepository.findFeedbackByTrainingrAndDateAndFeedbacker(trainingName, feedbackerLogin, date);
+        trainingFeedbackRepository.delete(trainingFeedback);
+    }
 }

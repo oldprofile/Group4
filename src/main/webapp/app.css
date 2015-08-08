@@ -659,9 +659,11 @@ course-info
 	font-weight: 500;
 }
 
-.timetable{
-	padding-top: 50px;
+.scrollable-div {
+	max-height: 250px;
+	overflow: auto;
 }
+
 /*mycourses*/
 .no-courses{
 	width: 300px;
@@ -1599,6 +1601,7 @@ table i{
 
 .courseinfo-div v-pane-content {
 	padding-left: 20px;
+	padding-right: 20px;
 }
 
 .courseinfo-table {

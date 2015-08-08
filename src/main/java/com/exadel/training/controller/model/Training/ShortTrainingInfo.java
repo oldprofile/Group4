@@ -2,6 +2,8 @@ package com.exadel.training.controller.model.Training;
 
 import com.exadel.training.common.StateTraining;
 import com.exadel.training.model.Training;
+import com.exadel.training.service.TrainingService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,11 +20,16 @@ public class ShortTrainingInfo {
     private String trainingPlace;
     private boolean isSubscriber;
     private String state;
-    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+    private int lessonNumber;
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
 
     public ShortTrainingInfo() {
     }
 
+    public ShortTrainingInfo(String name, int lessonNumber) {
+        this.trainingName = name;
+        this.lessonNumber = lessonNumber;
+    }
     public ShortTrainingInfo(Training training) throws NoSuchFieldException {
         trainingName = training.getName();
         trainingCoach = training.getCoach().getName();
@@ -100,5 +107,13 @@ public class ShortTrainingInfo {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public int getLessonNumber() {
+        return lessonNumber;
+    }
+
+    public void setLessonNumber(int lessonNumber) {
+        this.lessonNumber = lessonNumber;
     }
 }

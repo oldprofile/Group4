@@ -1,0 +1,59 @@
+<div class="modal-header">
+	<h3 class="modal-title">Add external participant</h3>
+</div>
+<div class="modal-body">
+
+	<form name="participantForm">
+
+		<div class="row">
+			<div class="col-xs-12">
+				<p class="info-small courseinfo-label float-left no-bottom-margin">Participant name:
+					<input class="material-input" name="name" id="participantName" type="text"
+						   placeholder="click to enter" ng-model="participantInfo.name"
+						   required>
+				</p>
+			</div>
+
+		</div>
+
+
+		<div class="row">
+			<div class="col-xs-12">
+				<p class="info-small courseinfo-label float-left no-bottom-margin">Participant login:
+					<input class="material-input" name="login" id="participantLogin" type="text"
+						   placeholder="click to enter" ng-model="participantInfo.login"
+						   required>
+				</p>
+			</div>
+
+		</div>
+
+		<div class="row">
+			<div class="col-xs-12">
+				<p class="info-small courseinfo-label float-left no-bottom-margin">Participant email:
+					<input class="material-input" name="email" id="participantEmail" type="email"
+						   placeholder="click to enter" ng-model="participantInfo.email"
+						   required>
+				</p>
+			</div>
+
+		</div>
+
+		<div class="row">
+			<div class="col-xs-12">
+				<p class="info-small courseinfo-label float-left no-bottom-margin">Participant phone number:
+					<input class="material-input" name="phone" id="participantPhone" type="text"
+						   placeholder="click to enter" ng-model="participantInfo.numberPhone"
+						   required>
+				</p>
+			</div>
+
+		</div>
+
+	</form>
+
+</div>
+<div class="modal-footer">
+	<button class="btn btn-default default-btn default-blue" ng-click="ok()">OK</button>
+	<button class="btn btn-default default-btn default-gray" ng-click="cancel()">Cancel</button>
+</div>
