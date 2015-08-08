@@ -2,6 +2,7 @@
 <div ng-show="isContentLoaded" class="clearfix">   
 <div class="card-layout-browse course clearfix ">
       <h1>The Realest Courses</h1>
+      <h2>Best Rated Courses Here</h2>
         <div ng-repeat="t in featured | limitTo: 4">
           
              
@@ -16,7 +17,7 @@
                 <div class="additional">
                   <h3>Start Date: {{t.dateTraining | date:'dd MMMM' }}</h3>
                   <h4>1 Lesson</h4>
-                  <a ng-href="#/courseinfo/{{t.trainingName}}">Countinue To Info</a>
+                  <a ng-href="#/courseinfo/{{t.trainingName}}">Continue To Info</a>
                 </div>  
               </div>
                 </a>
@@ -30,6 +31,7 @@
 
     <div class="card-layout-browse course clearfix">
       <h1>Just For You</h1>
+      <h2>Courses Thats Suit Your Interests</h2>
         <div ng-repeat="t in recommended | limitTo: 4">
             <div class="col-sm-3 col-xs-6 card">
               <a class="block-link" ng-href="#/courseinfo/{{t.trainingName}}">
@@ -42,7 +44,7 @@
                   <div class="additional">
                     <h3>Start Date: {{t.dateTraining | date:'dd MMMM' }}</h3>
                     <h4>1 Lesson</h4>
-                    <a ng-href="#/courseinfo/{{t.trainingName}}">Countinue To Info</a>
+                    <a ng-href="#/courseinfo/{{t.trainingName}}">continue To Info</a>
                   </div>  
                 </div> 
               </a>
@@ -52,6 +54,7 @@
 
     <div class="card-layout-browse category clearfix">
       <h1>Pick The Category</h1>
+      <h2></h2>
         <div ng-repeat="c in categories">
           <a style="display:block" ng-href="#/browse/{{c.id}}">
             <div class="col-xs-3 card category">

@@ -7,10 +7,10 @@
       <h4 ng-show="user.numberPhone != '' && user.numberPhone != null"><span class="glyphicon glyphicon-phone" aria-hidden="true"></span>{{user.numberPhone}}</h4>
       
       <div class="profile-control">
-        <button class="btn btn-default default-btn default-gray" ng-click="settings()" aria-expanded="true"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span>Settings</span></button>
+        <button ng-show="isMe()"class="btn btn-default default-btn default-gray" ng-click="settings()" aria-expanded="true"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span>Settings</span></button>
 
 
-        <div class="dropdown">
+        <div class="dropdown" ng-hide="!isAdmin() && !isCanLeaveStudentFeedback && !isCanLeaveCoachFeedback">
           <button class="btn btn-default default-btn default-gray dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
             <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> <span>Feedback</span>
           </button>
@@ -18,9 +18,9 @@
             <li class="dropdown-header">Leave Feedback</li>
             <li><a href="" ng-hide="!isCanLeaveStudentFeedback" ng-click="leaveStudentFeedback()">On Student</a></li>
             <li><a href="" ng-hide="!isCanLeaveCoachFeedback" ng-click="leaveCoachFeedback()">On Coach</a></li>
-            <li role="separator" ng-hide="false" class="divider"></li>
-            <li class="dropdown-header" ng-hide="false">Request Feedback</li>
-            <li><a href="" ng-hide="false" ng-click="requestFeedback()">On Student</a></li>
+            <li role="separator" ng-show="isAdmin()" class="divider"></li>
+            <li class="dropdown-header" ng-show="isAdmin()">Request Feedback</li>
+            <li><a href=""  ng-show="isAdmin()" ng-click="requestFeedback()">On Student</a></li>
           </ul>
         </div>
       </div>
@@ -30,31 +30,31 @@
         <v-accordion class="vAccordion--default" multiple>
 
             <!-- add expanded attribute to open the section -->
-            <v-pane exteded>
+            <v-pane ng-show="studentArchive.length + coachArchive.length">
               <v-pane-header>
-                Archive
+                Archive ({{studentArchive.length + coachArchive.length}})
               </v-pane-header>
 
               <v-pane-content>
                 <v-accordion class="vAccordion--default" multiple>
 
                     <!-- add expanded attribute to open the section -->
-                    <v-pane>
+                    <v-pane ng-show="studentArchive.length">
                       <v-pane-header>
-                        Student Archive
+                        Student Archive ({{studentArchive.length}})
                       </v-pane-header>
 
                       <v-pane-content>
-                        <table class="table table-striped">
+                        <table class="table table-striped" ts-wrapper>
                           <thead>
                             <tr>
-                                <th>#</th>
-                                <th>Course</th>
-                                <th>State</th>
-                                <th>Start Date</th>
+                                <th class="col-xs-1">#</th>
+                                <th ts-criteria="trainingName|lowercase" ts-default class="col-xs-7">Course</th>
+                                <th ts-criteria="state"  class="col-xs-2">State</th>
+                                <th ts-criteria="dateTraining" class="col-xs-2">Start Date</th>
                             </tr>
                           </thead>
-                          <tr ng-repeat="f in studentArchive" class="link-cursor"  ng-click="goto('/courseinfo/'+ f.trainingName)">
+                          <tr ng-repeat="f in studentArchive" class="link-cursor"  ng-click="goto('/courseinfo/'+ f.trainingName)" ts-repeat>
                             <td>{{$index + 1}}</td>
                             <td>{{ f.trainingName}}</td>
                             <td>{{f.state}}</td>
@@ -64,22 +64,22 @@
                       </v-pane-content>
                     </v-pane>
 
-                    <v-pane>
+                    <v-pane ng-show="coachArchive.length">
                       <v-pane-header>
-                        Coach Archive
+                        Coach Archive ({{coachArchive.length}})
                       </v-pane-header>
 
                       <v-pane-content>
-                        <table class="table table-striped">
+                        <table class="table table-striped" ts-wrapper>
                           <thead>
                             <tr>
-                                <th>#</th>
-                                <th>Course</th>
-                                <th>State</th>
-                                <th>Start Date</th>
+                                <th class="col-xs-1">#</th>
+                                <th ts-criteria="trainingName|lowercase" ts-default class="col-xs-7">Course</th>
+                                <th ts-criteria="state"  class="col-xs-2">State</th>
+                                <th ts-criteria="dateTraining" class="col-xs-2">Start Date</th>
                             </tr>
                           </thead>
-                          <tr ng-repeat="f in coachArchive" class="link-cursor"  ng-click="goto('/courseinfo/'+ f.trainingName)">
+                          <tr ng-repeat="f in coachArchive" class="link-cursor"  ng-click="goto('/courseinfo/'+ f.trainingName)" ts-repeat>
                             <td>{{$index + 1}}</td>
                             <td>{{ f.trainingName}}</td>
                             <td>{{f.state}}</td>
@@ -93,60 +93,60 @@
               </v-pane-content>
             </v-pane>
 
-            <v-pane>
+            <v-pane ng-show="studentFeedbacks.length + coachFeedbacks.length">
               <v-pane-header>
-                Feedbacks
+                Feedbacks ({{studentFeedbacks.length + coachFeedbacks.length}})
               </v-pane-header>
 
               <v-pane-content>
                 <v-accordion class="vAccordion--default" multiple>
 
                     <!-- add expanded attribute to open the section -->
-                    <v-pane>
+                    <v-pane ng-show="studentFeedbacks.length">
                       <v-pane-header>
-                        Student Feedbacks
+                        Student Feedbacks ({{studentFeedbacks.length}})
                       </v-pane-header>
 
                       <v-pane-content>
-                          <table class="table table-striped">
+                          <table class="table table-striped" ts-wrapper>
                             <thead>
                               <tr>
-                                  <th>#</th>
-                                  <th>From</th>
-                                  <th>When</th>
-                                  <th>Mood</th>
+                                <th class="col-xs-1">#</th>
+                                <th ts-criteria="feedbackerName|lowercase" ts-default class="col-xs-6">From</th>
+                                <th ts-criteria="date|date"class="col-xs-4">When</th>
+                                <th ts-criteria="type" class="col-xs-1">Mood</th>
                               </tr>
                             </thead>
-                            <tr ng-repeat="f in studentFeedbacks" class="link-cursor"  ng-click="leaveStudentFeedback(f)">
+                            <tr ng-repeat="f in studentFeedbacks" class="link-cursor"  ng-click="leaveStudentFeedback(f)" ts-repeat>
                               <td>{{$index + 1}}</td>
                               <td>{{ f.feedbackerName}}</td>
                               <td>{{ f.date | date:"mediumDate" }}</td>
-                              <td> + </td>
+                              <td> <i class="fa fa-plus" ng-show="f.type == 'Positive'"></i> <i class="fa fa-minus" ng-hide="f.type == 'Positive'"></i> </td>
                             </tr>
                           </table>
                       </v-pane-content>
                     </v-pane>
 
-                    <v-pane>
+                    <v-pane ng-show="coachFeedbacks.length">
                       <v-pane-header>
-                        Coach Feedbacks
+                        Coach Feedbacks ({{coachFeedbacks.length}})
                       </v-pane-header>
 
                       <v-pane-content>
-                        <table class="table table-striped">
+                        <table class="table table-striped" ts-wrapper>
                           <thead>
                             <tr>
-                                <th>#</th>
-                                <th>From</th>
-                                <th>When</th>
-                                <th>Mood</th>
+                                <th class="col-xs-1">#</th>
+                                <th ts-criteria="feedbackerName|lowercase" ts-default class="col-xs-6">From</th>
+                                <th ts-criteria="date|date"class="col-xs-4">When</th>
+                                <th ts-criteria="type" class="col-xs-1">Mood</th>
                             </tr>
                           </thead>
-                          <tr ng-repeat="f in coachFeedbacks" class="link-cursor"  ng-click="leaveCoachFeedback(f)">
+                          <tr ng-repeat="f in coachFeedbacks" class="link-cursor"  ng-click="leaveCoachFeedback(f)" ts-repeat>
                             <td>{{$index + 1}}</td>
                             <td>{{ f.feedbackerName}}</td>
                             <td>{{ f.date | date:"mediumDate" }}</td>
-                            <td> + </td>
+                            <td> <i class="fa fa-plus" ng-show="f.type == 'Positive'"></i> <i class="fa fa-minus" ng-hide="f.type == 'Positive'"></i> </td>
                           </tr>
                         </table> 
                       </v-pane-content>

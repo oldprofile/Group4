@@ -84,6 +84,13 @@ angular.module("feedbacks.myApp",[])
       return err;});
     
 }
+    
+    feedbacksApi.deleteFeedback = function(data){
+      alert("Delete")
+      return $http.post('/feedbacks/delete_feedback',data).success(function(d){
+        console.log("Feedback deleted");
+      })
+    };
   
   return feedbacksApi;
 

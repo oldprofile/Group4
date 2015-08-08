@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
   <link rel=stylesheet href="assets/PFRegalDisplayProFont/PFRegalDisplayPro.css">
   <link rel="stylesheet" href="assets/SanFranciscoFont/usesf.css">
+  <link rel="stylesheet" href="assets/ProximaNova/stylesheet.css">
   <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
   
   <link rel="stylesheet" href="page_common/login/LoginCardStyle.css">
@@ -34,10 +35,12 @@
     <link rel="stylesheet" href="components/angular-bootstrap-datetimepicker/src/css/datetimepicker.css"/>
     <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
     
-  
-  
-  <link rel="stylesheet" href="app.css">
   <link rel="stylesheet" href="page_createcourse/createcourse.css">
+  <link rel="stylesheet" href="bower_components/angular-tablesort/tablesort.css">
+  
+  <link rel="stylesheet" href="bower_components/angular-toasty/dist/angular-toasty.css">
+  <link rel="stylesheet" href="app.css">
+  
   
 </head>
 
@@ -52,6 +55,7 @@
  
         <div ng-view class="ng-view-content container"></div>
         
+        <toasty></toasty>
         <my-app-footer ng-show="isLogged"></my-app-footer>
     
     
@@ -79,7 +83,8 @@
     
     <script src="components/angular-bootstrap-datetimepicker/src/js/datetimepicker.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
-  
+    <script src="bower_components/angular-tablesort/js/angular-tablesort.js"></script>
+  <script src="bower_components/angular-toasty/dist/angular-toasty.js"></script>
   
   
  

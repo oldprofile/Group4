@@ -3,6 +3,7 @@
   <h3 class="modal-title">{{isView ? "The Feedback" : "Leave your Feedback"}}</h3>
   <h5 class="modal-title">On {{user.name}}</h5>
   <h5 class="modal-title" ng-show="isView">From: {{feedback.feedbackerName}}</h5>
+  <span class="btn btn-file default-btn default-gray" ng-show="canDelete()" id="delete-feedback" ng-click="deleteFeedback()">
   
 
   

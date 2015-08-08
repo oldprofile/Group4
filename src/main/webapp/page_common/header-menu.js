@@ -1,12 +1,32 @@
 var menuApp = angular.module("myApp.menuApp",['ngAnimate']);
-menuApp.directive('headerMenu',function(){
+menuApp.directive('headerMenu',["$document", function($document){
     return {
         restrict: "E",
-        templateUrl: "page_common/header-menu.html"
+        templateUrl: "page_common/header-menu.html",
+        link: function(scope,elem,attrs){
+          
+          $document.bind('keypress', function(e) {
+             if (70 == e.keyCode && e.shiftKey ){
+               debugger
+               scope.openSearch();
+               elem.find("#searchField").focusin();
+               
+               
+             }
+           })
+        },
+      controller:"HeaderMenuController",
+            
+          
+          
+        
     };
-});
+}]);
 
 menuApp.controller("HeaderMenuController",['$scope','$location',"getCategories",'userService',"notificationService", "$modal", function($scope, $location,getCategories, userService,notificationService, $modal){
+  
+  
+    
   
     $scope.createcourse = function(){
       $location.path("/createcourse");
@@ -62,7 +82,7 @@ menuApp.controller("HeaderMenuController",['$scope','$location',"getCategories",
       return userService.isAdmin();
     }
     
-    
+    $scope.searchHistory = "";
     $scope.openSearch = function(){
       
       var searchModalInstance = $modal.open({
@@ -97,12 +117,20 @@ menuApp.controller("HeaderMenuController",['$scope','$location',"getCategories",
   }
   
   
+  if(!$scope.$parent.searchHistory){
+    $scope.searchQuery = "";
+  } else {
+    $scope.searchQuery = $scope.$parent.searchHistory;
+  }
   
-  $scope.searchQuery = "";
+  
   $scope.result = [];
   $scope.resultC = [];
   
   $scope.search = function(){
+    
+    $scope.$parent.searchHistory = $scope.searchQuery;
+    
     if($scope.searchQuery.length == 0){
       $scope.result = [];
       $scope.resultC = [];
@@ -151,6 +179,10 @@ menuApp.controller("HeaderMenuController",['$scope','$location',"getCategories",
   $scope.cancel = function () {
     $modalInstance.dismiss('cancel');
   };
+  
+  // start search from start
+  
+  $scope.search();
 }])
                           
  
