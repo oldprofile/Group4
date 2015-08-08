@@ -26,6 +26,7 @@ public class ShortParentTraining {
     private boolean isSubscriber;
     private String state;
     private long lessonNumber;
+    private double rating;
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
 
 
@@ -41,6 +42,7 @@ public class ShortParentTraining {
         this.lessonNumber = count - 1;
         this.trainingPlace = place;
         this.state = StateTraining.parseToString( state);
+        this.rating = rating;
     }
 
     public long getId() {

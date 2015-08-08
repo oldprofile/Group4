@@ -18,7 +18,7 @@ public class TrainingInfo {
 
     private String name;
     private List<String> dateTimes;
-    private String coachName;
+    private UserShort coach;
     private String pictureLink;
     private String description;
     private List<String> places;
@@ -46,7 +46,7 @@ public class TrainingInfo {
 
     public TrainingInfo(Training training) throws NoSuchFieldException {
         name = training.getName();
-        coachName = training.getCoach().getName();
+        //coachName = training.getCoach().getName();
         pictureLink = training.getPictureLink();
         description = training.getDescription();
         idCategory = training.getCategory().getId();
@@ -70,7 +70,7 @@ public class TrainingInfo {
             this.places.add(places.get(i));
         }
         lessonNumber = dateTimes.size();
-        coachName = training.getCoach().getName();
+        //coachName = training.getCoach().getName();
         pictureLink = training.getPictureLink();
         description = training.getDescription();
         idCategory = training.getCategory().getId();
@@ -228,12 +228,12 @@ public class TrainingInfo {
         this.state = state;
     }
 
-    public String getCoachName() {
-        return coachName;
+    public UserShort getCoach() {
+        return coach;
     }
 
-    public void setCoachName(String coachName) {
-        this.coachName = coachName;
+    public void setCoach(UserShort coach) {
+        this.coach = coach;
     }
 
     public int getLessonNumber() {

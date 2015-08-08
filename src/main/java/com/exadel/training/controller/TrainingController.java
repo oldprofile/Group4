@@ -152,8 +152,9 @@ public class TrainingController {
                 trainingInfo.setIsSubscriber(true);*/
             if (userLogin.equals(training.getCoach().getName()))
                 trainingInfo.setIsCoach(true);
+            trainingInfo.setCoach(UserShort.parseUserShort(userService.findUserByLogin(training.getCoach().getLogin())));
             trainingInfo.setIsSubscriber(userService.checkSubscribeToTraining(trainingName, userLogin));
-            trainingInfo.setIsCoach(userService.findUserByLogin(userLogin).getName().equals(trainingInfo.getCoachName()));
+            trainingInfo.setIsCoach(userService.findUserByLogin(userLogin).getName().equals(trainingInfo.getCoach().getName()));
             trainingInfo.setFeedbackAvailability(!feedbackService.hasFeedback(userLogin, trainingName));
             trainingInfo.setListeners(UserShort.parseUserShortList(trainingService.getListenersByTrainingNameSortByName(trainingName)));
             trainingInfo.setSpareUsers(UserShort.parseUserShortList(trainingService.getSpareUsersByTrainingName(trainingName)));
@@ -335,12 +336,12 @@ public class TrainingController {
 
     @RequestMapping(value = "/featured_trainings", method = RequestMethod.GET)
     public @ResponseBody
-    List<ShortTrainingInfo> getFeaturedTrainings(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
+    List<ShortParentTraining> getFeaturedTrainings(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
         String header = httpServletRequest.getHeader("authorization");
         String userLogin = cryptService.decrypt(header);
         if(userService.checkUserByLogin(userLogin)) {
-            List<Training> trainings = trainingService.getTrainingsByHighestRating();
-            return ShortTrainingInfo.parseList(trainings);
+            List<ShortParentTraining> trainings = trainingService.getShortTrainingsSortedByRating(userLogin);
+            return trainings;
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
@@ -455,7 +456,7 @@ public class TrainingController {
                 trainingService.getDatesByTrainingName(trainingName), trainingService.getPlacesByTrainingName(trainingName));
         trainingInfo.setIsSubscriber(trainingService.getTrainingByNameAndUserLogin(trainingName, userLogin) != null);
         trainingInfo.setIsCoach(userLogin.equals(training.getCoach().getLogin()));
-        trainingInfo.setIsCoach(userLogin.equals(trainingInfo.getCoachName()));
+        //trainingInfo.setIsCoach(userLogin.equals(trainingInfo.getCoachName()));
         trainingInfo.setFeedbackAvailability(!feedbackService.hasFeedback(userLogin, trainingName));
         trainingInfo.setListeners(UserShort.parseUserShortList(trainingService.getUsersByTrainingName(trainingName)));
         trainingInfo.setSpareUsers(UserShort.parseUserShortList(trainingService.getSpareUsersByTrainingName(trainingName)));

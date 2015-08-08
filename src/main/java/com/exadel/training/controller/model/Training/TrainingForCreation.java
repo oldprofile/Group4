@@ -76,8 +76,11 @@ public class TrainingForCreation {
             dateTimes = dateParser.getDateTimes();
         } else {
             JSONArray jsonDates = (JSONArray) json.get("dateTime");
-            for (Object jsonDate : jsonDates)
-                dateTimes.add(sdf.parse((String) jsonDate));
+            for (Object jsonDate : jsonDates) {
+                String date = (String) jsonDate;
+                if (!date.equals(""))
+                    dateTimes.add(sdf.parse(date));
+            }
         }
 
         JSONArray jsonPlaces = (JSONArray) json.get("places");
