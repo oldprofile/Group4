@@ -193,7 +193,7 @@ public class UserFeedbackGETModel implements Serializable{
 
     @Override
     public String toString() {
-    StringBuilder stringBuilder = new StringBuilder( SDF.format(date) +
+    StringBuilder stringBuilder = new StringBuilder( date +
                 "attendance=" + attendance +
                 ", attitude=" + attitude +
                 ", commSkills=" + commSkills +
