@@ -3,8 +3,9 @@ angular.module('myApp.createcourse').controller('CreateCourseController', [
 	'$filter',
 	'$modal',
 	'createcourse',
+	'userService',
 	'initCourseService',
-	function ($scope, $filter, $modal, createcourse, initCourseService) {
+	function ($scope, $filter, $modal, createcourse, userService, initCourseService) {
 		$scope.isEdited = false;
 		$scope.header = 'Create';
 		$scope.disabled = 'courseForm.name.$dirty && courseForm.name.$invalid || courseForm.description.$dirty && courseForm.description.$invalid || courseForm.audience.$dirty && courseForm.audience.$invalid || courseForm.participantsNumber.$dirty && courseForm.participantsNumber.$invalid || courseForm.place.$dirty && courseForm.place.$invalid';
@@ -48,11 +49,16 @@ angular.module('myApp.createcourse').controller('CreateCourseController', [
 
 		$scope.setLanguage = function (lang) {
 			$scope.courseInfo.language = lang;
-		}
+		};
 
 		$scope.setCoach = function(coach) {
 			$scope.temp.coach = coach;
 			$scope.courseInfo.coachLogin = coach.login;
+		};
+
+		$scope.setAdminAsCoach = function() {
+			$scope.temp.coach.name = 'me';
+			$scope.courseInfo.coachLogin = userService.getUser().login;
 		}
 
 		$scope.addCoach = function () {

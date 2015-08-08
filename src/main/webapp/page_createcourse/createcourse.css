@@ -84,6 +84,11 @@ img[preloadable] {
 	max-width: 150px;
 }
 
+.popover-container hr {
+	margin-top: 8px !important;
+	margin-bottom: 8px !important;
+}
+
 .popover {
 	width: 200px;
 }
