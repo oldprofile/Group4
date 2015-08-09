@@ -38,7 +38,6 @@ public interface TrainingService {
 
     List<Training> getAllTrainings();
     List<Training> getTrainingsByName(String trainingName);
-    List<Training> getValidTrainingsByCategoryId(int id);
     List<Training> getValidTrainings();
     List<Training> getValidTrainingsExceptParent();
     List<Training> getTrainingsByNearestDate();
@@ -68,8 +67,9 @@ public interface TrainingService {
     List<ShortParentTraining> getShortTrainingsSortedByDate(String userLogin);
     List<ShortParentTraining> getShortTrainingsSortedByRating(String userLogin);
     List<ShortParentTraining> getShortTrainingsByState(String userLogin, List<Integer> states);
+    List<ShortParentTraining> getValidTrainingsByCategoryId(int id, String userLogin);
 
     List<EntityFile> getFilesByTrainingName(String trainingName);
-    EntityFile addFile(FileInfo fileInfo);
+    EntityFile addFile(FileInfo fileInfo) throws IOException, DbxException;
     EntityFile deleteFile(FileInfo fileInfo);
 }
