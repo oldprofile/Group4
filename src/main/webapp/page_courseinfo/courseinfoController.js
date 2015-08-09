@@ -6,6 +6,7 @@ angular.module('myApp.courseinfo')
 		$scope.subButtonText = "Subscribe";
 		$scope.isContentLoaded = false;
 		$scope.course = {};
+		$scope.course.dateTime = [];
 		$scope.courseCategory = "";
 
 		$scope.goTo = function (path) {
@@ -20,11 +21,7 @@ angular.module('myApp.courseinfo')
 					$scope.courseCategory = result;
 				}
 			);
-		}
-
-		$scope.$watch('course.dateTime', function() {
-			$scope.startDate = $filter('date')($scope.course.dateTime[0], 'dd MMMM');
-		});
+		};
 
 		$scope.isPastLesson = function(index) {
 			return dateService.isPastDate($scope.course.dateTime[index]);
