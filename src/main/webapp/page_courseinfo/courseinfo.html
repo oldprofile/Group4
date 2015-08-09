@@ -165,13 +165,15 @@
 											<th>#</th>
 											<th>Name</th>
 											<th>E-Mail</th>
+											<th></th>
 										</tr>
 										</thead>
-										<tr ng-repeat="p in course.listeners" ng-class="{'link-cursor': isAdmin}"
-											ng-click="goTo('/profile/' + p.login)">
+										<tr ng-repeat="p in course.listeners"
+											class="rowWithSecret">
 											<td>{{$index + 1}}</td>
-											<td>{{ p.name}}</td>
+											<td><a href="#/profile/' + p.login">{{ p.name}}</a></td>
 											<td>{{ p.email }}</td>
+											<td class="hiddenCell" ng-click="deleteParticipant(p.login)"><i class="fa fa-times"></i></td>
 										</tr>
 									</table>
 									<p ng-if="(course.listeners.length + course.spareUsers.length) == 0">No participants

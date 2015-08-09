@@ -81,7 +81,10 @@ img[preloadable] {
 
 .popover-container {
 	width: auto;
-	max-width: 150px;
+	max-width: 300px;
+	max-height: 150px;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 .popover-container hr {
@@ -90,13 +93,13 @@ img[preloadable] {
 }
 
 .popover {
-	width: 200px;
+	width: 220px;
 }
 
 .select-dropdown {
 	border: none;
 	box-shadow: 0 1 4px 0px rgba(0, 0, 0, 0.25) !important;
-	font-size: 11.5px;
+	font-size: 13px;
 	text-transform: none;
 	border-radius: 0px;
 	border-top: 1px solid #fafafa

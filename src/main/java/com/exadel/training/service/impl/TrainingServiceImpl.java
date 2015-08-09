@@ -1,6 +1,7 @@
 package com.exadel.training.service.impl;
 
 import com.exadel.training.common.StateTraining;
+import com.exadel.training.controller.model.Training.FileInfo;
 import com.exadel.training.controller.model.Training.LessonData;
 import com.exadel.training.controller.model.Training.TrainingForCreation;
 import com.exadel.training.model.Category;
@@ -117,8 +118,8 @@ public class TrainingServiceImpl implements TrainingService {
         trainingRepository.saveAndFlush(mainTraining);
 
         List<File> files = new ArrayList<>();
-        for(String fileLink: trainingForCreation.getFilesLinks()) {
-            File file = new File(fileLink, mainTraining);
+        for(FileInfo fileInfo: trainingForCreation.getFiles()) {
+            File file = new File(fileInfo, mainTraining);
             fileRepository.saveAndFlush(file);
             files.add(file);
         }
@@ -213,7 +214,8 @@ public class TrainingServiceImpl implements TrainingService {
             training.setCoach(coach);
         }
         Training editedTraining = trainingRepository.findEditedTrainingByName(trainingForCreation.getName());
-        trainingRepository.deleteTrainingsById(editedTraining.getId());
+        if (editedTraining != null)
+            trainingRepository.deleteTrainingsById(editedTraining.getId());
         return trainings.get(0);
     }
 
@@ -416,6 +418,26 @@ public class TrainingServiceImpl implements TrainingService {
             }
         }
         return shortList;
+    }
+
+    @Override
+    public List<File> getFilesByTrainingName(String trainingName) {
+        return fileRepository.findFilesByTraining(trainingRepository.findByName(trainingName));
+    }
+
+    @Override
+    public File addFile(FileInfo fileInfo) {
+        Training training = trainingRepository.findByName(fileInfo.getTrainingName());
+        File newFile = new File(fileInfo, training);
+        fileRepository.saveAndFlush(newFile);
+        return newFile;
+    }
+
+    @Override
+    public File deleteFile(FileInfo fileInfo) {
+        File file = fileRepository.findFilesByName(fileInfo.getName());
+        fileRepository.deleteFileByName(fileInfo.getName());
+        return file;
     }
 
     @Override

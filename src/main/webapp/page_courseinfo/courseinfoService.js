@@ -47,6 +47,16 @@ angular.module('myApp.courseinfo')
 				})
 		};
 
+		courseInfoService.getParticipants = function(trainingName) {
+			return $http.get('/training_controller/listeners/' + trainingName).then(function(data) {
+				console.log("Got paarticipants successfully");
+				return data.data;
+			}, function(err) {
+				console.log("Error getting participants: " + err.statusCode);
+				return err;
+			});
+		};
+
 		courseInfoService.leave = function (courseData) {
 			return $http.post('/user_controller/leave_training', courseData)
 				.then(function (data) {

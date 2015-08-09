@@ -14,16 +14,16 @@ angular.module('myApp.courseinfo')
 			$location.path(path);
 		};
 
-		$scope.getCategory = function(id) {
+		$scope.getCategory = function (id) {
 			categoriesLocal.getCategoryNameById(id).then(
-				function(result) {
+				function (result) {
 					console.log(result);
 					$scope.courseCategory = result;
 				}
 			);
 		};
 
-		$scope.isPastLesson = function(index) {
+		$scope.isPastLesson = function (index) {
 			return dateService.isPastDate($scope.course.dateTime[index]);
 		};
 
@@ -54,7 +54,7 @@ angular.module('myApp.courseinfo')
 			}
 			promise.finally(
 				function () {
-                 
+
 					$scope.subscriptionLoading = false;
 				}
 			);
@@ -172,7 +172,7 @@ angular.module('myApp.courseinfo')
 		};
 
 
-		$scope.addParticipant = function() {
+		$scope.addParticipant = function () {
 			var participantModalInstance = $modal.open({
 				animation: true,
 				templateUrl: "page_courseinfo/participantModal.html",
@@ -188,6 +188,19 @@ angular.module('myApp.courseinfo')
 			participantModalInstance.result.then(function (data) {
 			}, function () {
 			});
+		};
+
+		$scope.deleteParticipant = function (userLogin) {
+			var dataRequiredToDelete = {
+				login: userLogin,
+				nameTraining: $scope.course.name
+			};
+			courseInfoService.leave(dataRequiredToDelete).then(function (data) {
+					courseInfoService.getParticipants($scope.course.name).then(function (result) {
+						$scope.course.listeners = angular.copy(result);
+					});
+				}
+			);
 		};
 
 		$scope.manageOmissions = function (index) {
@@ -282,10 +295,10 @@ angular.module('myApp.courseinfo')
 		$scope.courseinfo = courseinfo;
 		$scope.index = index;
 
-		$scope.deleteLesson = function() {
-			courseInfoService.deleteLesson($scope.index + 1, $scope.courseinfo.name).then(function(data) {
+		$scope.deleteLesson = function () {
+			courseInfoService.deleteLesson($scope.index + 1, $scope.courseinfo.name).then(function (data) {
 				courseInfoService.updateDates($scope.courseinfo.name).then(
-					function(result) {
+					function (result) {
 						$scope.courseinfo.dateTime = angular.copy(result.data.dateTimes);
 						for (var i = 0; i < $scope.courseinfo.dateTime.length; i++) {
 							$scope.courseinfo.dateTime[i] = $filter('date')($scope.courseinfo.dateTime[i], 'medium');
@@ -369,8 +382,10 @@ angular.module('myApp.courseinfo')
 		$scope.ok = function () {
 			console.log($scope.participantInfo);
 			courseInfoService.addParticipant($scope.participantInfo).then(
-				function(result) {
-
+				function (result) {
+					courseInfoService.getParticipants(courseinfo.name).then(function(result) {
+						courseinfo.listeners = angular.copy(result);
+					});
 				});
 			$modalInstance.close(courseinfo);
 		};
