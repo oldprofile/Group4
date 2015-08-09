@@ -1123,8 +1123,8 @@ width: 124px;
 
 }
 .card-layout-browse.category .card:hover img{
-	-webkit-filter: brightness(100%);
-	filter: brightness(100%);
+	-webkit-filter: brightness(70%);
+	filter: brightness(70%);
 	-webkit-animation: brightness 0.5s;
 	-moz-animation: brightness 0.5s;
 	-o-animation: brightness 0.5s;
@@ -1153,8 +1153,8 @@ width: 124px;
 
 }
 .card-layout-browse.category img{
-	-webkit-filter: brightness(50%);
-	filter: brightness(50%);
+	-webkit-filter: brightness(40%);
+	filter: brightness(40%);
 
 	position: absolute;
 	display: block;
