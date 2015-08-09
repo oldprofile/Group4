@@ -24,6 +24,13 @@ angular.module('myApp.createcourse')
 				$scope.temp.place = (($scope.courseInfo.places != null) ? $scope.courseInfo.places[0] : "");
 
 				$scope.temp.pictureHolder = $scope.courseInfo.picture.link;
+
+				$scope.courseInfo.picture = {
+					data: '',
+					link: $scope.courseInfo.picture.link,
+					name: $scope.courseInfo.picture.name,
+				};
+
 				console.log($scope.courseInfo);
 			});
 		}
@@ -38,6 +45,11 @@ angular.module('myApp.createcourse')
 
 				$scope.temp.pictureHolder = $scope.courseInfo.picture.link;
 
+				$scope.courseInfo.picture = {
+					data: '',
+					link: $scope.courseInfo.picture.link,
+					name: $scope.courseInfo.picture.name,
+				};
 
 				console.log($scope.courseInfo);
 			});
@@ -66,7 +78,7 @@ angular.module('myApp.createcourse')
 		};
 
 		$scope.setLanguage = function (lang) {
-			setFieldsService.setType($scope, type);
+			setFieldsService.setLanguage($scope, lang);
 		};
 
 		$scope.setCoach = function(coach) {
