@@ -25,9 +25,9 @@
 						</div>
 					</div>
 
-					<p class="courseinfo-h5 really-big-margin">Start date: {{isRepeating ? (temp.startsOn | date:"dd MMMM") : (temp.tempDates[0] | date:"dd MMMM")}}</p>
+					<p ng-hide="temp.tempDates.length == 0 && !temp.startsOn" class="courseinfo-h5 really-big-margin">Start date: {{isRepeating ? (temp.startsOn | date:"dd MMMM") : (temp.tempDates[0] | date:"dd MMMM")}}</p>
 
-					<p class="courseinfo-h5 color-gray small-space">{{isRepeating ? temp.lessonsNumber : temp.tempDates.length}} lessons</p>
+					<p ng-hide="temp.tempDates.length == 0 && (temp.lessonsNumber == 0 || !temp.lessonsNumber)" class="courseinfo-h5 color-gray small-space">{{isRepeating ? temp.lessonsNumber : temp.tempDates.length}} lessons</p>
 
 
 
@@ -161,6 +161,8 @@
 							</v-pane-header>
 
 							<v-pane-content>
+
+								<a id="dates"></a>
 
 								<datepicker1 id="dates" ng-model="courseInfo.dateTime"></datepicker1>
 

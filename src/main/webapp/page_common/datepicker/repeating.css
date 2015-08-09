@@ -8,3 +8,12 @@ div.repeating-container {
 div.repeating-row {
   margin: 10px;
 }
+
+#pRepeatOn,
+#pRepeatStartDate {
+	margin-top: 8px !important;
+}
+
+#pRepeatOn {
+	margin-right: 7px;
+}
