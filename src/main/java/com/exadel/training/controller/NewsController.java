@@ -47,7 +47,7 @@ public class NewsController {
     }
 
     @RequestMapping(value = "/change_unread/{id}")
-    public @ResponseBody void changeUnread(@PathVariable("id") Long id) {
+    public @ResponseBody void changeUnread(@PathVariable("id") Long id) throws NoSuchFieldException {
 
         userNewsService.changeUnread(id);
     }

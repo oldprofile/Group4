@@ -6,8 +6,8 @@ angular.module('myApp.admin')
 		$scope.temp = {};
 		$scope.temp.tempDates = [];
 
-		$scope.statisticTrainType = ['Users list', 'Dates of pass', 'Count of pass'];
-		$scope.statisticListType = ['Trainings list', 'Dates of pass plus feedback', 'Count of pass'];
+		$scope.statisticTrainType = ['Users list', 'Dates of pass', 'Count of pass (training)'];
+		$scope.statisticListType = ['Trainings list','Dates of pass', 'Dates of pass plus feedback', 'Count of pass (user)'];
         $scope.currentType = true;
         $scope.currentType2 = false;
 
@@ -76,11 +76,14 @@ angular.module('myApp.admin')
 			if (userselect.type==='Users list'|| userselect.type ==='Trainings list'){
 				userselect.type='1';
 			}
-			if (userselect.type==='Dates of pass' || userselect.type ==='Dates of pass plus feedback'){
+			if (userselect.type==='Dates of pass'){
 				userselect.type='2';
 			}
-			if (userselect.type==='Count of pass'){
+			if (userselect.type==='Count of pass (training)' || userselect.type === 'Dates of pass plus feedback'){
 				userselect.type = '3';
+			}
+			if (userselect.type==='Count of pass (user)'){
+				userselect.type='4';
 			}
 			if (userselect.type == null){
 				alert ('Please select type of statistic!');
