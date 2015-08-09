@@ -47,7 +47,7 @@ public class TrainingForCreation {
         filePath = filePath.replace(" ", "-");
         File file = new File(RELATIVE_PATH + filePath);
         if (!file.exists())
-            file.mkdir();
+            file.mkdirs();
 
         String pictureString = fileData.substring(fileData.indexOf(",") + 1);
         byte[] data = Base64.decodeBase64(pictureString);
