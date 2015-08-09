@@ -23,7 +23,7 @@ angular.module('myApp.createcourse')
 
 				$scope.temp.place = (($scope.courseInfo.places != null) ? $scope.courseInfo.places[0] : "");
 
-				$scope.temp.pictureHolder = $scope.courseInfo.pictureLink;
+				$scope.temp.pictureHolder = $scope.courseInfo.picture.link;
 				console.log($scope.courseInfo);
 			});
 		}
@@ -36,7 +36,7 @@ angular.module('myApp.createcourse')
 
 				$scope.temp.place = (($scope.courseInfo.places != null) ? $scope.courseInfo.places[0] : "");
 
-				$scope.temp.pictureHolder = $scope.courseInfo.pictureLink;
+				$scope.temp.pictureHolder = $scope.courseInfo.picture.link;
 
 
 				console.log($scope.courseInfo);

@@ -15,7 +15,11 @@ angular.module('myApp.createcourse').controller('CreateCourseController', [
 
 		initCourseService($scope);
 
-		$scope.courseInfo.pictureLink = "";
+		$scope.courseInfo.picture = {
+			data: '',
+			link: '',
+			name: '',
+		};
 
 		$scope.saveData = function () {
 			if ($scope.courseInfo.isRepeating) {
