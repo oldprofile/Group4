@@ -4,9 +4,11 @@ import com.exadel.training.common.StateTraining;
 import com.exadel.training.controller.model.Training.LessonData;
 import com.exadel.training.controller.model.Training.TrainingForCreation;
 import com.exadel.training.model.Category;
+import com.exadel.training.model.File;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
 import com.exadel.training.repository.impl.CategoryRepository;
+import com.exadel.training.repository.impl.FileRepository;
 import com.exadel.training.repository.impl.model.ShortParentTraining;
 import com.exadel.training.repository.impl.TrainingRepository;
 import com.exadel.training.repository.impl.UserRepository;
@@ -33,6 +35,9 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private FileRepository fileRepository;
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
@@ -88,11 +93,7 @@ public class TrainingServiceImpl implements TrainingService {
     @Override
     public Training addTraining(TrainingForCreation trainingForCreation, String creatorLogin) throws NoSuchFieldException, ParseException {
 
-        //List<String> dates = trainingForCreation.getDateTimes();
         List<Date> dateTimes = trainingForCreation.getDateTimes();
-        /*for (String date : dates) {
-            dateTimes.add(sdf.parse(date));
-        }*/
         User coach = userRepository.findUserByLogin(trainingForCreation.getCoachLogin());
         Category category = categoryRepository.findById(trainingForCreation.getIdCategory());
         int state;
@@ -104,6 +105,12 @@ public class TrainingServiceImpl implements TrainingService {
             state = StateTraining.parseToInt("Draft");
             place = null;
         }
+        List<File> files = new ArrayList<>();
+        for(String fileLink: trainingForCreation.getFilesLinks()) {
+            File file = new File(fileLink);
+            fileRepository.saveAndFlush(file);
+            files.add(file);
+        }
 
         Training mainTraining = new Training();
         mainTraining.fillTraining(trainingForCreation);
@@ -113,6 +120,7 @@ public class TrainingServiceImpl implements TrainingService {
         mainTraining.setCategory(category);
         mainTraining.setState(state);
         mainTraining.setParent(0);
+        mainTraining.setFiles(files);
         trainingRepository.saveAndFlush(mainTraining);
         List<Training> trainings = new ArrayList<>(dateTimes.size());
         for (int i = 0; i < dateTimes.size(); ++i) {
