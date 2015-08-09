@@ -5,8 +5,9 @@ angular.module('myApp.imageLoaderApp')
 			$scope.progress = 0;
 			fileReader.readAsDataUrl($scope.file, $scope).then(function (result) {
 				$scope.temp.pictureHolder = result;
-				$scope.courseInfo.pictureData = result;
-				$scope.courseInfo.pictureLink = "";
+				$scope.courseInfo.picture.data = result;
+				$scope.courseInfo.picture.link = "";
+				$scope.courseInfo.picture.name = ($scope.file.webkitRelativePath || $scope.file.name);
 			});
 		};
 		$scope.$on("fileProgress", function (e, progress) {
