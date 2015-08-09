@@ -626,11 +626,6 @@ course-info
 	overflow: auto;
 }
 
-.scrollable-popover {
-	max-height: 120px;
-	overflow: auto;
-}
-
 /*mycourses*/
 .no-courses{
 	width: 300px;
@@ -1594,6 +1589,7 @@ tr.rowWithSecret:hover .hiddenCell {
 
 .hiddenCell .fa-times:hover {
 	color: #a1161b !important;
+	cursor: pointer;
 }
 
 .login-card {

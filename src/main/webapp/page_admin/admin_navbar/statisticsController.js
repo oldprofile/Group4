@@ -6,10 +6,25 @@ angular.module('myApp.admin')
 		$scope.temp = {};
 		$scope.temp.tempDates = [];
 
+		$scope.userSelect = {};
+
 		$scope.statisticTrainType = ['Users list', 'Dates of pass', 'Count of pass (training)'];
 		$scope.statisticListType = ['Trainings list','Dates of pass', 'Dates of pass plus feedback', 'Count of pass (user)'];
         $scope.currentType = true;
         $scope.currentType2 = false;
+
+		$scope.setPerson = function(user) {
+			$scope.userSelect.userLogin = user.login;
+			$scope.temp.userName = user.name;
+		};
+
+		$scope.setTraining = function(trainingName) {
+			$scope.userSelect.trainingName = trainingName;
+		};
+
+		$scope.setStatType = function(type) {
+			$scope.userSelect.type = type;
+		};
 
 		$scope.one = function(){
 			if($scope.currentType === true){

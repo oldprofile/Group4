@@ -160,10 +160,10 @@
 											<th></th>
 										</tr>
 										</thead>
-										<tr ng-repeat="p in course.listeners" ng-class="{'link-cursor': isAdmin}"
+										<tr ng-repeat="p in course.listeners"
 											class="rowWithSecret">
 											<td>{{$index + 1}}</td>
-											<td ng-click="goTo('/profile/' + p.login)">{{ p.name}}</td>
+											<td><a href="#/profile/' + p.login">{{ p.name}}</a></td>
 											<td>{{ p.email }}</td>
 											<td class="hiddenCell" ng-click="deleteParticipant(p.login)"><i class="fa fa-times"></i></td>
 										</tr>

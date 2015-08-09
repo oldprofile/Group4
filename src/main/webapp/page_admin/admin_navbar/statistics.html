@@ -3,84 +3,130 @@
 	<div class="statistics-container">
 
 		<form class="form-horizontal" novalidate>
-			<div class="form-group">
-				<label class="control-label col-sm-2">Start date:</label>
 
-				<div class="col-sm-8">
-					<a class="dropdown-toggle" id="dropdown0" role="button" data-toggle="dropdown">
-						<div class="input-group">
-							<input type="text" class="form-control" ng-value="temp.tempDates[0] | date: 'mediumDate'">
-                        <span class="input-group-addon addon-calendar">
-                            <i class="glyphicon glyphicon-calendar"></i>
-                        </span>
-						</div>
-					</a>
+			<div class="row">
+				<div class="col-xs-12">
+					<p class="info-small courseinfo-label float-left no-bottom-margin" id="pStartDate">Start date:
+					</p>
 
-					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-						<datetimepicker ng-model="temp.tempDates[0]" data-datetimepicker-config="{ dropdownSelector: '#dropdown0', minView: 'day' }"/>
-					</ul>
+					<div class="calendar">
+						<a class="dropdown-toggle" id="dropdown0" role="button" data-toggle="dropdown">
+							<div class="input-group">
+								<input type="text" class="form-control calendar"
+									   ng-value="temp.tempDates[0] | date: 'mediumDate'" placeholder="click to add date" disabled>
+							<span class="input-group-addon addon-calendar">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+							</div>
+						</a>
+						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<datetimepicker ng-model="temp.tempDates[0]"
+											data-datetimepicker-config="{ dropdownSelector: '#dropdown0', minView: 'day' }"/>
+						</ul>
+					</div>
+				</div>
+			</div>
 
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-sm-2" >End date:</label>
+			<div class="row">
+				<div class="col-xs-12">
+					<p class="info-small courseinfo-label float-left no-bottom-margin" id="pEndDate">End date:
+					</p>
 
-				<div class="col-sm-8">
-					<a class="dropdown-toggle" id="dropdown1" role="button" data-toggle="dropdown">
-						<div class="input-group">
-							<input type="text" class="form-control" ng-value="temp.tempDates[1] | date: 'mediumDate'">
-                        <span class="input-group-addon addon-calendar">
-                            <i class="glyphicon glyphicon-calendar"></i>
-                        </span>
-						</div>
-					</a>
+					<div class="calendar">
+						<a class="dropdown-toggle" id="dropdown1" role="button" data-toggle="dropdown">
+							<div class="input-group">
+								<input type="text" class="form-control calendar"
+									   ng-value="temp.tempDates[1] | date: 'mediumDate'" placeholder="click to add date" disabled>
+							<span class="input-group-addon addon-calendar">
+                                <i class="fa fa-calendar"></i>
+                            </span>
+							</div>
+						</a>
+						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<datetimepicker ng-model="temp.tempDates[1]"
+											data-datetimepicker-config="{ dropdownSelector: '#dropdown1', minView: 'day' }"/>
+						</ul>
+					</div>
+				</div>
+			</div>
 
-					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-						<datetimepicker ng-model="temp.tempDates[1]" data-datetimepicker-config="{ dropdownSelector: '#dropdown1', minView: 'day' }"/>
-					</ul>
+			<div class="row top-margin">
+				<div class="col-xs-12">
+					<p class="info-small courseinfo-label float-left no-bottom-margin" id="pSelectType">Select type:
+					</p>
+					<div>
+						<label class="checkbox-inline"><input type="checkbox" name="one" ng-model="currentType" ng-click="one()">Training</label>
+						<label class="checkbox-inline"><input type="checkbox" name="one" ng-model="currentType2" ng-click="two()">Listener</label>
+					</div>
 				</div>
 			</div>
-			<div class="form-group">
-				<label class="control-label col-sm-2">Select type:</label>
-				<div class="col-sm-8" id="trLis">
-					<label class="checkbox-inline"><input type="checkbox" name="one" ng-model="currentType" ng-click="one()">Training</label>
-					<label class="checkbox-inline"><input type="checkbox" name="one" ng-model="currentType2" ng-click="two()">Listener</label>
+
+			<div class="row" ng-show="currentType2">
+				<div class="col-xs-12">
+					<p class="info-small courseinfo-label float-left no-bottom-margin">Select person: </p>
+
+					<div class="dropdown float-left">
+						<p class="info-small dropdown-toggle no-bottom-margin" type="button" id="personPopover"
+						   popover-placement="bottom" popover-trigger="click"
+						   popover-template="'/page_admin/admin_navbar/popovers/personPopover.html'">
+							<a href="" class="link-select" ng-if="!userSelect.userLogin">select</a>
+							<a href="" class="link-select"
+							   ng-if="userSelect.userLogin">{{temp.userName}}</a>
+						</p>
+					</div>
 				</div>
 			</div>
-			<div class="form-group" data-ng-show="currentType2">
-				<label class="control-label col-sm-2">Select person:</label>
-				<div class="col-sm-8">
-					<select class="form-control" data-ng-model="userSelect.userLogin" ng-options="userName.login as userName.name+'(' +userName.login+')' for userName in users">
-						<option value="">Please select user</option>
-					</select>
+
+			<div class="row" ng-show="currentType">
+				<div class="col-xs-12">
+					<p class="info-small courseinfo-label float-left no-bottom-margin">Select training: </p>
+
+					<div class="dropdown float-left">
+						<p class="info-small dropdown-toggle no-bottom-margin" type="button" id="trainingPopover"
+						   popover-placement="bottom" popover-trigger="click"
+						   popover-template="'/page_admin/admin_navbar/popovers/trainingPopover.html'">
+							<a href="" class="link-select" ng-if="!userSelect.trainingName">select</a>
+							<a href="" class="link-select"
+							   ng-if="userSelect.trainingName">{{userSelect.trainingName}}</a>
+						</p>
+					</div>
 				</div>
 			</div>
-			<div class="form-group" data-ng-show="currentType">
-				<label class="control-label col-sm-2">Select training:</label>
-				<div class="col-sm-8">
-					<select class="form-control" data-ng-model="userSelect.trainingName" ng-options="trainingName for trainingName in trainings">
-						<option value="">Please select training</option>
-					</select>
+
+			<div class="row" ng-show="currentType2">
+				<div class="col-xs-12">
+					<p class="info-small courseinfo-label float-left no-bottom-margin">Select type: </p>
+
+					<div class="dropdown float-left">
+						<p class="info-small dropdown-toggle no-bottom-margin" type="button" id="statTypePopover"
+						   popover-placement="bottom" popover-trigger="click"
+						   popover-template="'/page_admin/admin_navbar/popovers/statTypePopover.html'">
+							<a href="" class="link-select" ng-if="!userSelect.type">select</a>
+							<a href="" class="link-select"
+							   ng-if="userSelect.type">{{userSelect.type}}</a>
+						</p>
+					</div>
 				</div>
 			</div>
-			<div class="form-group" data-ng-show="currentType2">
-				<label class="control-label col-sm-2">Select type</label>
-				<div class="col-sm-8">
-					<select class="form-control" data-ng-model="userSelect.type" ng-options="statLType for statLType in statisticListType">
-						<option value="" >Please select type</option>
-					</select>
+
+			<div class="row" ng-show="currentType">
+				<div class="col-xs-12">
+					<p class="info-small courseinfo-label float-left no-bottom-margin">Select type: </p>
+
+					<div class="dropdown float-left">
+						<p class="info-small dropdown-toggle no-bottom-margin" type="button" id="statTTypePopover"
+						   popover-placement="bottom" popover-trigger="click"
+						   popover-template="'/page_admin/admin_navbar/popovers/statTTypePopover.html'">
+							<a href="" class="link-select" ng-if="!userSelect.type">select</a>
+							<a href="" class="link-select"
+							   ng-if="userSelect.type">{{userSelect.type}}</a>
+						</p>
+					</div>
 				</div>
 			</div>
-			<div class="form-group" data-ng-show="currentType">
-				<label class="control-label col-sm-2">Select type</label>
-				<div class="col-sm-8">
-					<select class="form-control" data-ng-model="userSelect.type" ng-options="statTType for statTType in statisticTrainType">
-						<option value="" >Please select type</option>
-					</select>
-				</div>
-			</div>
-			<div class="form-group">
-				<div class="col-sm-offset-2 col-sm-8">
+
+			<div class="row top-margin">
+				<div class="col-xs-12">
 					<button ng-click="save(userSelect)" type="button" class="btn btn-default default-btn default-green">Download statistics</button>
 				</div>
 			</div>
