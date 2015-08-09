@@ -32,10 +32,12 @@ angular.module('myApp.admin')
 		};
 
 		adminService.sendStatistics = function (statData) {
+            debugger;
 			var copy = angular.copy(statData);
 			copy.type = +copy.type;
-			return $http.post('/omission_controller/statistics', angular.copy(statData))
+			return $http.post('/omission_controller/statistics', copy)
 				.then(function (response) {
+                    debugger
 					adminService.download(response.data);
 					return response.data;
 				}, function (r) {
@@ -44,11 +46,14 @@ angular.module('myApp.admin')
 		};
 
 		adminService.download = function (formData) {
-			var url = 'http://localhost:8080/' + encodeURI(formData.path);
-			url = url.replace(/%5C/g, "/");
-			var deferred = $q.defer();
-			deferred.resolve(window.open(url, '_blank'));
-			return deferred.promise;
+          debugger;
+          window.open(formData.dropboxLink, '_blank')
+//            debugger;
+//			var url = 'http://localhost:8080/' + encodeURI(formData.path);
+//			url = url.replace(/%5C/g, "/");
+//			var deferred = $q.defer();
+//			deferred.resolve(window.open(url, '_blank'));
+//			return deferred.promise;
 		};
 
 		return adminService;

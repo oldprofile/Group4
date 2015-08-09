@@ -91,7 +91,7 @@
 										<i class="fa fa-plus"></i>Add lesson
 									</button>
 									<div class="scrollable-div scroll">
-										<table class="table courseinfo-table strikeable"
+										<table class="table table-striped courseinfo-table strikeable"
 											   ng-if="course.dateTime.length != 0">
 											<thead>
 											<tr>
@@ -135,7 +135,7 @@
 									</span>
 
 										<div class="scrollable-div scroll">
-											<table class="table courseinfo-table" ng-if="course.files.length != 0">
+											<table class="table table-striped courseinfo-table" ng-if="course.files.length != 0">
 												<tr ng-repeat="file in course.files">
 													<td>{{file.name}}</td>
 												</tr>
@@ -158,7 +158,7 @@
 											ng-click="addParticipant()">
 										<i class="fa fa-plus"></i>Add participant
 									</button>
-									<table class="table courseinfo-table"
+									<table class="table table-striped courseinfo-table"
 										   ng-if="(course.listeners.length + course.spareUsers.length) != 0">
 										<thead>
 										<tr>
@@ -188,7 +188,7 @@
 								</v-pane-header>
 
 								<v-pane-content>
-									<table class="table courseinfo-table" ng-if="course.feedbacks.length != 0">
+									<table class="table table-striped courseinfo-table" ng-if="course.feedbacks.length != 0">
 										<thead>
 										<tr>
 											<th>#</th>

@@ -127,7 +127,7 @@
 
 			<div class="row top-margin">
 				<div class="col-xs-12">
-					<button ng-click="save(userSelect)" type="button" class="btn btn-default default-btn default-green">Download statistics</button>
+					<button ng-disabled="generating" ng-click="save(userSelect)" type="button" class="btn btn-default default-btn default-green" id="GenerateStatistics">Generate Statistics&nbsp;<i class="fa fa-spinner fa-spin" ng-show="generating"></i> </button>
 				</div>
 			</div>
 		</form>
