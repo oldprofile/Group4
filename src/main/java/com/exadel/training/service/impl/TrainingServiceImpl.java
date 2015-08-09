@@ -1,6 +1,7 @@
 package com.exadel.training.service.impl;
 
 import com.exadel.training.common.StateTraining;
+import com.exadel.training.controller.model.Training.FileInfo;
 import com.exadel.training.controller.model.Training.LessonData;
 import com.exadel.training.controller.model.Training.TrainingForCreation;
 import com.exadel.training.model.Category;
@@ -117,8 +118,8 @@ public class TrainingServiceImpl implements TrainingService {
         trainingRepository.saveAndFlush(mainTraining);
 
         List<File> files = new ArrayList<>();
-        for(String fileLink: trainingForCreation.getFilesLinks()) {
-            File file = new File(fileLink, mainTraining);
+        for(FileInfo fileInfo: trainingForCreation.getFiles()) {
+            File file = new File(fileInfo, mainTraining);
             fileRepository.saveAndFlush(file);
             files.add(file);
         }
@@ -213,7 +214,8 @@ public class TrainingServiceImpl implements TrainingService {
             training.setCoach(coach);
         }
         Training editedTraining = trainingRepository.findEditedTrainingByName(trainingForCreation.getName());
-        trainingRepository.deleteTrainingsById(editedTraining.getId());
+        if (editedTraining != null)
+            trainingRepository.deleteTrainingsById(editedTraining.getId());
         return trainings.get(0);
     }
 

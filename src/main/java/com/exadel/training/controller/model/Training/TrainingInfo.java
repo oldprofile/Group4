@@ -39,7 +39,7 @@ public class TrainingInfo {
     private String state;
     private List<UserShort> listeners;
     private List<UserShort> spareUsers;
-    private List<String> files;
+    private List<FileInfo> files;
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
 
 
@@ -75,7 +75,7 @@ public class TrainingInfo {
         List<File> files = training.getFiles();
         if (files != null) {
             for (File file : files)
-                this.files.add(file.getLink());
+                this.files.add(new FileInfo(file));
         }
         lessonNumber = dateTimes.size();
         //coachName = training.getCoach().getName();
@@ -284,11 +284,11 @@ public class TrainingInfo {
         this.rating = rating;
     }
 
-    public List<String> getFiles() {
+    public List<FileInfo> getFiles() {
         return files;
     }
 
-    public void setFiles(List<String> files) {
+    public void setFiles(List<FileInfo> files) {
         this.files = files;
     }
 }

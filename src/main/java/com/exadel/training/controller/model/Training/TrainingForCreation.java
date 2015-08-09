@@ -29,27 +29,32 @@ public class TrainingForCreation {
     private String language;
     private boolean isInternal;
     private List<String> places;
-    private List<String> filesLinks;
+    private List<FileInfo> files;
     private List<Date> dateTimes;
     private String additional;
     private boolean isRepeating;
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
+    private static final String RELATIVE_PATH = System.getProperty("user.dir") + "\\src\\main\\webapp";
+
     public TrainingForCreation() {
     }
 
     public static String createFile(String fileData, String filePath ,String fileName) throws IOException {
-        int fileBegin;
-        int i;
-        for ( i = 0; fileData.charAt(i) != ','; ++i){
+        //int i;
+        //for ( i = 0; fileData.charAt(i) != ','; ++i){}
+        //int fileBegin = fileData.indexOf(",") + 1;
+        filePath = filePath.replace(" ", "-");
+        File file = new File(RELATIVE_PATH + filePath);
+        if (!file.exists())
+            file.mkdir();
 
-        }
-        fileBegin = i + 1;
-        String pictureString = fileData.substring(fileBegin);
+        String pictureString = fileData.substring(fileData.indexOf(",") + 1);
         byte[] data = Base64.decodeBase64(pictureString);
+
         fileName = fileName.replace(" ", "-");
-        String fileLink = filePath + fileName;
-        String destination = System.getProperty("user.dir") + "\\src\\main\\webapp" + fileLink;
+        String fileLink = filePath + "\\" + fileName;
+        String destination = RELATIVE_PATH + fileLink;
         if(!SystemUtils.IS_OS_WINDOWS)
             destination = destination.replace("\\", "/");
         FileOutputStream imageOutFile = new FileOutputStream(destination);
@@ -60,9 +65,18 @@ public class TrainingForCreation {
     }
 
     public TrainingForCreation(JSONObject json) throws NoSuchFieldException, IOException, ParseException {
+        coachLogin = (String)json.get("coachLogin");
+        isInternal = (Boolean)json.get("isInternal");
+        audience = (String)json.get("audience");
+        additional = (String)json.get("additional");
+        participantsNumber = Integer.parseInt(String.valueOf(json.get("participantsNumber")));
+        name = (String)json.get("name");
+        description = (String)json.get("description");
+        language = (String)json.get("language");
+        idCategory = Integer.parseInt(String.valueOf(json.get("idCategory")));
         dateTimes = new ArrayList<>();
+
         isRepeating = (Boolean)json.get("isRepeating");
-        //isRepeating = true;
         if (isRepeating){
             DateParser dateParser = new DateParser(json);
             dateParser.parseDateTimes();
@@ -83,39 +97,29 @@ public class TrainingForCreation {
         }
 
         JSONArray jsonFiles = (JSONArray) json.get("files");
-        filesLinks = new ArrayList<>();
+        files = new ArrayList<>();
         if(jsonFiles != null) {
             for (Object object : jsonFiles) {
                 JSONObject jsonFile = (JSONObject) object;
                 String fileName = (String) jsonFile.get("name");
                 String fileData = (String) jsonFile.get("data");
                 String fileLink = (String) jsonFile.get("link");
-                if (fileData == null)
-                    filesLinks.add(fileLink);
-                else {
-                    fileLink = createFile(fileData, "\\files_storage\\", fileName);
-                    filesLinks.add(fileLink);
+                if (fileData != null) {
+                    String folder = name;
+                    fileLink = createFile(fileData, "\\files_storage\\" + folder, fileName);
+                    files.add(new FileInfo(fileName, fileLink));
                 }
             }
         }
 
-        coachLogin = (String)json.get("coachLogin");
-        isInternal = (Boolean)json.get("isInternal");
-        audience = (String)json.get("audience");
-        additional = (String)json.get("additional");
-        participantsNumber = Integer.parseInt(String.valueOf(json.get("participantsNumber")));
-        name = (String)json.get("name");
-        description = (String)json.get("description");
-        language = (String)json.get("language");
-        idCategory = Integer.parseInt(String.valueOf(json.get("idCategory")));
         JSONObject picture = (JSONObject)json.get("picture");
         String pictureName = (String) picture.get("name");
         String pictureData = (String) picture.get("data");
         pictureLink = (String) picture.get("link");
-        String pictureType = pictureName.substring(pictureName.indexOf("."));
-        if (pictureData == null) {
+        if (pictureData.equals("")) {
             pictureLink = (String) json.get("pictureLink");
         } else {
+            String pictureType = pictureName.substring(pictureName.indexOf("."));
             pictureLink = createFile(pictureData, "\\image_storage\\", name + pictureType);
         }
     }
@@ -224,11 +228,11 @@ public class TrainingForCreation {
         this.isRepeating = isRepeating;
     }
 
-    public List<String> getFilesLinks() {
-        return filesLinks;
+    public List<FileInfo> getFiles() {
+        return files;
     }
 
-    public void setFilesLinks(List<String> filesLinks) {
-        this.filesLinks = filesLinks;
+    public void setFiles(List<FileInfo> files) {
+        this.files = files;
     }
 }
