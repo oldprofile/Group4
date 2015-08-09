@@ -180,9 +180,7 @@ public class TrainingServiceImpl implements TrainingService {
     public Training editTraining(TrainingForCreation trainingForCreation, String creatorLogin) throws ParseException, NoSuchFieldException {
         Training mainTraining = trainingRepository.findByName(trainingForCreation.getName());
         if (userRepository.whoIsUser(creatorLogin, 1)) {
-            mainTraining.fillTraining(trainingForCreation);
-            mainTraining.setCategory(categoryRepository.findById(trainingForCreation.getIdCategory()));
-            return mainTraining;
+            return approveEditTraining(trainingForCreation);
         }
         else {
             Training editedTraining = new Training();
@@ -199,8 +197,11 @@ public class TrainingServiceImpl implements TrainingService {
     @Override
     public Training approveEditTraining(TrainingForCreation trainingForCreation) throws NoSuchFieldException {
         List<Training> trainings = trainingRepository.findTrainingsWithParentByName(trainingForCreation.getName());
-        for (Training training: trainings)
+        User coach = userRepository.findUserByLogin(trainingForCreation.getCoachLogin());
+        for (Training training: trainings) {
             training.fillTraining(trainingForCreation);
+            training.setCoach(coach);
+        }
         Training editedTraining = trainingRepository.findEditedTrainingByName(trainingForCreation.getName());
         trainingRepository.deleteTrainingsById(editedTraining.getId());
         return trainings.get(0);
@@ -385,6 +386,21 @@ public class TrainingServiceImpl implements TrainingService {
             String state = trainings.get(i).getState();
             if(state.equals("Ahead") || state.equals("InProcess")) {
                 ShortParentTraining training = trainings.get(i);
+                training.setIsSubscriber(userRepository.checkSubscribeToTraining(training.getTrainingName(), userLogin));
+                shortList.add(training);
+            }
+        }
+        return shortList;
+    }
+
+    @Override
+    public List<ShortParentTraining> getShortTrainingsByState(String userLogin, List<Integer> states) {
+        List<ShortParentTraining> trainings = trainingRepository.findShortTrainingsSortByDate();
+        List<ShortParentTraining> shortList = new ArrayList<>();
+        for(int i = 0; (i < trainings.size()) && (shortList.size() < MAX_SIZE); ++i) {
+            ShortParentTraining training = trainings.get(i);
+            String state = training.getState();
+            if(states.contains(state)) {
                 training.setIsSubscriber(userRepository.checkSubscribeToTraining(training.getTrainingName(), userLogin));
                 shortList.add(training);
             }
