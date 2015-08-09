@@ -1,5 +1,6 @@
 package com.exadel.training.controller;
 
+import com.exadel.training.common.StateTraining;
 import com.exadel.training.controller.model.Training.*;
 import com.exadel.training.controller.model.User.UserShort;
 import com.exadel.training.model.Training;
@@ -109,24 +110,15 @@ public class TrainingController {
 
     @RequestMapping(value = "/list_by_states/{states}", method = RequestMethod.GET)
     @ResponseBody
-    List<ShortTrainingInfo> listByStates(@PathVariable("states") List<Integer> states,
+    List<ShortParentTraining> listByStates(@PathVariable("states") List<Integer> states,
                      HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
 
         String header = httpServletRequest.getHeader("authorization");
         String userLogin = cryptService.decrypt(header);
 
         if (userService.checkUserByLogin(userLogin)) {
-            List<Training> list = trainingService.getTrainingsByStates(states);
-            List<ShortTrainingInfo> returnList = ShortTrainingInfo.parseList(list);
-            for (int i = 0; i < list.size(); ++i) {
-                List<User> listeners = list.get(i).getListeners();
-                for (User listener : listeners) {
-                    if (listener.getLogin().equals(userLogin))
-                        returnList.get(i).setIsSubscriber(true);
-                }
-                returnList.get(i).setIsSubscriber(false);
-            }
-            return returnList;
+            List<ShortParentTraining> list = trainingService.getShortTrainingsByState(userLogin, states);
+            return list;
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
@@ -152,8 +144,9 @@ public class TrainingController {
                 trainingInfo.setIsSubscriber(true);*/
             if (userLogin.equals(training.getCoach().getName()))
                 trainingInfo.setIsCoach(true);
+            trainingInfo.setCoach(UserShort.parseUserShort(userService.findUserByLogin(training.getCoach().getLogin())));
             trainingInfo.setIsSubscriber(userService.checkSubscribeToTraining(trainingName, userLogin));
-            trainingInfo.setIsCoach(userService.findUserByLogin(userLogin).getName().equals(trainingInfo.getCoachName()));
+            trainingInfo.setIsCoach(userService.findUserByLogin(userLogin).getName().equals(trainingInfo.getCoach().getName()));
             trainingInfo.setFeedbackAvailability(!feedbackService.hasFeedback(userLogin, trainingName));
             trainingInfo.setListeners(UserShort.parseUserShortList(trainingService.getListenersByTrainingNameSortByName(trainingName)));
             trainingInfo.setSpareUsers(UserShort.parseUserShortList(trainingService.getSpareUsersByTrainingName(trainingName)));
@@ -335,12 +328,12 @@ public class TrainingController {
 
     @RequestMapping(value = "/featured_trainings", method = RequestMethod.GET)
     public @ResponseBody
-    List<ShortTrainingInfo> getFeaturedTrainings(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
+    List<ShortParentTraining> getFeaturedTrainings(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
         String header = httpServletRequest.getHeader("authorization");
         String userLogin = cryptService.decrypt(header);
         if(userService.checkUserByLogin(userLogin)) {
-            List<Training> trainings = trainingService.getTrainingsByHighestRating();
-            return ShortTrainingInfo.parseList(trainings);
+            List<ShortParentTraining> trainings = trainingService.getShortTrainingsSortedByRating(userLogin);
+            return trainings;
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
@@ -455,7 +448,7 @@ public class TrainingController {
                 trainingService.getDatesByTrainingName(trainingName), trainingService.getPlacesByTrainingName(trainingName));
         trainingInfo.setIsSubscriber(trainingService.getTrainingByNameAndUserLogin(trainingName, userLogin) != null);
         trainingInfo.setIsCoach(userLogin.equals(training.getCoach().getLogin()));
-        trainingInfo.setIsCoach(userLogin.equals(trainingInfo.getCoachName()));
+        //trainingInfo.setIsCoach(userLogin.equals(trainingInfo.getCoachName()));
         trainingInfo.setFeedbackAvailability(!feedbackService.hasFeedback(userLogin, trainingName));
         trainingInfo.setListeners(UserShort.parseUserShortList(trainingService.getUsersByTrainingName(trainingName)));
         trainingInfo.setSpareUsers(UserShort.parseUserShortList(trainingService.getSpareUsersByTrainingName(trainingName)));

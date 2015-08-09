@@ -3,8 +3,10 @@ angular.module('myApp.createcourse').controller('CreateCourseController', [
 	'$filter',
 	'$modal',
 	'createcourse',
+	'userService',
 	'initCourseService',
-	function ($scope, $filter, $modal, createcourse, initCourseService) {
+	'setFieldsService',
+	function ($scope, $filter, $modal, createcourse, userService, initCourseService, setFieldsService) {
 		$scope.isEdited = false;
 		$scope.header = 'Create';
 		$scope.disabled = 'courseForm.name.$dirty && courseForm.name.$invalid || courseForm.description.$dirty && courseForm.description.$invalid || courseForm.audience.$dirty && courseForm.audience.$invalid || courseForm.participantsNumber.$dirty && courseForm.participantsNumber.$invalid || courseForm.place.$dirty && courseForm.place.$invalid';
@@ -14,7 +16,11 @@ angular.module('myApp.createcourse').controller('CreateCourseController', [
 
 		initCourseService($scope);
 
-		$scope.courseInfo.pictureLink = "";
+		$scope.courseInfo.picture = {
+			data: '',
+			link: '',
+			name: '',
+		};
 
 		$scope.saveData = function () {
 			if ($scope.courseInfo.isRepeating) {
@@ -39,16 +45,24 @@ angular.module('myApp.createcourse').controller('CreateCourseController', [
 		};
 
 		$scope.setCategory = function (id) {
-			$scope.courseInfo.idCategory = id;
+			setFieldsService.setCategory($scope, id);
 		};
 
 		$scope.setType = function (type) {
-			$scope.courseInfo.isInternal = type;
+			setFieldsService.setType($scope, type);
 		};
 
 		$scope.setLanguage = function (lang) {
-			$scope.courseInfo.language = lang;
-		}
+			setFieldsService.setLanguage($scope, lang);
+		};
+
+		$scope.setCoach = function(coach) {
+			setFieldsService.setCoach($scope, coach);
+		};
+
+		$scope.setAdminAsCoach = function() {
+			setFieldsService.setAdminAsCoach($scope);
+		};
 
 		$scope.addCoach = function () {
 			var coachModalInstance = $modal.open({
@@ -57,15 +71,16 @@ angular.module('myApp.createcourse').controller('CreateCourseController', [
 				controller: "CoachModalInstanceController",
 				size: "lg",
 				resolve: {
-					externalCoaches: $scope.externalCoaches,
+					externalCoaches: function() {
+						return $scope.externalCoaches;
+					}
 				}
 			});
 
 			coachModalInstance.result.then(function (data) {
 			}, function () {
 			});
-		}
-
+		};
 	}])
 
 	.controller('CoachModalInstanceController', ['$scope', '$modalInstance', 'coachService', 'externalCoaches', function($scope, $modalInstance, coachService, externalCoaches) {

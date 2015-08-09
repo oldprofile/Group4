@@ -118,6 +118,7 @@ bower_components/
 src/main/resources/bower.json
 imageStorage/
 image_storage/
+files_storage/
 
 tmp
 .DS_Store

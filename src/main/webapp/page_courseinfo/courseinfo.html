@@ -9,10 +9,9 @@
 						<p class="courseinfo-h1">{{course.name}}</p>
 
 						<p class="info-small color-gray"><span class="courseinfo-label">Coach:</span>
-							{{course.coachName}}</p>
+							{{course.coach.name}}</p>
 
-						<p class="courseinfo-h5 really-big-margin">Starts on: {{course.dateTime[0] | date:"dd
-							MMMM"}}</p>
+						<p class="courseinfo-h5 really-big-margin">Start date: {{ startDate | date:"dd MMMM"}}</p>
 
 						<p class="courseinfo-h5 color-gray small-space">{{course.dateTime.length}} lessons</p>
 
@@ -33,7 +32,7 @@
 					</div>
 
 					<div class="col-xs-12 col-sm-6 courseinfo-img-container margin-32">
-						<img class="courseinfo-img" ng-src="{{course.pictureLink}}">
+						<img class="courseinfo-img" ng-src="{{course.picture.link}}">
 					</div>
 
 				</div>
@@ -49,6 +48,11 @@
 						<button class="btn btn-default courseinfo-btn default-btn default-gray" role="button"
 								ng-click="leaveFeedback()">Leave Feedback
 						</button>
+
+						<button ng-if="course.isCoach || isAdmin" ng-click="goTo('/editcourse/'+ course.name)" class="btn btn-default courseinfo-btn default-btn default-blue" role="button">
+							<i class="fa fa-pencil-square-o"></i>Edit Course
+						</button>
+
 					</div>
 				</div>
 
@@ -70,16 +74,16 @@
 							<!-- add expanded attribute to open the section -->
 							<v-pane>
 								<v-pane-header>
-									<span class="glyphicon glyphicon-time"></span>Timetable
+									<i class="fa fa-clock-o"></i>Timetable
 								</v-pane-header>
 
 								<v-pane-content>
 									<button ng-if="isAdmin" class="btn btn-default default-btn default-gray"
-											ng-click="addLesson()">Add
-										lesson
+											ng-click="addLesson()">
+										<i class="fa fa-plus"></i>Add lesson
 									</button>
 									<div class="scrollable-div scroll">
-										<table class="table courseinfo-table"
+										<table class="table courseinfo-table strikeable"
 											   ng-if="course.dateTime.length != 0">
 											<thead>
 											<tr>
@@ -91,10 +95,10 @@
 												<!--OR isCoach! -->
 											</tr>
 											</thead>
-											<tr ng-repeat="lesson in course.dateTime">
-												<td>{{$index + 1}}</td>
-												<td>{{ lesson | date: "medium" }}</td>
-												<td>{{ course.places[$index] }}</td>
+											<tr ng-repeat="lesson in course.dateTime" ng-class="{strikeout: isPastLesson($index)}">
+												<td class="strike">{{$index + 1}}</td>
+												<td class="strike">{{ lesson | date: "medium" }}</td>
+												<td class="strike">{{ course.places[$index] }}</td>
 												<td ng-if="isAdmin"><a href="" ng-click="editDatePlace($index)">edit</a>
 												</td>
 												<td ng-if="isAdmin || course.isCoach"><a href=""
@@ -108,14 +112,43 @@
 							</v-pane>
 
 							<!-- add expanded attribute to open the section -->
+							<v-pane>
+								<v-pane-header>
+									<i class="fa fa-files-o"></i>Attachments
+								</v-pane-header>
+
+								<v-pane-content>
+
+									<div ng-controller="FileUploadController">
+
+									<span class="btn btn-file default-btn default-gray" id="uploadFileBtn">
+										<i class="fa fa-upload"></i></i> Upload file
+										<input type="file" ng-file-select="onFileSelect($files)">
+									</span>
+
+										<div class="scrollable-div scroll">
+											<table class="table courseinfo-table" ng-if="course.files.length != 0">
+												<tr ng-repeat="file in course.files">
+													<td>{{file.name}}</td>
+												</tr>
+											</table>
+											<p ng-if="course.files.length == 0">No files uploaded yet</p>
+										</div>
+									</div>
+
+								</v-pane-content>
+							</v-pane>
+
+							<!-- add expanded attribute to open the section -->
 							<v-pane ng-if="isAdmin || course.isCoach">
 								<v-pane-header>
-									<span class="glyphicon glyphicon-user"></span>Participants
+									<i class="fa fa-users"></i>Participants
 								</v-pane-header>
 
 								<v-pane-content>
 									<button ng-if="isAdmin" class="btn btn-default default-btn default-gray"
-											ng-click="addParticipant()">Add participant
+											ng-click="addParticipant()">
+										<i class="fa fa-plus"></i>Add participant
 									</button>
 									<table class="table courseinfo-table"
 										   ng-if="(course.listeners.length + course.spareUsers.length) != 0">
@@ -141,7 +174,7 @@
 							<!-- add expanded attribute to open the section -->
 							<v-pane>
 								<v-pane-header>
-									<span class="glyphicon glyphicon-comment"></span>Feedbacks
+									<i class="fa fa-comments-o"></i>Feedbacks
 								</v-pane-header>
 
 								<v-pane-content>
@@ -151,14 +184,12 @@
 											<th>#</th>
 											<th ng-if="isAdmin">From</th>
 											<th>When</th>
-											<th>View</th>
 										</tr>
 										</thead>
-										<tr ng-repeat="f in course.feedbacks">
+										<tr ng-repeat="f in course.feedbacks" class="link-cursor" ng-click="viewFeedback(f)">
 											<td>{{$index + 1}}</td>
 											<td ng-if="isAdmin">{{ f.feedbackerName}}</td>
 											<td>{{ f.date | date:"mediumDate" }}</td>
-											<td><a href="" ng-click="viewFeedback(f)">show me</a></td>
 										</tr>
 									</table>
 									<p ng-if="course.feedbacks.length == 0">No feedbacks yet</p>

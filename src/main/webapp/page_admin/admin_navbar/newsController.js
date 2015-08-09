@@ -18,6 +18,32 @@ angular.module('myApp.admin')
 			})
 		}
 
+		$scope.getNewsByType = function(type, news) {
+			switch(type) {
+				case 0:
+					return news.training.trainingName;
+				break;
+				case 1:
+					return news.coachFeedbackGETModel.coachLogin;
+				break;
+				case 2:
+					return news.trainingFeedbackGETModel.trainingName;
+				break;
+				case 3:
+					return news.userFeedbackGETModel.userLogin;
+				break;
+				default:
+					console.log('unknown type');
+			}
+		};
+
+		$scope.setAsRead = function(id) {
+			adminService.setNewsAsRead(id).then(function(result) {
+					$scope.getNews($scope.pageNumber);
+				}
+			);
+		};
+
 		$scope.getNewsNumber();
 
 		$scope.getNews($scope.pageNumber);

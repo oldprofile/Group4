@@ -1,5 +1,5 @@
 angular.module('myApp.courseinfo')
-	.controller('CourseInfoController', ['$scope', '$routeParams', '$filter', '$location', 'courseInfoService', 'userService', 'categoriesLocal', '$modal', 'feedbacksService', function ($scope, $routeParams, $filter, $location, courseInfoService, userService, categoriesLocal, $modal, feedbacksService) {
+	.controller('CourseInfoController', ['$scope', '$routeParams', '$filter', '$location', 'courseInfoService', 'userService', 'categoriesLocal', '$modal', 'feedbacksService', 'dateService', function ($scope, $routeParams, $filter, $location, courseInfoService, userService, categoriesLocal, $modal, feedbacksService, dateService) {
 		$scope.isAdmin = userService.isAdmin();
 
 		$scope.courseName = $routeParams.coursename;
@@ -22,6 +22,13 @@ angular.module('myApp.courseinfo')
 			);
 		}
 
+		$scope.$watch('course.dateTime', function() {
+			$scope.startDate = $filter('date')($scope.course.dateTime[0], 'dd MMMM');
+		});
+
+		$scope.isPastLesson = function(index) {
+			return dateService.isPastDate($scope.course.dateTime[index]);
+		};
 
 		var courseInfoData1 = {
 			login: userService.getUser().login,
@@ -66,6 +73,7 @@ angular.module('myApp.courseinfo')
 			data.promtText = courseInfoService.getPromtText(data);
 			$scope.course = data;
 			$scope.getCategory($scope.course.idCategory);
+			$scope.startDate = $scope.course.dateTime[0];
 
 			$scope.isSubscriber = data.isSubscriber;
 			$scope.isContentLoaded = true;

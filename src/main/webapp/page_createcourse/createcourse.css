@@ -58,7 +58,8 @@ img[preloadable] {
 	display: block;
 }
 
-#addPictureBtn {
+#addPictureBtn,
+#uploadFileBtn {
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -83,6 +84,11 @@ img[preloadable] {
 	max-width: 150px;
 }
 
+.popover-container hr {
+	margin-top: 8px !important;
+	margin-bottom: 8px !important;
+}
+
 .popover {
 	width: 200px;
 }
@@ -102,8 +108,6 @@ img[preloadable] {
 }
 
 .select-dropdown > a {
-	margin-left: 10px;
-	margin-right: 10px;
 	margin-top: 10px;
 	color: #5C5C5C;
 	background-color: white;

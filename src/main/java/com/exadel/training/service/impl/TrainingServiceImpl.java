@@ -4,9 +4,11 @@ import com.exadel.training.common.StateTraining;
 import com.exadel.training.controller.model.Training.LessonData;
 import com.exadel.training.controller.model.Training.TrainingForCreation;
 import com.exadel.training.model.Category;
+import com.exadel.training.model.File;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
 import com.exadel.training.repository.impl.CategoryRepository;
+import com.exadel.training.repository.impl.FileRepository;
 import com.exadel.training.repository.impl.model.ShortParentTraining;
 import com.exadel.training.repository.impl.TrainingRepository;
 import com.exadel.training.repository.impl.UserRepository;
@@ -33,6 +35,9 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private FileRepository fileRepository;
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
@@ -88,11 +93,8 @@ public class TrainingServiceImpl implements TrainingService {
     @Override
     public Training addTraining(TrainingForCreation trainingForCreation, String creatorLogin) throws NoSuchFieldException, ParseException {
 
-        //List<String> dates = trainingForCreation.getDateTimes();
+        Training mainTraining = new Training();
         List<Date> dateTimes = trainingForCreation.getDateTimes();
-        /*for (String date : dates) {
-            dateTimes.add(sdf.parse(date));
-        }*/
         User coach = userRepository.findUserByLogin(trainingForCreation.getCoachLogin());
         Category category = categoryRepository.findById(trainingForCreation.getIdCategory());
         int state;
@@ -105,7 +107,6 @@ public class TrainingServiceImpl implements TrainingService {
             place = null;
         }
 
-        Training mainTraining = new Training();
         mainTraining.fillTraining(trainingForCreation);
         mainTraining.setDateTime(dateTimes.get(0));
         mainTraining.setPlace(place);
@@ -114,6 +115,15 @@ public class TrainingServiceImpl implements TrainingService {
         mainTraining.setState(state);
         mainTraining.setParent(0);
         trainingRepository.saveAndFlush(mainTraining);
+
+        List<File> files = new ArrayList<>();
+        for(String fileLink: trainingForCreation.getFilesLinks()) {
+            File file = new File(fileLink, mainTraining);
+            fileRepository.saveAndFlush(file);
+            files.add(file);
+        }
+        mainTraining.setFiles(files);
+
         List<Training> trainings = new ArrayList<>(dateTimes.size());
         for (int i = 0; i < dateTimes.size(); ++i) {
             Training newTraining = new Training();
@@ -180,9 +190,7 @@ public class TrainingServiceImpl implements TrainingService {
     public Training editTraining(TrainingForCreation trainingForCreation, String creatorLogin) throws ParseException, NoSuchFieldException {
         Training mainTraining = trainingRepository.findByName(trainingForCreation.getName());
         if (userRepository.whoIsUser(creatorLogin, 1)) {
-            mainTraining.fillTraining(trainingForCreation);
-            mainTraining.setCategory(categoryRepository.findById(trainingForCreation.getIdCategory()));
-            return mainTraining;
+            return approveEditTraining(trainingForCreation);
         }
         else {
             Training editedTraining = new Training();
@@ -199,8 +207,11 @@ public class TrainingServiceImpl implements TrainingService {
     @Override
     public Training approveEditTraining(TrainingForCreation trainingForCreation) throws NoSuchFieldException {
         List<Training> trainings = trainingRepository.findTrainingsWithParentByName(trainingForCreation.getName());
-        for (Training training: trainings)
+        User coach = userRepository.findUserByLogin(trainingForCreation.getCoachLogin());
+        for (Training training: trainings) {
             training.fillTraining(trainingForCreation);
+            training.setCoach(coach);
+        }
         Training editedTraining = trainingRepository.findEditedTrainingByName(trainingForCreation.getName());
         trainingRepository.deleteTrainingsById(editedTraining.getId());
         return trainings.get(0);
@@ -385,6 +396,21 @@ public class TrainingServiceImpl implements TrainingService {
             String state = trainings.get(i).getState();
             if(state.equals("Ahead") || state.equals("InProcess")) {
                 ShortParentTraining training = trainings.get(i);
+                training.setIsSubscriber(userRepository.checkSubscribeToTraining(training.getTrainingName(), userLogin));
+                shortList.add(training);
+            }
+        }
+        return shortList;
+    }
+
+    @Override
+    public List<ShortParentTraining> getShortTrainingsByState(String userLogin, List<Integer> states) {
+        List<ShortParentTraining> trainings = trainingRepository.findShortTrainingsSortByDate();
+        List<ShortParentTraining> shortList = new ArrayList<>();
+        for(int i = 0; (i < trainings.size()) && (shortList.size() < MAX_SIZE); ++i) {
+            ShortParentTraining training = trainings.get(i);
+            String state = training.getState();
+            if(states.contains(state)) {
                 training.setIsSubscriber(userRepository.checkSubscribeToTraining(training.getTrainingName(), userLogin));
                 shortList.add(training);
             }

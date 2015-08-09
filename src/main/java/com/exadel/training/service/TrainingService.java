@@ -63,5 +63,6 @@ public interface TrainingService {
 
     List<ShortParentTraining> getShortTrainingsSortedByDate(String userLogin);
     List<ShortParentTraining> getShortTrainingsSortedByRating(String userLogin);
+    List<ShortParentTraining> getShortTrainingsByState(String userLogin, List<Integer> states);
 
 }
