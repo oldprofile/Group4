@@ -5,7 +5,7 @@ angular.module('myApp.createcourse').controller('CreateCourseController', [
 	'createcourse',
 	'userService',
 	'initCourseService',
-	function ($scope, $filter, $modal, createcourse, userService, initCourseService) {
+	function ($scope, $filter, $modal, createcourse, userService, initCourseService, setFieldsService) {
 		$scope.isEdited = false;
 		$scope.header = 'Create';
 		$scope.disabled = 'courseForm.name.$dirty && courseForm.name.$invalid || courseForm.description.$dirty && courseForm.description.$invalid || courseForm.audience.$dirty && courseForm.audience.$invalid || courseForm.participantsNumber.$dirty && courseForm.participantsNumber.$invalid || courseForm.place.$dirty && courseForm.place.$invalid';
@@ -40,26 +40,24 @@ angular.module('myApp.createcourse').controller('CreateCourseController', [
 		};
 
 		$scope.setCategory = function (id) {
-			$scope.courseInfo.idCategory = id;
+			setFieldsService.setCategory($scope, id);
 		};
 
 		$scope.setType = function (type) {
-			$scope.courseInfo.isInternal = type;
+			setFieldsService.setType($scope, type);
 		};
 
 		$scope.setLanguage = function (lang) {
-			$scope.courseInfo.language = lang;
+			setFieldsService.setType($scope, type);
 		};
 
 		$scope.setCoach = function(coach) {
-			$scope.temp.coach = coach;
-			$scope.courseInfo.coachLogin = coach.login;
+			setFieldsService.setCoach($scope, coach);
 		};
 
 		$scope.setAdminAsCoach = function() {
-			$scope.temp.coach.name = 'me';
-			$scope.courseInfo.coachLogin = userService.getUser().login;
-		}
+			setFieldsService.setAdminAsCoach($scope);
+		};
 
 		$scope.addCoach = function () {
 			var coachModalInstance = $modal.open({
