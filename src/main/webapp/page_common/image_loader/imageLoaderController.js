@@ -7,6 +7,7 @@ angular.module('myApp.imageLoaderApp')
 				$scope.temp.pictureHolder = result;
 				$scope.courseInfo.picture.data = result;
 				$scope.courseInfo.picture.link = "";
+				$scope.courseInfo.pictureLink = "";
 				$scope.courseInfo.picture.name = ($scope.file.webkitRelativePath || $scope.file.name);
 			});
 		};
