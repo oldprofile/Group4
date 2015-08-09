@@ -5,7 +5,7 @@ angular.module('myApp.courseinfo')
 		$scope.courseName = $routeParams.coursename;
 		$scope.subButtonText = "Subscribe";
 		$scope.isContentLoaded = false;
-		$scope.course = {};
+		$scope.course = {dateTime:[]};
 		$scope.courseCategory = "";
 
 		$scope.goTo = function (path) {

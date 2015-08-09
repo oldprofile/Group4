@@ -668,6 +668,29 @@ course-info
 	overflow: auto;
 }
 
+.scrollable-popover {
+	max-height: 120px;
+	overflow: auto;
+}
+
+/* courseinfo (Ann)*/
+
+.course-info-text-div{
+	margin: auto;
+	max-width: 700px;
+}
+.course-info-btn-div{
+	float: right;
+}
+
+.course-info-text-div .edit-btn {
+	position: absolute;
+	right: 0;
+	top: 0px;
+	background-color: transparent;
+
+}
+
 /*mycourses*/
 .no-courses{
 	width: 300px;
@@ -932,7 +955,7 @@ course-info
   padding-top: 0;
 }
 .card-layout-browse .form-control{
-  width: 200px;
+  width: 224px;
   margin: auto;
   border: 1px solid #ccc !important;
 }
@@ -1608,12 +1631,13 @@ table i{
 	padding-right: 20px;
 }
 
-.courseinfo-table {
-	padding-top: 20px;
+.courseinfo-div .fa {
+	margin-right: 5px;
 }
 
-.courseinfo-table > thead {
-	font-style: normal !important;
+.courseinfo-table {
+	width: 100%;
+	padding-top: 20px;
 }
 
 .courseinfo-photoicon {
@@ -1629,6 +1653,11 @@ table i{
 .glyphicon-calendar,
 .glyphicon-delete {
 	margin: 0;
+}
+
+#pEditDate,
+#pAddDate {
+	margin-top: 8px !important;
 }
 
 /* text*/
@@ -1667,7 +1696,7 @@ table i{
 	margin-top: 16px;
 	margin-bottom: 0 !important;
 	line-height: 58px;
-	width: 60%;
+	
 }
 
 .courseinfo-h5 {
@@ -1707,6 +1736,7 @@ table i{
 
 .courseinfo-btn {
 	margin: 3px;
+    width: 130px;
 }
 
 .courseinfo-btn:hover{
@@ -1718,6 +1748,31 @@ table i{
 .bg-color-gray {
 	background-color: #f9f9f9;
 }
+
+table.strikeable {
+	border-collapse: collapse;
+}
+
+.strikeable td.strike {
+	position: relative;
+	padding: 5px 10px;
+    color:
+    
+}
+.strikeable tr.strikeout {
+  color: rgba(0,0,0,0.3);
+}
+
+.strikeable tr.strikeout td.strike:before {
+	content: " ";
+	position: absolute;
+	top: 50%;
+	left: 0;
+	border-bottom: 1px solid rgba(0,0,0,0.15);
+	width: 100%;
+    
+}
+
 
 /* 
 -webkit-transition: all 250ms;

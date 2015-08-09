@@ -92,7 +92,7 @@
           return $q.reject(rejection);
         },
         response: function(response){
-          console.log(JSON.stringify(response));
+         
           if(response.status == 202 || response.status == 201 || response.status == 200){
             
             var toast = {type:"default", message: ""}
