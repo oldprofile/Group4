@@ -24,7 +24,6 @@ public class TrainingForCreation {
     private String description;
     private int idCategory;
     private int participantsNumber;
-    private String pictureData;
     private String pictureLink;
     private String audience;
     private String language;
@@ -85,20 +84,22 @@ public class TrainingForCreation {
 
         JSONArray jsonFiles = (JSONArray) json.get("files");
         filesLinks = new ArrayList<>();
-        for (Object object : jsonFiles) {
-            JSONObject jsonFile = (JSONObject)object;
-            String fileName = (String)jsonFile.get("name");
-            String fileData = (String)jsonFile.get("data");
-            String fileLink = (String)jsonFile.get("link");
-            if(fileData == null)
-                filesLinks.add(fileLink);
-            else {
-                fileLink = createFile(fileData,"\\files_storage\\", fileName);
-                filesLinks.add(fileLink);
+        if(jsonFiles != null) {
+            for (Object object : jsonFiles) {
+                JSONObject jsonFile = (JSONObject) object;
+                String fileName = (String) jsonFile.get("name");
+                String fileData = (String) jsonFile.get("data");
+                String fileLink = (String) jsonFile.get("link");
+                if (fileData == null)
+                    filesLinks.add(fileLink);
+                else {
+                    fileLink = createFile(fileData, "\\files_storage\\", fileName);
+                    filesLinks.add(fileLink);
+                }
             }
         }
 
-        coachLogin = (String)json.get("coach");
+        coachLogin = (String)json.get("coachLogin");
         isInternal = (Boolean)json.get("isInternal");
         audience = (String)json.get("audience");
         additional = (String)json.get("additional");
@@ -107,11 +108,16 @@ public class TrainingForCreation {
         description = (String)json.get("description");
         language = (String)json.get("language");
         idCategory = Integer.parseInt(String.valueOf(json.get("idCategory")));
-        pictureData = (String)json.get("pictureData");
-        if (pictureData == null)
-            pictureLink = (String)json.get("pictureLink");
-        else
-            pictureLink = createFile(pictureData, "\\image_storage\\", name);
+        JSONObject picture = (JSONObject)json.get("picture");
+        String pictureName = (String) picture.get("name");
+        String pictureData = (String) picture.get("data");
+        pictureLink = (String) picture.get("link");
+        String pictureType = pictureName.substring(pictureName.indexOf("."));
+        if (pictureData == null) {
+            pictureLink = (String) json.get("pictureLink");
+        } else {
+            pictureLink = createFile(pictureData, "\\image_storage\\", name + pictureType);
+        }
     }
 
     public String getName() {
@@ -200,14 +206,6 @@ public class TrainingForCreation {
 
     public void setPlaces(List<String> places) {
         this.places = places;
-    }
-
-    public String getPictureData() {
-        return pictureData;
-    }
-
-    public void setPictureData(String pictureData) {
-        this.pictureData = pictureData;
     }
 
     public String getAdditional() {

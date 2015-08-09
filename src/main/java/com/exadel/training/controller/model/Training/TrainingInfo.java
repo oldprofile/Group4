@@ -2,6 +2,7 @@ package com.exadel.training.controller.model.Training;
 
 import com.exadel.training.common.LanguageTraining;
 import com.exadel.training.common.StateTraining;
+import com.exadel.training.model.File;
 import com.exadel.training.model.Training;
 import com.exadel.training.controller.model.User.UserShort;
 import com.exadel.training.model.TrainingFeedback;
@@ -38,6 +39,7 @@ public class TrainingInfo {
     private String state;
     private List<UserShort> listeners;
     private List<UserShort> spareUsers;
+    private List<String> files;
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
 
 
@@ -65,9 +67,15 @@ public class TrainingInfo {
         name = training.getName();
         this.dateTimes = new ArrayList<>();
         this.places = new ArrayList<>();
+        this.files = new ArrayList<>();
         for(int i = 0; i < dateTimes.size(); ++i) {
             this.dateTimes.add(sdf.format(dateTimes.get(i)));
             this.places.add(places.get(i));
+        }
+        List<File> files = training.getFiles();
+        if (files != null) {
+            for (File file : files)
+                this.files.add(file.getLink());
         }
         lessonNumber = dateTimes.size();
         //coachName = training.getCoach().getName();
@@ -274,5 +282,13 @@ public class TrainingInfo {
 
     public void setRating(double rating) {
         this.rating = rating;
+    }
+
+    public List<String> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<String> files) {
+        this.files = files;
     }
 }

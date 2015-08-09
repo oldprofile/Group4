@@ -93,6 +93,7 @@ public class TrainingServiceImpl implements TrainingService {
     @Override
     public Training addTraining(TrainingForCreation trainingForCreation, String creatorLogin) throws NoSuchFieldException, ParseException {
 
+        Training mainTraining = new Training();
         List<Date> dateTimes = trainingForCreation.getDateTimes();
         User coach = userRepository.findUserByLogin(trainingForCreation.getCoachLogin());
         Category category = categoryRepository.findById(trainingForCreation.getIdCategory());
@@ -105,14 +106,7 @@ public class TrainingServiceImpl implements TrainingService {
             state = StateTraining.parseToInt("Draft");
             place = null;
         }
-        List<File> files = new ArrayList<>();
-        for(String fileLink: trainingForCreation.getFilesLinks()) {
-            File file = new File(fileLink);
-            fileRepository.saveAndFlush(file);
-            files.add(file);
-        }
 
-        Training mainTraining = new Training();
         mainTraining.fillTraining(trainingForCreation);
         mainTraining.setDateTime(dateTimes.get(0));
         mainTraining.setPlace(place);
@@ -120,8 +114,16 @@ public class TrainingServiceImpl implements TrainingService {
         mainTraining.setCategory(category);
         mainTraining.setState(state);
         mainTraining.setParent(0);
-        mainTraining.setFiles(files);
         trainingRepository.saveAndFlush(mainTraining);
+
+        List<File> files = new ArrayList<>();
+        for(String fileLink: trainingForCreation.getFilesLinks()) {
+            File file = new File(fileLink, mainTraining);
+            fileRepository.saveAndFlush(file);
+            files.add(file);
+        }
+        mainTraining.setFiles(files);
+
         List<Training> trainings = new ArrayList<>(dateTimes.size());
         for (int i = 0; i < dateTimes.size(); ++i) {
             Training newTraining = new Training();
