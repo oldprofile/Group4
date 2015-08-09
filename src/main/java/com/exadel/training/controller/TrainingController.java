@@ -1,5 +1,6 @@
 package com.exadel.training.controller;
 
+import com.dropbox.core.DbxException;
 import com.exadel.training.common.StateTraining;
 import com.exadel.training.controller.model.Training.*;
 import com.exadel.training.controller.model.User.UserShort;
@@ -177,7 +178,7 @@ public class TrainingController {
 
     @RequestMapping(value = "/create_training", method = RequestMethod.POST)
     public @ResponseBody
-    ShortTrainingInfo createTraining(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest ) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException, org.json.simple.parser.ParseException, ParseException {
+    ShortTrainingInfo createTraining(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest ) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException, org.json.simple.parser.ParseException, ParseException, DbxException {
         String header = httpServletRequest.getHeader("authorization");
         String userLogin = cryptService.decrypt(header);
 
@@ -192,6 +193,9 @@ public class TrainingController {
             }
             TrainingForCreation trainingForCreation = new TrainingForCreation(json);
             Training training = trainingService.addTraining(trainingForCreation, userLogin);
+            if(userService.whoIsUser(userLogin,1))
+                httpServletResponse.setStatus(207);
+            else httpServletResponse.setStatus(208);
             return new ShortTrainingInfo(training);
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);

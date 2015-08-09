@@ -2,10 +2,9 @@ package com.exadel.training.controller.model.Training;
 
 import com.exadel.training.common.LanguageTraining;
 import com.exadel.training.common.StateTraining;
-import com.exadel.training.model.File;
+import com.exadel.training.model.EntityFile;
 import com.exadel.training.model.Training;
 import com.exadel.training.controller.model.User.UserShort;
-import com.exadel.training.model.TrainingFeedback;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -72,9 +71,9 @@ public class TrainingInfo {
             this.dateTimes.add(sdf.format(dateTimes.get(i)));
             this.places.add(places.get(i));
         }
-        List<File> files = training.getFiles();
+        List<EntityFile> files = training.getFiles();
         if (files != null) {
-            for (File file : files)
+            for (EntityFile file : files)
                 this.files.add(new FileInfo(file));
         }
         lessonNumber = dateTimes.size();

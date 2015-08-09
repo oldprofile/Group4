@@ -137,7 +137,7 @@
 										<div class="scrollable-div scroll">
 											<table class="table table-striped courseinfo-table" ng-if="course.files.length != 0">
 												<tr ng-repeat="file in course.files">
-													<td>{{file.name}}</td>
+													<td><a href="{{file.link}}">{{file.name}}</a></td>
 												</tr>
 											</table>
 											<p ng-if="course.files.length == 0">No files uploaded yet</p>

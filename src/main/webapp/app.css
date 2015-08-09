@@ -451,15 +451,24 @@ button#createcourse,
 }
 .medium-navbar-nav .notification-number{
 
+
     border: none;
 	width: 16px;
 	height: 16px;
 
 	text-align: center;
 
+
+
 	color: white;
 	background-color: #55acee;
 	font-size: 11px;
+
+
+
+
+
+
     line-height: 16px;
 
 	border-radius: 16px;
@@ -897,7 +906,6 @@ course-info
 	overflow: visible;
 }
 
-
 .card-layout-browse .card {
 	padding: 10px 8px;
 	line-height: 32px;
@@ -1333,7 +1341,6 @@ textarea.form-control{
   
 }
 
-
 /* ACCORDION!!!!
    ***************************************/
 .vAccordion--default v-accordion {
@@ -1635,162 +1642,6 @@ table i{
 	margin-right: 5px;
 }
 
-.courseinfo-table {
-	width: 100%;
-	padding-top: 20px;
-}
-
-.courseinfo-photoicon {
-	float: left;
-	margin-left: 8px;
-}
-
-.courseinfo-div .glyphicon {
-    margin: 8px;
-    margin-left: 0;
-}
-
-.glyphicon-calendar,
-.glyphicon-delete {
-	margin: 0;
-}
-
-#pEditDate,
-#pAddDate {
-	margin-top: 8px !important;
-}
-
-/* text*/
-
-.float-left {
-	float: left;
-}
-
-.top-margin {
-	margin-top: 25px;
-}
-
-.margin-32 {
-	margin-top: 32px;
-}
-
-.big-margin {
-	margin-top: 40px;
-}
-
-.really-big-margin {
-	margin-top: 60px;
-}
-
-.courseinfo-header {
-	display: flex;
-	align-items: center;
-}
-
-.courseinfo-h1 {
-	font-family: 'Lato', serif;
-	font-size: 48px;
-	color: #4C4C4C;
-	font-weight: 500;
-	margin: 0;
-	margin-top: 16px;
-	margin-bottom: 0 !important;
-	line-height: 58px;
-	
-}
-
-.courseinfo-h5 {
-	font-family: 'Lato', serif;
-	font-size: 24px;
-	font-weight: 300 !important;
-	line-height: 1 !important;
-	margin-bottom: 5px !important;
-	letter-spacing: 0.02em;
-	color: #4C4C4C;
-}
-
-.courseinfo-label {
-	font-family: 'Lato', serif;
-	font-weight: 300 !important;
-	font-size: 16px !important;
-	margin-top: 3px !important;
-	line-height: 1 !important;
-	letter-spacing: 0.02em;
-	color: #4C4C4C;
-}
-
-.no-bottom-margin {
-	margin-bottom: 0 !important;
-}
-
-.courseinfo-description {
-	margin-left: 3px;
-	max-height: 300px;
-	font-size: 16px;
-	word-wrap: break-word;
-}
-
-.courseinfo-small {
-	font-size: 16px;
-}
-
-.courseinfo-btn {
-	margin: 3px;
-    width: 130px;
-}
-
-.courseinfo-btn:hover{
-	color: #8C8C8C;
-	background-color: white;
-}
-/* NEWS */
-
-.bg-color-gray {
-	background-color: #f9f9f9;
-}
-
-table.strikeable {
-	border-collapse: collapse;
-}
-
-.strikeable td.strike {
-	position: relative;
-	padding: 5px 10px;
-    color:
-    
-}
-.strikeable tr.strikeout {
-  color: rgba(0,0,0,0.3);
-}
-
-.strikeable tr.strikeout td.strike:before {
-	content: " ";
-	position: absolute;
-	top: 50%;
-	left: 0;
-	border-bottom: 1px solid rgba(0,0,0,0.15);
-	width: 100%;
-    
-}
-
-tr.rowWithSecret .hiddenCell {
-	visibility: hidden;
-}
-tr.rowWithSecret:hover .hiddenCell {
-	visibility: visible;
-}
-
-.hiddenCell .fa-times {
-	color: #ef3e36 !important;
-}
-
-.hiddenCell .fa-times:hover {
-	color: #a1161b !important;
-	cursor: pointer;
-}
-
-
-
 .login-card {
 	padding: 64px 0px;
 	width: 280px !important;
@@ -1889,7 +1740,7 @@ tr.rowWithSecret:hover .hiddenCell {
     margin-left: 0;
   }
 
-}
+	}
 
 
 

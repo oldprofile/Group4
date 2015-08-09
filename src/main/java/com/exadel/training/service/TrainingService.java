@@ -1,15 +1,17 @@
 package com.exadel.training.service;
 
 
+import com.dropbox.core.DbxException;
 import com.exadel.training.controller.model.Training.FileInfo;
 import com.exadel.training.controller.model.Training.LessonData;
 import com.exadel.training.controller.model.Training.TrainingForCreation;
 import com.exadel.training.model.Category;
-import com.exadel.training.model.File;
+import com.exadel.training.model.EntityFile;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
 import com.exadel.training.repository.impl.model.ShortParentTraining;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -19,7 +21,7 @@ import java.util.List;
  */
 public interface TrainingService {
 
-    Training addTraining(TrainingForCreation trainingForCreation, String creatorLogin) throws NoSuchFieldException, ParseException;
+    Training addTraining(TrainingForCreation trainingForCreation, String creatorLogin) throws NoSuchFieldException, ParseException, IOException, DbxException;
     Training editTraining(TrainingForCreation trainingForCreation, String creatorLogin) throws ParseException, NoSuchFieldException;
     Training approveEditTraining(TrainingForCreation trainingForCreation) throws NoSuchFieldException;
     Training approveCreateTraining(TrainingForCreation trainingForCreation) throws ParseException, NoSuchFieldException;
@@ -67,7 +69,7 @@ public interface TrainingService {
     List<ShortParentTraining> getShortTrainingsSortedByRating(String userLogin);
     List<ShortParentTraining> getShortTrainingsByState(String userLogin, List<Integer> states);
 
-    List<File> getFilesByTrainingName(String trainingName);
-    File addFile(FileInfo fileInfo);
-    File deleteFile(FileInfo fileInfo);
+    List<EntityFile> getFilesByTrainingName(String trainingName);
+    EntityFile addFile(FileInfo fileInfo);
+    EntityFile deleteFile(FileInfo fileInfo);
 }

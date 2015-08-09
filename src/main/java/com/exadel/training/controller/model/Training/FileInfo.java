@@ -1,6 +1,6 @@
 package com.exadel.training.controller.model.Training;
 
-import com.exadel.training.model.File;
+import com.exadel.training.model.EntityFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,15 +10,16 @@ import java.util.List;
  */
 public class FileInfo {
     private String name;
+    private String dropboxLink;
     private String link;
     private String trainingName;
 
     public FileInfo() {
     }
 
-    public FileInfo(File file) {
+    public FileInfo(EntityFile file) {
         name = file.getName();
-        link = file.getLink();
+        link = file.getDropboxLink();
     }
 
     public FileInfo(String name, String link) {
@@ -26,9 +27,9 @@ public class FileInfo {
         this.link = link;
     }
 
-    public static List<FileInfo> parseToList(List<File> files) {
+    public static List<FileInfo> parseToList(List<EntityFile> files) {
         List<FileInfo> fileInfos = new ArrayList<>();
-        for(File file: files)
+        for(EntityFile file: files)
             fileInfos.add(new FileInfo(file));
         return fileInfos;
     }
