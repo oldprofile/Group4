@@ -1,11 +1,12 @@
 package com.exadel.training.service.impl;
 
+import com.dropbox.core.DbxException;
 import com.exadel.training.common.StateTraining;
 import com.exadel.training.controller.model.Training.FileInfo;
 import com.exadel.training.controller.model.Training.LessonData;
 import com.exadel.training.controller.model.Training.TrainingForCreation;
 import com.exadel.training.model.Category;
-import com.exadel.training.model.File;
+import com.exadel.training.model.EntityFile;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
 import com.exadel.training.repository.impl.CategoryRepository;
@@ -14,10 +15,13 @@ import com.exadel.training.repository.impl.model.ShortParentTraining;
 import com.exadel.training.repository.impl.TrainingRepository;
 import com.exadel.training.repository.impl.UserRepository;
 import com.exadel.training.service.TrainingService;
+import com.exadel.training.service.statistics.DropboxIntegration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -39,6 +43,9 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Autowired
     private FileRepository fileRepository;
+
+    @Autowired
+    private DropboxIntegration dropboxIntegration;
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
@@ -92,7 +99,7 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Transactional
     @Override
-    public Training addTraining(TrainingForCreation trainingForCreation, String creatorLogin) throws NoSuchFieldException, ParseException {
+    public Training addTraining(TrainingForCreation trainingForCreation, String creatorLogin) throws NoSuchFieldException, ParseException, IOException, DbxException {
 
         Training mainTraining = new Training();
         List<Date> dateTimes = trainingForCreation.getDateTimes();
@@ -117,9 +124,12 @@ public class TrainingServiceImpl implements TrainingService {
         mainTraining.setParent(0);
         trainingRepository.saveAndFlush(mainTraining);
 
-        List<File> files = new ArrayList<>();
+        List<EntityFile> files = new ArrayList<>();
         for(FileInfo fileInfo: trainingForCreation.getFiles()) {
-            File file = new File(fileInfo, mainTraining);
+            String filePath = System.getProperty("user.dir") + "\\src\\main\\webapp" + fileInfo.getLink().replace("/", "\\");
+            String dropboxLink = dropboxIntegration.uploadFile(new File(filePath), fileInfo.getName());
+            EntityFile file = new EntityFile(fileInfo, mainTraining);
+            file.setDropboxLink(dropboxLink);
             fileRepository.saveAndFlush(file);
             files.add(file);
         }
@@ -421,21 +431,21 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
-    public List<File> getFilesByTrainingName(String trainingName) {
+    public List<EntityFile> getFilesByTrainingName(String trainingName) {
         return fileRepository.findFilesByTraining(trainingRepository.findByName(trainingName));
     }
 
     @Override
-    public File addFile(FileInfo fileInfo) {
+    public EntityFile addFile(FileInfo fileInfo) {
         Training training = trainingRepository.findByName(fileInfo.getTrainingName());
-        File newFile = new File(fileInfo, training);
+        EntityFile newFile = new EntityFile(fileInfo, training);
         fileRepository.saveAndFlush(newFile);
         return newFile;
     }
 
     @Override
-    public File deleteFile(FileInfo fileInfo) {
-        File file = fileRepository.findFilesByName(fileInfo.getName());
+    public EntityFile deleteFile(FileInfo fileInfo) {
+        EntityFile file = fileRepository.findFilesByName(fileInfo.getName());
         fileRepository.deleteFileByName(fileInfo.getName());
         return file;
     }

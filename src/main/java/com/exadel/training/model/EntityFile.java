@@ -13,7 +13,7 @@ import java.io.IOException;
  */
 @Entity
 @Table(name="files")
-public class File {
+public class EntityFile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,13 +23,15 @@ public class File {
 
     private String link;
 
+    private String dropboxLink;
+
     @ManyToOne(cascade = CascadeType.ALL)
     private Training training;
 
-    public File() {
+    public EntityFile() {
     }
 
-    public File(FileInfo fileInfo, Training training) {
+    public EntityFile(FileInfo fileInfo, Training training) {
         this.link = fileInfo.getLink();
         this.name = fileInfo.getName();
         this.training = training;
@@ -65,5 +67,13 @@ public class File {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDropboxLink() {
+        return dropboxLink;
+    }
+
+    public void setDropboxLink(String dropboxLink) {
+        this.dropboxLink = dropboxLink;
     }
 }

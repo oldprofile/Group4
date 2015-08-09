@@ -2,8 +2,6 @@ package com.exadel.training.model;
 
 import com.exadel.training.common.LanguageTraining;
 import com.exadel.training.controller.model.Training.TrainingForCreation;
-import com.exadel.training.repository.impl.TrainingRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -68,7 +66,7 @@ public class Training {
     private  List<TrainingFeedback> feedbacks;
 
     @OneToMany(mappedBy = "training")
-    private List<File> files;
+    private List<EntityFile> files;
 
     public Training() {
     }
@@ -279,11 +277,11 @@ public class Training {
         this.rating = rating;
     }
 
-    public List<File> getFiles() {
+    public List<EntityFile> getFiles() {
         return files;
     }
 
-    public void setFiles(List<File> files) {
+    public void setFiles(List<EntityFile> files) {
         this.files = files;
     }
 }
