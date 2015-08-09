@@ -11,7 +11,7 @@
 						<p class="info-small color-gray"><span class="courseinfo-label">Coach:</span>
 							{{course.coach.name}}</p>
 
-						<p class="courseinfo-h5 really-big-margin">Start date: {{ startDate | date:"dd MMMM"}}</p>
+						<p class="courseinfo-h5 really-big-margin">Start date: {{course.dateTime[0] | date:"dd MMMM"}}</p>
 
 						<p class="courseinfo-h5 color-gray small-space">{{course.dateTime.length}} lessons</p>
 
@@ -32,7 +32,7 @@
 					</div>
 
 					<div class="col-xs-12 col-sm-6 courseinfo-img-container margin-32">
-						<img class="courseinfo-img" ng-src="{{course.picture.link}}">
+						<img class="courseinfo-img" ng-src="{{course.pictureLink}}">
 
                    
                       

@@ -70,7 +70,7 @@ public class NewsServiceImpl implements NewsService {
 
         Long newNews = this.newsRepository.getCountOfUnreadNews();
 
-        if (state < newNews) {
+        if (state != newNews) {
             deferredResult.setResult(newNews);
         }
 
@@ -87,9 +87,11 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public void changeUnread(long id) {
+
+    public void changeUnread(long id) throws NoSuchFieldException {
         News news = newsRepository.findOne(id);
 
         news.setRead(true);
+        this.addToDeferredResult();
     }
 }

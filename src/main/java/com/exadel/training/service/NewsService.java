@@ -13,7 +13,7 @@ public interface NewsService {
 
     void insertNews(News news) throws NoSuchFieldException;
     void addToDeferredResult() throws NoSuchFieldException;
-    void changeUnread(long id);
+    void changeUnread(long id) throws NoSuchFieldException;
 
     Page<News> getNewsPage(Integer page);
     List<News> getLatestNews(Long id);
