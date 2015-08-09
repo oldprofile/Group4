@@ -13,6 +13,7 @@ public class FileInfo {
     private String dropboxLink;
     private String link;
     private String trainingName;
+    private String data;
 
     public FileInfo() {
     }
@@ -56,5 +57,13 @@ public class FileInfo {
 
     public void setTrainingName(String trainingName) {
         this.trainingName = trainingName;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
     }
 }
