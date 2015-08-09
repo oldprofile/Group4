@@ -2,9 +2,18 @@
 
 	<div class="col-xs-12 inputs-container scroll" scroll="dateTime">
 
+		<div class="row">
+			<div class="col-xs-12">
+				<button class="btn btn-default default-btn default-gray"
+						ng-click="addDate()">
+					<i class="fa fa-plus"></i>Add date
+				</button>
+			</div>
+		</div>
+
 		<!--Datetimepicker-->
 		<div class="row" ng-repeat="date in temp.tempDates track by $index">
-			<div class="col-xs-12">
+			<div class="col-xs-12 calendar">
 				<a class="dropdown-toggle" id="dropdown{{$index}}" role="button" data-toggle="dropdown">
 					<div class="input-group">
 						<input type="text" class="form-control calendar"
@@ -26,13 +35,6 @@
 				</ul>
 
 			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-xs-3">
-				<span type="button" class="btn btn-sm default-btn default-gray" ng-click="addDate()">Add date</span>
-			</div>
-			<div class="col-xs-9"></div>
 		</div>
 
 	</div>

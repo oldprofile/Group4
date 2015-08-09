@@ -11,8 +11,8 @@
 					</div>
 
 					<div ng-if="isAdmin" class="row">
-						<div class="col-xs-12 really-big-margin">
-							<p class="info-small color-gray float-left no-bottom-margin">Coach: </p>
+						<div class="col-xs-12">
+							<p class="info-small color-gray float-left">Coach: </p>
 
 							<div class="dropdown float-left">
 								<p class="info-small dropdown-toggle" id="coachPopover" type="button"
@@ -183,7 +183,7 @@
 									</span>
 
 									<div class="scrollable-div scroll">
-										<table class="table courseinfo-table" ng-if="courseInfo.files.length != 0">
+										<table class="table table-striped courseinfo-table" ng-if="courseInfo.files.length != 0">
 											<tr ng-repeat="file in courseInfo.files">
 												<td>{{file.name}}</td>
 											</tr>
