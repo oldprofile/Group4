@@ -32,9 +32,17 @@
       </div>
       
     </div>
+    <div class="no-courses"  ng-show="!allTrainings.length" >
+        <p>No {{categoryName}} Courses Available.<p>
+        <p style="margin-bottom:8px;">Want To Create One?<p>
+          
+        <button id="createcourse"class="btn btn-default accent-btn accent-blue" ng-click="createcourse()" aria-expanded="true"><i class="fa fa-pencil-square-o"></i><span>Create Course</span></button>
+      </div> 
     <div class="browse-content">
   
-        <div ng-repeat="t in allTrainings | filter: search | orderBy : sort">
+      
+      
+        <div class="repeat-animation" ng-repeat="t in allTrainings | filter: search | orderBy : sort">
             <div class="col-lg-3 col-md-4 col-sm-4 col-xs-6 card">
               <a class="block-link" ng-href="#/courseinfo/{{t.trainingName}}">
                 <div class="card-bg">

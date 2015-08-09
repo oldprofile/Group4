@@ -94,8 +94,7 @@
         response: function(response){
           console.log(JSON.stringify(response));
           if(response.status == 202 || response.status == 201 || response.status == 200){
-            console.log("!!!!!!!!!!!!");
-            console.log(JSON.stringify(response));
+            
             var toast = {type:"default", message: ""}
             switch (response.config.url){
                 

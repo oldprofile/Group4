@@ -16,7 +16,7 @@
                 <h4>Coach: {{t.trainingCoach}}</h4>
                 <div class="additional">
                   <h3>Start Date: {{t.dateTraining | date:'dd MMMM' }}</h3>
-                  <h4>1 Lesson</h4>
+                  <h4>{{t.lessonNumber}} Lesson</h4>
                   <a ng-href="#/courseinfo/{{t.trainingName}}">Continue To Info</a>
                 </div>  
               </div>
@@ -43,8 +43,8 @@
                   <h4>Coach: {{t.trainingCoach}}</h4>
                   <div class="additional">
                     <h3>Start Date: {{t.dateTraining | date:'dd MMMM' }}</h3>
-                    <h4>1 Lesson</h4>
-                    <a ng-href="#/courseinfo/{{t.trainingName}}">continue To Info</a>
+                    <h4>{{t.lessonNumber}} Lesson</h4>
+                    <a ng-href="#/courseinfo/{{t.trainingName}}">Сontinue To Info</a>
                   </div>  
                 </div> 
               </a>

@@ -50,7 +50,7 @@ public class AuthenticationController {
         try {
              user = userService.findUserByLoginAndPassword(login, password);
          }catch (NullPointerException e){
-             httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
+             httpServletResponse.setStatus(HttpServletResponse.SC_CONFLICT);
          }
 
          if(user != EMPTY) {
@@ -65,7 +65,7 @@ public class AuthenticationController {
                  e.printStackTrace();
              }
          } else {
-             httpServletResponse.setStatus(HttpServletResponse.SC_NO_CONTENT);
+             httpServletResponse.setStatus(HttpServletResponse.SC_CONFLICT);
              return new Authentication();
          }
 

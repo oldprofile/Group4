@@ -11,7 +11,7 @@ body{
 	height: 100vh !important;
 
 	color: rgba(0,0,0,0.6);
-	-webkit-font-smoothing: subpixel-antialiased;
+	-webkit-font-smoothing: subpixel-antialiased !important;
 }
 
 .form-control{
@@ -178,7 +178,7 @@ div#content-outer {
 
 	color:white;
 	background-color: transparent;
-	border: none;
+	border: none !important;
 	box-shadow: none;
 
 	border-bottom: 1px solid white;
@@ -334,9 +334,11 @@ my-app-footer{
 }
 
 .medium-navbar-nav>li>a{
-	color: rgba(0,0,0,0.6); !important;
-	font-weight: 300;
-	letter-spacing: 0.9px;
+	color: rgba(0,0,0,0.9) !important;
+    font-family: "Proxima Nova", Helvetica;
+	font-weight: 400;
+	letter-spacing: 1.1px;
+    font-size: 11px !important;
 	padding-top: 25px;
 	padding-bottom: 22px;
 	padding-right: 15px;
@@ -345,14 +347,36 @@ my-app-footer{
     background-color: transparent;
 
 }
+.medium-navbar-nav>.active>a{
+	background-color: transparent!important;
+	font-weight: 500;
+
+	color: rgba(0,0,0,0.9) !important;
+	height: 67px;
+	border-bottom: 2px solid rgba(0,0,0,0.9);
+	letter-spacing: 1.0px;
+	padding-left: 0px;
+	padding-right: 0px;
+	margin-left: 15px;
+	margin-right: 15px;
+	padding-top: 25px;
+	padding-bottom: 22px;
+
+}
 .medium-navbar-nav>li>a:hover{
 	color: rgba(0,0,0,0.9); !important;
 }
 .navbar-brand.medium-brand{
-
-	padding-top: 14px;
-	padding-bottom: 10px; /* approximetly */
-	margin-right: -10px;
+    
+    /*
+    group4
+    */
+    padding-left: 10px;
+  
+	padding-top: 10px;
+	padding-bottom: 20px; /* approximetly exadel -- 10*/
+	margin-right: -8px;
+    height: 64px;
 
 }
 .medium-navbar-nav>li>button{
@@ -382,25 +406,10 @@ button#createcourse,
 }
 
 .navbar-brand.medium-brand>img{
-	height:28px;
+	height:36px; /* exadel - 28 */
 }
 
-.medium-navbar-nav>.active>a{
-	background-color: transparent!important;
-	font-weight: 600;
 
-	color: rgba(0,0,0,0.9) !important;
-	height: 67px;
-	border-bottom: 2px solid rgba(0,0,0,0.9);
-	letter-spacing: 0.9px;
-	padding-left: 0px;
-	padding-right: 0px;
-	margin-left: 14px;
-	margin-right: 14px;
-	padding-top: 25px;
-	padding-bottom: 22px;
-
-}
 .medium-navbar-nav>.open>a{
 	background-color: white !important;
 }
@@ -442,23 +451,16 @@ button#createcourse,
 }
 .medium-navbar-nav .notification-number{
 
-
+    border: none;
 	width: 16px;
 	height: 16px;
 
 	text-align: center;
 
-
-
 	color: white;
 	background-color: #55acee;
-	border: 0.5px solid #55acee;
-
-
-
-
-
-
+	font-size: 11px;
+    line-height: 16px;
 
 	border-radius: 16px;
 
@@ -474,10 +476,12 @@ button#createcourse,
 .medium-navbar-nav .notification-number>span{
 	height: 16px;
 	width: 16px;
+/*
 	text-align: center;
 	position: relative;
 	top:-2px;
 	left: -0.5px;
+*/
 }
 
 .bounce-notif-add{
@@ -1715,67 +1719,127 @@ table i{
 	background-color: #f9f9f9;
 }
 
+/* 
+-webkit-transition: all 250ms;
+	-moz-transition: all 250ms;
+	transition: all 250ms;
+
+	-webkit-box-shadow:  0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+	box-shadow:  0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+
+.card-layout-mycourses .card .card-bg:hover{
+	-webkit-box-shadow:  0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+	box-shadow:  0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+
+	-webkit-transform: translateY(-5px);
+	-moz-transform: translateY(-5px);
+	transform: translateY(-5px);
+*/
+
 .login-card {
 	padding: 64px 0px;
-	width: 420px !important;
+	width: 280px !important;
 	background-color: white;
 	margin: auto;
 
 	-webkit-box-shadow:  0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 	box-shadow:  0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 	overflow: hidden;
+  
+  -webkit-transition: all 250ms;
+	-moz-transition: all 250ms;
+	transition: all 250ms;
+
+	
 }
+.login-card:hover{
+  -webkit-box-shadow:  0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+	box-shadow:  0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+
+	-webkit-transform: translateY(-5px);
+	-moz-transform: translateY(-5px);
+	transform: translateY(-5px);
+}
+
+.login-error-add,
+.login-error-remove{
+  -webkit-animation: shake 0.8s ease-out;
+	-moz-animation: shake 0.8s ease-out;
+	-o-animation: shake 0.8s ease-out;
+	animation: shake 0.8s ease-out;
+}
+
+
+.login-card>div{
+  padding: 0;
+}
+.login-card img{
+  width: 120px;
+  padding-bottom: 24px;
+    display: block;
+    float: none;
+     margin-left: auto;
+     margin-right: auto;
+  
+}
+
 .login-card form{
-	margin-left: 186px;
+  display: block;
+      float: none;
+     margin-left: auto;
+     margin-right: auto;
+	
 }
 .login-card .form-inline{
-
+  margin-left: 5px;
+  margin-top: 4px;
 
 }
 .login-card .form-inline input{
-	padding-bottom: 8px;
-	width: 144px;
+	padding-bottom: 10px;
+	
 	border-bottom: 1px solid rgba(0,0,0,0.15) !important;
 	border-radius: 0;
 	padding: 0;
 	margin-left: 12px;
-
-
+    height: 40px;
 }
+
+.login-card .form-inline label{
+  position: relative;
+  top:2px;
+}
+
 .login-card div.checkbox{
+    margin-left: 6px;
 	margin-top: 20px;
-	margin-left: 1px;
+	
 }
 .login-card div.checkbox span{
 	margin-left: 7px;
 }
 .login-card button{
-	margin-top: 16px;
-	margin-left: 26px;
-	width: 92px;
+	margin-top: 24px;
+	margin-left: auto;
+    margin-right: auto;
+  display: block;
+	width: 90px;
 }
-@media  (max-width: 768px){
-	.form-inline label{
-		display: none;
-	}
 
-	.login-card form{
-		margin: auto;
-
-	}
-	.login-card{
-		padding: 64px 40px;
-		width: 240px !important;
-	}
-	.checkbox{
-		margin-left: 12px !important;
-	}
-	.checkbox span{
-		margin-left: 0 !important;
-	}
-
+@media screen and (max-width: 768px) {
+	.login-card .form-inline label{
+      display: none;
+    }
+  .login-card .form-inline,
+  .login-card .form-inline input{
+    margin-left: 0;
+  }
 
 }
+
+
 
 #toasty .toast.toasty-theme-bootstrap {
   font-family: "Lato","Helvetica Neue", Helvetica, Arial, sans-serif !important;
@@ -1808,3 +1872,6 @@ table i{
   -webkit-box-shadow:  0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24) !important;
 	box-shadow:  0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24) !important;
 }
+
+
+

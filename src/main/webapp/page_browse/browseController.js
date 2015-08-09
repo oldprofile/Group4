@@ -1,6 +1,7 @@
 angular.module('myApp.browse')
 .controller('BrowseController',['$scope','$routeParams','browseService',"getCategories",'categoriesLocal', function($scope,$routeParams, browseService,getCategories,categoriesLocal){
    $scope.isContentLoaded = false;
+    $scope.allTrainings = [{object:"object"}];
     $scope.sort = "dateTraining";
   $scope.changeSort = function(sort){
     $scope.sort = sort;
