@@ -43,6 +43,7 @@ angular.module('myApp')
 			scope.courseInfo.additional = "";
 			scope.courseInfo.isRepeating = false;
 			scope.courseInfo.files = [];
+			scope.courseInfo.picture = {};
 
 			scope.courseInfo.userLogin = userService.getUser().login;
 
