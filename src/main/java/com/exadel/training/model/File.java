@@ -26,8 +26,9 @@ public class File {
     public File() {
     }
 
-    public File(String link) {
+    public File(String link, Training training) {
         this.link = link;
+        this.training = training;
     }
 
     public int getId() {

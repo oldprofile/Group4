@@ -1,5 +1,6 @@
 package com.exadel.training.controller;
 
+import com.exadel.training.common.StateTraining;
 import com.exadel.training.controller.model.Training.*;
 import com.exadel.training.controller.model.User.UserShort;
 import com.exadel.training.model.Training;
@@ -109,24 +110,15 @@ public class TrainingController {
 
     @RequestMapping(value = "/list_by_states/{states}", method = RequestMethod.GET)
     @ResponseBody
-    List<ShortTrainingInfo> listByStates(@PathVariable("states") List<Integer> states,
+    List<ShortParentTraining> listByStates(@PathVariable("states") List<Integer> states,
                      HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
 
         String header = httpServletRequest.getHeader("authorization");
         String userLogin = cryptService.decrypt(header);
 
         if (userService.checkUserByLogin(userLogin)) {
-            List<Training> list = trainingService.getTrainingsByStates(states);
-            List<ShortTrainingInfo> returnList = ShortTrainingInfo.parseList(list);
-            for (int i = 0; i < list.size(); ++i) {
-                List<User> listeners = list.get(i).getListeners();
-                for (User listener : listeners) {
-                    if (listener.getLogin().equals(userLogin))
-                        returnList.get(i).setIsSubscriber(true);
-                }
-                returnList.get(i).setIsSubscriber(false);
-            }
-            return returnList;
+            List<ShortParentTraining> list = trainingService.getShortTrainingsByState(userLogin, states);
+            return list;
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
