@@ -1,5 +1,6 @@
 package com.exadel.training.model;
 
+import com.exadel.training.controller.model.Training.FileInfo;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.SystemUtils;
 
@@ -18,6 +19,8 @@ public class File {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
+    private String name;
+
     private String link;
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -26,8 +29,9 @@ public class File {
     public File() {
     }
 
-    public File(String link, Training training) {
-        this.link = link;
+    public File(FileInfo fileInfo, Training training) {
+        this.link = fileInfo.getLink();
+        this.name = fileInfo.getName();
         this.training = training;
     }
 
@@ -53,5 +57,13 @@ public class File {
 
     public void setTraining(Training training) {
         this.training = training;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
