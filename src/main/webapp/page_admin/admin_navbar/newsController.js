@@ -33,7 +33,26 @@ angular.module('myApp.admin')
 					return news.userFeedbackGETModel.userLogin;
 				break;
 				default:
-					console.log('unknown type');
+					console.log('error, unknown type');
+			}
+		};
+
+		$scope.getLinkByType = function(type, news) {
+			switch(type) {
+				case 0:
+					return '#/courseinfo/' + news.training.trainingName;
+					break;
+				case 1:
+					return '#/profile/' + news.coachFeedbackGETModel.coachLogin;
+					break;
+				case 2:
+					return '#/courseinfo/' + news.trainingFeedbackGETModel.trainingName;
+					break;
+				case 3:
+					return '#/profile/' + news.userFeedbackGETModel.userLogin;
+					break;
+				default:
+					console.log('error, unknown type');
 			}
 		};
 

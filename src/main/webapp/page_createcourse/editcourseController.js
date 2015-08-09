@@ -63,7 +63,7 @@ angular.module('myApp.createcourse')
 				$scope.courseInfo.places[i] = $scope.temp.place;
 			}
 
-			$scope.courseInfo.coach = $scope.temp.coach.login;
+			$scope.courseInfo.coachLogin = $scope.temp.coach.login;
 
 			console.log($scope.courseInfo);
 			editcourse.editCourse($scope.courseInfo, $scope.isDraft, $scope.justEdit); //! ? some then()...?

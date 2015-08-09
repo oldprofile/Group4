@@ -1581,6 +1581,21 @@ table.strikeable {
 	width: 100%;
 }
 
+tr.rowWithSecret .hiddenCell {
+	visibility: hidden;
+}
+tr.rowWithSecret:hover .hiddenCell {
+	visibility: visible;
+}
+
+.hiddenCell .fa-times {
+	color: #ef3e36 !important;
+}
+
+.hiddenCell .fa-times:hover {
+	color: #a1161b !important;
+}
+
 .login-card {
 	padding: 64px 0px;
 	width: 420px !important;
