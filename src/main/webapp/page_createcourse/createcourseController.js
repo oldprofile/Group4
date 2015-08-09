@@ -5,6 +5,7 @@ angular.module('myApp.createcourse').controller('CreateCourseController', [
 	'createcourse',
 	'userService',
 	'initCourseService',
+	'setFieldsService',
 	function ($scope, $filter, $modal, createcourse, userService, initCourseService, setFieldsService) {
 		$scope.isEdited = false;
 		$scope.header = 'Create';
@@ -52,7 +53,7 @@ angular.module('myApp.createcourse').controller('CreateCourseController', [
 		};
 
 		$scope.setLanguage = function (lang) {
-			setFieldsService.setType($scope, type);
+			setFieldsService.setLanguage($scope, lang);
 		};
 
 		$scope.setCoach = function(coach) {

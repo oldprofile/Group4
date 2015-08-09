@@ -22,7 +22,7 @@ angular.module('myApp')
 		fieldsService.setAdminAsCoach = function (scope) {
 			scope.temp.coach.name = 'me';
 			scope.courseInfo.coachLogin = userService.getUser().login;
-		}
+		};
 
 		return fieldsService;
 	}]);
