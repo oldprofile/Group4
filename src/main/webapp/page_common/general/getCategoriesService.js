@@ -3,7 +3,7 @@ angular.module('myApp')
 		return function () {
 			return $http.get('http://localhost:8080/allCategories')
 				.success(function (data) {
-					data.unshift({id: 0, name: "All"});
+					data.unshift({id: 0, name: "All",pictureLink:"assets/category/all.jpeg"});
 					return data;
 				})
 				.error(function (err) {

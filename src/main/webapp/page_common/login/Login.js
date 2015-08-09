@@ -9,7 +9,9 @@
 }])
   
   
-  .controller('LoginController',['$scope','$http','loginService', 'authService', function ($scope, $http, loginService,authService){      
+  .controller('LoginController',['$scope','$http','loginService', 'authService', function ($scope, $http, loginService,authService){   
+    
+    $scope.loginError = false;
     $scope.submit = function() {
         
         
@@ -32,9 +34,10 @@
             
           
         }).error(function(error){
-            alert("login error from server");
-            $scope.$emit('hideLoginEvent',loginData);
-        })
+          
+            $scope.loginError = !$scope.loginError;
+            
+        });
         
         //Test Submit
         

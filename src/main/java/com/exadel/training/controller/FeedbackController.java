@@ -190,6 +190,7 @@ public class FeedbackController {
         User user = userService.findUserByLogin(trainingNameAndUserLogin.getLogin());
       try {
                 wrapperNotificationMail.send(coach.getEmail(), MessageFabric.getMessage(trainingNameAndUserLogin.getTrainingName(), user.getName(), user.getLogin()));
+//                wrapperNotificationSMS.send(coach.getNumberPhone(), MessageFabric.getMessage(trainingNameAndUserLogin.getTrainingName(), trainingNameAndUserLogin.getLogin()));
                 response.setStatus(HttpServletResponse.SC_OK);
             } catch (Exception e) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

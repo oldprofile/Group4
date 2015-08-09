@@ -45,13 +45,6 @@ public class TrainingController {
     @Qualifier("decoratorDESCryptServiceImpl")
     private CryptService cryptService;
 
-   /* public TrainingController() {
-        try {
-            cryptService = new DecoratorDESCryptServiceImpl(new DESCryptServiceImpl());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
@@ -110,16 +103,16 @@ public class TrainingController {
         }
     }
 
-    @RequestMapping(value = "/list_by_states/{states}", method = RequestMethod.GET)
+    @RequestMapping(value = "/list_by_states", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
-    List<ShortParentTraining> listByStates(@PathVariable("states") List<Integer> states,
+    List<ShortParentTraining> listByStates(@RequestBody StatesArray statesArray,
                      HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
 
         String header = httpServletRequest.getHeader("authorization");
         String userLogin = cryptService.decrypt(header);
 
         if (userService.checkUserByLogin(userLogin)) {
-            List<ShortParentTraining> list = trainingService.getShortTrainingsByState(userLogin, states);
+            List<ShortParentTraining> list = trainingService.getShortTrainingsByState(userLogin, statesArray.getStates());
             return list;
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -262,13 +255,13 @@ public class TrainingController {
 
     @RequestMapping(value = "/list_by_category/{categoryId}", method = RequestMethod.GET)
     public @ResponseBody
-    List <ShortTrainingInfo> trainingListByCategory(@PathVariable("categoryId") int categoryId,
+    List <ShortParentTraining> trainingListByCategory(@PathVariable("categoryId") int categoryId,
                           HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
         String header = httpServletRequest.getHeader("authorization");
         String userLogin = cryptService.decrypt(header);
         if(userService.checkUserByLogin(userLogin)) {
-            List<Training> trainings = trainingService.getValidTrainingsByCategoryId(categoryId);
-            return ShortTrainingInfo.parseList(trainings);
+            List<ShortParentTraining> trainings = trainingService.getValidTrainingsByCategoryId(categoryId, userLogin);
+            return trainings;
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return  null;
@@ -346,11 +339,11 @@ public class TrainingController {
     }
 
     @RequestMapping(value = "/change_date", method = RequestMethod.POST, consumes = "application/json")
-     public @ResponseBody
-     ShortTrainingInfo changeDate(@RequestBody LessonData lessonData, HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException, ParseException {
+    public @ResponseBody
+    ShortTrainingInfo changeDate(@RequestBody LessonData lessonData, HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException, ParseException {
         String header = httpServletRequest.getHeader("authorization");
         String userLogin = cryptService.decrypt(header);
-        if(userService.whoIsUser(userLogin, 1)) {
+        if (userService.whoIsUser(userLogin, 1)) {
             Training training = trainingService.changeLessonDate(lessonData);
             return new ShortTrainingInfo(training);
         } else {
@@ -398,7 +391,7 @@ public class TrainingController {
 
     @RequestMapping(value = "/add_file", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody
-    FileInfo addFile(@RequestBody FileInfo fileInfo, HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException, ParseException {
+    FileInfo addFile(@RequestBody FileInfo fileInfo, HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException, ParseException, DbxException {
         String header = httpServletRequest.getHeader("authorization");
         String userLogin = cryptService.decrypt(header);
         if(userService.isMyTraining(userLogin, fileInfo.getTrainingName())) {

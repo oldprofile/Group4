@@ -1,0 +1,71 @@
+
+
+
+
+@font-face {
+    font-family: 'Proxima Nova';
+    src: url('mark_simonson_-_proxima_nova_light-webfont.eot');
+    src: url('mark_simonson_-_proxima_nova_light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('mark_simonson_-_proxima_nova_light-webfont.woff2') format('woff2'),
+         url('mark_simonson_-_proxima_nova_light-webfont.woff') format('woff'),
+         url('mark_simonson_-_proxima_nova_light-webfont.ttf') format('truetype'),
+         url('mark_simonson_-_proxima_nova_light-webfont.svg#proxima_nova_ltlight') format('svg');
+    font-weight: 200;
+    font-style: normal;
+
+}
+@font-face {
+    font-family: 'Proxima Nova';
+    src: url('mark_simonson_-_proxima_nova_light-webfont.eot');
+    src: url('mark_simonson_-_proxima_nova_light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('mark_simonson_-_proxima_nova_light-webfont.woff2') format('woff2'),
+         url('mark_simonson_-_proxima_nova_light-webfont.woff') format('woff'),
+         url('mark_simonson_-_proxima_nova_light-webfont.ttf') format('truetype'),
+         url('mark_simonson_-_proxima_nova_light-webfont.svg#proxima_nova_ltlight') format('svg');
+    font-weight: 300;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'Proxima Nova';
+    src: url('mark_simonson_-_proxima_nova_regular-webfont.eot');
+    src: url('mark_simonson_-_proxima_nova_regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('mark_simonson_-_proxima_nova_regular-webfont.woff2') format('woff2'),
+         url('mark_simonson_-_proxima_nova_regular-webfont.woff') format('woff'),
+         url('mark_simonson_-_proxima_nova_regular-webfont.ttf') format('truetype'),
+         url('mark_simonson_-_proxima_nova_regular-webfont.svg#proxima_nova_rgregular') format('svg');
+    font-weight: 400;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'Proxima Nova';
+    src: url('mark_simonson_-_proxima_nova_semibold-webfont.eot');
+    src: url('mark_simonson_-_proxima_nova_semibold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('mark_simonson_-_proxima_nova_semibold-webfont.woff2') format('woff2'),
+         url('mark_simonson_-_proxima_nova_semibold-webfont.woff') format('woff'),
+         url('mark_simonson_-_proxima_nova_semibold-webfont.ttf') format('truetype'),
+         url('mark_simonson_-_proxima_nova_semibold-webfont.svg#Proxima Nova') format('svg');
+    font-weight: 500;
+    font-style: bold;
+
+}
+
+@font-face {
+    font-family: 'Proxima Nova';
+    src: url('mark_simonson_-_proxima_nova_bold-webfont.eot');
+    src: url('mark_simonson_-_proxima_nova_bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('mark_simonson_-_proxima_nova_bold-webfont.woff2') format('woff2'),
+         url('mark_simonson_-_proxima_nova_bold-webfont.woff') format('woff'),
+         url('mark_simonson_-_proxima_nova_bold-webfont.ttf') format('truetype'),
+         url('mark_simonson_-_proxima_nova_bold-webfont.svg#Proxima Nova') format('svg');
+    font-weight: 600;
+    font-style: normal;
+
+}
+
+
+
+

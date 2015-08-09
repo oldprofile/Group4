@@ -124,4 +124,12 @@ public class ShortParentTraining {
     public static void setSdf(SimpleDateFormat sdf) {
         ShortParentTraining.sdf = sdf;
     }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
 }

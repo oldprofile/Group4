@@ -126,4 +126,7 @@ public interface TrainingRepository extends JpaRepository<Training, Long> {
 
     @Query("select new ShortParentTraining(tr.name,count(tr.name),tr.pictureLink,tr.state,tr.coach,tr.rating,tr.dateTime,tr.place) from Training as tr group by tr.name order by tr.rating desc")
     List<ShortParentTraining> findShortTrainingsSortByRating();
+
+    @Query("select new ShortParentTraining(tr.name,count(tr.name),tr.pictureLink,tr.state,tr.coach,tr.rating,tr.dateTime,tr.place) from Training as tr inner join tr.category as cat where cat.id = ?1 group by tr.name order by tr.dateTime asc")
+    List<ShortParentTraining> findShortTrainingsByCategoryId(int categoryId);
 }

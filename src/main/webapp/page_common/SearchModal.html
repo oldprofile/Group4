@@ -5,7 +5,7 @@
   <div class="search-container">
         <div class="modal-header">
           
-          <input type="text" class="form-control" ng-model="searchQuery" ng-model-options="{debounce: { 'default': 250} }" ng-change="search()" placeholder="Search ...">
+          <input id="searchField" type="text" class="form-control" ng-model="searchQuery" ng-model-options="{debounce: { 'default': 250} }" ng-change="search()" placeholder="Search ..." autofocus >
           <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
           
            

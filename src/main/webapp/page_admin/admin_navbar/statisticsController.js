@@ -3,13 +3,14 @@
  */
 angular.module('myApp.admin')
     .controller('StatisticsController', ['$scope', '$http', '$filter', 'adminService', function($scope, $http, $filter, adminService) {
+        $scope.generating = false;
 		$scope.temp = {};
 		$scope.temp.tempDates = [];
 
 		$scope.userSelect = {};
 
-		$scope.statisticTrainType = ['Users list', 'Dates of pass', 'Count of pass (training)'];
-		$scope.statisticListType = ['Trainings list','Dates of pass', 'Dates of pass plus feedback', 'Count of pass (user)'];
+		$scope.statisticTrainType = ['List Of Users', 'Skip Dates', 'Skip Count'];
+		$scope.statisticListType = ['List Of Trainings','Skip Dates', 'Skip Dates & Feedbacks', 'Skip Count (user)'];
         $scope.currentType = true;
         $scope.currentType2 = false;
 
@@ -88,16 +89,16 @@ angular.module('myApp.admin')
 			console.log($scope.currentType);
 			console.log($scope.currentType2);
 			userselect.whoOrWhat = ""
-			if (userselect.type==='Users list'|| userselect.type ==='Trainings list'){
+			if (userselect.type==='List Of Users'|| userselect.type ==='List Of Trainings'){
 				userselect.type='1';
 			}
-			if (userselect.type==='Dates of pass'){
+			if (userselect.type==='Skip Dates'){
 				userselect.type='2';
 			}
-			if (userselect.type==='Count of pass (training)' || userselect.type === 'Dates of pass plus feedback'){
+			if (userselect.type==='Skip Count' || userselect.type === 'Skip Dates & Feedbacks'){
 				userselect.type = '3';
 			}
-			if (userselect.type==='Count of pass (user)'){
+			if (userselect.type==='Skip Count (user)'){
 				userselect.type='4';
 			}
 			if (userselect.type == null){
@@ -114,7 +115,10 @@ angular.module('myApp.admin')
 				alert ('')
 			}
 			console.log(userselect.type);
-			adminService.sendStatistics(userselect);
+            $scope.generating = true;
+			adminService.sendStatistics(userselect).then(function(response){
+              $scope.generating = false;
+            });
 			};
 
     }]);

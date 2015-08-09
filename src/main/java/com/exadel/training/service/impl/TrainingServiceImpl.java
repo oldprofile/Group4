@@ -16,6 +16,7 @@ import com.exadel.training.repository.impl.TrainingRepository;
 import com.exadel.training.repository.impl.UserRepository;
 import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.statistics.DropboxIntegration;
+import org.apache.commons.lang3.SystemUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -82,10 +83,6 @@ public class TrainingServiceImpl implements TrainingService {
         return  trainingRepository.findTrainingsByName(trainingName);
     }
 
-    @Override
-    public List<Training> getValidTrainingsByCategoryId(int id) {
-        return trainingRepository.findValidTrainingsByCategoryId(id);
-    }
 
     @Override
     public List<Training> getValidTrainings() {
@@ -127,6 +124,8 @@ public class TrainingServiceImpl implements TrainingService {
         List<EntityFile> files = new ArrayList<>();
         for(FileInfo fileInfo: trainingForCreation.getFiles()) {
             String filePath = System.getProperty("user.dir") + "\\src\\main\\webapp" + fileInfo.getLink().replace("/", "\\");
+            if(!SystemUtils.IS_OS_WINDOWS)
+                filePath = filePath.replace("\\", "/");
             String dropboxLink = dropboxIntegration.uploadFile(new File(filePath), fileInfo.getName());
             EntityFile file = new EntityFile(fileInfo, mainTraining);
             file.setDropboxLink(dropboxLink);
@@ -416,13 +415,29 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
-    public List<ShortParentTraining> getShortTrainingsByState(String userLogin, List<Integer> states) {
+    public List<ShortParentTraining> getShortTrainingsByState(String userLogin, List<Integer> states) throws NoSuchFieldException {
         List<ShortParentTraining> trainings = trainingRepository.findShortTrainingsSortByDate();
         List<ShortParentTraining> shortList = new ArrayList<>();
-        for(int i = 0; (i < trainings.size()) && (shortList.size() < MAX_SIZE); ++i) {
+        for(int i = 0; i < trainings.size(); ++i) {
             ShortParentTraining training = trainings.get(i);
-            String state = training.getState();
+            int state = StateTraining.parseToInt(training.getState());
             if(states.contains(state)) {
+                training.setIsSubscriber(userRepository.checkSubscribeToTraining(training.getTrainingName(), userLogin));
+                shortList.add(training);
+            }
+        }
+        return shortList;
+    }
+
+    @Override
+    public List<ShortParentTraining> getValidTrainingsByCategoryId(int id, String userLogin) {
+        //return trainingRepository.findValidTrainingsByCategoryId(id);
+        List<ShortParentTraining> trainings = trainingRepository.findShortTrainingsByCategoryId(id);
+        List<ShortParentTraining> shortList = new ArrayList<>();
+        for(int i = 0; i < trainings.size(); ++i) {
+            String state = trainings.get(i).getState();
+            if(state.equals("Ahead") || state.equals("InProcess")) {
+                ShortParentTraining training = trainings.get(i);
                 training.setIsSubscriber(userRepository.checkSubscribeToTraining(training.getTrainingName(), userLogin));
                 shortList.add(training);
             }
@@ -436,8 +451,13 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
-    public EntityFile addFile(FileInfo fileInfo) {
+    public EntityFile addFile(FileInfo fileInfo) throws IOException, DbxException {
         Training training = trainingRepository.findByName(fileInfo.getTrainingName());
+        String filePath = System.getProperty("user.dir") + "\\src\\main\\webapp" + fileInfo.getLink().replace("/", "\\");
+        fileInfo.setLink(TrainingForCreation.createFile(fileInfo.getData(),"\\files_storage\\" + fileInfo.getTrainingName(),fileInfo.getName()));
+        if(!SystemUtils.IS_OS_WINDOWS)
+            filePath = filePath.replace("\\", "/");
+        String dropboxLink = dropboxIntegration.uploadFile(new File(filePath), fileInfo.getName());
         EntityFile newFile = new EntityFile(fileInfo, training);
         fileRepository.saveAndFlush(newFile);
         return newFile;

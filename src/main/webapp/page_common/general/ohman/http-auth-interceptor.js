@@ -47,7 +47,7 @@
    * On 403 response (without 'ignoreAuthModule' option) discards the request
    * and broadcasts 'event:auth-forbidden'.
    */
-  .config(['$httpProvider', function($httpProvider) {
+  .config(['$httpProvider' , function($httpProvider ) {
     $httpProvider.interceptors.push(['$rootScope', '$q', 'httpBuffer', function($rootScope, $q, httpBuffer) {
       return {
         responseError: function(rejection) {
@@ -83,12 +83,68 @@
               case 500:
                 console.log("Server's Down -- 500");
                 $rootScope.$broadcast('event:server-down', rejection);
-                break;  
+                break; 
+              
+              
             }
           }
           // otherwise, default behaviour
           return $q.reject(rejection);
+        },
+        response: function(response){
+         
+          if(response.status == 202 || response.status == 201 || response.status == 200){
+            
+            var toast = {type:"default", message: ""}
+            switch (response.config.url){
+                
+                
+                case '/user_controller/join_training':
+                //subscribe success
+                toast.title = "Subscribe"
+                toast.message = "You Successfully Subscribed on " + response.config.data.nameTraining;
+                $rootScope.$broadcast("need-toast",toast);
+                
+                break;
+                case '/user_controller/leave_training':
+                //leave success
+                toast.title = "Leave"
+                toast.message = "You Successfully Left The " + response.config.data.nameTraining;
+                $rootScope.$broadcast("need-toast",toast);
+                
+                break;
+                
+                case "/feedbacks/request_user_feedback":
+                //requset success
+                toast.title = "Feedback"
+                toast.message = "Feedback on " + response.config.data.login + "is Successfully  requested!"
+                $rootScope.$broadcast("need-toast",toast);
+                
+                break;
+                
+                case "feedbacks/create_coach_feedback":
+                case "feedbacks/create_user_feedback":
+                
+                toast.title = "Feedback"
+                toast.message = "Feedback on " +response.config.data.userLogin + " is Successfully Sent!"
+                $rootScope.$broadcast("need-toast",toast);
+                
+                break;
+                
+                
+                case "feedbacks/create_training_feedback":
+                //create feedback
+                toast.title = "Feedback"
+                toast.message = "Feedback on " + response.config.data.trainingName + " is Successfully Sent!"
+                $rootScope.$broadcast("need-toast",toast);
+                
+                break;
+            }
+            
+          }
+          return response
         }
+        
       };
     }]);
   }]);

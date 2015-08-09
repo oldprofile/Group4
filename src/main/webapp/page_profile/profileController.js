@@ -1,6 +1,9 @@
 angular.module('myApp.profile')
 .controller('ProfileController',['$scope','userService','$routeParams','profileService','$modal','feedbacksService',"$location", function($scope,userService,$routeParams,profileService,$modal,feedbacksService,$location){
     $scope.isContentLoaded = false;
+    $scope.isAdmin = function(){
+      return userService.isAdmin();
+    }
     var userlogin;  
     $scope.studentFeedbacks = [];
     $scope.coachFeedbacks = [];    
@@ -8,6 +11,8 @@ angular.module('myApp.profile')
     $scope.coachArchive = [];
     $scope.studentArchive = [];
   
+  
+    
     $scope.goto = function(path){
       
       $location.path(path);
@@ -17,6 +22,10 @@ angular.module('myApp.profile')
         userlogin = userService.getUser().login;
     } else {
         userlogin = $routeParams.userLogin;
+    }
+  
+    $scope.isMe = function(){
+      return userlogin === userService.getUser().login;
     }
   
     $scope.isCanLeaveCoachFeedback = false;
@@ -187,6 +196,7 @@ angular.module('myApp.profile')
     requestModalInstance.result.then(function (data) {
          ////alert(JSON.stringify(data));
       //sending new settings
+      
          for(var i = 0; i < data.length ; i++){
            feedbacksService.requestFeedback(data[i]).success(function(data){
              // successfull request
@@ -203,9 +213,11 @@ angular.module('myApp.profile')
     
     
 }])
-.controller('StudentFeedbackController',['$scope', '$modalInstance','user','feedback','userService',function($scope,$modalInstance,user,feedback,userService){
+.controller('StudentFeedbackController',['$scope', '$modalInstance','user','feedback','userService','feedbacksService',function($scope,$modalInstance,user,feedback,userService,feedbacksService){
   $scope.user = user;
   $scope.isEnglish = false;
+  
+  
   
   if(feedback === undefined){
     //alert("Creating feedback");
@@ -245,8 +257,29 @@ angular.module('myApp.profile')
   $scope.cancel = function () {
     $modalInstance.dismiss('cancel');
   };
+  
+  
+  $scope.canDelete = function(){
+    if(!$scope.isView){
+      return false;
+    }
+    
+    if (userService.isAdmin()){
+      return true;
+    }
+    return feedback.feedbackerLogin === userService.getUser().login; 
+  }
+  
+  
+  
+  $scope.deleteFeedback = function(){
+    
+    feedbacksService.deleteFeedback();
+    $scope.cancel();
+    
+  }
 }])
-.controller('CoachFeedbackController',['$scope', '$modalInstance','user','feedback','userService',function($scope,$modalInstance,user,feedback,userService){
+.controller('CoachFeedbackController',['$scope', '$modalInstance','user','feedback','userService','feedbacksService',function($scope,$modalInstance,user,feedback,userService,feedbacksService){
   $scope.user = user;
   
   
@@ -292,6 +325,25 @@ angular.module('myApp.profile')
   $scope.cancel = function () {
     $modalInstance.dismiss('cancel');
   };
+  
+  $scope.canDelete = function(){
+    if(!$scope.isView){
+      return false;
+    }
+    if (userService.isAdmin()){
+      return true;
+    }
+    
+    return feedback.feedbackerLogin === userService.getUser().login; 
+  }
+  
+  
+  $scope.deleteFeedback = function(){
+    
+    feedbacksService.deleteFeedback();
+    $scope.cancel();
+    
+  }
 }])
 
 

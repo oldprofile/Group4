@@ -10,7 +10,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>My AngularJS App</title>
+	<title>Group 4 Project</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -19,6 +19,7 @@
 	<link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
 	<link rel=stylesheet href="assets/PFRegalDisplayProFont/PFRegalDisplayPro.css">
 	<link rel="stylesheet" href="assets/SanFranciscoFont/usesf.css">
+  <link rel="stylesheet" href="assets/ProximaNova/stylesheet.css">
 	<link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
 
 	<link rel="stylesheet" href="page_common/login/LoginCardStyle.css">
@@ -40,45 +41,74 @@
 
 	<link rel="stylesheet" href="app.css">
 	<link rel="stylesheet" href="ann.css">
+    <link rel="stylesheet" href="page_common/datepicker/datepicker1.css">
+    <link rel="stylesheet" href="page_common/datepicker/onceonly.css">
+    <link rel="stylesheet" href="page_common/datepicker/repeating.css">
+  <link rel="stylesheet" href="page_common/animate.css">
+    
+    <link rel="stylesheet" href="page_admin/admin.css">
+    <link rel="stylesheet" href="page_admin/admin_navbar/approve.css">
+    <link rel="stylesheet" href="page_admin/admin_navbar/statistics.css">
+    <link rel="stylesheet" href="components/angular-bootstrap-datetimepicker/src/css/datetimepicker.css"/>
+    <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+    
+  <link rel="stylesheet" href="page_createcourse/createcourse.css">
+  <link rel="stylesheet" href="bower_components/angular-tablesort/tablesort.css">
+  
 	<link rel="stylesheet" href="page_createcourse/createcourse.css">
+  <link rel="stylesheet" href="bower_components/angular-toasty/dist/angular-toasty.css">
+  <link rel="stylesheet" href="app.css">
+  
+  <link rel="stylesheet" href="page_common/appDos.css">
+  
 
 </head>
+  
 
 
 <body ng-app="myApp" class="auth-class waiting-for-angular-login">
+  
+
 
 <!--    <div id="initializing-panel clearfix"></div>-->
 <div id="content-outer">
 
 	<header-menu ng-show="isLogged"></header-menu>
 
-	<div ng-view class="ng-view-content container"></div>
+	<div ng-view class="ng-view-content container view-login"></div>
 
+        <toasty></toasty>
 	<my-app-footer ng-show="isLogged"></my-app-footer>
 
 
 </div>
+  
+  
+
 
 
 <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
   -->
-<!-- ###BOWER### -->
-
-<script src="bower_components/jquery/dist/jquery.min.js"></script>
-<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-<script src="bower_components/angular/angular.js"></script>
-<script src="bower_components/angular-route/angular-route.js"></script>
-<script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
-<script src="page_common/ui-bootstrap-tpls.js"></script>
-<script src="page_common/general/ohman/http-auth-interceptor.js"></script>
-<script src="bower_components/moment/moment.js"></script>
-
-<script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
-
-<script src="components/angular-bootstrap-datetimepicker/src/js/datetimepicker.js"></script>
-<script src="bower_components/angular-animate/angular-animate.js"></script>
-
+    <!-- ###BOWER### --> 
+    
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+    <script src="page_common/ui-bootstrap-tpls.js"></script>
+    <script src="page_common/general/ohman/http-auth-interceptor.js"></script>
+    <script src="bower_components/moment/moment.js"></script>
+    
+    <script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
+    
+    <script src="components/angular-bootstrap-datetimepicker/src/js/datetimepicker.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-tablesort/js/angular-tablesort.js"></script>
+  <script src="bower_components/angular-toasty/dist/angular-toasty.js"></script>
+  
+  
 
 <!-- ###Pages Scripts### -->
 <script src="app.js"></script>
@@ -103,6 +133,7 @@
 <script src="page_courseinfo/courseinfo.js"></script>
 <script src="page_common/datepicker/datepicker.js"></script>
 <script src="page_common/image_loader/imageLoader.js"></script>
+  
 
 
 <!-- ###Pages Controllers### -->

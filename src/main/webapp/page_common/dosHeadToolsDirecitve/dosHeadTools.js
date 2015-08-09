@@ -14,6 +14,8 @@ angular.module('dosHeadToolModule',[])
       controller: "DosHeadToolController",    
       link: function(scope,elem,attrs,ngModelController){
           
+          
+        
           ngModelController.$formatters.push(function(modelValue){
               if (modelValue === undefined){
                   return {
@@ -76,8 +78,12 @@ angular.module('dosHeadToolModule',[])
           });
           
           scope.$watch('[radioModel,search]', function(){
-              ngModelController.$setViewValue({qType:scope.radioModel, search: scope.search});
+              ngModelController.$setViewValue({qType:scope.radioModel, search: scope.search})
+              
           });
+        
+        
+        
           
       }
           
