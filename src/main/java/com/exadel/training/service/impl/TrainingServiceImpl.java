@@ -421,6 +421,26 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
+    public List<File> getFilesByTrainingName(String trainingName) {
+        return fileRepository.findFilesByTraining(trainingRepository.findByName(trainingName));
+    }
+
+    @Override
+    public File addFile(FileInfo fileInfo) {
+        Training training = trainingRepository.findByName(fileInfo.getTrainingName());
+        File newFile = new File(fileInfo, training);
+        fileRepository.saveAndFlush(newFile);
+        return newFile;
+    }
+
+    @Override
+    public File deleteFile(FileInfo fileInfo) {
+        File file = fileRepository.findFilesByName(fileInfo.getName());
+        fileRepository.deleteFileByName(fileInfo.getName());
+        return file;
+    }
+
+    @Override
     public List<Date> getDatesByTrainingNameBetweenDates(String trainingName, Date firstDate, Date secondDate) {
         return trainingRepository.findDatesByTrainingNameBetweenDates(trainingName, firstDate, secondDate);
     }

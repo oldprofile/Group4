@@ -1,9 +1,11 @@
 package com.exadel.training.service;
 
 
+import com.exadel.training.controller.model.Training.FileInfo;
 import com.exadel.training.controller.model.Training.LessonData;
 import com.exadel.training.controller.model.Training.TrainingForCreation;
 import com.exadel.training.model.Category;
+import com.exadel.training.model.File;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
 import com.exadel.training.repository.impl.model.ShortParentTraining;
@@ -65,4 +67,7 @@ public interface TrainingService {
     List<ShortParentTraining> getShortTrainingsSortedByRating(String userLogin);
     List<ShortParentTraining> getShortTrainingsByState(String userLogin, List<Integer> states);
 
+    List<File> getFilesByTrainingName(String trainingName);
+    File addFile(FileInfo fileInfo);
+    File deleteFile(FileInfo fileInfo);
 }

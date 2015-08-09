@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -391,82 +392,42 @@ public class TrainingController {
         return lessons;
     }
 
-    //////////////////////////TESTS
-
-
-
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
-    @ResponseBody
-    List<ShortTrainingInfo> trainingTest() throws ParseException, NoSuchFieldException, IOException {
-        String trainingName = "Dark Knight";
-
-        LessonsArray lessons = new LessonsArray();
-        lessons.setDateTimes(TrainingInfo.parseDates(trainingService.getDatesByTrainingName(trainingName)));
-        lessons.setPlaces(trainingService.getPlacesByTrainingName(trainingName));
-
-        return ShortTrainingInfo.parseList(null);
-    }
-
-    @RequestMapping(value = "/test_category_name", method = RequestMethod.GET)
+    @RequestMapping(value = "/add_file", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody
-    List <ShortTrainingInfo> testTrainingListByCategory() throws NoSuchFieldException {
-        List<Training> trainings = trainingService.getValidTrainingsByCategoryId(1);
-        return ShortTrainingInfo.parseList(trainings);
-    }
-
-    @RequestMapping(value = "/test_create_training", method = RequestMethod.GET)
-    public @ResponseBody
-    ShortTrainingInfo testCreateTraining() throws NoSuchFieldException {
-        TrainingForCreation trainingForCreation = new TrainingForCreation();
-        trainingForCreation.setName("training");
-        trainingForCreation.setLanguage("English");
-        trainingForCreation.setAudience("");
-        ArrayList<String> list = new ArrayList<>();
-        list.add("1-1-2015 23:23:23");
-        list.add("2-2-2015 23:23:23");
-        //trainingForCreation.setDateTimes(list);
-        trainingForCreation.setDescription("training");
-        trainingForCreation.setIdCategory(1);
-        trainingForCreation.setIsInternal(true);
-        trainingForCreation.setParticipantsNumber(10);
-        Training training = null;
-        try {
-            training = trainingService.addTraining(trainingForCreation, "1");
-        } catch (NoSuchFieldException | ParseException e) {
-            e.printStackTrace();
+    FileInfo addFile(@RequestBody FileInfo fileInfo, HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException, ParseException {
+        String header = httpServletRequest.getHeader("authorization");
+        String userLogin = cryptService.decrypt(header);
+        if(userService.isMyTraining(userLogin, fileInfo.getTrainingName())) {
+            return new FileInfo(trainingService.addFile(fileInfo));
+        } else {
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return null;
         }
-        return new ShortTrainingInfo(training);
     }
 
-    @RequestMapping(value = "/test_training_info", method = RequestMethod.GET/*consumes = "application/json"*/)
+    @RequestMapping(value = "/delete_file", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody
-    TrainingInfo testPostTrainingInfo () throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
-        String trainingName = "angular";
-        String userLogin = "1";
-        Training training = trainingService.getTrainingByName(trainingName);
-        TrainingInfo trainingInfo = new TrainingInfo(training,
-                trainingService.getDatesByTrainingName(trainingName), trainingService.getPlacesByTrainingName(trainingName));
-        trainingInfo.setIsSubscriber(trainingService.getTrainingByNameAndUserLogin(trainingName, userLogin) != null);
-        trainingInfo.setIsCoach(userLogin.equals(training.getCoach().getLogin()));
-        //trainingInfo.setIsCoach(userLogin.equals(trainingInfo.getCoachName()));
-        trainingInfo.setFeedbackAvailability(!feedbackService.hasFeedback(userLogin, trainingName));
-        trainingInfo.setListeners(UserShort.parseUserShortList(trainingService.getUsersByTrainingName(trainingName)));
-        trainingInfo.setSpareUsers(UserShort.parseUserShortList(trainingService.getSpareUsersByTrainingName(trainingName)));
-        return trainingInfo;
+    FileInfo deleteFile(@RequestBody FileInfo fileInfo, HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException, ParseException {
+        String header = httpServletRequest.getHeader("authorization");
+        String userLogin = cryptService.decrypt(header);
+        if(userService.isMyTraining(userLogin, fileInfo.getTrainingName())) {
+            return new FileInfo(trainingService.deleteFile(fileInfo));
+        } else {
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return null;
+        }
     }
 
-    @RequestMapping(value = "/test_trainings_coach", method = RequestMethod.GET/*consumes = "application/json"*/)
+    @RequestMapping(value = "/files_info/{trainingName}", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody
-    List<ShortTrainingInfo> testTrainingByCoach () throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
-        String userLogin = "1";
-        List<Training> list = trainingService.getTrainingsByCoach(userLogin);
-        return ShortTrainingInfo.parseList(list);
-    }
-
-    @RequestMapping(value = "/test_trainings_number", method = RequestMethod.GET/*consumes = "application/json"*/)
-    public @ResponseBody
-    Integer testTrainingNumber () throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
-        Integer number = trainingService.getNextTrainingNumber("batman forever");
-        return number;
+    List<FileInfo> getFiles(@PathVariable("trainingName") String trainingName, HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException, ParseException {
+        String header = httpServletRequest.getHeader("authorization");
+        String userLogin = cryptService.decrypt(header);
+        if(userService.isMyTraining(userLogin, trainingName)) {
+            return FileInfo.parseToList(trainingService.getFilesByTrainingName(trainingName));
+        } else {
+            httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return null;
+        }
     }
 }
