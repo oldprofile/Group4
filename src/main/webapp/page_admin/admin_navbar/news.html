@@ -2,8 +2,8 @@
   <table class="table">
     <thead>
     </thead>
-    <tr ng-repeat="news in newsList track by $index">
-      <td ng-class="{'bg-color-gray': !news.isRead}"><a href="#/profile/{{news.login}}">{{news.name}}</a> {{news.description}} <a href="">{{news.training.trainingName}}</a></td>
+    <tr ng-repeat="news in newsList track by $index" class="link-cursor" ng-click="setAsRead(news.id)">
+      <td ng-class="{'bg-color-gray': !news.isRead}"><a href="#/profile/{{news.login}}">{{news.name}}</a> {{news.description}} <a href="">{{getNewsByType(news.type, news)}}</a></td>
     </tr>
   </table>
   
