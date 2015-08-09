@@ -66,7 +66,7 @@ angular.module('myApp.createcourse')
 		};
 
 		$scope.setLanguage = function (lang) {
-			setFieldsService.setType($scope, type);
+			setFieldsService.setLanguage($scope, lang);
 		};
 
 		$scope.setCoach = function(coach) {
