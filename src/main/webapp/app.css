@@ -1252,23 +1252,7 @@ textarea.form-control{
 	border-bottom-color: #8C8C8C;
 }
 
-/* courseinfo (Ann)*/
 
-.course-info-text-div{
-	margin: auto;
-	max-width: 700px;
-}
-.course-info-btn-div{
-	float: right;
-}
-
-.course-info-text-div .edit-btn {
-	position: absolute;
-	right: 0;
-	top: 0px;
-	background-color: transparent;
-
-}
 
 /* profile */
 .profile-info{
@@ -1591,56 +1575,7 @@ table i{
 }
 
 
-/* COURSE INFO*/
 
-.courseinfo-div {
-	font-weight: 300 !important;
-	color: #4C4C4C;
-	margin: auto;
-	max-width: 900px;
-}
-
-.courseinfo-div v-pane-header {
-	font-size: 14px !important;
-}
-
-.courseinfo-img-container {
-	min-height: 300px;
-	max-height: 600px;
-	height: auto;
-	max-width: 90%;
-	float: left;
-}
-
-.flex-container {
-	display: flex;
-	align-items: center;
-}
-
-.courseinfo-img-container.flex-container {
-	width: 100% !important;
-}
-
-#imgContainer90 {
-	width: auto;
-}
-
-.courseinfo-img {
-	margin-left: auto;
-	margin-right: auto;
-	height: auto;
-	max-width: 100%;
-	max-height: 300px;
-}
-
-.courseinfo-div v-pane-content {
-	padding-left: 20px;
-	padding-right: 20px;
-}
-
-.courseinfo-div .fa {
-	margin-right: 5px;
-}
 
 .login-card {
 	padding: 64px 0px;
