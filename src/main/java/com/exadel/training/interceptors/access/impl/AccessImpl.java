@@ -98,6 +98,9 @@ public class AccessImpl implements Access{
         admin.add(TRAINING_CONTROLLER + "/delete_date");
         admin.add(TRAINING_CONTROLLER + "/add_date");
         admin.add(TRAINING_CONTROLLER + "/listeners");
+        admin.add(TRAINING_CONTROLLER + "/add_file");
+        admin.add(TRAINING_CONTROLLER + "/delete_file");
+        admin.add(TRAINING_CONTROLLER + "/files_info");
 
         admin.add(AUTHENTIFICATION_CONTROLLER + "/logout");
         admin.add(AUTHENTIFICATION_CONTROLLER + "/log_password");
