@@ -103,7 +103,7 @@ public class TrainingController {
         }
     }
 
-    @RequestMapping(value = "/list_by_states/", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/list_by_states", method = RequestMethod.POST, consumes = "application/json")
     @ResponseBody
     List<ShortParentTraining> listByStates(@RequestBody StatesArray statesArray,
                      HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException {
