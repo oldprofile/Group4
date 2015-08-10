@@ -11,7 +11,7 @@ angular.module('myApp.browse')
     switch(sort){
         case "dateTraining":
         return "Date";
-        case "rating":
+        case "-rating":
         return "Rating";
         case "trainingName":
         return "A to Z";
