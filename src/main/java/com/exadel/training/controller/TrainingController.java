@@ -389,12 +389,15 @@ public class TrainingController {
         return lessons;
     }
 
-    @RequestMapping(value = "/add_files", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/add_files", method = RequestMethod.POST)
     public @ResponseBody
-    List<FileInfo> addFile(@RequestBody FilesInfoArray filesInfoArray, HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException, ParseException, DbxException {
+    List<FileInfo> addFile(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException, ParseException, DbxException, org.json.simple.parser.ParseException {
         String header = httpServletRequest.getHeader("authorization");
         String userLogin = cryptService.decrypt(header);
-        if(userService.isMyTraining(userLogin, filesInfoArray.getTrainingName())) {
+        String data = httpServletRequest.getParameter("courseInfo");
+        JSONParser parser = new JSONParser();
+        JSONObject json = (JSONObject) parser.parse(data.trim());
+       /* if(userService.isMyTraining(userLogin, filesInfoArray.getTrainingName())) {
             List<FileInfo> list = filesInfoArray.getFiles();
             for(FileInfo fileInfo: list)
                 trainingService.addFile(fileInfo);
@@ -402,7 +405,8 @@ public class TrainingController {
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
-        }
+        }*/
+        return null;
     }
 
     @RequestMapping(value = "/delete_file", method = RequestMethod.POST, consumes = "application/json")
@@ -418,7 +422,7 @@ public class TrainingController {
         }
     }
 
-    @RequestMapping(value = "/files_info/{trainingName}", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/files_info/{trainingName}", method = RequestMethod.GET, consumes = "application/json")
     public @ResponseBody
     List<FileInfo> getFiles(@PathVariable("trainingName") String trainingName, HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException, ParseException {
         String header = httpServletRequest.getHeader("authorization");

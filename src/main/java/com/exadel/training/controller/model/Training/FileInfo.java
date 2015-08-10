@@ -10,7 +10,6 @@ import java.util.List;
  */
 public class FileInfo {
     private String name;
-    private String dropboxLink;
     private String link;
     private String trainingName;
     private String data;
