@@ -1,6 +1,6 @@
 <div class="row courseinfo-div">
 	<div class="col-xs-12">
-		<form class="form-course form-horizontal" name="courseForm" novalidate>
+		<form class="form-horizontal" name="courseForm" novalidate>
 			<div class="row">
 
 				<div class="col-xs-12 col-sm-6">
@@ -213,10 +213,10 @@
 			<div class="row">
 				<div class="col-xs-12">
 
-					<input ng-if="!isAdmin && !isEdited" ng-disabled="{{disabled}}" type="submit" ng-click="saveData()" class="btn accent-btn accent-green submit-btn" value="Create course!">
-					<input ng-if="isAdmin && !isEdited" ng-disabled="{{disabled}}" type="submit" ng-click="saveData()" class="btn accent-btn accent-green submit-btn" value="Create course!">
-					<input ng-if="isAdmin && isEdited" ng-disabled="{{disabled}}" type="submit" ng-click="editCourse()" class="btn accent-btn accent-green submit-btn" value="Approve course">
-					<input ng-if="!isAdmin && isEdited" ng-disabled="{{disabled}}"  type="submit" ng-click="editCourse()" class="btn accent-btn accent-blue submit-btn" value="Edit course">
+					<input ng-if="!isAdmin && !isEdited" ng-disabled="{{disabled}}" type="submit" ng-click="saveData()" class="btn accent-btn accent-green submit-btn" value="Create Course!">
+					<input ng-if="isAdmin && !isEdited" ng-disabled="{{disabled}}" type="submit" ng-click="saveData()" class="btn accent-btn accent-green submit-btn" value="Create Course!">
+					<input ng-if="isAdmin && isEdited" ng-disabled="{{disabled}}" type="submit" ng-click="editCourse()" class="btn accent-btn accent-green submit-btn" value="Approve Course">
+					<input ng-if="!isAdmin && isEdited" ng-disabled="{{disabled}}"  type="submit" ng-click="editCourse()" class="btn accent-btn accent-blue submit-btn" value="Edit Course">
 
 				</div>
 			</div>

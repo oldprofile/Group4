@@ -60,7 +60,7 @@ angular.module('myApp.courseinfo')
 		courseInfoService.addFiles = function(filesData, trainingName) {
 			var fd = new FormData();
 			fd.append('files', JSON.stringify(filesData));
-			fd.append('trainingName', JSON.stringify(trainingName));
+			fd.append('trainingName', trainingName);
 
 			return $http.post('/training_controller/add_files', fd, {
 				headers: {
