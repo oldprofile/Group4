@@ -140,6 +140,10 @@ public class AccessImpl implements Access{
         employee.add(FEEDBACK_CONTROLLER + "/create_coach_feedback");
         employee.add(FEEDBACK_CONTROLLER + "/training_feedback");
         employee.add(FEEDBACK_CONTROLLER + "/create_training_feedback");
+        employee.add(FEEDBACK_CONTROLLER + "/can_leave_user_feedback");
+        employee.add(FEEDBACK_CONTROLLER + "/can_leave_coach_feedback");
+        employee.add(FEEDBACK_CONTROLLER + "/can_leave_training_feedback");
+
 
         employee.add(TRAINING_CONTROLLER + "/training_info");
         employee.add(TRAINING_CONTROLLER + "/list");
