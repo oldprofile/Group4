@@ -209,9 +209,9 @@ angular.module('myApp.courseinfo')
 		};
 
 		$scope.deleteFile = function(index) {
-			courseInfoService.deleteFile($scope.course.files[i], $scope.course.name).then(function(result) {
+			courseInfoService.deleteFile($scope.course.files[index], $scope.course.name).then(function(result) {
 				courseInfoService.getFiles($scope.course.name).then(function(data) {
-					courseinfo.files = angular.copy(result);
+					$scope.course.files = angular.copy(result);
 				});
 			});
 		};
