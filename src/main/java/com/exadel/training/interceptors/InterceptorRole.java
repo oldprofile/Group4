@@ -28,7 +28,13 @@ public class InterceptorRole implements HandlerInterceptor {
 
             String login = httpServletRequest.getHeader("login");
 
-            return accessRole.allowMethod(login, mySubString(uri));
+            boolean isAllow = accessRole.allowMethod(login, mySubString(uri));
+            if(isAllow) {
+                httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+            } else {
+                httpServletResponse.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+            }
+            return isAllow;
         } else {
             return true;
         }

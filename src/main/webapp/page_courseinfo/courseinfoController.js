@@ -209,6 +209,7 @@ angular.module('myApp.courseinfo')
 		};
 
 		$scope.deleteFile = function(index) {
+			$scope.course.files[index].data="";
 			courseInfoService.deleteFile($scope.course.files[index], $scope.course.name).then(function(result) {
 				courseInfoService.getFiles($scope.course.name).then(function(data) {
 					$scope.course.files = angular.copy(result);
