@@ -48,8 +48,14 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public List<News> updateAllUnreadToReadNews() {
-        return newsRepository.updateAllUnreadToReadNews();
+    public void updateAllUnreadToReadNews() throws NoSuchFieldException {
+        List<News> newsList = newsRepository.updateAllUnreadToReadNews();
+
+        for(News news : newsList) {
+            news.setRead(true);
+        }
+
+        this.addToDeferredResult();
     }
 
     @Override
