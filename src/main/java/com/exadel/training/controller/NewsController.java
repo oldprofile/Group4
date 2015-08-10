@@ -52,7 +52,7 @@ public class NewsController {
         userNewsService.changeUnread(id);
     }
 
-    @RequestMapping(value = "change_all_unread")
+    @RequestMapping(value = "/change_all_unread")
     public  @ResponseBody void changeAllUnread() {
         userNewsService.updateAllUnreadToReadNews();
     }
