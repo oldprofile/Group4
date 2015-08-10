@@ -50,7 +50,7 @@ menuApp.controller("HeaderMenuController",['$scope','$location',"getCategories",
       setTimeout(function(){
         polling($scope.notifications);
         
-      },5000);
+      },300);
     })
     }
     
