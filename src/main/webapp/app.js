@@ -23,6 +23,7 @@ var app = angular.module('myApp', [
     'myApp.login',
     'myApp.courseinfo',
     "myApp.ohman",
+    'myApp.translations',
     'tableSort',
     'angular-toasty',
   
