@@ -190,6 +190,24 @@ angular.module('myApp.courseinfo')
 			});
 		};
 
+		$scope.uploadFiles = function () {
+			var uploadModalInstance = $modal.open({
+				animation: true,
+				templateUrl: "page_courseinfo/uploadModal.html",
+				controller: "UploadModalInstanceController",
+				size: "lg",
+				resolve: {
+					courseinfo: function () {
+						return $scope.course;
+					}
+				},
+			});
+
+			uploadModalInstance.result.then(function (data) {
+			}, function () {
+			});
+		};
+
 		$scope.deleteParticipant = function (userLogin) {
 			var dataRequiredToDelete = {
 				login: userLogin,
@@ -385,6 +403,31 @@ angular.module('myApp.courseinfo')
 				function (result) {
 					courseInfoService.getParticipants(courseinfo.name).then(function(result) {
 						courseinfo.listeners = angular.copy(result);
+					});
+				});
+			$modalInstance.close(courseinfo);
+		};
+
+		$scope.cancel = function () {
+			$modalInstance.dismiss('cancel');
+		};
+	}])
+
+	.controller('UploadModalInstanceController', ['$scope', '$modalInstance', 'courseInfoService', 'courseinfo', function ($scope, $modalInstance, courseInfoService, courseinfo) {
+
+		$scope.filesToUpload = [];
+
+		$scope.deleteFile = function(index) {
+			$scope.filesToUpload.splice(index, 1);
+		};
+
+		$scope.ok = function () {
+
+			console.log($scope.filesToUpload);
+			courseInfoService.addFiles($scope.filesToUpload, courseinfo.name).then(
+				function (result) {
+					courseInfoService.getFiles(courseinfo.name).then(function(result) {
+						courseinfo.files = angular.copy(result);
 					});
 				});
 			$modalInstance.close(courseinfo);
