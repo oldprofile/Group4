@@ -389,13 +389,16 @@ public class TrainingController {
         return lessons;
     }
 
-    @RequestMapping(value = "/add_file", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/add_files", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody
-    FileInfo addFile(@RequestBody FileInfo fileInfo, HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException, ParseException, DbxException {
+    List<FileInfo> addFile(@RequestBody FilesInfoArray filesInfoArray, HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException, ParseException, DbxException {
         String header = httpServletRequest.getHeader("authorization");
         String userLogin = cryptService.decrypt(header);
-        if(userService.isMyTraining(userLogin, fileInfo.getTrainingName())) {
-            return new FileInfo(trainingService.addFile(fileInfo));
+        if(userService.isMyTraining(userLogin, filesInfoArray.getTrainingName())) {
+            List<FileInfo> list = filesInfoArray.getFiles();
+            for(FileInfo fileInfo: list)
+                trainingService.addFile(fileInfo);
+            return list;
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
