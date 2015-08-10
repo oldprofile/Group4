@@ -73,6 +73,22 @@ angular.module('myApp.courseinfo')
 			});
 		};
 
+		courseInfoService.deleteFile = function(fileData, trainingName) {
+			var fd = new FormData();
+			fileData.trainingName = trainingName;
+			fd.append('file', JSON.stringify(fileData));
+
+			return $http.post('/training_controller/delete_file', fd, {
+				headers: {
+					'Content-Type': undefined
+				},
+				transformRequest: angular.identity
+			}).then(function (results) {
+				console.log('File deleted successfully!');
+				return results.data;
+			});
+		};
+
 		courseInfoService.getFiles = function(trainingName) {
 			return $http.get('/training_controller/files_info/' + trainingName).then(function(data) {
 				console.log("Got files successfully");

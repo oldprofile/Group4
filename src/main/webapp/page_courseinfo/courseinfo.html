@@ -135,9 +135,10 @@
 										</button>
 
 										<div class="scrollable-div scroll">
-											<table class="table table-striped courseinfo-table" ng-if="course.files.length != 0">
-												<tr ng-repeat="file in course.files">
+											<table class="table courseinfo-table" ng-if="course.files.length != 0">
+												<tr ng-repeat="file in course.files" class="rowWithSecret">
 													<td><a href="{{file.link}}">{{file.name}}</a></td>
+													<td class="hiddenCell" ng-click="deleteFile($index)"><i class="fa fa-times"></i></td>
 												</tr>
 											</table>
 											<p ng-if="course.files.length == 0">No files uploaded yet</p>
