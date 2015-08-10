@@ -65,6 +65,7 @@ public class AccessImpl implements Access{
         admin.add(NEWS_CONTROLLER + "/count_of_news");
         admin.add(NEWS_CONTROLLER + "/unread");
         admin.add(NEWS_CONTROLLER + "/change_unread");
+        admin.add(NEWS_CONTROLLER + "/change_all_unread");
 
         admin.add(OMISSION_CONTROLLER + "/statistics");
         admin.add(OMISSION_CONTROLLER + "/get_omissions");
@@ -77,6 +78,9 @@ public class AccessImpl implements Access{
         admin.add(FEEDBACK_CONTROLLER + "/training_feedback");
         admin.add(FEEDBACK_CONTROLLER + "/create_training_feedback");
         admin.add(FEEDBACK_CONTROLLER + "/request_user_feedback");
+        admin.add(FEEDBACK_CONTROLLER + "/can_leave_user_feedback");
+        admin.add(FEEDBACK_CONTROLLER + "/can_leave_coach_feedback");
+        admin.add(FEEDBACK_CONTROLLER + "/can_leave_training_feedback");
 
         admin.add(TRAINING_CONTROLLER + "/training_info");
         admin.add(TRAINING_CONTROLLER + "/list");
@@ -140,6 +144,10 @@ public class AccessImpl implements Access{
         employee.add(FEEDBACK_CONTROLLER + "/create_coach_feedback");
         employee.add(FEEDBACK_CONTROLLER + "/training_feedback");
         employee.add(FEEDBACK_CONTROLLER + "/create_training_feedback");
+        employee.add(FEEDBACK_CONTROLLER + "/can_leave_user_feedback");
+        employee.add(FEEDBACK_CONTROLLER + "/can_leave_coach_feedback");
+        employee.add(FEEDBACK_CONTROLLER + "/can_leave_training_feedback");
+
 
         employee.add(TRAINING_CONTROLLER + "/training_info");
         employee.add(TRAINING_CONTROLLER + "/list");

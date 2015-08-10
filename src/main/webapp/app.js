@@ -54,7 +54,7 @@ app.directive('authClass', ['$location','userService','loginService','toasty',fu
         scope.isLogged = loginService.checkCreds();
         
           if(scope.isLogged == false){
-              scope.prevPath = $location.path();
+              scope.prevPath = '/mycourses';
               $location.path('login');
           } else {
             //loggedin;

@@ -30,6 +30,10 @@ angular.module('myApp.admin')
 					return result;
 				});
 		};
+      
+        adminService.readAll = function(){
+          return $http.get("/news_controller/change_all_unread")
+        }
 
 		adminService.sendStatistics = function (statData) {
             debugger;

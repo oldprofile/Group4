@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.DeferredResult;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,9 +53,11 @@ public class NewsController {
         userNewsService.changeUnread(id);
     }
 
-    @RequestMapping(value = "change_all_unread")
-    public  @ResponseBody void changeAllUnread() {
+    @RequestMapping(value = "/change_all_unread", method = RequestMethod.GET)
+    public  @ResponseBody void changeAllUnread(HttpServletResponse httpServletResponse) {
         userNewsService.updateAllUnreadToReadNews();
+        httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
+
     }
 
     private List<News> getLatestNews(Long timestamp) {
