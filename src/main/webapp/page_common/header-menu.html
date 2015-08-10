@@ -69,9 +69,18 @@
         
         <li><button class="btn btn-default accent-btn accent-blue" ng-click="createcourse()" aria-expanded="true"><i class="fa fa-pencil-square-o"></i><span>Create Course</span></button></li>
         <li><a href="" ng-click="openSearch()"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a></li>
-        <li><a href="" ng-click="changeLanguage()"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span></a></li>
+        
 <!--        <li><a href="" ng-click="logoutFunction()">Logout</a></li>-->
-          
+         <li class="dropdown">
+          <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-globe" aria-hidden="true"></a>
+          <ul class="dropdown-menu">
+            <li class="dropdown-header">Language</li>
+            <li><a href="" ng-click="changeLanguage()"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>RU</a></li>
+            <li><a href="" ng-click="changeLanguage()"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>EN</a></li>
+            <li><a href="" ng-click="changeLanguage()"><span class="glyphicon glyphicon-off" aria-hidden="true"></span>FR</a></li>
+          </ul>
+        </li> 
+        
         <li class="dropdown">
           <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a>
           <ul class="dropdown-menu">
