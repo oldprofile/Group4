@@ -48,6 +48,17 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
+    public void updateAllUnreadToReadNews() throws NoSuchFieldException {
+        List<News> newsList = newsRepository.updateAllUnreadToReadNews();
+
+        for(News news : newsList) {
+            news.setRead(true);
+        }
+
+        this.addToDeferredResult();
+    }
+
+    @Override
     public int getCountOFNews() {
         return newsRepository.getCountOfNews();
     }
@@ -70,7 +81,7 @@ public class NewsServiceImpl implements NewsService {
 
         Long newNews = this.newsRepository.getCountOfUnreadNews();
 
-        if (state < newNews) {
+        if (state != newNews) {
             deferredResult.setResult(newNews);
         }
 
@@ -87,9 +98,11 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public void changeUnread(long id) {
+
+    public void changeUnread(long id) throws NoSuchFieldException {
         News news = newsRepository.findOne(id);
 
         news.setRead(true);
+        this.addToDeferredResult();
     }
 }

@@ -1,9 +1,16 @@
-<div ng-controller="NewsController">
+<div ng-controller="NewsController" class="news-cont">
+  <button ng-click="readAll()" style="float:right;"class="btn btn-default default-btn default-gray">Read All</button>
   <table class="table">
     <thead>
     </thead>
-    <tr ng-repeat="news in newsList track by $index">
-      <td ng-class="{'bg-color-gray': !news.isRead}"><a href="#/profile/{{news.login}}">{{news.name}}</a> {{news.description}} <a href="">{{news.training.trainingName}}</a></td>
+    <tr ng-repeat="news in newsList track by $index" class="news" ng-click="setAsRead(news.id)">
+      <td ng-class="{'bg-color-gray': !news.isRead}">
+      <div >
+        <h2 class="news-type">{{getTypeString(news.type)}}</h2>
+        <a href="#/profile/{{news.login}}">{{news.name}}</a> {{news.description}} <a href="{{getLinkByType(news.type, news)}}">{{getNewsByType(news.type, news)}}</a>
+        <h3 class="news-date">14.08.2015 14:00</h3>
+      </div>
+      </td>
     </tr>
   </table>
   

@@ -81,7 +81,7 @@ public class FeedbackController {
                 User user = userService.findUserByLogin(userFeedbackModel.getFeedbackerLogin());
                 UserFeedback userFeedback = userFeedbackService.getUserFeedbackByLoginsAndDate(userFeedbackModel.getUserLogin(), userFeedbackModel.getFeedbackerLogin(), date);
 
-                notificationNews.sendNews("has written feedback", user, userFeedback);
+                notificationNews.sendNews("has written feedback on", user, userFeedback);
 
                 response.setStatus(HttpServletResponse.SC_CREATED);
             } catch (Exception e) {
@@ -124,7 +124,7 @@ public class FeedbackController {
                 User user = userService.findUserByLogin(coachFeedbackModel.getFeedbackerLogin());
                 CoachFeedback coachFeedback = coachFeedbackService.getCoachFeedbackByLoginsAndDate(coachFeedbackModel.getCoachLogin(), coachFeedbackModel.getFeedbackerLogin(), date);
 
-                notificationNews.sendNews("has written feedback", user, coachFeedback);
+                notificationNews.sendNews("has written feedback on", user, coachFeedback);
 
                 response.setStatus(HttpServletResponse.SC_CREATED);
             } catch (Exception e) {
@@ -166,7 +166,7 @@ public class FeedbackController {
                 User user = userService.findUserByLogin(trainingFeedbackADDModel.getFeedbackerLogin());
                 TrainingFeedback trainingFeedback = trainingFeedbackService.getTrainingFeedbackByNameLoginAndDate(trainingFeedbackADDModel.getTrainingName(), trainingFeedbackADDModel.getFeedbackerLogin(), date);
 
-                notificationNews.sendNews("has written feedback", user, trainingFeedback);
+                notificationNews.sendNews("has written feedback on", user, trainingFeedback);
 
                 response.setStatus(HttpServletResponse.SC_CREATED);
             } catch (Exception e) {
@@ -190,6 +190,7 @@ public class FeedbackController {
         User user = userService.findUserByLogin(trainingNameAndUserLogin.getLogin());
       try {
                 wrapperNotificationMail.send(coach.getEmail(), MessageFabric.getMessage(trainingNameAndUserLogin.getTrainingName(), user.getName(), user.getLogin()));
+//                wrapperNotificationSMS.send(coach.getNumberPhone(), MessageFabric.getMessage(trainingNameAndUserLogin.getTrainingName(), trainingNameAndUserLogin.getLogin()));
                 response.setStatus(HttpServletResponse.SC_OK);
             } catch (Exception e) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

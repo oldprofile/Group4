@@ -5,14 +5,17 @@
 	<form name="lessonForm">
 		<div class="row">
 			<div class="col-xs-12">
-				<p class="col-xs-3 control-label" for="dropdown2">Edit date:</p>
+				<p class="info-small courseinfo-label float-left no-bottom-margin" id="pEditDate">Edit date:
+				</p>
 
-				<div class="dropdown">
+				<div class="calendar">
 					<a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown">
 						<div class="input-group">
 							<input type="text" class="form-control calendar"
-								   ng-value="courseinfo.dateTime[index] | date: 'medium'" disabled>
-							<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+								   ng-value="courseinfo.dateTime[index] | date: 'medium'" placeholder="click to add date" disabled>
+							<span class="input-group-addon addon-calendar">
+                                <i class="fa fa-calendar"></i>
+                            </span>
 						</div>
 					</a>
 					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
@@ -24,23 +27,19 @@
 		</div>
 
 		<div class="row">
-			<label for="place" class="col-xs-3 control-label">Place: </label>
-
-			<div class="col-xs-9">
-				<input class="form-control" name="place" id="place" type="text" placeholder="Place"
-					   ng-model="courseinfo.places[index]" required>
-			</div>
-		</div>
-
-		<div class="row">
 			<div class="col-xs-12">
-				<button class="btn btn-default default-btn default-red" ng-click="deleteLesson()">Delete lesson</button>
+				<p class="info-small courseinfo-label float-left no-bottom-margin">Place:
+					<input class="material-input" name="place" type="text"
+						   placeholder="click to enter" ng-model="courseinfo.places[index]"
+						   required>
+				</p>
 			</div>
 		</div>
 
 	</form>
 </div>
 <div class="modal-footer">
+	<button class="btn btn-default default-btn default-red pull-left" ng-click="deleteLesson()">Delete lesson</button>
 	<button class="btn btn-default default-btn default-green" ng-click="ok()">OK</button>
-	<button class="btn btn-default default-btn default-blue" ng-click="cancel()">Cancel</button>
+	<button class="btn btn-default default-btn default-gray" ng-click="cancel()">Cancel</button>
 </div>

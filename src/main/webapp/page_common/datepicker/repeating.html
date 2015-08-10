@@ -3,41 +3,53 @@
 		<form class="form-horizontal scroll">
 			<!--Repeat on-->
 			<div class="form-group form-group-md row repeating-row">
-				<label class="col-xs-3 control-label">Repeat on:</label>
+				<div class="col-xs-12">
 
-				<div class="col-xs-9">
-					<label class="checkbox-inline" ng-repeat="day in ['M', 'T', 'W', 'Th', 'F', 'Sa', 'S'] track by $index">
-						<input type="checkbox" ng-model="temp.repeatOn[$index]">{{day}}
-					</label>
+					<span class="info-small courseinfo-label float-left no-bottom-margin" id="pRepeatOn">Repeat on:
+					</span>
+
+					<div>
+						<label class="checkbox-inline" ng-repeat="day in ['M', 'T', 'W', 'Th', 'F', 'Sa', 'S'] track by $index">
+							<input type="checkbox" ng-model="temp.repeatOn[$index]">{{day}}
+						</label>
+					</div>
 				</div>
 			</div>
 
 			<!--Starts on-->
-			<div class="row">
-				<label class="col-xs-3 control-label" for="dropdown1">Starts on:</label>
 
-				<div class="dropdown col-xs-9">
-					<a class="dropdown-toggle" id="dropdown1" role="button" data-toggle="dropdown">
-						<div class="input-group">
-							<input type="text" class="form-control calendar" ng-value="temp.startsOn | date: 'medium'"
-								   disabled>
-							<span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
-						</div>
-					</a>
-					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-						<datetimepicker ng-model="temp.startsOn"
-										data-datetimepicker-config="{ dropdownSelector: '#dropdown1', minuteStep: 15 }"/>
-					</ul>
+			<div class="row">
+				<div class="col-xs-12">
+					<p class="info-small courseinfo-label float-left no-bottom-margin" id="pRepeatStartDate">Start date:
+					</p>
+					<div class="calendar">
+						<a class="dropdown-toggle" id="dropdown1" role="button" data-toggle="dropdown">
+							<div class="input-group">
+								<input type="text" class="form-control calendar"
+									   ng-value="temp.startsOn | date: 'medium'" placeholder="click to add date"
+									   disabled>
+							<span class="input-group-addon addon-calendar">
+								<i class="fa fa-calendar"></i>
+							</span>
+							</div>
+						</a>
+
+						<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+							<datetimepicker ng-model="temp.startsOn"
+											data-datetimepicker-config="{ dropdownSelector: '#dropdown1', minuteStep: 15 }"/>
+						</ul>
+					</div>
+
 				</div>
 			</div>
 
-			<!--Lessons number-->
-			<div class="row repeating-row">
-				<label class="col-xs-3 control-label" for="lessonsNumber">Number of lessons:</label>
-
-				<div class="col-xs-9">
-					<input class="material-input" name="lessonsNumber" id="lessonsNumber" type="number"
-						   placeholder="How many lessons will there be?" ng-model="temp.lessonsNumber" required>
+			<div class="row">
+				<div class="col-xs-12">
+					<p class="info-small courseinfo-label float-left no-bottom-margin">Number of lessons:
+						<input class="material-input" name="lessonsNumber" type="number"
+							   placeholder="click to enter" ng-model="temp.lessonsNumber"
+							   required>
+					</p>
 				</div>
 			</div>
 

@@ -1,5 +1,6 @@
 package com.exadel.training.controller;
 
+import com.dropbox.core.DbxException;
 import com.exadel.training.controller.model.Omission.OmissionADDModel;
 import com.exadel.training.controller.model.Omission.OmissionGETModel;
 import com.exadel.training.controller.model.Omission.PathToStatistics;
@@ -76,9 +77,10 @@ public class OmissionController {
 
     @RequestMapping(value = "/statistics", method = RequestMethod.POST, consumes = "application/json")
     public @ResponseBody
-    PathToStatistics generateStatistics(@RequestBody StatisticsRequestModel statisticsRequestModel, HttpServletResponse response) throws IOException, NoSuchFieldException {
+    PathToStatistics generateStatistics(@RequestBody StatisticsRequestModel statisticsRequestModel, HttpServletResponse response) throws IOException, NoSuchFieldException, DbxException {
 
         String filePath = "";
+        String dropboxLink = "";
         XSSFWorkbook workbook;
         String userLogin = statisticsRequestModel.getUserLogin();
         String trainingName = statisticsRequestModel.getTrainingName();
@@ -88,40 +90,47 @@ public class OmissionController {
             switch (statisticsRequestModel.getType()) {
                 case 1:
                     workbook = excelFileGenerator.generateTrainingsList(dateFrom, dateTo, userLogin);
-                    filePath = excelFileGenerator.generateFile(workbook, userLogin + " trainings statistics.xlsx");
+                    dropboxLink = excelFileGenerator.generateFile(workbook, userLogin + " trainings statistics.xlsx");
+                    filePath = excelFileGenerator.returnFilePath(userLogin + " trainings statistics.xlsx");
                     break;
                 case 2:
                     workbook = excelFileGenerator.generateForUserDates(dateFrom, dateTo, userLogin);
-                    filePath = excelFileGenerator.generateFile(workbook, userLogin + " omission's dates statistics.xlsx");
+                    dropboxLink = excelFileGenerator.generateFile(workbook, userLogin + " omission's dates statistics.xlsx");
+                    filePath = excelFileGenerator.returnFilePath(userLogin + " omission's dates statistics.xlsx");
                     break;
                 case 3:
                     workbook = excelFileGenerator.generateUserDatesAndFeedbacks(dateFrom, dateTo, userLogin);
-                    filePath = excelFileGenerator.generateFile(workbook, userLogin + " omission's dates and feedbacks statistics.xlsx");
+                    dropboxLink = excelFileGenerator.generateFile(workbook, userLogin + " omission's dates and feedbacks statistics.xlsx");
+                    filePath = excelFileGenerator.returnFilePath(userLogin + " omission's dates and feedbacks statistics.xlsx");
                     break;
                 case 4:
                     workbook = excelFileGenerator.generateForUserAmount(dateFrom, dateTo, userLogin);
-                    filePath = excelFileGenerator.generateFile(workbook, userLogin + " omission's amount statistics.xlsx");
+                    dropboxLink = excelFileGenerator.generateFile(workbook, userLogin + " omission's amount statistics.xlsx");
+                    filePath = excelFileGenerator.returnFilePath(userLogin + " omission's amount statistics.xlsx");
                     break;
             }
         } else if (!StringUtils.isBlank(trainingName)) {
             switch (statisticsRequestModel.getType()) {
                 case 1:
                     workbook = excelFileGenerator.generateUserList(dateFrom, dateTo, trainingName);
-                    filePath = excelFileGenerator.generateFile(workbook, trainingName + " listeners statistics.xlsx");
+                    dropboxLink = excelFileGenerator.generateFile(workbook, trainingName + " listeners statistics.xlsx");
+                    filePath = excelFileGenerator.returnFilePath(trainingName + " listeners statistics.xlsx");
                     break;
                 case 2:
                     workbook = excelFileGenerator.generateForTrainingDates(dateFrom, dateTo, trainingName);
-                    filePath = excelFileGenerator.generateFile(workbook, trainingName + " omission's dates statistics.xlsx");
+                    dropboxLink = excelFileGenerator.generateFile(workbook, trainingName + " omission's dates statistics.xlsx");
+                    filePath = excelFileGenerator.returnFilePath(trainingName + " omission's dates statistics.xlsx");
                     break;
                 case 3:
                     workbook = excelFileGenerator.generateForTrainingAmount(dateFrom, dateTo, trainingName);
-                    filePath = excelFileGenerator.generateFile(workbook, trainingName + " omission's amount statistics.xlsx");
+                    dropboxLink = excelFileGenerator.generateFile(workbook, trainingName + " omission's amount statistics.xlsx");
+                    filePath = excelFileGenerator.returnFilePath(trainingName + " omission's amount statistics.xlsx");
                     break;
             }
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
-        PathToStatistics pathToStatistics = new PathToStatistics(filePath);
+        PathToStatistics pathToStatistics = new PathToStatistics(filePath, dropboxLink);
         return pathToStatistics;
     }
 }

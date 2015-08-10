@@ -10,8 +10,12 @@ div.inputs-container > * {
     margin: 10px;
 }
 
+.once-only-container .dropdown-menu {
+	overflow: visible !important;
+}
+
 .calendar {
-    width: 40%;
+    width: 230px !important;
     min-width: 200px;
     float: left;
     border: none !important;

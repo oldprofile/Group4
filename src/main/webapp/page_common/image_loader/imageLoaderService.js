@@ -37,7 +37,6 @@
         };
  
         var readAsDataURL = function (file, scope) {
-            console.log(file);
             var deferred = $q.defer();
              
             var reader = getReader(deferred, scope);         

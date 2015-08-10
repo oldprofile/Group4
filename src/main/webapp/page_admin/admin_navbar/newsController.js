@@ -17,6 +17,74 @@ angular.module('myApp.admin')
 				$scope.totalItems = data;
 			})
 		}
+        $scope.readAll = function(){
+          adminService.readAll().success(function(data){
+          $scope.getNews($scope.pageNumber);
+        })}
+
+		$scope.getNewsByType = function(type, news) {
+			switch(type) {
+				case 0:
+					return news.training.trainingName;
+				break;
+				case 1:
+					return news.coachFeedbackGETModel.coachLogin;
+				break;
+				case 2:
+					return news.trainingFeedbackGETModel.trainingName;
+				break;
+				case 3:
+					return news.userFeedbackGETModel.userLogin;
+				break;
+				default:
+					console.log('error, unknown type');
+			}
+		};
+      
+      $scope.getTypeString = function(type) {
+			switch(type) {
+				case 0:
+					return "Training";
+				break;
+				case 1:
+					return "Coach Feedback";
+				break;
+				case 2:
+					return "Training Feedback";
+				break;
+				case 3:
+					return "User Feedback";
+				break;
+				default:
+					console.log('error, unknown type');
+			}
+		};
+
+		$scope.getLinkByType = function(type, news) {
+			switch(type) {
+				case 0:
+					return '#/courseinfo/' + news.training.trainingName;
+					break;
+				case 1:
+					return '#/profile/' + news.coachFeedbackGETModel.coachLogin;
+					break;
+				case 2:
+					return '#/courseinfo/' + news.trainingFeedbackGETModel.trainingName;
+					break;
+				case 3:
+					return '#/profile/' + news.userFeedbackGETModel.userLogin;
+					break;
+				default:
+					console.log('error, unknown type');
+			}
+		};
+
+		$scope.setAsRead = function(id) {
+			adminService.setNewsAsRead(id).then(function(result) {
+					$scope.getNews($scope.pageNumber);
+				}
+			);
+		};
 
 		$scope.getNewsNumber();
 

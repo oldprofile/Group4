@@ -1,20 +1,28 @@
 package com.exadel.training.service.impl;
 
+import com.dropbox.core.DbxException;
 import com.exadel.training.common.StateTraining;
+import com.exadel.training.controller.model.Training.FileInfo;
 import com.exadel.training.controller.model.Training.LessonData;
 import com.exadel.training.controller.model.Training.TrainingForCreation;
 import com.exadel.training.model.Category;
+import com.exadel.training.model.EntityFile;
 import com.exadel.training.model.Training;
 import com.exadel.training.model.User;
 import com.exadel.training.repository.impl.CategoryRepository;
+import com.exadel.training.repository.impl.FileRepository;
 import com.exadel.training.repository.impl.model.ShortParentTraining;
 import com.exadel.training.repository.impl.TrainingRepository;
 import com.exadel.training.repository.impl.UserRepository;
 import com.exadel.training.service.TrainingService;
+import com.exadel.training.service.statistics.DropboxIntegration;
+import org.apache.commons.lang3.SystemUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -33,6 +41,12 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private FileRepository fileRepository;
+
+    @Autowired
+    private DropboxIntegration dropboxIntegration;
 
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
@@ -69,10 +83,6 @@ public class TrainingServiceImpl implements TrainingService {
         return  trainingRepository.findTrainingsByName(trainingName);
     }
 
-    @Override
-    public List<Training> getValidTrainingsByCategoryId(int id) {
-        return trainingRepository.findValidTrainingsByCategoryId(id);
-    }
 
     @Override
     public List<Training> getValidTrainings() {
@@ -86,13 +96,10 @@ public class TrainingServiceImpl implements TrainingService {
 
     @Transactional
     @Override
-    public Training addTraining(TrainingForCreation trainingForCreation, String creatorLogin) throws NoSuchFieldException, ParseException {
+    public Training addTraining(TrainingForCreation trainingForCreation, String creatorLogin) throws NoSuchFieldException, ParseException, IOException, DbxException {
 
-        //List<String> dates = trainingForCreation.getDateTimes();
+        Training mainTraining = new Training();
         List<Date> dateTimes = trainingForCreation.getDateTimes();
-        /*for (String date : dates) {
-            dateTimes.add(sdf.parse(date));
-        }*/
         User coach = userRepository.findUserByLogin(trainingForCreation.getCoachLogin());
         Category category = categoryRepository.findById(trainingForCreation.getIdCategory());
         int state;
@@ -105,7 +112,6 @@ public class TrainingServiceImpl implements TrainingService {
             place = null;
         }
 
-        Training mainTraining = new Training();
         mainTraining.fillTraining(trainingForCreation);
         mainTraining.setDateTime(dateTimes.get(0));
         mainTraining.setPlace(place);
@@ -114,6 +120,20 @@ public class TrainingServiceImpl implements TrainingService {
         mainTraining.setState(state);
         mainTraining.setParent(0);
         trainingRepository.saveAndFlush(mainTraining);
+
+        List<EntityFile> files = new ArrayList<>();
+        for(FileInfo fileInfo: trainingForCreation.getFiles()) {
+            String filePath = System.getProperty("user.dir") + "\\src\\main\\webapp" + fileInfo.getLink().replace("/", "\\");
+            if(!SystemUtils.IS_OS_WINDOWS)
+                filePath = filePath.replace("\\", "/");
+            String dropboxLink = dropboxIntegration.uploadFile(new File(filePath), fileInfo.getName());
+            EntityFile file = new EntityFile(fileInfo, mainTraining);
+            file.setDropboxLink(dropboxLink);
+            fileRepository.saveAndFlush(file);
+            files.add(file);
+        }
+        mainTraining.setFiles(files);
+
         List<Training> trainings = new ArrayList<>(dateTimes.size());
         for (int i = 0; i < dateTimes.size(); ++i) {
             Training newTraining = new Training();
@@ -180,9 +200,7 @@ public class TrainingServiceImpl implements TrainingService {
     public Training editTraining(TrainingForCreation trainingForCreation, String creatorLogin) throws ParseException, NoSuchFieldException {
         Training mainTraining = trainingRepository.findByName(trainingForCreation.getName());
         if (userRepository.whoIsUser(creatorLogin, 1)) {
-            mainTraining.fillTraining(trainingForCreation);
-            mainTraining.setCategory(categoryRepository.findById(trainingForCreation.getIdCategory()));
-            return mainTraining;
+            return approveEditTraining(trainingForCreation);
         }
         else {
             Training editedTraining = new Training();
@@ -199,10 +217,14 @@ public class TrainingServiceImpl implements TrainingService {
     @Override
     public Training approveEditTraining(TrainingForCreation trainingForCreation) throws NoSuchFieldException {
         List<Training> trainings = trainingRepository.findTrainingsWithParentByName(trainingForCreation.getName());
-        for (Training training: trainings)
+        User coach = userRepository.findUserByLogin(trainingForCreation.getCoachLogin());
+        for (Training training: trainings) {
             training.fillTraining(trainingForCreation);
+            training.setCoach(coach);
+        }
         Training editedTraining = trainingRepository.findEditedTrainingByName(trainingForCreation.getName());
-        trainingRepository.deleteTrainingsById(editedTraining.getId());
+        if (editedTraining != null)
+            trainingRepository.deleteTrainingsById(editedTraining.getId());
         return trainings.get(0);
     }
 
@@ -390,6 +412,66 @@ public class TrainingServiceImpl implements TrainingService {
             }
         }
         return shortList;
+    }
+
+    @Override
+    public List<ShortParentTraining> getShortTrainingsByState(String userLogin, List<Integer> states) throws NoSuchFieldException {
+        List<ShortParentTraining> trainings = trainingRepository.findShortTrainingsSortByDate();
+        List<ShortParentTraining> shortList = new ArrayList<>();
+        for(int i = 0; i < trainings.size(); ++i) {
+            ShortParentTraining training = trainings.get(i);
+            int state = StateTraining.parseToInt(training.getState());
+            if(states.contains(state)) {
+                training.setIsSubscriber(userRepository.checkSubscribeToTraining(training.getTrainingName(), userLogin));
+                shortList.add(training);
+            }
+        }
+        return shortList;
+    }
+
+    @Override
+    public List<ShortParentTraining> getValidTrainingsByCategoryId(int id, String userLogin) {
+        //return trainingRepository.findValidTrainingsByCategoryId(id);
+        List<ShortParentTraining> trainings = trainingRepository.findShortTrainingsByCategoryId(id);
+        List<ShortParentTraining> shortList = new ArrayList<>();
+        for(int i = 0; i < trainings.size(); ++i) {
+            String state = trainings.get(i).getState();
+            if(state.equals("Ahead") || state.equals("InProcess")) {
+                ShortParentTraining training = trainings.get(i);
+                training.setIsSubscriber(userRepository.checkSubscribeToTraining(training.getTrainingName(), userLogin));
+                shortList.add(training);
+            }
+        }
+        return shortList;
+    }
+
+    @Override
+    public List<EntityFile> getFilesByTrainingName(String trainingName) {
+        return fileRepository.findFilesByTraining(trainingRepository.findByName(trainingName));
+    }
+
+    @Override
+    public EntityFile addFile(FileInfo fileInfo, String trainingName) throws IOException, DbxException {
+        Training training = trainingRepository.findByName(trainingName);
+        String filePath = System.getProperty("user.dir") + "\\src\\main\\webapp" + fileInfo.getLink().replace("/", "\\");
+        fileInfo.setLink(TrainingForCreation.createFile(fileInfo.getData(),"\\files_storage\\" + trainingName,fileInfo.getName()));
+        filePath = filePath + fileInfo.getLink();
+        if(!SystemUtils.IS_OS_WINDOWS)
+            filePath = filePath.replace("\\", "/");
+        else filePath = filePath.replace("/", "\\");
+        String dropboxLink = dropboxIntegration.uploadFile(new File(filePath), fileInfo.getName());
+        EntityFile newFile = new EntityFile(fileInfo, training);
+        newFile.setDropboxLink(dropboxLink);
+        //training.getFiles().add(newFile);
+        fileRepository.saveAndFlush(newFile);
+        return newFile;
+    }
+
+    @Override
+    public EntityFile deleteFile(FileInfo fileInfo) {
+        EntityFile file = fileRepository.findFilesByNameAndTrainingName(fileInfo.getName(), fileInfo.getTrainingName());
+        fileRepository.deleteFileById(file.getId());
+        return file;
     }
 
     @Override

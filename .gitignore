@@ -118,8 +118,10 @@ bower_components/
 src/main/resources/bower.json
 imageStorage/
 image_storage/
+files_storage/
 
 tmp
 .DS_Store
 >>>>>>> 844490a4fceaccb4538d1293665444de29aeea47
 src/main/resources/application.properties
+src/main/webapp/statistics/

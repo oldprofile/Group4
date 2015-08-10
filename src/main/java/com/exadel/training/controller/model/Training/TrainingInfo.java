@@ -2,9 +2,9 @@ package com.exadel.training.controller.model.Training;
 
 import com.exadel.training.common.LanguageTraining;
 import com.exadel.training.common.StateTraining;
+import com.exadel.training.model.EntityFile;
 import com.exadel.training.model.Training;
 import com.exadel.training.controller.model.User.UserShort;
-import com.exadel.training.model.TrainingFeedback;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public class TrainingInfo {
 
     private String name;
     private List<String> dateTimes;
-    private String coachName;
+    private UserShort coach;
     private String pictureLink;
     private String description;
     private List<String> places;
@@ -38,6 +38,7 @@ public class TrainingInfo {
     private String state;
     private List<UserShort> listeners;
     private List<UserShort> spareUsers;
+    private List<FileInfo> files;
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
 
 
@@ -46,7 +47,7 @@ public class TrainingInfo {
 
     public TrainingInfo(Training training) throws NoSuchFieldException {
         name = training.getName();
-        coachName = training.getCoach().getName();
+        //coachName = training.getCoach().getName();
         pictureLink = training.getPictureLink();
         description = training.getDescription();
         idCategory = training.getCategory().getId();
@@ -65,12 +66,18 @@ public class TrainingInfo {
         name = training.getName();
         this.dateTimes = new ArrayList<>();
         this.places = new ArrayList<>();
+        this.files = new ArrayList<>();
         for(int i = 0; i < dateTimes.size(); ++i) {
             this.dateTimes.add(sdf.format(dateTimes.get(i)));
             this.places.add(places.get(i));
         }
+        List<EntityFile> files = training.getFiles();
+        if (files != null) {
+            for (EntityFile file : files)
+                this.files.add(new FileInfo(file));
+        }
         lessonNumber = dateTimes.size();
-        coachName = training.getCoach().getName();
+        //coachName = training.getCoach().getName();
         pictureLink = training.getPictureLink();
         description = training.getDescription();
         idCategory = training.getCategory().getId();
@@ -228,12 +235,12 @@ public class TrainingInfo {
         this.state = state;
     }
 
-    public String getCoachName() {
-        return coachName;
+    public UserShort getCoach() {
+        return coach;
     }
 
-    public void setCoachName(String coachName) {
-        this.coachName = coachName;
+    public void setCoach(UserShort coach) {
+        this.coach = coach;
     }
 
     public int getLessonNumber() {
@@ -274,5 +281,13 @@ public class TrainingInfo {
 
     public void setRating(double rating) {
         this.rating = rating;
+    }
+
+    public List<FileInfo> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<FileInfo> files) {
+        this.files = files;
     }
 }

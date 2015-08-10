@@ -74,6 +74,7 @@ angular.module('myApp.createcourse')
 				fd.append('courseInfo', JSON.stringify(courseData));
 
 				if (justEdit) {
+					console.log(courseData);
 					fd.append('courseInfo', JSON.stringify(courseData));
 					return $http.post('/training_controller/edit_training', fd, {
 						headers: {

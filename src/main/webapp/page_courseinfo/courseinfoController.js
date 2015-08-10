@@ -1,11 +1,12 @@
 angular.module('myApp.courseinfo')
-	.controller('CourseInfoController', ['$scope', '$routeParams', '$filter', '$location', 'courseInfoService', 'userService', 'categoriesLocal', '$modal', 'feedbacksService', function ($scope, $routeParams, $filter, $location, courseInfoService, userService, categoriesLocal, $modal, feedbacksService) {
+	.controller('CourseInfoController', ['$scope', '$routeParams', '$filter', '$location', 'courseInfoService', 'userService', 'categoriesLocal', '$modal', 'feedbacksService', 'dateService', function ($scope, $routeParams, $filter, $location, courseInfoService, userService, categoriesLocal, $modal, feedbacksService, dateService) {
 		$scope.isAdmin = userService.isAdmin();
 
 		$scope.courseName = $routeParams.coursename;
 		$scope.subButtonText = "Subscribe";
 		$scope.isContentLoaded = false;
 		$scope.course = {};
+		$scope.course.dateTime = [];
 		$scope.courseCategory = "";
 
 		$scope.goTo = function (path) {
@@ -13,15 +14,18 @@ angular.module('myApp.courseinfo')
 			$location.path(path);
 		};
 
-		$scope.getCategory = function(id) {
+		$scope.getCategory = function (id) {
 			categoriesLocal.getCategoryNameById(id).then(
-				function(result) {
+				function (result) {
 					console.log(result);
 					$scope.courseCategory = result;
 				}
 			);
-		}
+		};
 
+		$scope.isPastLesson = function (index) {
+			return dateService.isPastDate($scope.course.dateTime[index]);
+		};
 
 		var courseInfoData1 = {
 			login: userService.getUser().login,
@@ -50,7 +54,7 @@ angular.module('myApp.courseinfo')
 			}
 			promise.finally(
 				function () {
-                 
+
 					$scope.subscriptionLoading = false;
 				}
 			);
@@ -66,6 +70,7 @@ angular.module('myApp.courseinfo')
 			data.promtText = courseInfoService.getPromtText(data);
 			$scope.course = data;
 			$scope.getCategory($scope.course.idCategory);
+			$scope.startDate = $scope.course.dateTime[0];
 
 			$scope.isSubscriber = data.isSubscriber;
 			$scope.isContentLoaded = true;
@@ -167,7 +172,7 @@ angular.module('myApp.courseinfo')
 		};
 
 
-		$scope.addParticipant = function() {
+		$scope.addParticipant = function () {
 			var participantModalInstance = $modal.open({
 				animation: true,
 				templateUrl: "page_courseinfo/participantModal.html",
@@ -183,6 +188,46 @@ angular.module('myApp.courseinfo')
 			participantModalInstance.result.then(function (data) {
 			}, function () {
 			});
+		};
+
+		$scope.uploadFiles = function () {
+			var uploadModalInstance = $modal.open({
+				animation: true,
+				templateUrl: "page_courseinfo/uploadModal.html",
+				controller: "UploadModalInstanceController",
+				size: "lg",
+				resolve: {
+					courseinfo: function () {
+						return $scope.course;
+					}
+				},
+			});
+
+			uploadModalInstance.result.then(function (data) {
+			}, function () {
+			});
+		};
+
+		$scope.deleteFile = function(index) {
+			$scope.course.files[index].data="";
+			courseInfoService.deleteFile($scope.course.files[index], $scope.course.name).then(function(result) {
+				courseInfoService.getFiles($scope.course.name).then(function(data) {
+					$scope.course.files = angular.copy(result);
+				});
+			});
+		};
+
+		$scope.deleteParticipant = function (userLogin) {
+			var dataRequiredToDelete = {
+				login: userLogin,
+				nameTraining: $scope.course.name
+			};
+			courseInfoService.leave(dataRequiredToDelete).then(function (data) {
+					courseInfoService.getParticipants($scope.course.name).then(function (result) {
+						$scope.course.listeners = angular.copy(result);
+					});
+				}
+			);
 		};
 
 		$scope.manageOmissions = function (index) {
@@ -277,10 +322,10 @@ angular.module('myApp.courseinfo')
 		$scope.courseinfo = courseinfo;
 		$scope.index = index;
 
-		$scope.deleteLesson = function() {
-			courseInfoService.deleteLesson($scope.index + 1, $scope.courseinfo.name).then(function(data) {
+		$scope.deleteLesson = function () {
+			courseInfoService.deleteLesson($scope.index + 1, $scope.courseinfo.name).then(function (data) {
 				courseInfoService.updateDates($scope.courseinfo.name).then(
-					function(result) {
+					function (result) {
 						$scope.courseinfo.dateTime = angular.copy(result.data.dateTimes);
 						for (var i = 0; i < $scope.courseinfo.dateTime.length; i++) {
 							$scope.courseinfo.dateTime[i] = $filter('date')($scope.courseinfo.dateTime[i], 'medium');
@@ -364,8 +409,35 @@ angular.module('myApp.courseinfo')
 		$scope.ok = function () {
 			console.log($scope.participantInfo);
 			courseInfoService.addParticipant($scope.participantInfo).then(
-				function(result) {
+				function (result) {
+					courseInfoService.getParticipants(courseinfo.name).then(function(result) {
+						courseinfo.listeners = angular.copy(result);
+					});
+				});
+			$modalInstance.close(courseinfo);
+		};
 
+		$scope.cancel = function () {
+			$modalInstance.dismiss('cancel');
+		};
+	}])
+
+	.controller('UploadModalInstanceController', ['$scope', '$modalInstance', 'courseInfoService', 'courseinfo', function ($scope, $modalInstance, courseInfoService, courseinfo) {
+
+		$scope.filesToUpload = [];
+
+		$scope.deleteFile = function(index) {
+			$scope.filesToUpload.splice(index, 1);
+		};
+
+		$scope.ok = function () {
+
+			console.log($scope.filesToUpload);
+			courseInfoService.addFiles($scope.filesToUpload, courseinfo.name).then(
+				function (result) {
+					courseInfoService.getFiles(courseinfo.name).then(function(result) {
+						courseinfo.files = angular.copy(result);
+					});
 				});
 			$modalInstance.close(courseinfo);
 		};

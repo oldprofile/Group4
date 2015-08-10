@@ -15,7 +15,10 @@
     "bootstrap": "~3.3.5",
     "moment": "~2.10.3",
     "angular-cookies": "~1.4.3",
-    "v-accordion": "~1.2.7"
+    "v-accordion": "~1.2.7",
+    "angular-tablesort": "~1.0.8",
+    "angular-toasty": "~1.0.2",
+    "angular-translate": "~2.7.2"
   },
   "resolutions": {
     "angular": "~1.4.0"

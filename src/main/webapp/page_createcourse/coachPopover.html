@@ -1,11 +1,23 @@
-<div class="popover-container">
+<div class="popover-container scroll">
 	<div class="row">
-		<a href="" ng-click="addCoach()">Add coach</a>
+		<div class="col-xs-12">
+			<a href="" ng-click="addCoach()" close-on-click="coachPopover"><i class="fa fa-plus"></i>Add coach</a>
+		</div>
 	</div>
+
 	<hr>
+
+	<div class="row">
+		<div class="col-xs-12 select-dropdown">
+			<a class="small-info" href="" ng-click="setAdminAsCoach()" close-on-click="coachPopover">me</a>
+		</div>
+	</div>
+
+	<hr>
+
 	<div class="row" ng-repeat="coach in externalCoaches">
 		<div class="col-xs-12 select-dropdown">
-			<a href="" ng-click="setCoach()" close-on-click="coachPopover">{{coach.name}}</a>
+			<a href="" ng-click="setCoach(coach)" close-on-click="coachPopover">{{coach.name}}</a>
 		</div>
 	</div>
 </div>

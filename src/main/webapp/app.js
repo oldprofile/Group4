@@ -23,10 +23,18 @@ var app = angular.module('myApp', [
     'myApp.login',
     'myApp.courseinfo',
     "myApp.ohman",
+    'myApp.translations',
+    'tableSort',
+    'angular-toasty',
   
     
-]).config(['$routeProvider', function($routeProvider) {
+]).config(['$routeProvider', 'toastyConfigProvider', function($routeProvider, toastyConfigProvider ) {
   $routeProvider.otherwise({redirectTo: '/mycourses'});
+  toastyConfigProvider.setConfig({
+        sound: true,
+        theme: 'bootstrap',
+        position:"top-right",
+    });
 }]);
 
 app.controller('MainController',['$scope',function($scope){
@@ -37,7 +45,7 @@ app.controller('MainController',['$scope',function($scope){
 }]);
 
 
-app.directive('authClass', ['$location','userService','loginService',function($location,userService,loginService) {
+app.directive('authClass', ['$location','userService','loginService','toasty',function($location,userService,loginService, toasty ) {
     return {
       restrict: 'C',
       link: function(scope, elem, attrs) {
@@ -46,7 +54,7 @@ app.directive('authClass', ['$location','userService','loginService',function($l
         scope.isLogged = loginService.checkCreds();
         
           if(scope.isLogged == false){
-              scope.prevPath = $location.path();
+              scope.prevPath = '/mycourses';
               $location.path('login');
           } else {
             //loggedin;
@@ -121,6 +129,15 @@ app.directive('authClass', ['$location','userService','loginService',function($l
             // somehow on client
             //alert("Is Server off?");
           });
+        
+        
+          scope.$on('need-toast',function(event,toast){
+            if(toast.type === "default"){
+              toasty({title: toast.title, msg: toast.message});
+            }
+            
+            
+          })
         
           
       }

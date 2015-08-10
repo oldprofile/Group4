@@ -1,6 +1,6 @@
 <div class="row courseinfo-div">
 	<div class="col-xs-12">
-		<form class="form-course form-horizontal" name="courseForm" novalidate>
+		<form class="form-horizontal" name="courseForm" novalidate>
 			<div class="row">
 
 				<div class="col-xs-12 col-sm-6">
@@ -11,25 +11,23 @@
 					</div>
 
 					<div ng-if="isAdmin" class="row">
-						<div class="col-xs-12 really-big-margin">
+						<div class="col-xs-12">
 							<p class="info-small color-gray float-left">Coach: </p>
 
 							<div class="dropdown float-left">
-								<p class="courseinfo-h5 dropdown-toggle no-bottom-margin" id="coachPopover" type="button"
+								<p class="info-small dropdown-toggle" id="coachPopover" type="button"
 								   popover-placement="bottom" popover-trigger="click"
 								   popover-template="'/page_createcourse/coachPopover.html'">
-									<a href="" class="link-select" ng-if="!courseInfo.coach">select</a>
-									<a href="" class="link-select" ng-if="courseInfo.coach">{{courseInfo.coach}}</a>
+									<a href="" class="link-select" ng-if="!temp.coach.name">select</a>
+									<a href="" class="link-select" ng-if="temp.coach.name">{{temp.coach.name}}</a>
 								</p>
 							</div>
 						</div>
 					</div>
 
-					<p ng-if="isAdmin" class="info-small color-gray"><span class="courseinfo-label">Coach:</span> {{courseInfo.coachName}}</p>
+					<p ng-hide="temp.tempDates.length == 0 && !temp.startsOn" class="courseinfo-h5 really-big-margin">Start date: {{isRepeating ? (temp.startsOn | date:"dd MMMM") : (temp.tempDates[0] | date:"dd MMMM")}}</p>
 
-					<p class="courseinfo-h5 really-big-margin">Starts on: {{isRepeating ? (temp.startsOn | date:"dd MMMM") : (temp.tempDates[0] | date:"dd MMMM")}}</p>
-
-					<p class="courseinfo-h5 color-gray small-space">{{isRepeating ? temp.lessonsNumber : temp.tempDates.length}} lessons</p>
+					<p ng-hide="temp.tempDates.length == 0 && (temp.lessonsNumber == 0 || !temp.lessonsNumber)" class="courseinfo-h5 color-gray small-space">{{isRepeating ? temp.lessonsNumber : temp.tempDates.length}} lessons</p>
 
 
 
@@ -151,7 +149,7 @@
 			</div>
 
 
-			<div class="row">
+			<div class="row" ng-if="!isEdited">
 
 				<div class="col-xs-12">
 					<v-accordion class="vAccordion--default" multiple>
@@ -159,12 +157,42 @@
 						<!-- add expanded attribute to open the section -->
 						<v-pane>
 							<v-pane-header>
-								<span class="glyphicon glyphicon-time"></span><span class="courseinfo-label">Manage dates</span>
+								<i class="fa fa-clock-o"></i><span class="courseinfo-label">Manage dates</span>
 							</v-pane-header>
 
 							<v-pane-content>
 
+								<a id="dates"></a>
+
 								<datepicker1 id="dates" ng-model="courseInfo.dateTime"></datepicker1>
+
+							</v-pane-content>
+						</v-pane>
+
+						<!-- add expanded attribute to open the section -->
+						<v-pane>
+							<v-pane-header>
+								<i class="fa fa-files-o"></i><span class="courseinfo-label">Attachments</span>
+							</v-pane-header>
+
+							<v-pane-content>
+
+								<div ng-controller="FileUploadController">
+
+									<span class="btn btn-file default-btn default-gray" id="uploadFileBtn">
+										<i class="fa fa-upload"></i></i> Upload file
+										<input type="file" ng-file-select="onFileSelect($files)">
+									</span>
+
+									<div class="scrollable-div scroll">
+										<table class="table table-striped courseinfo-table" ng-if="courseInfo.files.length != 0">
+											<tr ng-repeat="file in courseInfo.files">
+												<td>{{file.name}}</td>
+											</tr>
+										</table>
+										<p ng-if="courseInfo.files.length == 0">No files uploaded yet</p>
+									</div>
+								</div>
 
 							</v-pane-content>
 						</v-pane>
@@ -185,10 +213,10 @@
 			<div class="row">
 				<div class="col-xs-12">
 
-					<input ng-if="!isAdmin && !isEdited" ng-disabled="{{disabled}}" type="submit" ng-click="saveData()" class="btn accent-btn accent-green submit-btn" value="Create course!">
-					<input ng-if="isAdmin && !isEdited" ng-disabled="{{disabled}}" type="submit" ng-click="saveData()" class="btn accent-btn accent-green submit-btn" value="Create course!">
-					<input ng-if="isAdmin && isEdited" ng-disabled="{{disabled}}" type="submit" ng-click="editCourse()" class="btn accent-btn accent-green submit-btn" value="Approve course">
-					<input ng-if="!isAdmin && isEdited" ng-disabled="{{disabled}}"  type="submit" ng-click="editCourse()" class="btn accent-btn accent-blue submit-btn" value="Edit course">
+					<input ng-if="!isAdmin && !isEdited" ng-disabled="{{disabled}}" type="submit" ng-click="saveData()" class="btn accent-btn accent-green submit-btn" value="Create Course!">
+					<input ng-if="isAdmin && !isEdited" ng-disabled="{{disabled}}" type="submit" ng-click="saveData()" class="btn accent-btn accent-green submit-btn" value="Create Course!">
+					<input ng-if="isAdmin && isEdited" ng-disabled="{{disabled}}" type="submit" ng-click="editCourse()" class="btn accent-btn accent-green submit-btn" value="Approve Course">
+					<input ng-if="!isAdmin && isEdited" ng-disabled="{{disabled}}"  type="submit" ng-click="editCourse()" class="btn accent-btn accent-blue submit-btn" value="Edit Course">
 
 				</div>
 			</div>

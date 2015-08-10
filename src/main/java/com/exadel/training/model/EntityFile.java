@@ -1,5 +1,6 @@
 package com.exadel.training.model;
 
+import com.exadel.training.controller.model.Training.FileInfo;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.SystemUtils;
 
@@ -12,22 +13,28 @@ import java.io.IOException;
  */
 @Entity
 @Table(name="files")
-public class File {
+public class EntityFile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
+    private String name;
+
     private String link;
+
+    private String dropboxLink;
 
     @ManyToOne(cascade = CascadeType.ALL)
     private Training training;
 
-    public File() {
+    public EntityFile() {
     }
 
-    public File(String link) {
-        this.link = link;
+    public EntityFile(FileInfo fileInfo, Training training) {
+        this.link = fileInfo.getLink();
+        this.name = fileInfo.getName();
+        this.training = training;
     }
 
     public int getId() {
@@ -52,5 +59,21 @@ public class File {
 
     public void setTraining(Training training) {
         this.training = training;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDropboxLink() {
+        return dropboxLink;
+    }
+
+    public void setDropboxLink(String dropboxLink) {
+        this.dropboxLink = dropboxLink;
     }
 }
