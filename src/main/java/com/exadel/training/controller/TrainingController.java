@@ -11,6 +11,7 @@ import com.exadel.training.service.TrainingFeedbackService;
 import com.exadel.training.service.TrainingService;
 import com.exadel.training.service.UserService;
 import com.exadel.training.tokenAuthentification.CryptService;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -389,13 +390,21 @@ public class TrainingController {
         return lessons;
     }
 
-    @RequestMapping(value = "/add_file", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/add_files", method = RequestMethod.POST)
     public @ResponseBody
-    FileInfo addFile(@RequestBody FileInfo fileInfo, HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException, ParseException, DbxException {
+    List<FileInfo> addFile(HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException, ParseException, DbxException, org.json.simple.parser.ParseException {
         String header = httpServletRequest.getHeader("authorization");
         String userLogin = cryptService.decrypt(header);
-        if(userService.isMyTraining(userLogin, fileInfo.getTrainingName())) {
-            return new FileInfo(trainingService.addFile(fileInfo));
+        String dataFiles = httpServletRequest.getParameter("files");
+        String trainingName = httpServletRequest.getParameter("trainingName");
+        //trainingName = ((JSONObject)trainingName).get("training")
+        JSONParser parser = new JSONParser();
+        JSONArray json = (JSONArray) parser.parse(dataFiles.trim());
+        if(userService.isMyTraining(userLogin, trainingName)) {
+            List<FileInfo> list = FileInfo.parseJsonToList(json);
+            for(FileInfo fileInfo: list)
+                trainingService.addFile(fileInfo, trainingName);
+            return list;
         } else {
             httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return null;
@@ -415,7 +424,7 @@ public class TrainingController {
         }
     }
 
-    @RequestMapping(value = "/files_info/{trainingName}", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/files_info/{trainingName}", method = RequestMethod.GET)
     public @ResponseBody
     List<FileInfo> getFiles(@PathVariable("trainingName") String trainingName, HttpServletResponse httpServletResponse, HttpServletRequest httpServletRequest) throws BadPaddingException, IOException, IllegalBlockSizeException, NoSuchFieldException, ParseException {
         String header = httpServletRequest.getHeader("authorization");

@@ -451,22 +451,26 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
-    public EntityFile addFile(FileInfo fileInfo) throws IOException, DbxException {
-        Training training = trainingRepository.findByName(fileInfo.getTrainingName());
+    public EntityFile addFile(FileInfo fileInfo, String trainingName) throws IOException, DbxException {
+        Training training = trainingRepository.findByName(trainingName);
         String filePath = System.getProperty("user.dir") + "\\src\\main\\webapp" + fileInfo.getLink().replace("/", "\\");
-        fileInfo.setLink(TrainingForCreation.createFile(fileInfo.getData(),"\\files_storage\\" + fileInfo.getTrainingName(),fileInfo.getName()));
+        fileInfo.setLink(TrainingForCreation.createFile(fileInfo.getData(),"\\files_storage\\" + trainingName,fileInfo.getName()));
+        filePath = filePath + fileInfo.getLink();
         if(!SystemUtils.IS_OS_WINDOWS)
             filePath = filePath.replace("\\", "/");
+        else filePath = filePath.replace("/", "\\");
         String dropboxLink = dropboxIntegration.uploadFile(new File(filePath), fileInfo.getName());
         EntityFile newFile = new EntityFile(fileInfo, training);
+        newFile.setDropboxLink(dropboxLink);
+        //training.getFiles().add(newFile);
         fileRepository.saveAndFlush(newFile);
         return newFile;
     }
 
     @Override
     public EntityFile deleteFile(FileInfo fileInfo) {
-        EntityFile file = fileRepository.findFilesByName(fileInfo.getName());
-        fileRepository.deleteFileByName(fileInfo.getName());
+        EntityFile file = fileRepository.findFilesByNameAndTrainingName(fileInfo.getName(), fileInfo.getTrainingName());
+        fileRepository.deleteFileById(file.getId());
         return file;
     }
 

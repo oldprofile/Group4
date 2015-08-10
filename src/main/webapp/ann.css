@@ -84,6 +84,10 @@
 	float: left;
 }
 
+.small-margin {
+	margin-top: 10px;
+}
+
 .top-margin {
 	margin-top: 25px;
 }
@@ -204,4 +208,8 @@ tr.rowWithSecret:hover .hiddenCell {
 .hiddenCell .fa-times:hover {
 	color: #a1161b !important;
 	cursor: pointer;
+}
+
+.width-60 {
+	width:60% !important;
 }

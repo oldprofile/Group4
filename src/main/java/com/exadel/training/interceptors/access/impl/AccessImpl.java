@@ -31,7 +31,7 @@ public class AccessImpl implements Access{
     public AccessImpl() {
 
         access.put(RoleUtil.ADMIN, this.adminAccess());
-        access.put(RoleUtil.EMPLOYEE, this.adminAccess());
+        access.put(RoleUtil.EMPLOYEE, this.employeeAccess());
         access.put(RoleUtil.EX_COACH, this.excoachAccess());
         access.put(RoleUtil.EX_EMPLOYEE, new ArrayList<>());
 
@@ -98,7 +98,7 @@ public class AccessImpl implements Access{
         admin.add(TRAINING_CONTROLLER + "/delete_date");
         admin.add(TRAINING_CONTROLLER + "/add_date");
         admin.add(TRAINING_CONTROLLER + "/listeners");
-        admin.add(TRAINING_CONTROLLER + "/add_file");
+        admin.add(TRAINING_CONTROLLER + "/add_files");
         admin.add(TRAINING_CONTROLLER + "/delete_file");
         admin.add(TRAINING_CONTROLLER + "/files_info");
 
