@@ -17,6 +17,10 @@ angular.module('myApp.admin')
 				$scope.totalItems = data;
 			})
 		}
+        $scope.readAll = function(){
+          adminService.readAll().success(function(data){
+          $scope.getNews($scope.pageNumber);
+        })}
 
 		$scope.getNewsByType = function(type, news) {
 			switch(type) {
