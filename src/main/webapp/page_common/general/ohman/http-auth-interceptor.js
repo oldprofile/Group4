@@ -73,7 +73,9 @@
                 $rootScope.$broadcast('event:auth-loginRequired', rejection);
                 return deferred.promise;
               case 403:
+              case 405:  
                 console.log("Need Access -- 403");
+                rejection.status = 403;
                 $rootScope.$broadcast('event:auth-forbidden', rejection);
                 break;
               case 404: 

@@ -36,6 +36,25 @@ angular.module('myApp.admin')
 					console.log('error, unknown type');
 			}
 		};
+      
+      $scope.getTypeString = function(type) {
+			switch(type) {
+				case 0:
+					return "Training";
+				break;
+				case 1:
+					return "Coach Feedback";
+				break;
+				case 2:
+					return "Training Feedback";
+				break;
+				case 3:
+					return "User Feedback";
+				break;
+				default:
+					console.log('error, unknown type');
+			}
+		};
 
 		$scope.getLinkByType = function(type, news) {
 			switch(type) {

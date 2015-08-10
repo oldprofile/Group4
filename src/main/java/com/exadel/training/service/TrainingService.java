@@ -70,6 +70,6 @@ public interface TrainingService {
     List<ShortParentTraining> getValidTrainingsByCategoryId(int id, String userLogin);
 
     List<EntityFile> getFilesByTrainingName(String trainingName);
-    EntityFile addFile(FileInfo fileInfo) throws IOException, DbxException;
+    EntityFile addFile(FileInfo fileInfo, String trainingName) throws IOException, DbxException;
     EntityFile deleteFile(FileInfo fileInfo);
 }

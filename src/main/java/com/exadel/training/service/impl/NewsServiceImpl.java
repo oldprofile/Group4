@@ -48,6 +48,11 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
+    public List<News> updateAllUnreadToReadNews() {
+        return newsRepository.updateAllUnreadToReadNews();
+    }
+
+    @Override
     public int getCountOFNews() {
         return newsRepository.getCountOfNews();
     }

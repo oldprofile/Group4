@@ -23,7 +23,7 @@
           <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
             
             <li><a href="" ng-click="changeSort('dateTraining')">Date</a></li>
-            <li><a href=""  ng-click="changeSort('rating')">Rating</a></li>
+            <li><a href=""  ng-click="changeSort('-rating')">Rating</a></li>
             <li><a href="" ng-hide="false" ng-click="changeSort('trainingName')">A to Z</a></li>
             
           </ul>
@@ -52,7 +52,7 @@
                   <h1>{{t.trainingName}}</h1>
 <!--                  <h4>Coach: {{t.trainingCoach}}</h4>-->
                   
-                   <rating ng-model="3" max="5" readonly="true" on-hover="" on-leave="" titles="['one','two','three']" state-on="'fa fa-star'" state-off="'fa fa-star-o'" class="clearfix"></rating>
+                   <rating ng-model="t.rating" max="5" readonly="true" on-hover="" on-leave="" titles="['one','two','three']" state-on="'fa fa-star'" state-off="'fa fa-star-o'" class="clearfix"></rating>
                   
                   <div class="additional">
                     <h3>Start Date: {{t.dateTraining | date:'dd MMMM '}}</h3>

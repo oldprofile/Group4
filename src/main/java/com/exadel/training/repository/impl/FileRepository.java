@@ -15,10 +15,10 @@ public interface FileRepository extends JpaRepository<EntityFile, Long> {
     @Query("select f from EntityFile as f where f.training = ?1")
     List<EntityFile> findFilesByTraining(Training training);
 
-    @Query("select f from EntityFile as f where f.name = ?1")
-    EntityFile findFilesByName(String name);
+    @Query("select f from EntityFile as f inner join f.training as tr where f.name = ?1 and tr.name = ?2")
+    EntityFile findFilesByNameAndTrainingName(String fileName, String trainingName);
 
     @Modifying
-    @Query(value = "delete from files where name = ?1", nativeQuery = true)
-    void deleteFileByName(String fileName);
+    @Query(value = "delete from files where id = ?1", nativeQuery = true)
+    void deleteFileById(int id);
 }
