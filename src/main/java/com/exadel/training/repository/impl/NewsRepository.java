@@ -20,6 +20,6 @@ public interface NewsRepository extends JpaRepository<News, Long> {
     @Query("select n from News as n where n.id > ?1")
     List<News> getLatestNews(Long id);
 
-    @Query("update  News as n  set n.isRead = true where n.isRead = false")
+    @Query("select n from  News as n where n.isRead = false")
     List<News> updateAllUnreadToReadNews();
 }
