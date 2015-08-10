@@ -126,6 +126,7 @@ public class TrainingServiceImpl implements TrainingService {
             String filePath = System.getProperty("user.dir") + "\\src\\main\\webapp" + fileInfo.getLink().replace("/", "\\");
             if(!SystemUtils.IS_OS_WINDOWS)
                 filePath = filePath.replace("\\", "/");
+            else filePath = filePath.replace("/", "\\");
             String dropboxLink = dropboxIntegration.uploadFile(new File(filePath), fileInfo.getName());
             EntityFile file = new EntityFile(fileInfo, mainTraining);
             file.setDropboxLink(dropboxLink);
