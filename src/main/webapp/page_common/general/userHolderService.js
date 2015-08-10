@@ -87,6 +87,7 @@ angular.module('myApp').factory('userService',['$http','loginService','$window',
           loginService.clearCreds();
           userService.isLogged = false;
           $window.location.reload();
+          
       });
         
     }  
