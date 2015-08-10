@@ -197,7 +197,11 @@ public class ExcelFileGenerator {
             for(int omissionsIndex = 0; omissionsIndex < journalOmissionModels.size(); omissionsIndex++) {
                 int columnIndex = omissionsIndex + 1;
                 if(journalOmissionModels.get(omissionsIndex).getIsOmission()) {
-                    row.createCell(columnIndex).setCellValue( journalOmissionModels.get(omissionsIndex).getDate() + " " + journalOmissionModels.get(omissionsIndex).getReason());
+                    if (!StringUtils.isBlank(journalOmissionModels.get(omissionsIndex).getReason())) {
+                        row.createCell(columnIndex).setCellValue(journalOmissionModels.get(omissionsIndex).getDate() + " " + journalOmissionModels.get(omissionsIndex).getReason());
+                    } else {
+                        row.createCell(columnIndex).setCellValue(journalOmissionModels.get(omissionsIndex).getDate());
+                    }
                 }
             }
         }
@@ -221,7 +225,11 @@ public class ExcelFileGenerator {
             for(int omissionsIndex = 0; omissionsIndex < journalOmissionModels.size(); omissionsIndex++) {
                 int columnIndex = omissionsIndex + 1;
                 if(journalOmissionModels.get(omissionsIndex).getIsOmission()) {
-                    row.createCell(columnIndex).setCellValue(journalOmissionModels.get(omissionsIndex).getDate() + " " + journalOmissionModels.get(omissionsIndex).getReason());
+                    if (!StringUtils.isBlank(journalOmissionModels.get(omissionsIndex).getReason())) {
+                        row.createCell(columnIndex).setCellValue(journalOmissionModels.get(omissionsIndex).getDate() + " " + journalOmissionModels.get(omissionsIndex).getReason());
+                    } else {
+                        row.createCell(columnIndex).setCellValue(journalOmissionModels.get(omissionsIndex).getDate());
+                    }
                 }
             }
         }
@@ -280,7 +288,11 @@ public class ExcelFileGenerator {
             for(int omissionsIndex = 0; omissionsIndex < journalOmissionModels.size(); omissionsIndex++) {
                 if(journalOmissionModels.get(omissionsIndex).getIsOmission()) {
                     omissionAmount++;
-                    stringBuilder.append(journalOmissionModels.get(omissionsIndex).getDate() + "-" + journalOmissionModels.get(omissionsIndex).getReason() + "\n");
+                    if(!StringUtils.isBlank(journalOmissionModels.get(omissionsIndex).getReason())) {
+                        stringBuilder.append(journalOmissionModels.get(omissionsIndex).getDate() + "-" + journalOmissionModels.get(omissionsIndex).getReason() + "\n");
+                    } else {
+                        stringBuilder.append(journalOmissionModels.get(omissionsIndex).getDate() + "\n");
+                    }
                 }
             }
             row.createCell(1).setCellValue(Integer.valueOf(omissionAmount).toString() + "/" + Integer.valueOf(amountOfTrainings).toString());
@@ -318,7 +330,11 @@ public class ExcelFileGenerator {
             for(int omissionsIndex = 0; omissionsIndex < journalOmissionModels.size(); omissionsIndex++) {
                 if(journalOmissionModels.get(omissionsIndex).getIsOmission()) {
                     omissionAmount++;
-                    stringBuilder.append(journalOmissionModels.get(omissionsIndex).getDate() + "-" + journalOmissionModels.get(omissionsIndex).getReason() + "\n");
+                    if (!StringUtils.isBlank(journalOmissionModels.get(omissionsIndex).getReason())) {
+                        stringBuilder.append(journalOmissionModels.get(omissionsIndex).getDate() + "-" + journalOmissionModels.get(omissionsIndex).getReason() + "\n");
+                    } else {
+                        stringBuilder.append(journalOmissionModels.get(omissionsIndex).getDate() + "\n");
+                    }
                 }
             }
             row.createCell(1).setCellValue(Integer.valueOf(omissionAmount).toString() + "/" + Integer.valueOf(amountOfTrainings).toString());
