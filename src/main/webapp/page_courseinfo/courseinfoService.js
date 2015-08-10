@@ -74,18 +74,14 @@ angular.module('myApp.courseinfo')
 		};
 
 		courseInfoService.deleteFile = function(fileData, trainingName) {
-			var fd = new FormData();
 			fileData.trainingName = trainingName;
-			fd.append('file', JSON.stringify(fileData));
-
-			return $http.post('/training_controller/delete_file', fd, {
-				headers: {
-					'Content-Type': undefined
-				},
-				transformRequest: angular.identity
-			}).then(function (results) {
-				console.log('File deleted successfully!');
-				return results.data;
+			console.log(fileData);
+			return $http.post('/training_controller/delete_file', fileData).then(function(result) {
+				console.log("File deleted successfully");
+				return result.data;
+			}, function(err) {
+				console.log("Error deleting file " + err.statusCode);
+				return err;
 			});
 		};
 
