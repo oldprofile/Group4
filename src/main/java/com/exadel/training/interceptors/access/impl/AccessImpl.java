@@ -78,6 +78,9 @@ public class AccessImpl implements Access{
         admin.add(FEEDBACK_CONTROLLER + "/training_feedback");
         admin.add(FEEDBACK_CONTROLLER + "/create_training_feedback");
         admin.add(FEEDBACK_CONTROLLER + "/request_user_feedback");
+        admin.add(FEEDBACK_CONTROLLER + "/can_leave_user_feedback");
+        admin.add(FEEDBACK_CONTROLLER + "/can_leave_coach_feedback");
+        admin.add(FEEDBACK_CONTROLLER + "/can_leave_training_feedback");
 
         admin.add(TRAINING_CONTROLLER + "/training_info");
         admin.add(TRAINING_CONTROLLER + "/list");
