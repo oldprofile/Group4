@@ -50,7 +50,7 @@
 }
 
 .courseinfo-div .fa {
-	margin-right: 5px;
+	margin-right: 6px;
 }
 
 .courseinfo-table {
@@ -90,6 +90,10 @@
 
 .top-margin {
 	margin-top: 25px;
+}
+
+.margin-6 {
+	margin-top: 6px;
 }
 
 .margin-32 {

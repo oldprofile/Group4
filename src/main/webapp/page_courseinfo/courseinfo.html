@@ -47,20 +47,21 @@
 
 				<div class="row top-margin">
 					<div class="col-xs-12">
-						<button class="btn btn-default courseinfo-btn default-btn"
+						<button ng-if="!course.isCoach" class="btn btn-default courseinfo-btn default-btn"
 								ng-class="{'default-blue': !isSubscriber, 'default-red': isSubscriber}"
 								ng-disabled="subscriptionLoading" role="button" ng-click="subscribe()">
 							{{isSubscriber ? "Leave" : "Subscribe" }}
 							<i class="fa fa-spinner fa-spin" ng-show="subscriptionLoading"></i>
 						</button>
-						<button class="btn btn-default courseinfo-btn default-btn default-gray" role="button"
+						<button ng-if="course.feedbackAvailability" class="btn btn-default courseinfo-btn default-btn default-gray" role="button"
 								ng-click="leaveFeedback()">Leave Feedback
 						</button>
 
-						<button ng-if="course.isCoach || isAdmin" ng-click="goTo('/editcourse/'+ course.name)" class="btn btn-default courseinfo-btn default-btn default-blue" role="button">
-							<i class="fa fa-pencil-square-o"></i>Edit Course
-						</button>
-
+						<p class="margin-6">
+							<button ng-if="course.isCoach || isAdmin" ng-click="goTo('/editcourse/'+ course.name)" class="btn btn-default courseinfo-btn default-btn default-gray" role="button">
+								<i class="fa fa-pencil-square-o"></i>Edit Course
+							</button>
+						</p>
 					</div>
 				</div>
 
@@ -88,7 +89,7 @@
 								<v-pane-content>
 									<button ng-if="isAdmin" class="btn btn-default default-btn default-gray"
 											ng-click="addLesson()">
-										<i class="fa fa-plus"></i>Add lesson
+										<i class="fa fa-plus"></i>Add Lesson
 									</button>
 									<div class="scrollable-div scroll">
 										<table class="table table-striped courseinfo-table strikeable"
@@ -131,7 +132,7 @@
 
 										<button ng-if="isAdmin || course.isCoach" class="btn btn-default default-btn default-gray"
 												ng-click="uploadFiles()">
-											<i class="fa fa-upload"></i>Upload files
+											<i class="fa fa-upload"></i>Upload Files
 										</button>
 
 										<div class="scrollable-div scroll">
@@ -157,7 +158,7 @@
 								<v-pane-content>
 									<button ng-if="isAdmin" class="btn btn-default default-btn default-gray"
 											ng-click="addParticipant()">
-										<i class="fa fa-plus"></i>Add participant
+										<i class="fa fa-plus"></i>Add Participant
 									</button>
 									<table class="table courseinfo-table"
 										   ng-if="(course.listeners.length + course.spareUsers.length) != 0">
