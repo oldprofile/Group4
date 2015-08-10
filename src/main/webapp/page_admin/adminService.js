@@ -32,7 +32,7 @@ angular.module('myApp.admin')
 		};
       
         adminService.readAll = function(){
-          return $http.get("/news_controller/change_unread_all")
+          return $http.get("/news_controller/change_all_unread")
         }
 
 		adminService.sendStatistics = function (statData) {
