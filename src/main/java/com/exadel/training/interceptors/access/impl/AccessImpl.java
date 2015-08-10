@@ -65,6 +65,7 @@ public class AccessImpl implements Access{
         admin.add(NEWS_CONTROLLER + "/count_of_news");
         admin.add(NEWS_CONTROLLER + "/unread");
         admin.add(NEWS_CONTROLLER + "/change_unread");
+        admin.add(NEWS_CONTROLLER + "/change_all_unread");
 
         admin.add(OMISSION_CONTROLLER + "/statistics");
         admin.add(OMISSION_CONTROLLER + "/get_omissions");
