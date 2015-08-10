@@ -57,6 +57,48 @@ angular.module('myApp.courseinfo')
 			});
 		};
 
+		courseInfoService.addFiles = function(filesData, trainingName) {
+			var fd = new FormData();
+			fd.append('files', JSON.stringify(filesData));
+			fd.append('trainingName', JSON.stringify(trainingName));
+
+			return $http.post('/training_controller/add_files', fd, {
+				headers: {
+					'Content-Type': undefined
+				},
+				transformRequest: angular.identity
+			}).then(function (results) {
+				console.log('Files added successfully!');
+				return results.data;
+			});
+		};
+
+		courseInfoService.deleteFile = function(fileData, trainingName) {
+			var fd = new FormData();
+			fileData.trainingName = trainingName;
+			fd.append('file', JSON.stringify(fileData));
+
+			return $http.post('/training_controller/delete_file', fd, {
+				headers: {
+					'Content-Type': undefined
+				},
+				transformRequest: angular.identity
+			}).then(function (results) {
+				console.log('File deleted successfully!');
+				return results.data;
+			});
+		};
+
+		courseInfoService.getFiles = function(trainingName) {
+			return $http.get('/training_controller/files_info/' + trainingName).then(function(data) {
+				console.log("Got files successfully");
+				return data.data;
+			}, function(err) {
+				console.log("Error getting files: " + err.statusCode);
+				return err;
+			});
+		};
+
 		courseInfoService.leave = function (courseData) {
 			return $http.post('/user_controller/leave_training', courseData)
 				.then(function (data) {
