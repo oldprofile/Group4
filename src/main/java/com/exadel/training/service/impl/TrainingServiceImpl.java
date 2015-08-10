@@ -415,12 +415,12 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
-    public List<ShortParentTraining> getShortTrainingsByState(String userLogin, List<Integer> states) {
+    public List<ShortParentTraining> getShortTrainingsByState(String userLogin, List<Integer> states) throws NoSuchFieldException {
         List<ShortParentTraining> trainings = trainingRepository.findShortTrainingsSortByDate();
         List<ShortParentTraining> shortList = new ArrayList<>();
         for(int i = 0; i < trainings.size(); ++i) {
             ShortParentTraining training = trainings.get(i);
-            String state = training.getState();
+            int state = StateTraining.parseToInt(training.getState());
             if(states.contains(state)) {
                 training.setIsSubscriber(userRepository.checkSubscribeToTraining(training.getTrainingName(), userLogin));
                 shortList.add(training);
