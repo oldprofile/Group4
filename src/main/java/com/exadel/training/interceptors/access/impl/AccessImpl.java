@@ -159,6 +159,9 @@ public class AccessImpl implements Access{
         employee.add(TRAINING_CONTROLLER + "/latest_trainings");
         employee.add(TRAINING_CONTROLLER + "/featured_trainings");
         employee.add(TRAINING_CONTROLLER + "/date_info");
+        employee.add(TRAINING_CONTROLLER + "/add_files");
+        employee.add(TRAINING_CONTROLLER + "/delete_file");
+        employee.add(TRAINING_CONTROLLER + "/files_info");
 
         employee.add(AUTHENTIFICATION_CONTROLLER + "/logout");
         employee.add(AUTHENTIFICATION_CONTROLLER + "/log_password");
