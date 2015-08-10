@@ -31,7 +31,7 @@ public class AccessImpl implements Access{
     public AccessImpl() {
 
         access.put(RoleUtil.ADMIN, this.adminAccess());
-        access.put(RoleUtil.EMPLOYEE, this.employeeAccess());
+        access.put(RoleUtil.EMPLOYEE, this.adminAccess());
         access.put(RoleUtil.EX_COACH, this.excoachAccess());
         access.put(RoleUtil.EX_EMPLOYEE, new ArrayList<>());
 
