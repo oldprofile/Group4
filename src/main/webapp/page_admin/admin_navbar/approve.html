@@ -1,12 +1,12 @@
 <div ng-controller="ApproveController">
     <div class="approvetable">
-        <h5 class="space-16">Courses that need your attention</h5>
+        <h5 class="space-16" translate="COURSES_NEED_ATTENTION">Courses that need your attention</h5>
         <table class="table table-striped">
             <thead>
               <tr>
-                  <th>Name</th>
-                  <th>Coach</th>
-                  <th>Status</th>
+                  <th translate="NAME">Name</th>
+                  <th translate="COACH">Coach</th>
+                  <th translate="STATUS">Status</th>
               </tr>
             </thead>
             <tr ng-repeat="course in toApproveList track by $index" class="link-cursor" ng-click="goTo('/editcourse/' + course.trainingName + '/' + course.state)">
