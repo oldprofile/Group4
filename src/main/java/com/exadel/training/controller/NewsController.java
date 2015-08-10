@@ -54,7 +54,7 @@ public class NewsController {
     }
 
     @RequestMapping(value = "/change_all_unread", method = RequestMethod.GET)
-    public  @ResponseBody void changeAllUnread(HttpServletResponse httpServletResponse) {
+    public  @ResponseBody void changeAllUnread(HttpServletResponse httpServletResponse) throws NoSuchFieldException {
         userNewsService.updateAllUnreadToReadNews();
         httpServletResponse.setStatus(HttpServletResponse.SC_ACCEPTED);
 
