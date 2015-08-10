@@ -52,6 +52,11 @@ public class NewsController {
         userNewsService.changeUnread(id);
     }
 
+    @RequestMapping(value = "change_all_unread")
+    public  @ResponseBody void changeAllUnread() {
+        userNewsService.updateAllUnreadToReadNews();
+    }
+
     private List<News> getLatestNews(Long timestamp) {
         List<News> list = new ArrayList<>();
         News news = new News();

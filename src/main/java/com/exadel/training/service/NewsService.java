@@ -17,6 +17,7 @@ public interface NewsService {
 
     Page<News> getNewsPage(Integer page);
     List<News> getLatestNews(Long id);
+    List<News> updateAllUnreadToReadNews();
     DeferredResult<Long> getDefferdResult(Long state) throws NoSuchFieldException;
 
     int getCountOFNews();
