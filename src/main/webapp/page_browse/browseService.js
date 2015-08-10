@@ -5,8 +5,9 @@ angular.module('myApp.browse')
     
     
     browseAPI.getAllTrainings = function(){
-     
-        return ($http.get('training_controller/list')
+     debugger;
+      var data = {states:[2,3]};
+        return ($http.post('training_controller/list_by_states',data)
             .success(function(data) {
             
               return data;
