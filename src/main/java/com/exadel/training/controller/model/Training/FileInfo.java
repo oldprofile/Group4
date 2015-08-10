@@ -1,6 +1,8 @@
 package com.exadel.training.controller.model.Training;
 
 import com.exadel.training.model.EntityFile;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +33,20 @@ public class FileInfo {
         List<FileInfo> fileInfos = new ArrayList<>();
         for(EntityFile file: files)
             fileInfos.add(new FileInfo(file));
+        return fileInfos;
+    }
+
+    public static List<FileInfo> parseJsonToList(JSONArray jsonArray) {
+        List<FileInfo> fileInfos = new ArrayList<>();
+        for(Object obj: jsonArray) {
+            JSONObject jsonObject = (JSONObject)obj;
+            String name = (String)jsonObject.get("name");
+            String link = (String)jsonObject.get("link");
+            String data = (String)jsonObject.get("data");
+            FileInfo fileInfo = new FileInfo(name, link);
+            fileInfo.setData(data);
+            fileInfos.add(fileInfo);
+        }
         return fileInfos;
     }
 
