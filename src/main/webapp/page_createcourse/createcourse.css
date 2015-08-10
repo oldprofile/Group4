@@ -133,6 +133,7 @@ img[preloadable] {
 	border-color: rgb(86, 172, 103) !important;
 	height: 36px !important;
 	font-size: 14px !important;
+	font-weight: 500 !important;
 }
 
 .submit-btn:hover {
