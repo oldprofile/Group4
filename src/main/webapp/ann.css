@@ -217,3 +217,7 @@ tr.rowWithSecret:hover .hiddenCell {
 .width-60 {
 	width:60% !important;
 }
+
+#editButton {
+	width: 140px !important;
+}
