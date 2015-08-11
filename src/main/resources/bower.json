@@ -18,7 +18,8 @@
     "v-accordion": "~1.2.7",
     "angular-tablesort": "~1.0.8",
     "angular-toasty": "~1.0.2",
-    "angular-translate": "~2.7.2"
+    "angular-translate": "~2.7.2",
+"angular-translate-storage-cookie": "~2.7.2"
   },
   "resolutions": {
     "angular": "~1.4.0"
