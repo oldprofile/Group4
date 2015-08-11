@@ -359,7 +359,7 @@ angular.module('myApp.translations', ['pascalprecht.translate', 'ngCookies'], ['
 		'STUDENT': 'Cтудент',
 		'STUDENT_ARCHIVE': 'Архив сотрудника',
 		'STUDENT_FEEDBACKS': 'Отзывы о сотруднике',
-		'SUBSCRIBE': 'Подписаться на курс',
+		'SUBSCRIBE': 'Подписаться',
 		'TERMS': 'Условия',
 		'TIMETABLE': 'Расписание',
 		'TOP_RATED_COURSES': 'Топ Курсы',
