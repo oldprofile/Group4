@@ -1,18 +1,18 @@
 <div class="modal-header">
-	<h3 class="modal-title">Add lesson</h3>
+	<h3 class="modal-title" translate="ADD_LESSON">Add lesson</h3>
 </div>
 <div class="modal-body">
 	<form name="lessonForm">
 		<div class="row">
 			<div class="col-xs-12">
-				<p class="info-small courseinfo-label float-left no-bottom-margin" id="pAddDate">Date:
+				<p class="info-small courseinfo-label float-left no-bottom-margin" id="pAddDate" translate="DATE_COLON">Date:
 				</p>
 
 				<div class="calendar">
 					<a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown">
 						<div class="input-group">
 							<input type="text" class="form-control calendar"
-								   ng-value="newDate | date: 'medium'" placeholder="click to enter" disabled>
+								   ng-value="newDate | date: 'medium'" placeholder="{{'CLICK_TO_ENTER' | translate}}" disabled>
 							<span class="input-group-addon addon-calendar">
                                 <i class="fa fa-calendar"></i>
                             </span>
@@ -28,9 +28,9 @@
 
 		<div class="row">
 			<div class="col-xs-12">
-				<p class="info-small courseinfo-label float-left no-bottom-margin">Place:
+				<p class="info-small courseinfo-label float-left no-bottom-margin" translate="PLACE_COLON">Place:
 					<input class="material-input" name="place" type="text"
-						   placeholder="click to enter" ng-model="newPlace"
+						   placeholder="{{'CLICK_TO_ENTER' | translate}}" ng-model="newPlace"
 						   required>
 				</p>
 			</div>
@@ -40,5 +40,5 @@
 </div>
 <div class="modal-footer">
 	<button class="btn btn-default default-btn default-blue" ng-click="ok()">OK</button>
-	<button class="btn btn-default default-btn default-gray" ng-click="cancel()">Cancel</button>
+	<button class="btn btn-default default-btn default-gray" ng-click="cancel()" translate="CANCEL">Cancel</button>
 </div>

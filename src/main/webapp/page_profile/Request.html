@@ -1,7 +1,7 @@
 <div class="modal-header">
 
-  <h3 class="modal-title">Request Feedback on {{user.name}}</h3>
-  <h4 class="modal-title">Choose training:</h4>
+  <h3 class="modal-title"><span translate="REQUEST_ON">Request feedback on</span> {{user.name}}</h3>
+  <h4 class="modal-title" translate="CHOOSE_TRAINING">Choose training:</h4>
   
 </div>
   <div style="padding:16px; overflow:auto;">
@@ -9,9 +9,9 @@
         <thead>
           <tr>
               <th>#</th>
-              <th>Course</th>
-              <th>Coach</th>
-              <th>Request</th>
+              <th translate="COURSE">Course</th>
+              <th translate="COACH">Coach</th>
+              <th translate="REQUEST">Request</th>
           </tr>
         </thead>
         <tr ng-repeat="f in archive" class="link-cursor"  ng-click="check($index)">
@@ -24,6 +24,6 @@
     </div>
         
 <div class="modal-footer">
-    <button class="btn btn-default default-btn default-blue" ng-click="ok()">Request</button>
-    <button class="btn btn-default default-btn default-gray" ng-click="cancel()">Cancel</button>
+    <button class="btn btn-default default-btn default-blue" ng-click="ok()" translate="REQUEST">Request</button>
+    <button class="btn btn-default default-btn default-gray" ng-click="cancel()" translate="CANCEL">Cancel</button>
 </div>

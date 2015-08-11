@@ -1,5 +1,5 @@
 <div class="modal-header">
-	<h3 class="modal-title">Add external coach</h3>
+	<h3 class="modal-title" translate="ADD_EXTERNAL_COACH">Add external coach</h3>
 </div>
 <div class="modal-body">
 
@@ -7,9 +7,9 @@
 
 		<div class="row">
 			<div class="col-xs-12">
-				<p class="info-small courseinfo-label float-left no-bottom-margin">Coach name:
+				<p class="info-small courseinfo-label float-left no-bottom-margin" translate="COACH_NAME">Coach name:
 					<input class="material-input" name="name" id="coachName" type="text"
-						   placeholder="click to enter" ng-model="coachInfo.name"
+						   placeholder="{{'CLICK_TO_ENTER' | translate}}" ng-model="coachInfo.name"
 						   required>
 				</p>
 			</div>
@@ -19,9 +19,9 @@
 
 		<div class="row">
 			<div class="col-xs-12">
-				<p class="info-small courseinfo-label float-left no-bottom-margin">Coach login:
+				<p class="info-small courseinfo-label float-left no-bottom-margin" translate="COACH_LOGIN">Coach login:
 					<input class="material-input" name="login" id="coachLogin" type="text"
-						   placeholder="click to enter" ng-model="coachInfo.login"
+						   placeholder="{{'CLICK_TO_ENTER' | translate}}" ng-model="coachInfo.login"
 						   required>
 				</p>
 			</div>
@@ -29,9 +29,9 @@
 
 		<div class="row">
 			<div class="col-xs-12">
-				<p class="info-small courseinfo-label float-left no-bottom-margin">Coach password:
+				<p class="info-small courseinfo-label float-left no-bottom-margin" translate="COACH_PASSWORD">Coach password:
 					<input class="material-input" name="password" id="coachPassword" type="password"
-						   placeholder="click to enter" ng-model="coachInfo.password"
+						   placeholder="{{'CLICK_TO_ENTER' | translate}}" ng-model="coachInfo.password"
 						   required>
 				</p>
 			</div>
@@ -40,9 +40,9 @@
 
 		<div class="row">
 			<div class="col-xs-12">
-				<p class="info-small courseinfo-label float-left no-bottom-margin">Coach email:
+				<p class="info-small courseinfo-label float-left no-bottom-margin" translate="COACH_EMAIL">Coach email:
 					<input class="material-input" name="email" id="coachEmail" type="email"
-						   placeholder="click to enter" ng-model="coachInfo.email"
+						   placeholder="{{'CLICK_TO_ENTER' | translate}}" ng-model="coachInfo.email"
 						   required>
 				</p>
 			</div>
@@ -51,9 +51,9 @@
 
 		<div class="row">
 			<div class="col-xs-12">
-				<p class="info-small courseinfo-label float-left no-bottom-margin">Coach phone number:
+				<p class="info-small courseinfo-label float-left no-bottom-margin" translate="COACH_PHONE">Coach phone number:
 					<input class="material-input" name="phone" id="coachPhone" type="text"
-						   placeholder="click to enter" ng-model="coachInfo.numberPhone"
+						   placeholder="{{'CLICK_TO_ENTER' | translate}}" ng-model="coachInfo.numberPhone"
 						   required>
 				</p>
 			</div>
@@ -65,5 +65,5 @@
 </div>
 <div class="modal-footer">
 	<button class="btn btn-default default-btn default-blue" ng-click="ok()">OK</button>
-	<button class="btn btn-default default-btn default-gray" ng-click="cancel()">Cancel</button>
+	<button class="btn btn-default default-btn default-gray" ng-click="cancel()" translate="CANCEL">Cancel</button>
 </div>

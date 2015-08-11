@@ -5,7 +5,7 @@
 			<div class="form-group form-group-md row repeating-row">
 				<div class="col-xs-12">
 
-					<span class="info-small courseinfo-label float-left no-bottom-margin" id="pRepeatOn">Repeat on:
+					<span class="info-small courseinfo-label float-left no-bottom-margin" id="pRepeatOn" translate="REPEAT_ON">Repeat on:
 					</span>
 
 					<div>
@@ -20,13 +20,13 @@
 
 			<div class="row">
 				<div class="col-xs-12">
-					<p class="info-small courseinfo-label float-left no-bottom-margin" id="pRepeatStartDate">Start date:
+					<p class="info-small courseinfo-label float-left no-bottom-margin" id="pRepeatStartDate" translate="START_DATE">Start date:
 					</p>
 					<div class="calendar">
 						<a class="dropdown-toggle" id="dropdown1" role="button" data-toggle="dropdown">
 							<div class="input-group">
 								<input type="text" class="form-control calendar"
-									   ng-value="temp.startsOn | date: 'medium'" placeholder="click to add date"
+									   ng-value="temp.startsOn | date: 'medium'" placeholder="{{'CLICK_TO_ADD_DATE' | translate}}"
 									   disabled>
 							<span class="input-group-addon addon-calendar">
 								<i class="fa fa-calendar"></i>
@@ -45,9 +45,9 @@
 
 			<div class="row">
 				<div class="col-xs-12">
-					<p class="info-small courseinfo-label float-left no-bottom-margin">Number of lessons:
+					<p class="info-small courseinfo-label float-left no-bottom-margin"><span translate="NUMBER_OF_LESSONS">Number of lessons</span>:
 						<input class="material-input" name="lessonsNumber" type="number"
-							   placeholder="click to enter" ng-model="temp.lessonsNumber"
+							   placeholder="{{'CLICK_TO_ENTER' | translate}}" ng-model="temp.lessonsNumber"
 							   required>
 					</p>
 				</div>

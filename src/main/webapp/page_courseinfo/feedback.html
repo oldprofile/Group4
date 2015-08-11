@@ -1,63 +1,67 @@
 <div class="modal-header">
-  <h3 class="modal-title">{{isView ? "The Feedback" : "Leave your Feedback"}}</h3>
-  <h5 class="modal-title" ng-show="isView" ng-if="isAdmin">From: {{feedback.feedbackerName}}</h5>
-  <span class="btn btn-file default-btn default-gray" ng-show="canDelete()" id="delete-feedback" ng-click="deleteFeedback()">
+	<h3 class="modal-title">{{isView ? ('FEEDBACK' | translate) : ('LEAVE_YOUR_FEEDBACK' | translate)}}</h3>
+	<h5 class="modal-title" ng-show="isView" ng-if="isAdmin"><span translate="FROM">From</span>:
+		{{feedback.feedbackerName}}</h5>
+	<span class="btn btn-file default-btn default-gray" ng-show="canDelete()" id="delete-feedback"
+		  ng-click="deleteFeedback()"></span>
 </div>
-        <div class="modal-body">
-            
-          <form  >
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" name="clear"  ng-model="feedback.clear" ng-disabled="isView" >
-                Was the course <b>clear?</b>
-              </label>
-            </div>
-            
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" name="interesting"  ng-model="feedback.interesting" ng-disabled="isView" >
-                Was it <b>interesting?</b>
-              </label>
-            </div>
-            
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" name="newMaterial"  ng-model="feedback.newMaterial" ng-disabled="isView" >
-                Was the material <b>fresh?</b>
-              </label>
-            </div>
-            
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" name="recommendation"  ng-model="feedback.recommendation" ng-disabled="isView" >                  Will you recommend this <b>course?</b>
-              </label>
-            </div>
-            
-            <div class="select">
-              
-                <select ng-model="feedback.effective" ng-disabled="isView">
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5</option>
-                </select>
-                Rate <b>the effectiveness!</b>
-              
-            </div>
-            
-            <div class="other-textarea" style="padding-top:16px;">
-              <p>Anything else?</p>
-              <textarea class="form-control" name="description" rows="3" placeholder="Имеете шота сказать?" ng-model="feedback.other" ng-disabled="isView"></textarea> 
-            </div>
-            
-            
-            
-          
-          </form>
-          
-        </div>
+<div class="modal-body">
+
+	<form>
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" name="clear" ng-model="feedback.clear" ng-disabled="isView">
+				<span translate="WAS_COURSE_CLEAR">Was the course <b>clear?</b></span>
+			</label>
+		</div>
+
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" name="interesting" ng-model="feedback.interesting" ng-disabled="isView">
+				<span translate="WAS_INTERESTING">Was it <b>interesting?</b></span>
+			</label>
+		</div>
+
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" name="newMaterial" ng-model="feedback.newMaterial" ng-disabled="isView">
+				<span translate="WAS_FRESH">Was the material <b>fresh?</b></span>
+			</label>
+		</div>
+
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" name="recommendation" ng-model="feedback.recommendation" ng-disabled="isView">
+				<span translate="WILL_RECOMMEND">Will you recommend this <b>course?</b></span>
+			</label>
+		</div>
+
+		<div class="select">
+
+			<select ng-model="feedback.effective" ng-disabled="isView">
+				<option>1</option>
+				<option>2</option>
+				<option>3</option>
+				<option>4</option>
+				<option>5</option>
+			</select>
+			<span translate="RATE_EFFECTIVENESS">Rate <b>the effectiveness!</b></span>
+
+		</div>
+
+		<div class="other-textarea" style="padding-top:16px;">
+			<p translate="ANYTHING_ELSE">Anything else?</p>
+			<textarea class="form-control" name="description" rows="3" placeholder="{{'WHAT_TO_ADD' | translate}}"
+					  ng-model="feedback.other" ng-disabled="isView"></textarea>
+		</div>
+
+
+	</form>
+
+</div>
 <div class="modal-footer">
-    <button class="btn btn-default default-btn default-blue" ng-click="ok()" ng-hide="isView">Leave Feedback</button>
-    <button class="btn btn-default default-btn default-blue" ng-click="cancel()">Cancel</button>
+	<button class="btn btn-default default-btn default-blue" ng-click="ok()" ng-hide="isView"
+			translate="LEAVE_FEEDBACK">Leave Feedback
+	</button>
+	<button class="btn btn-default default-btn default-gray" ng-click="cancel()" translate="CANCEL">Cancel</button>
 </div>

@@ -1,100 +1,111 @@
 <div class="modal-header">
 
-  <h3 class="modal-title">{{isView ? "The Feedback" : "Leave your Feedback"}}</h3>
-  <h5 class="modal-title">On Coach {{user.name}}</h5>
-  <h5 class="modal-title" ng-show="isView">From: {{feedback.feedbackerName}}</h5>
-  <span class="btn btn-file default-btn default-gray" ng-show="canDelete()" id="delete-feedback" ng-click="deleteFeedback()">
+	<h3 class="modal-title">{{isView ? ('FEEDBACK' | translate) : ('LEAVE_YOUR_FEEDBACK' | translate)}}</h3>
+	<h5 class="modal-title"><span translate="ON_COACH">On Coach</span> {{user.name}}</h5>
+	<h5 class="modal-title" ng-show="isView"><span translate="FROM">From</span>: {{feedback.feedbackerName}}</h5>
+  <span class="btn btn-file default-btn default-gray" ng-show="canDelete()" id="delete-feedback"
+		ng-click="deleteFeedback()">
     <span class="glyphicon glyphicon-trash"></span></span>
 
-  
+
 </div>
-        <div class="modal-body">
-            
-          <form  >
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" name="clear"  ng-model="feedback.howEnounceMaterial" ng-disabled="isView" >
-                Does {{user.name}} <b>teaches well</b>?
-              </label>
-            </div>
-            
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" name="interesting"  ng-model="feedback.explainHardness" ng-disabled="isView" >
-                Is <b>the hardness easily explained</b>
-              </label>
-            </div>
-            
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" name="newMaterial"  ng-model="feedback.highlightMain" ng-disabled="isView" >
-                The main is <b>emphasized?</b>
-              </label>
-            </div>
-            
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" name="recommendation"  ng-model="feedback.interesting" ng-disabled="isView" > Was it<b> interesting?</b>
-              </label>
-            </div>
-            
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" name="askingQuestions"  ng-model="feedback.askingQuestions" ng-disabled="isView" >Has {{user.name}} <b>answered the questions?</b>
-              </label>
-            </div>
-          
-          <div class="checkbox">
-              <label>
-                <input type="checkbox" name="explainHowToUseNew"  ng-model="feedback.explainHowToUseNew" ng-disabled="isView" >Using <b>new is easy</b> with {{user.name}}?
-              </label>
-            </div>
-            
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" name="creativity"  ng-model="feedback.creativity" ng-disabled="isView" >{{user.name}} is <b>creative</b>?
-              </label>
-            </div>
-            
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" name="kindness"  ng-model="feedback.kindness" ng-disabled="isView" >{{user.name}} is a <b>kind person</b>?
-              </label>
-            </div>
-            
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" name="patience"  ng-model="feedback.patience" ng-disabled="isView" >{{user.name}} is a <b>patient coach</b>?
-              </label>
-            </div>
-            
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" name="patience"  ng-model="feedback.erudition" ng-disabled="isView" >{{user.name}} is a <b>erudite</b> person?
-              </label>
-            </div>
-            
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" name="styleOfTeaching"  ng-model="feedback.styleOfTeaching" ng-disabled="isView" >Did you, personally, <b>like to learn from {{user.name}}?</b> 
-              </label>
-            </div>
-            
-            
-            
-            
-            <div class="other-textarea" style="padding-top:16px;">
-              
-              <textarea class="form-control" name="description" rows="3" placeholder="Имеете шота сказать?" ng-model="feedback.other" ng-disabled="isView"></textarea> 
-            </div>
-            
-            
-            
-          
-          </form>
-          
-        </div>
+<div class="modal-body">
+
+	<form>
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" name="clear" ng-model="feedback.howEnounceMaterial" ng-disabled="isView">
+				<span translate="DEPENDS_DOES">Does</span> {{user.name}} <span translate="DEPENDS_TEACH"><b>teach
+				well</b></span>?
+			</label>
+		</div>
+
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" name="interesting" ng-model="feedback.explainHardness" ng-disabled="isView">
+				<span translate="HARDNESS">Is <b>the hardness easily explained</b></span>
+			</label>
+		</div>
+
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" name="newMaterial" ng-model="feedback.highlightMain" ng-disabled="isView">
+				<span translate="FEEDBACK_MAIN">The main is <b>emphasized?</b></span>
+			</label>
+		</div>
+
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" name="recommendation" ng-model="feedback.interesting" ng-disabled="isView"> <span
+				translate="WAS_INTERESTING">Was it<b> interesting?</b></span>
+			</label>
+		</div>
+
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" name="askingQuestions" ng-model="feedback.askingQuestions"
+					   ng-disabled="isView"><span translate="DEPENDS_HAS">Has</span> {{user.name}} <span
+				translate="DEPENDS_ANSWERED"><b>answered the questions?</b></span>
+			</label>
+		</div>
+
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" name="explainHowToUseNew" ng-model="feedback.explainHowToUseNew"
+					   ng-disabled="isView"><span translate="USING_NEW">Using <b>new is easy</b> with </span>{{user.name}}?
+			</label>
+		</div>
+
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" name="creativity" ng-model="feedback.creativity" ng-disabled="isView">{{user.name}}<span
+				translate="IS_CREATIVE">is <b>creative</b>?</span>
+			</label>
+		</div>
+
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" name="kindness" ng-model="feedback.kindness" ng-disabled="isView">{{user.name}}
+				<span translate="IS_KIND">is a <b>kind person</b>?</span>
+			</label>
+		</div>
+
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" name="patience" ng-model="feedback.patience" ng-disabled="isView">{{user.name}}
+				<span translate="IS_PATIENT">is a <b>patient coach</b>?</span>
+			</label>
+		</div>
+
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" name="patience" ng-model="feedback.erudition" ng-disabled="isView">{{user.name}}
+				<span translate="IS_ERUDITE">is a <b>erudite</b> person?</span>
+			</label>
+		</div>
+
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" name="styleOfTeaching" ng-model="feedback.styleOfTeaching"
+					   ng-disabled="isView"><span
+				translate="DID_YOU_LIKE">Did you, personally, like to learn from</span> {{user.name}}?
+			</label>
+		</div>
+
+
+		<div class="other-textarea" style="padding-top:16px;">
+
+			<textarea class="form-control" name="description" rows="3" placeholder="{{'WHAT_TO_ADD' | translate}}"
+					  ng-model="feedback.other" ng-disabled="isView"></textarea>
+		</div>
+
+
+	</form>
+
+</div>
 <div class="modal-footer">
-    <button class="btn btn-default default-btn default-blue" ng-click="ok()" ng-hide="isView">Leave Feedback</button>
-    <button class="btn btn-default default-btn default-gray" ng-click="cancel()">Cancel</button>
+	<button class="btn btn-default default-btn default-blue" ng-click="ok()" ng-hide="isView"
+			translate="LEAVE_FEEDBACK">Leave Feedback
+	</button>
+	<button class="btn btn-default default-btn default-gray" ng-click="cancel()" translate="CANCEL">Cancel</button>
 </div>

@@ -28,8 +28,8 @@ menuApp.controller("HeaderMenuController", ['$scope', '$location', "getCategorie
 		$location.path("/createcourse");
 	};
 
-	$scope.changeLanguage = function() {
-		$translate.use(($translate.use() === 'en_EN') ? 'ru_RU' : 'en_EN');
+	$scope.changeLanguage = function(language) {
+		$translate.use(language);
 	};
 
 	$scope.categories = [];

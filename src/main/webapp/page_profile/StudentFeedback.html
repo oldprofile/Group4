@@ -1,68 +1,69 @@
 <div class="modal-header">
 
-  <h3 class="modal-title">{{isView ? "The Feedback" : "Leave your Feedback"}}</h3>
-  <h5 class="modal-title">On {{user.name}}</h5>
-  <h5 class="modal-title" ng-show="isView">From: {{feedback.feedbackerName}}</h5>
-  <span class="btn btn-file default-btn default-gray" ng-show="canDelete()" id="delete-feedback" ng-click="deleteFeedback()">
-  
+	<h3 class="modal-title">{{isView ? ('FEEDBACK' | translate) : ('LEAVE_YOUR_FEEDBACK' | translate)}}</h3>
+	<h5 class="modal-title"><span translate="ON">On</span> {{user.name}}</h5>
+	<h5 class="modal-title" ng-show="isView"><span translate="FROM">From</span>: {{feedback.feedbackerName}}</h5>
+	<span class="btn btn-file default-btn default-gray" ng-show="canDelete()" id="delete-feedback"
+		  ng-click="deleteFeedback()"></span>
 
-  
+
 </div>
-        <div class="modal-body">
-            
-          <form  >
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" name="clear"  ng-model="feedback.attendance" ng-disabled="isView" >
-                Has {{user.name}} <b>attended</b> the lectures?
-              </label>
-            </div>
-            
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" name="interesting"  ng-model="feedback.attitude" ng-disabled="isView" >
-                Is {{user.name}} <b>willing to learn?</b>
-              </label>
-            </div>
-            
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" name="newMaterial"  ng-model="feedback.commSkills" ng-disabled="isView" >
-                Was the student <b>communicative?</b>
-              </label>
-            </div>
-            
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" name="recommendation"  ng-model="feedback.motivation" ng-disabled="isView" >Is {{user.name}} <b>motivated?</b>
-              </label>
-            </div>
-            
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" name="focusOnResult"  ng-model="feedback.focusOnResult" ng-disabled="isView" >Was the student <b>focused on the result?</b>
-              </label>
-            </div>
-            
-            <div ng-show="isEnglish"class="other-textarea" style="padding-top:16px;">
-              <p>English Specific</p>
-              <textarea class="form-control" name="description" rows="1" placeholder="Assessment" ng-model="feedback.assessment" ng-disabled="isView"></textarea>
-               <textarea class="form-control" name="description" rows="1" placeholder="Level" ng-model="feedback.level" ng-disabled="isView"></textarea>
-            </div>
-            
-            
-            <div class="other-textarea" style="padding-top:16px;">
-              
-              <textarea class="form-control" name="description" rows="3" placeholder="Имеете шота сказать?" ng-model="feedback.other" ng-disabled="isView"></textarea> 
-            </div>
-            
-            
-            
-          
-          </form>
-          
-        </div>
+<div class="modal-body">
+
+	<form>
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" name="clear" ng-model="feedback.attendance" ng-disabled="isView">
+				<span translate="HAS_ATTENDED">Has he <b>attended</b> the lectures?</span>
+			</label>
+		</div>
+
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" name="interesting" ng-model="feedback.attitude" ng-disabled="isView">
+				<span translate="IS_WILLING">Is he <b>willing to learn?</b></span>
+			</label>
+		</div>
+
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" name="newMaterial" ng-model="feedback.commSkills" ng-disabled="isView">
+				<span translate="WAS_COMMUNICATIVE">Was the student <b>communicative?</b></span>
+			</label>
+		</div>
+
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" name="recommendation" ng-model="feedback.motivation" ng-disabled="isView"><span translate="IS_MOTIVATED">Is the student <b>motivated?</b></span>
+			</label>
+		</div>
+
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" name="focusOnResult" ng-model="feedback.focusOnResult" ng-disabled="isView"><span translate="WAS_FOCUSED">Was the student <b>focused on the result?</b></span>
+			</label>
+		</div>
+
+		<div ng-show="isEnglish" class="other-textarea" style="padding-top:16px;">
+			<p translate="ENGLISH_SPECIFIC">English Specific</p>
+			<textarea class="form-control" name="description" rows="1" placeholder="{{'ASSESSMENT' | translate}}"
+					  ng-model="feedback.assessment" ng-disabled="isView"></textarea>
+			<textarea class="form-control" name="description" rows="1" placeholder="{{'LEVEL' | translate}}" ng-model="feedback.level"
+					  ng-disabled="isView"></textarea>
+		</div>
+
+
+		<div class="other-textarea" style="padding-top:16px;">
+
+			<textarea class="form-control" name="description" rows="3" placeholder="{{'WHAT_TO_ADD' | translate}}"
+					  ng-model="feedback.other" ng-disabled="isView"></textarea>
+		</div>
+
+
+	</form>
+
+</div>
 <div class="modal-footer">
-    <button class="btn btn-default default-btn default-blue" ng-click="ok()" ng-hide="isView">Leave Feedback</button>
-    <button class="btn btn-default default-btn default-gray" ng-click="cancel()">Cancel</button>
+	<button class="btn btn-default default-btn default-blue" ng-click="ok()" ng-hide="isView" translate="LEAVE_FEEDBACK">Leave Feedback</button>
+	<button class="btn btn-default default-btn default-gray" ng-click="cancel()" translate="CANCEL">Cancel</button>
 </div>

@@ -10,20 +10,20 @@
           <form ng-submit="submit()" role="form">
             <div class="form-inline">
               <label><span class="glyphicon glyphicon-user"></span></label>
-              <input type="text" class="form-control" placeholder="Username" ng-model="login" autofocus>
+              <input type="text" class="form-control" placeholder="{{'USERNAME' | translate}}" ng-model="login" autofocus>
             </div>  
             <div class="form-inline">
               <label ><span class="glyphicon glyphicon-lock"></span></label>
-              <input type="password" class="form-control" placeholder="Password"  ng-model="password">
+              <input type="password" class="form-control" placeholder="{{'PASSWORD' | translate}}"  ng-model="password">
             </div>
               <div class="checkbox">
                 <label>
                   <input type="checkbox" name="remember"  ng-model="isRemember">
-                  <span>Remember Me</span>
+                  <span translate="REMEMBER_ME">Remember Me</span>
                 </label>
               </div>
 
-            <button type="submit" class="btn btn-default default-btn default-gray">Log in</button>
+            <button type="submit" class="btn btn-default default-btn default-gray" translate="LOG_IN">Log in</button>
           </form>
         </div>  
         <div class="col-xs-2"></div>

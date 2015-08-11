@@ -6,49 +6,49 @@
 				<div class="col-xs-12 col-sm-6">
 
 					<div class="row courseinfo-h1">
-						<input class="material-input" type="text" name="name" id="name" placeholder="Enter course name"
+						<input class="material-input" type="text" name="name" id="name" placeholder="{{'ENTER_COURSE_NAME' | translate}}"
 							   ng-model="courseInfo.name" ng-disabled="isEdited" required>
 					</div>
 
 					<div ng-if="isAdmin" class="row">
 						<div class="col-xs-12">
-							<p class="info-small color-gray float-left">Coach: </p>
+							<p class="info-small color-gray float-left" translate="COACH_COLON">Coach: </p>
 
 							<div class="dropdown float-left">
 								<p class="info-small dropdown-toggle" id="coachPopover" type="button"
 								   popover-placement="bottom" popover-trigger="click"
 								   popover-template="'/page_createcourse/coachPopover.html'">
-									<a href="" class="link-select" ng-if="!temp.coach.name">select</a>
+									<a href="" class="link-select" ng-if="!temp.coach.name" translate="SELECT">select</a>
 									<a href="" class="link-select" ng-if="temp.coach.name">{{temp.coach.name}}</a>
 								</p>
 							</div>
 						</div>
 					</div>
 
-					<p ng-hide="temp.tempDates.length == 0 && !temp.startsOn" class="courseinfo-h5 really-big-margin">Start date: {{isRepeating ? (temp.startsOn | date:"dd MMMM") : (temp.tempDates[0] | date:"dd MMMM")}}</p>
+					<p ng-hide="temp.tempDates.length == 0 && !temp.startsOn" class="courseinfo-h5 really-big-margin"><span translate="START_DATE">Start date:</span> {{isRepeating ? (temp.startsOn | date:"dd MMMM") : (temp.tempDates[0] | date:"dd MMMM")}}</p>
 
-					<p ng-hide="temp.tempDates.length == 0 && (temp.lessonsNumber == 0 || !temp.lessonsNumber)" class="courseinfo-h5 color-gray small-space">{{isRepeating ? temp.lessonsNumber : temp.tempDates.length}} lessons</p>
+					<p ng-hide="temp.tempDates.length == 0 && (temp.lessonsNumber == 0 || !temp.lessonsNumber)" class="courseinfo-h5 color-gray small-space">{{isRepeating ? temp.lessonsNumber : temp.tempDates.length}} <span translate="LESSONS_LOWERCASE">lessons</span></p>
 
 
 
 					<div class="row">
 						<div class="col-xs-12 really-big-margin">
-							<p class="courseinfo-h5 float-left">Category: </p>
+							<p class="courseinfo-h5 float-left"><span translate="CATEGORY">Category</span>: </p>
 
 							<div class="dropdown float-left">
 								<p class="courseinfo-h5 dropdown-toggle no-bottom-margin" id="categoryPopover" type="button"
 								   popover-placement="bottom" popover-trigger="click"
 								   popover-template="'/page_createcourse/categoryPopover.html'">
-									<a href="" class="link-select" ng-if="!courseInfo.idCategory">select</a>
+									<a href="" class="link-select" ng-if="!courseInfo.idCategory" translate="SELECT">select</a>
 									<a href="" class="link-select" ng-if="courseInfo.idCategory">{{categoriesObj[courseInfo.idCategory-1].name}}</a>
 								</p>
 							</div>
 						</div>
 					</div>
 
-					<p class="info-small courseinfo-label color-gray">Recommended for:
+					<p class="info-small courseinfo-label color-gray" translate="RECOMMENDED_FOR">Recommended for:
 						<input class="material-input" name="audience" id="audience" type="text"
-							   placeholder="click to enter" ng-model="courseInfo.audience" required>
+							   placeholder="{{'CLICK_TO_ENTER' | translate}}" ng-model="courseInfo.audience" required>
 					</p>
 
 				</div>
@@ -58,7 +58,7 @@
 						<div ng-show="!temp.pictureHolder" class="col-xs-12">
 							<div class="courseinfo-img-container flex-container">
 								<span class="btn btn-file default-btn default-gray" id="addPictureBtn">
-									<i class="fa fa-camera"></i> Click to add picture
+									<i class="fa fa-camera"></i><span translate="CLICK_ADD_PICTURE">Click to add picture</span>
 									<input type="file" ng-file-select="onFileSelect($files)" ng-click="nullProgress()">
 								</span>
 							</div>
@@ -86,13 +86,13 @@
 					<div ng-if="isAdmin">
 						<div class="row">
 							<div class="col-xs-12">
-								<p class="info-small courseinfo-label float-left no-bottom-margin">Course type: </p>
+								<p class="info-small courseinfo-label float-left no-bottom-margin" translate="COURSE_TYPE">Course type: </p>
 
 								<div class="dropdown float-left">
 									<p class="info-small dropdown-toggle no-bottom-margin" type="button" id="typePopover"
 									   popover-placement="bottom" popover-trigger="click"
 									   popover-template="'/page_createcourse/typePopover.html'">
-										<a href="" class="link-select" ng-if="!courseInfo.isInternal">select</a>
+										<a href="" class="link-select" ng-if="!courseInfo.isInternal" translate="SELECT">select</a>
 										<a href="" class="link-select" ng-if="courseInfo.isInternal">{{courseInfo.isInternal
 											? 'Internal' : 'External'}}</a>
 									</p>
@@ -103,13 +103,13 @@
 
 					<div class="row">
 						<div class="col-xs-12">
-							<p class="info-small courseinfo-label float-left no-bottom-margin">Language: </p>
+							<p class="info-small courseinfo-label float-left no-bottom-margin" translate="LANGUAGE_COLON">Language: </p>
 
 							<div class="dropdown float-left">
 								<p class="info-small dropdown-toggle no-bottom-margin" type="button" id="langPopover"
 								   popover-placement="bottom" popover-trigger="click"
 								   popover-template="'/page_createcourse/langPopover.html'">
-									<a href="" class="link-select" ng-if="!courseInfo.language">select</a>
+									<a href="" class="link-select" ng-if="!courseInfo.language" translate="SELECT">select</a>
 									<a href="" class="link-select"
 									   ng-if="courseInfo.language">{{courseInfo.language}}</a>
 								</p>
@@ -119,9 +119,9 @@
 
 					<div class="row">
 						<div class="col-xs-12">
-							<p class="info-small courseinfo-label float-left no-bottom-margin">Number of participants:
+							<p class="info-small courseinfo-label float-left no-bottom-margin" translate="NUMBER_OF_PARTICIPANTS">Number of participants:
 								<input class="material-input" name="participantsNumber" id="participantsNumber" type="number"
-									   placeholder="click to enter" ng-model="courseInfo.participantsNumber"
+									   placeholder="{{'CLICK_TO_ENTER' | translate}}" ng-model="courseInfo.participantsNumber"
 									   required>
 							</p>
 						</div>
@@ -130,8 +130,8 @@
 
 					<div ng-if="isAdmin" class="row">
 						<div class="col-xs-12">
-							<p class="info-small courseinfo-label no-bottom-margin float-left">Place:
-								<input class="material-input" name="place" id="place" type="text" placeholder="Place"
+							<p class="info-small courseinfo-label no-bottom-margin float-left" translate="PLACE_COLON">Place:
+								<input class="material-input" name="place" id="place" type="text" placeholder="{{'CLICK_TO_ENTER' | translate}}"
 									   ng-model="temp.place" required>
 							</p>
 						</div>
@@ -143,7 +143,7 @@
 			<div class="row top-margin">
 				<div class="col-xs-12 info-small">
 					<textarea class="material-input scroll" name="description" id="description" rows="5"
-							  placeholder="Write your course description here..." ng-model="courseInfo.description"
+							  placeholder="{{'COURSE_DESCRIPTION' | translate}}" ng-model="courseInfo.description"
 							  required></textarea>
 				</div>
 			</div>
@@ -157,12 +157,10 @@
 						<!-- add expanded attribute to open the section -->
 						<v-pane>
 							<v-pane-header>
-								<i class="fa fa-clock-o"></i><span class="courseinfo-label">Manage dates</span>
+								<i class="fa fa-clock-o"></i><span class="courseinfo-label" translate="MANAGE_DATES">Manage dates</span>
 							</v-pane-header>
 
 							<v-pane-content>
-
-								<a id="dates"></a>
 
 								<datepicker1 id="dates" ng-model="courseInfo.dateTime"></datepicker1>
 
@@ -172,7 +170,7 @@
 						<!-- add expanded attribute to open the section -->
 						<v-pane>
 							<v-pane-header>
-								<i class="fa fa-files-o"></i><span class="courseinfo-label">Attachments</span>
+								<i class="fa fa-files-o"></i><span class="courseinfo-label" translate="ATTACHMENTS">Attachments</span>
 							</v-pane-header>
 
 							<v-pane-content>
@@ -180,7 +178,7 @@
 								<div ng-controller="FileUploadController">
 
 									<span class="btn btn-file default-btn default-gray" id="uploadFileBtn">
-										<i class="fa fa-upload"></i></i> Upload file
+										<i class="fa fa-upload"></i></i><span translate="UPLOAD_FILE">Upload file</span>
 										<input type="file" ng-file-select="onFileSelect($files)">
 									</span>
 
@@ -190,7 +188,7 @@
 												<td>{{file.name}}</td>
 											</tr>
 										</table>
-										<p ng-if="courseInfo.files.length == 0">No files uploaded yet</p>
+										<p ng-if="courseInfo.files.length == 0" translate="NO_FILES_UPLOADED">No files uploaded yet</p>
 									</div>
 								</div>
 
@@ -205,7 +203,7 @@
 			<div class="row">
 
 				<div ng-if="!isAdmin" class="col-xs-12">
-					<textarea class="material-input" name="additional" id="additional" rows="3" placeholder="Additional info (optional)" ng-model="courseInfo.additional"></textarea>
+					<textarea class="material-input" name="additional" id="additional" rows="3" placeholder="{{'ADDITIONAL_INFO' | translate}}" ng-model="courseInfo.additional"></textarea>
 				</div>
 
 			</div>
@@ -213,10 +211,10 @@
 			<div class="row">
 				<div class="col-xs-12">
 
-					<input ng-if="!isAdmin && !isEdited" ng-disabled="{{disabled}}" type="submit" ng-click="saveData()" class="btn accent-btn accent-green submit-btn" value="Create Course!">
-					<input ng-if="isAdmin && !isEdited" ng-disabled="{{disabled}}" type="submit" ng-click="saveData()" class="btn accent-btn accent-green submit-btn" value="Create Course!">
-					<input ng-if="isAdmin && isEdited" ng-disabled="{{disabled}}" type="submit" ng-click="editCourse()" class="btn accent-btn accent-green submit-btn" value="Approve Course">
-					<input ng-if="!isAdmin && isEdited" ng-disabled="{{disabled}}"  type="submit" ng-click="editCourse()" class="btn accent-btn accent-blue submit-btn" value="Edit Course">
+					<input ng-if="!isAdmin && !isEdited" ng-disabled="{{disabled}}" type="submit" ng-click="saveData()" class="btn accent-btn accent-green submit-btn" value="{{'CREATE_COURSE' | translate}}">
+					<input ng-if="isAdmin && !isEdited" ng-disabled="{{disabled}}" type="submit" ng-click="saveData()" class="btn accent-btn accent-green submit-btn" value="{{'CREATE_COURSE' | translate}}">
+					<input ng-if="isAdmin && isEdited" ng-disabled="{{disabled}}" type="submit" ng-click="editCourse()" class="btn accent-btn accent-green submit-btn" value="{{'APPROVE_COURSE' | translate}}">
+					<input ng-if="!isAdmin && isEdited" ng-disabled="{{disabled}}"  type="submit" ng-click="editCourse()" class="btn accent-btn accent-blue submit-btn" value="{{'EDIT_COURSE' | translate}}">
 
 				</div>
 			</div>

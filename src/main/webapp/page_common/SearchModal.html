@@ -5,7 +5,7 @@
   <div class="search-container">
         <div class="modal-header">
           
-          <input id="searchField" type="text" class="form-control" ng-model="searchQuery" ng-model-options="{debounce: { 'default': 250} }" ng-change="search()" placeholder="Search ..." autofocus >
+          <input id="searchField" type="text" class="form-control" ng-model="searchQuery" ng-model-options="{debounce: { 'default': 250} }" ng-change="search()" placeholder="{{'SEARCH' | translate}}" autofocus >
           <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
           
            
@@ -22,13 +22,13 @@
           
           
             <div class="main-content col-xs-6">
-              <h3>Training</h3>
+              <h3 translate="TRAINING">Training</h3>
               <h1>{{r.trainingName}}</h1>
               
               <div class="q-footer">
-                <h2>Coach: {{r.trainingCoach}}</h2>
-              <h4>state: {{r.state}}</h4>
-              <h4>start date: {{r.dateTraining | date: "dd MMM yyyy"}}</h4>
+                <h2><span translate="COACH">Coach</span>: {{r.trainingCoach}}</h2>
+              <h4><span translate="STATE">state</span>: {{r.state}}</h4>
+              <h4><span translate="START_DATE">start date</span>: {{r.dateTraining | date: "dd MMM yyyy"}}</h4>
               </div>
             </div>
             <div class="img-cont col-xs-6"><img ng-src="{{r.trainingImage}}"></div>
@@ -40,12 +40,12 @@
           
           
             <div class="main-content col-xs-6">
-              <h3>User</h3>
+              <h3 translate="USER">User</h3>
               <h1>{{r.name}}</h1>
               <h2>{{r.email}}</h2>
               <div class="q-footer">
-              <h4>phone: {{r.numberPhone}}</h4>
-              <h4>login: {{r.login}}</h4>
+              <h4><span translate="PHONE">phone</span>: {{r.numberPhone}}</h4>
+              <h4><span translate="LOGIN">login</span>: {{r.login}}</h4>
               </div>
             </div>
 <!--            <div class="img-cont col-xs-6"></div>-->

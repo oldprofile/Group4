@@ -1,245 +1,270 @@
-
 <div ng-class="{ 'waiting-for-angular': !isContentLoaded }">
-  <div ng-show="isContentLoaded" class="row profile-container">
-    <div class="col-xs-12">
-      <h2>{{user.name}}</h2>
-      <h4>@<a ng-href="mailto:{{user.email}}?subject=Exadel Training">{{user.email}}</a> </h4>
-      <h4 ng-show="user.numberPhone != '' && user.numberPhone != null"><span class="glyphicon glyphicon-phone" aria-hidden="true"></span>{{user.numberPhone}}</h4>
-      
-      <div class="profile-control">
-        <button ng-show="isMe()"class="btn btn-default default-btn default-gray" ng-click="settings()" aria-expanded="true"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span>Settings</span></button>
+	<div ng-show="isContentLoaded" class="row profile-container">
+		<div class="col-xs-12">
+			<h2>{{user.name}}</h2>
+			<h4>@<a ng-href="mailto:{{user.email}}?subject=Exadel Training">{{user.email}}</a></h4>
+			<h4 ng-show="user.numberPhone != '' && user.numberPhone != null"><span class="glyphicon glyphicon-phone"
+																				   aria-hidden="true"></span>{{user.numberPhone}}
+			</h4>
+
+			<div class="profile-control">
+				<button ng-show="isMe()" class="btn btn-default default-btn default-gray" ng-click="settings()"
+						aria-expanded="true"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span><span
+					translate="SETTINGS">Settings</span></button>
 
 
-        <div class="dropdown" ng-hide="!isAdmin() && !isCanLeaveStudentFeedback && !isCanLeaveCoachFeedback">
-          <button class="btn btn-default default-btn default-gray dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> <span>Feedback</span>
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-            <li class="dropdown-header">Leave Feedback</li>
-            <li><a href="" ng-hide="!isCanLeaveStudentFeedback" ng-click="leaveStudentFeedback()">On Student</a></li>
-            <li><a href="" ng-hide="!isCanLeaveCoachFeedback" ng-click="leaveCoachFeedback()">On Coach</a></li>
-            <li role="separator" ng-show="isAdmin()" class="divider"></li>
-            <li class="dropdown-header" ng-show="isAdmin()">Request Feedback</li>
-            <li><a href=""  ng-show="isAdmin()" ng-click="requestFeedback()">On Student</a></li>
-          </ul>
-        </div>
-      </div>
-    </div> 
-      <div class="col-xs-12 profile-info"  accordion-save="profile">
-        
-        <v-accordion class="vAccordion--default" multiple>
+				<div class="dropdown" ng-hide="!isAdmin() && !isCanLeaveStudentFeedback && !isCanLeaveCoachFeedback">
+					<button class="btn btn-default default-btn default-gray dropdown-toggle" type="button"
+							id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+						<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> <span
+						translate="FEEDBACK">Feedback</span>
+					</button>
+					<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+						<li class="dropdown-header" translate="LEAVE_FEEDBACK">Leave Feedback</li>
+						<li><a href="" ng-hide="!isCanLeaveStudentFeedback" ng-click="leaveStudentFeedback()"
+							   translate="ON_STUDENT">On Student</a></li>
+						<li><a href="" ng-hide="!isCanLeaveCoachFeedback" ng-click="leaveCoachFeedback()"
+							   translate="ON_COACH">On Coach</a></li>
+						<li role="separator" ng-show="isAdmin()" class="divider"></li>
+						<li class="dropdown-header" ng-show="isAdmin()" translate="REQUEST_FEEDBACK">Request Feedback
+						</li>
+						<li><a href="" ng-show="isAdmin()" ng-click="requestFeedback()" translate="ON_STUDENT">On
+							Student</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-12 profile-info" accordion-save="profile">
 
-            <!-- add expanded attribute to open the section -->
-            <v-pane ng-show="studentArchive.length + coachArchive.length">
-              <v-pane-header>
-                Archive ({{studentArchive.length + coachArchive.length}})
-              </v-pane-header>
+			<v-accordion class="vAccordion--default" multiple>
 
-              <v-pane-content>
-                <v-accordion class="vAccordion--default" multiple>
+				<!-- add expanded attribute to open the section -->
+				<v-pane ng-show="studentArchive.length + coachArchive.length">
+					<v-pane-header>
+						<span translate="ARCHIVE">Archive</span> ({{studentArchive.length + coachArchive.length}})
+					</v-pane-header>
 
-                    <!-- add expanded attribute to open the section -->
-                    <v-pane ng-show="studentArchive.length">
-                      <v-pane-header>
-                        Student Archive ({{studentArchive.length}})
-                      </v-pane-header>
+					<v-pane-content>
+						<v-accordion class="vAccordion--default" multiple>
 
-                      <v-pane-content>
-                        <table class="table table-striped" ts-wrapper>
-                          <thead>
-                            <tr>
-                                <th class="col-xs-1">#</th>
-                                <th ts-criteria="trainingName|lowercase" ts-default class="col-xs-7">Course</th>
-                                <th ts-criteria="state"  class="col-xs-2">State</th>
-                                <th ts-criteria="dateTraining" class="col-xs-2">Start Date</th>
-                            </tr>
-                          </thead>
-                          <tr ng-repeat="f in studentArchive" class="link-cursor"  ng-click="goto('/courseinfo/'+ f.trainingName)" ts-repeat>
-                            <td>{{$index + 1}}</td>
-                            <td>{{ f.trainingName}}</td>
-                            <td>{{f.state}}</td>
-                            <td>{{ f.dateTraining | date:"mediumDate" }}</td>
-                          </tr>
-                        </table>
-                      </v-pane-content>
-                    </v-pane>
+							<!-- add expanded attribute to open the section -->
+							<v-pane ng-show="studentArchive.length">
+								<v-pane-header>
+									<span translate="STUDENT_ARCHIVE">Student Archive</span> ({{studentArchive.length}})
+								</v-pane-header>
 
-                    <v-pane ng-show="coachArchive.length">
-                      <v-pane-header>
-                        Coach Archive ({{coachArchive.length}})
-                      </v-pane-header>
+								<v-pane-content>
+									<table class="table table-striped" ts-wrapper>
+										<thead>
+										<tr>
+											<th class="col-xs-1">#</th>
+											<th ts-criteria="trainingName|lowercase" ts-default class="col-xs-7"
+												translate="COURSE">Course
+											</th>
+											<th ts-criteria="state" class="col-xs-2" translate="STATE">State</th>
+											<th ts-criteria="dateTraining" class="col-xs-2"
+												translate="START_DATE_CAPITAL">Start Date
+											</th>
+										</tr>
+										</thead>
+										<tr ng-repeat="f in studentArchive" class="link-cursor"
+											ng-click="goto('/courseinfo/'+ f.trainingName)" ts-repeat>
+											<td>{{$index + 1}}</td>
+											<td>{{ f.trainingName}}</td>
+											<td>{{f.state}}</td>
+											<td>{{ f.dateTraining | date:"mediumDate" }}</td>
+										</tr>
+									</table>
+								</v-pane-content>
+							</v-pane>
 
-                      <v-pane-content>
-                        <table class="table table-striped" ts-wrapper>
-                          <thead>
-                            <tr>
-                                <th class="col-xs-1">#</th>
-                                <th ts-criteria="trainingName|lowercase" ts-default class="col-xs-7">Course</th>
-                                <th ts-criteria="state"  class="col-xs-2">State</th>
-                                <th ts-criteria="dateTraining" class="col-xs-2">Start Date</th>
-                            </tr>
-                          </thead>
-                          <tr ng-repeat="f in coachArchive" class="link-cursor"  ng-click="goto('/courseinfo/'+ f.trainingName)" ts-repeat>
-                            <td>{{$index + 1}}</td>
-                            <td>{{ f.trainingName}}</td>
-                            <td>{{f.state}}</td>
-                            <td>{{ f.dateTraining | date:"mediumDate" }}</td>
-                          </tr>
-                        </table> 
-                      </v-pane-content>
-                    </v-pane>
+							<v-pane ng-show="coachArchive.length">
+								<v-pane-header>
+									<span translate="COACH_ARCHIVE">Coach Archive</span> ({{coachArchive.length}})
+								</v-pane-header>
 
-                </v-accordion>
-              </v-pane-content>
-            </v-pane>
+								<v-pane-content>
+									<table class="table table-striped" ts-wrapper>
+										<thead>
+										<tr>
+											<th class="col-xs-1">#</th>
+											<th ts-criteria="trainingName|lowercase" ts-default class="col-xs-7" translate="COURSE">
+												Course
+											</th>
+											<th ts-criteria="state" class="col-xs-2" translate="STATE">State</th>
+											<th ts-criteria="dateTraining" class="col-xs-2" translate="START_DATE_CAPITAL">Start Date</th>
+										</tr>
+										</thead>
+										<tr ng-repeat="f in coachArchive" class="link-cursor"
+											ng-click="goto('/courseinfo/'+ f.trainingName)" ts-repeat>
+											<td>{{$index + 1}}</td>
+											<td>{{ f.trainingName}}</td>
+											<td>{{f.state}}</td>
+											<td>{{ f.dateTraining | date:"mediumDate" }}</td>
+										</tr>
+									</table>
+								</v-pane-content>
+							</v-pane>
 
-            <v-pane ng-show="studentFeedbacks.length + coachFeedbacks.length">
-              <v-pane-header>
-                Feedbacks ({{studentFeedbacks.length + coachFeedbacks.length}})
-              </v-pane-header>
+						</v-accordion>
+					</v-pane-content>
+				</v-pane>
 
-              <v-pane-content>
-                <v-accordion class="vAccordion--default" multiple>
+				<v-pane ng-show="studentFeedbacks.length + coachFeedbacks.length">
+					<v-pane-header>
+						<span translate="FEEDBACKS">Feedbacks</span> ({{studentFeedbacks.length + coachFeedbacks.length}})
+					</v-pane-header>
 
-                    <!-- add expanded attribute to open the section -->
-                    <v-pane ng-show="studentFeedbacks.length">
-                      <v-pane-header>
-                        Student Feedbacks ({{studentFeedbacks.length}})
-                      </v-pane-header>
+					<v-pane-content>
+						<v-accordion class="vAccordion--default" multiple>
 
-                      <v-pane-content>
-                          <table class="table table-striped" ts-wrapper>
-                            <thead>
-                              <tr>
-                                <th class="col-xs-1">#</th>
-                                <th ts-criteria="feedbackerName|lowercase" ts-default class="col-xs-6">From</th>
-                                <th ts-criteria="date|date"class="col-xs-4">When</th>
-                                <th ts-criteria="type" class="col-xs-1">Mood</th>
-                              </tr>
-                            </thead>
-                            <tr ng-repeat="f in studentFeedbacks" class="link-cursor"  ng-click="leaveStudentFeedback(f)" ts-repeat>
-                              <td>{{$index + 1}}</td>
-                              <td>{{ f.feedbackerName}}</td>
-                              <td>{{ f.date | date:"mediumDate" }}</td>
-                              <td> <i class="fa fa-plus" ng-show="f.type == 'Positive'"></i> <i class="fa fa-minus" ng-hide="f.type == 'Positive'"></i> </td>
-                            </tr>
-                          </table>
-                      </v-pane-content>
-                    </v-pane>
+							<!-- add expanded attribute to open the section -->
+							<v-pane ng-show="studentFeedbacks.length">
+								<v-pane-header>
+									<span translate="STUDENT_FEEDBACKS">Student Feedbacks</span> ({{studentFeedbacks.length}})
+								</v-pane-header>
 
-                    <v-pane ng-show="coachFeedbacks.length">
-                      <v-pane-header>
-                        Coach Feedbacks ({{coachFeedbacks.length}})
-                      </v-pane-header>
+								<v-pane-content>
+									<table class="table table-striped" ts-wrapper>
+										<thead>
+										<tr>
+											<th class="col-xs-1">#</th>
+											<th ts-criteria="feedbackerName|lowercase" ts-default class="col-xs-6" translate="FROM">
+												From
+											</th>
+											<th ts-criteria="date|date" class="col-xs-4" translate="WHEN">When</th>
+											<th ts-criteria="type" class="col-xs-1" translate="MOOD">Mood</th>
+										</tr>
+										</thead>
+										<tr ng-repeat="f in studentFeedbacks" class="link-cursor"
+											ng-click="leaveStudentFeedback(f)" ts-repeat>
+											<td>{{$index + 1}}</td>
+											<td>{{ f.feedbackerName}}</td>
+											<td>{{ f.date | date:"mediumDate" }}</td>
+											<td><i class="fa fa-plus" ng-show="f.type == 'Positive'"></i> <i
+												class="fa fa-minus" ng-hide="f.type == 'Positive'"></i></td>
+										</tr>
+									</table>
+								</v-pane-content>
+							</v-pane>
 
-                      <v-pane-content>
-                        <table class="table table-striped" ts-wrapper>
-                          <thead>
-                            <tr>
-                                <th class="col-xs-1">#</th>
-                                <th ts-criteria="feedbackerName|lowercase" ts-default class="col-xs-6">From</th>
-                                <th ts-criteria="date|date"class="col-xs-4">When</th>
-                                <th ts-criteria="type" class="col-xs-1">Mood</th>
-                            </tr>
-                          </thead>
-                          <tr ng-repeat="f in coachFeedbacks" class="link-cursor"  ng-click="leaveCoachFeedback(f)" ts-repeat>
-                            <td>{{$index + 1}}</td>
-                            <td>{{ f.feedbackerName}}</td>
-                            <td>{{ f.date | date:"mediumDate" }}</td>
-                            <td> <i class="fa fa-plus" ng-show="f.type == 'Positive'"></i> <i class="fa fa-minus" ng-hide="f.type == 'Positive'"></i> </td>
-                          </tr>
-                        </table> 
-                      </v-pane-content>
-                    </v-pane>
+							<v-pane ng-show="coachFeedbacks.length">
+								<v-pane-header>
+									<span translate="COACH_FEEDBACKS">Coach Feedbacks</span> ({{coachFeedbacks.length}})
+								</v-pane-header>
 
-                </v-accordion>
-              </v-pane-content>
-            </v-pane>
+								<v-pane-content>
+									<table class="table table-striped" ts-wrapper>
+										<thead>
+										<tr>
+											<th class="col-xs-1">#</th>
+											<th ts-criteria="feedbackerName|lowercase" ts-default class="col-xs-6" translate="FROM">
+												From
+											</th>
+											<th ts-criteria="date|date" class="col-xs-4" translate="WHEN">When</th>
+											<th ts-criteria="type" class="col-xs-1" translate="MOOD">Mood</th>
+										</tr>
+										</thead>
+										<tr ng-repeat="f in coachFeedbacks" class="link-cursor"
+											ng-click="leaveCoachFeedback(f)" ts-repeat>
+											<td>{{$index + 1}}</td>
+											<td>{{ f.feedbackerName}}</td>
+											<td>{{ f.date | date:"mediumDate" }}</td>
+											<td><i class="fa fa-plus" ng-show="f.type == 'Positive'"></i> <i
+												class="fa fa-minus" ng-hide="f.type == 'Positive'"></i></td>
+										</tr>
+									</table>
+								</v-pane-content>
+							</v-pane>
 
-        </v-accordion>
-        
-<!--
-      <h4>Feedbacks</h4>
-        <h5>Student Feedbacks</h5>
-          <table class="table">
-            <thead>
-              <tr>
-                  <th>#</th>
-                  <th>From</th>
-                  <th>When</th>
-                  <th>View</th>
-              </tr>
-            </thead>
-            <tr ng-repeat="f in studentFeedbacks">
-              <td>{{$index + 1}}</td>
-              <td>{{ f.feedbackerName}}</td>
-              <td>{{ f.date | date:"mediumDate" }}</td>
-              <td> <a ng-click="leaveStudentFeedback(f)">show me</a></td>
-            </tr>
-          </table>
+						</v-accordion>
+					</v-pane-content>
+				</v-pane>
 
+			</v-accordion>
 
-        <h5>Coach Feedbacks</h5>
-        <table class="table">
-            <thead>
-              <tr>
-                  <th>#</th>
-                  <th>From</th>
-                  <th>When</th>
-                  <th>View</th>
-              </tr>
-            </thead>
-            <tr ng-repeat="f in coachFeedbacks">
-              <td>{{$index + 1}}</td>
-              <td>{{ f.feedbackerName}}</td>
-              <td>{{ f.date | date:"mediumDate" }}</td>
-              <td> <a ng-click="leaveCoachFeedback(f)">show me</a></td>
-            </tr>
-          </table>  
-      </div>
-
-
-    <div class="col-xs-12">
-      <h4>Archive</h4>
-        <h5>Student Archive</h5>
-          <table class="table">
-            <thead>
-              <tr>
-                  <th>#</th>
-                  <th>Course</th>
-                  <th>State</th>
-                  <th>Start Date</th>
-              </tr>
-            </thead>
-            <tr ng-repeat="f in studentArchive">
-              <td>{{$index + 1}}</td>
-              <td>{{ f.trainingName}}</td>
-              <td>{{f.state}}</td>
-              <td>{{ f.dateTraining | date:"mediumDate" }}</td>
-            </tr>
-          </table>
+			<!--
+				  <h4>Feedbacks</h4>
+					<h5>Student Feedbacks</h5>
+					  <table class="table">
+						<thead>
+						  <tr>
+							  <th>#</th>
+							  <th>From</th>
+							  <th>When</th>
+							  <th>View</th>
+						  </tr>
+						</thead>
+						<tr ng-repeat="f in studentFeedbacks">
+						  <td>{{$index + 1}}</td>
+						  <td>{{ f.feedbackerName}}</td>
+						  <td>{{ f.date | date:"mediumDate" }}</td>
+						  <td> <a ng-click="leaveStudentFeedback(f)">show me</a></td>
+						</tr>
+					  </table>
 
 
-        <h5>Coach Archive</h5>
-        <table class="table">
-            <thead>
-              <tr>
-                  <th>#</th>
-                  <th>Course</th>
-                  <th>State</th>
-                  <th>Start Date</th>
-              </tr>
-            </thead>
-            <tr ng-repeat="f in coachArchive">
-              <td>{{$index + 1}}</td>
-              <td>{{ f.trainingName}}</td>
-              <td>{{f.state}}</td>
-              <td>{{ f.dateTraining | date:"mediumDate" }}</td>
-            </tr>
-          </table>  
-      </div>
--->
+					<h5>Coach Feedbacks</h5>
+					<table class="table">
+						<thead>
+						  <tr>
+							  <th>#</th>
+							  <th>From</th>
+							  <th>When</th>
+							  <th>View</th>
+						  </tr>
+						</thead>
+						<tr ng-repeat="f in coachFeedbacks">
+						  <td>{{$index + 1}}</td>
+						  <td>{{ f.feedbackerName}}</td>
+						  <td>{{ f.date | date:"mediumDate" }}</td>
+						  <td> <a ng-click="leaveCoachFeedback(f)">show me</a></td>
+						</tr>
+					  </table>
+				  </div>
 
-  </div>
-</div>
+
+				<div class="col-xs-12">
+				  <h4>Archive</h4>
+					<h5>Student Archive</h5>
+					  <table class="table">
+						<thead>
+						  <tr>
+							  <th>#</th>
+							  <th>Course</th>
+							  <th>State</th>
+							  <th>Start Date</th>
+						  </tr>
+						</thead>
+						<tr ng-repeat="f in studentArchive">
+						  <td>{{$index + 1}}</td>
+						  <td>{{ f.trainingName}}</td>
+						  <td>{{f.state}}</td>
+						  <td>{{ f.dateTraining | date:"mediumDate" }}</td>
+						</tr>
+					  </table>
+
+
+					<h5>Coach Archive</h5>
+					<table class="table">
+						<thead>
+						  <tr>
+							  <th>#</th>
+							  <th>Course</th>
+							  <th>State</th>
+							  <th>Start Date</th>
+						  </tr>
+						</thead>
+						<tr ng-repeat="f in coachArchive">
+						  <td>{{$index + 1}}</td>
+						  <td>{{ f.trainingName}}</td>
+						  <td>{{f.state}}</td>
+						  <td>{{ f.dateTraining | date:"mediumDate" }}</td>
+						</tr>
+					  </table>
+				  </div>
+			-->
+
+		</div>
+	</div>
 </div>  

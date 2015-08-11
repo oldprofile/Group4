@@ -4,7 +4,7 @@
     
     <div class="browse-header row">
       <div class="col-sm-4 col-xs-0">
-        <p class="path"><a ng-href="#/browse">Browse</a> <i class="fa fa-angle-right"></i> {{categoryName}}</p>
+        <p class="path"><a ng-href="#/browse" translate="BROWSE">Browse</a> <i class="fa fa-angle-right"></i> {{categoryName}}</p>
       </div>
       <div class="col-sm-4 col-xs-6">
       
@@ -18,13 +18,13 @@
       
         <div class="dropdown">
           <button class="btn btn-default default-btn default-gray dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            <span ng-hide="true"class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> <span cl>Sort by: <strong>{{getSortName(sort)}}</strong></span>
+            <span ng-hide="true"class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> <span translate="SORT_BY">Sort by: <strong>{{getSortName(sort)}}</strong></span>
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
             
-            <li><a href="" ng-click="changeSort('dateTraining')">Date</a></li>
-            <li><a href=""  ng-click="changeSort('-rating')">Rating</a></li>
-            <li><a href="" ng-hide="false" ng-click="changeSort('trainingName')">A to Z</a></li>
+            <li><a href="" ng-click="changeSort('dateTraining')" translate="DATE">Date</a></li>
+            <li><a href=""  ng-click="changeSort('-rating')" translate="RATING">Rating</a></li>
+            <li><a href="" ng-hide="false" ng-click="changeSort('trainingName')" translate="A_TO_Z">A to Z</a></li>
             
           </ul>
         </div>
@@ -33,10 +33,10 @@
       
     </div>
     <div class="no-courses"  ng-show="!allTrainings.length" >
-        <p>No {{categoryName}} Courses Available.<p>
-        <p style="margin-bottom:8px;">Want To Create One?<p>
+        <p><span translate="DEPENDS_NO_CATEGORY">No</span> {{categoryName}} <span translate="DEPENDS_COURSES_AVAILABLE">Courses Available.</span><p>
+        <p style="margin-bottom:8px;" translate="WANT_TO_CREATE">Want To Create One?<p>
           
-        <button id="createcourse"class="btn btn-default accent-btn accent-blue" ng-click="createcourse()" aria-expanded="true"><i class="fa fa-pencil-square-o"></i><span>Create Course</span></button>
+        <button id="createcourse"class="btn btn-default accent-btn accent-blue" ng-click="createcourse()" aria-expanded="true"><i class="fa fa-pencil-square-o"></i><span translate="CREATE_COURSE">Create Course</span></button>
       </div> 
     <div class="browse-content">
   
@@ -55,9 +55,9 @@
                    <rating ng-model="t.rating" max="5" readonly="true" on-hover="" on-leave="" titles="['one','two','three']" state-on="'fa fa-star'" state-off="'fa fa-star-o'" class="clearfix"></rating>
                   
                   <div class="additional">
-                    <h3>Start Date: {{t.dateTraining | date:'dd MMMM '}}</h3>
-                    <h4>1 Lesson</h4>
-                    <a ng-href="#/courseinfo/{{t.trainingName}}">Continue To Info</a>
+                    <h3><span translate="START_DATE_CAPITAL">Start Date</span>>: {{t.dateTraining | date:'dd MMMM '}}</h3>
+                    <h4>1 <span translate="LESSON">Lesson</span></h4>
+                    <a ng-href="#/courseinfo/{{t.trainingName}}" translate="CONTINUE_TO_INFO">Continue To Info</a>
                   </div>  
                 </div> 
               </a>

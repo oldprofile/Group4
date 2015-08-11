@@ -1,12 +1,12 @@
 <div class="modal-header">
-	<h3 class="modal-title">Upload files</h3>
+	<h3 class="modal-title" translate="UPLOAD_FILES">Upload files</h3>
 </div>
 <div class="modal-body">
 
 	<div ng-controller="AddFileUploadController">
 
 		<span class="btn btn-file default-btn default-gray" id="uploadFileBtn">
-			<i class="fa fa-plus"></i></i> Add file
+			<i class="fa fa-plus"></i></i><span translate="ADD_FILE">Add file</span>
 			<input type="file" ng-file-select="onFileSelect($files)">
 		</span>
 
@@ -23,12 +23,12 @@
 					<td class="hiddenCell" ng-click="deleteFile($index)"><i class="fa fa-times"></i></td>
 				</tr>
 			</table>
-			<p ng-if="filesToUpload.length == 0">No files uploaded yet</p>
+			<p ng-if="filesToUpload.length == 0" translate="NO_FILES_UPLOADED">No files uploaded yet</p>
 		</div>
 	</div>
 
 </div>
 <div class="modal-footer">
-	<button class="btn btn-default default-btn default-blue" ng-click="ok()">Upload files</button>
-	<button class="btn btn-default default-btn default-gray" ng-click="cancel()">Cancel</button>
+	<button class="btn btn-default default-btn default-blue" ng-click="ok()" translate="UPLOAD_FILES">Upload Files</button>
+	<button class="btn btn-default default-btn default-gray" ng-click="cancel()" translate="CANCEL">Cancel</button>
 </div>

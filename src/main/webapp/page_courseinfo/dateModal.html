@@ -1,18 +1,18 @@
 <div class="modal-header">
-	<h3 class="modal-title courseinfo-h5">Edit date & place</h3>
+	<h3 class="modal-title courseinfo-h5" translate="EDIT_DATE_AND_PLACE">Edit date & place</h3>
 </div>
 <div class="modal-body">
 	<form name="lessonForm">
 		<div class="row">
 			<div class="col-xs-12">
-				<p class="info-small courseinfo-label float-left no-bottom-margin" id="pEditDate">Edit date:
+				<p class="info-small courseinfo-label float-left no-bottom-margin" id="pEditDate" translate="EDIT_DATE_COLON">Edit date:
 				</p>
 
 				<div class="calendar">
 					<a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown">
 						<div class="input-group">
 							<input type="text" class="form-control calendar"
-								   ng-value="courseinfo.dateTime[index] | date: 'medium'" placeholder="click to add date" disabled>
+								   ng-value="courseinfo.dateTime[index] | date: 'medium'" placeholder="{{'CLICK_TO_ADD_DATE' | translate}}" disabled>
 							<span class="input-group-addon addon-calendar">
                                 <i class="fa fa-calendar"></i>
                             </span>
@@ -28,9 +28,9 @@
 
 		<div class="row">
 			<div class="col-xs-12">
-				<p class="info-small courseinfo-label float-left no-bottom-margin">Place:
+				<p class="info-small courseinfo-label float-left no-bottom-margin" translate="PLACE_COLON">Place:
 					<input class="material-input" name="place" type="text"
-						   placeholder="click to enter" ng-model="courseinfo.places[index]"
+						   placeholder="{{'CLICK_TO_ENTER' | translate}}" ng-model="courseinfo.places[index]"
 						   required>
 				</p>
 			</div>
@@ -39,7 +39,7 @@
 	</form>
 </div>
 <div class="modal-footer">
-	<button class="btn btn-default default-btn default-red pull-left" ng-click="deleteLesson()">Delete lesson</button>
+	<button class="btn btn-default default-btn default-red pull-left" ng-click="deleteLesson()" translate="DELETE_LESSON">Delete lesson</button>
 	<button class="btn btn-default default-btn default-green" ng-click="ok()">OK</button>
-	<button class="btn btn-default default-btn default-gray" ng-click="cancel()">Cancel</button>
+	<button class="btn btn-default default-btn default-gray" ng-click="cancel()" translate="CANCEL">Cancel</button>
 </div>
